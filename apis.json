@@ -1,0 +1,46 @@
+{
+    "name": "Lightspeed",
+    "description": "Lightspeed Institutional supports professional traders, funds, institutions, and separately managed accounts by providing a complete suite of technology, Regulation T and portfolio margin leverage, access to our agency-only trade desk, as well as execu...",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/28335-www-lightspeed-com.jpg",
+    "tags": [
+        "api not found",
+        "financial services",
+        "have api",
+        "marketplaces"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/lightspeed\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Lightspeed",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/28335-www-lightspeed-com.jpg",
+            "humanURL": "https:\/\/www.lightspeed.com",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/lightspeed-openapi.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/lightspeed-financial"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/LSFinancial"
+        },
+        {
+            "type": "Website",
+            "url": "https:\/\/www.lightspeed.com"
+        }
+    ]
+}
