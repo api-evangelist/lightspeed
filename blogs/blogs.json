@@ -1,0 +1,32 @@
+{
+  "aid": "lightspeed",
+  "url": "https://www.lightspeedhq.com/blog/",
+  "updated": "2026-06-13",
+  "blogs": [
+    {
+      "title": "Tablet ePOS: Changing Inventory for the better",
+      "url": "https://www.lightspeedhq.com/blog/tablet-epos-changing-inventory-for-the-better-2/",
+      "date": "2026-06-09"
+    },
+    {
+      "title": "6 Signs It's Time to Change Your Payment Processor",
+      "url": "https://www.lightspeedhq.com/blog/change-payment-processor/",
+      "date": "2026-06-09"
+    },
+    {
+      "title": "What Is Inventory Control? Types, Techniques & Systems",
+      "url": "https://www.lightspeedhq.com/blog/what-is-inventory-control-types-techniques-systems/",
+      "date": "2026-06-03"
+    },
+    {
+      "title": "Women's Golf Month: New Data on How to Retain Women Golfers and Drive Growth",
+      "url": "https://www.lightspeedhq.com/blog/womens-golf-month-golf-course-retention-growth/",
+      "date": "2026-06-01"
+    },
+    {
+      "title": "How to Improve Financial Visibility in Your Retail Business",
+      "url": "https://www.lightspeedhq.com/blog/financial-visibility-retail/",
+      "date": "2026-05-26"
+    }
+  ]
+}

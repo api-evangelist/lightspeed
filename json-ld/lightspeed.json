@@ -1,0 +1,47 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Lightspeed Commerce",
+  "description": "Omnichannel commerce platform with REST APIs for retail and restaurant POS, inventory management, loyalty programs, and e-commerce integrations.",
+  "url": "https://www.lightspeedhq.com/",
+  "sameAs": [
+    "https://github.com/lightspeedpos",
+    "https://www.linkedin.com/company/lightspeedcommerce",
+    "https://x.com/LightspeedHQ"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "developer support",
+    "url": "https://developers.lightspeedhq.com/"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Lightspeed API Products",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Lightspeed Retail X-Series API",
+        "description": "REST API for Lightspeed Retail X-Series point-of-sale system enabling integrations for sales operations, product management, inventory updates, loyalty handling, and webhooks.",
+        "url": "https://x-series-api.lightspeedhq.com/"
+      },
+      {
+        "@type": "Offer",
+        "name": "Lightspeed Retail R-Series API",
+        "description": "REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory, customers, products, and reporting data.",
+        "url": "https://developers.lightspeedhq.com/retail/"
+      },
+      {
+        "@type": "Offer",
+        "name": "Lightspeed eCom API",
+        "description": "REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products, orders, customers, shipments, payments, and inventory management.",
+        "url": "https://developers.lightspeedhq.com/ecom/"
+      },
+      {
+        "@type": "Offer",
+        "name": "Lightspeed Restaurant K-Series API",
+        "description": "REST API for Lightspeed Restaurant K-Series POS system, enabling approved partners to build integrations for restaurant operations including menu management, orders, and payments.",
+        "url": "https://api-portal.lsk.lightspeed.app/"
+      }
+    ]
+  }
+}
