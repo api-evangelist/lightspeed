@@ -1,0 +1,70 @@
+name: Lightspeed Commerce API Rate Limits
+description: Rate limiting details for Lightspeed Commerce REST APIs across retail and restaurant product lines
+created: 2026-06-13
+modified: 2026-06-13
+
+retail_x_series:
+  description: Lightspeed Retail X-Series API rate limits
+  url: https://x-series-api.lightspeedhq.com/docs/rate_limiting
+  algorithm: sliding window (5-minute bucket)
+  formula: "300 × (number of registers) + 50"
+  example: "1 register = 350 requests per 5-minute window"
+  buckets:
+    - name: Per application/service integration
+      description: Prevents third-party apps from affecting other integrations
+    - name: Per retailer across all users
+      description: Ensures in-store transactions are not impacted by app requests
+  headers:
+    - name: X-RateLimit-Limit
+      description: Maximum requests allowed in the current window
+    - name: X-RateLimit-Remaining
+      description: Requests remaining before rate limit reset
+    - name: Retry-After
+      description: Reset timing in RFC1123 format when limit is exceeded
+  error:
+    status: 429
+    body:
+      error: Too Many Requests
+      message: Rate limiting enforced
+  best_practice: Implement a job queue system that defers API calls on 429 responses rather than pausing between each request
+
+retail_r_series:
+  description: Lightspeed Retail R-Series API rate limits
+  url: https://developers.lightspeedhq.com/retail/introduction/ratelimits/
+  algorithm: leaky-bucket
+  base_bucket:
+    size: 90
+    drip_rate: 1 request per second
+  per_additional_register:
+    bucket_increase: 10
+    drip_rate_increase: 0.5 drips per second
+  example: "3 registers = 110-request bucket with 2 drips/second"
+  request_costs:
+    base: 1 drip per request
+    query_parameters: additional cost varies by parameter
+    nested_relations: 0.5 drips per nested entity in POST/PUT
+  secondary_limiter:
+    description: Fixed 1-second window burst rate limiter
+    action: 429 error with message "burst rate limit exceeded"
+    remedy: Wait at least 1 second before retrying
+  headers:
+    - name: X-LS-Api-Bucket-Level
+      description: Current usage as a fraction of bucket capacity
+    - name: X-LS-Api-Burst-Level
+      description: Number of requests made in the current second
+    - name: X-LS-Api-Drip-Rate
+      description: Current refill rate for the bucket
+    - name: X-LS-Api-Request-Cost
+      description: Cost in drips for the current request
+    - name: Retry-After
+      description: Seconds to wait when a 429 error is returned
+  error:
+    status: 429
+
+ecom_c_series:
+  description: Lightspeed eCom C-Series API rate limits
+  url: https://developers.lightspeedhq.com/ecom/introduction/introduction/
+  notes:
+    - Rate limits apply per API key
+    - Details available in eCom developer documentation
+    - API access requires Advanced or Professional subscription tier

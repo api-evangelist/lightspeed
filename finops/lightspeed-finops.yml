@@ -1,0 +1,58 @@
+name: Lightspeed Commerce FinOps
+description: Financial operations guidance for managing Lightspeed Commerce API costs, usage, and optimization
+created: 2026-06-13
+modified: 2026-06-13
+
+cost_drivers:
+  - name: Software Subscription
+    description: Monthly or annual SaaS fee per product line (Retail, Restaurant)
+    range: $69 - $399 per month per location (billed annually)
+    notes: Annual billing typically required for advertised prices; monthly billing costs more
+  - name: Payment Processing Fees
+    description: Per-transaction fees through Lightspeed Payments (mandatory)
+    notes: Rates vary by plan and volume; contact Lightspeed for custom rates
+  - name: Hardware
+    description: POS terminals, card readers, receipt printers, barcode scanners
+    notes: One-time purchase; not included in subscription pricing
+  - name: Additional Registers
+    description: Per-register fees on some plans beyond the included register allowance
+    notes: Register count also affects API rate limit capacity
+  - name: API Add-on (Restaurant Starter)
+    description: Additional fee for API access on the Restaurant Starter tier
+    notes: Essential and Premium tiers include API access
+
+optimization:
+  - name: Match Plan to API Rate Needs
+    description: Higher register counts increase API rate limits on X-Series and R-Series; align hardware with API throughput needs
+  - name: Annual vs Monthly Billing
+    description: Annual billing significantly reduces per-month costs; commit annually when API usage is sustained
+  - name: Monitor Rate Limit Headers
+    description: Use X-RateLimit-Remaining (X-Series) and X-LS-Api-Bucket-Level (R-Series) headers to avoid 429 errors and unnecessary retry overhead
+  - name: Batch API Requests
+    description: Reduce total request count by batching operations; nested relations in single calls are cheaper than multiple separate calls
+  - name: Queue-based Request Management
+    description: Implement job queues to smooth API call distribution and avoid burst penalties
+  - name: Right-size Restaurant Plan
+    description: Upgrade from Starter to Essential only when raw API access is needed; avoid paying for add-on if Essential is cost-equivalent
+
+monitoring:
+  - name: Rate Limit Usage
+    description: Track X-RateLimit-Remaining and X-LS-Api-Bucket-Level headers to understand consumption patterns
+  - name: Retry Volume
+    description: Monitor 429 error frequency as an indicator of over-usage and optimization opportunities
+  - name: Per-location Costs
+    description: Track subscription costs per location to identify underutilized licenses
+
+api_tiers_by_product:
+  retail_x_series:
+    access: Included on all Retail plans (Basic, Core, Plus)
+    cost_impact: No additional API charge; register count drives rate limits
+  retail_r_series:
+    access: Included with retail subscription
+    cost_impact: No additional API charge; leaky-bucket algorithm scales with register count
+  ecom_c_series:
+    access: Requires Advanced or Professional subscription tier
+    cost_impact: Must be on higher-cost plan to unlock API access
+  restaurant_k_series:
+    access: Add-on on Starter; included on Essential and Premium
+    cost_impact: Factor in add-on cost vs upgrading to Essential tier

@@ -1,0 +1,82 @@
+name: Lightspeed Commerce Plans and Pricing
+description: Pricing plans for Lightspeed Commerce retail and restaurant POS platforms with API access details
+url: https://www.lightspeedhq.com/pricing/
+created: 2026-06-13
+modified: 2026-06-13
+
+retail:
+  description: Lightspeed Retail (X-Series and R-Series) pricing plans
+  plans:
+    - name: Basic
+      price: 89
+      billing: monthly (billed annually)
+      currency: USD
+      features:
+        - 1 register
+        - Inventory management
+        - Sales reporting
+        - API access included
+        - 24/7 support
+    - name: Core
+      price: 149
+      billing: monthly (billed annually)
+      currency: USD
+      features:
+        - Multiple registers
+        - Advanced inventory
+        - Ecommerce integration
+        - API access included
+        - Loyalty program
+        - Purchase orders
+    - name: Plus
+      price: 289
+      billing: monthly (billed annually)
+      currency: USD
+      features:
+        - Unlimited registers
+        - Advanced reporting and analytics
+        - Custom user roles
+        - API access included
+        - Multi-location support
+        - Dedicated account manager
+
+restaurant:
+  description: Lightspeed Restaurant (K-Series) pricing plans
+  plans:
+    - name: Starter
+      price: 69
+      billing: monthly (billed annually)
+      currency: USD
+      features:
+        - 1 terminal
+        - Basic POS features
+        - Menu management
+        - API access as add-on only
+    - name: Essential
+      price: 189
+      billing: monthly (billed annually)
+      currency: USD
+      features:
+        - Multiple terminals
+        - Online ordering
+        - Raw API access included
+        - Integrations marketplace
+        - Advanced reporting
+    - name: Premium
+      price: 399
+      billing: monthly (billed annually)
+      currency: USD
+      features:
+        - Unlimited terminals
+        - All Essential features
+        - Raw API access included
+        - Priority support
+        - Custom integrations
+        - Enterprise features
+
+notes:
+  - All plans require Lightspeed Payments integration
+  - Hardware costs are separate from software subscriptions
+  - Payment processing fees apply in addition to plan costs
+  - API access is standard on all Retail tiers
+  - Restaurant API access requires Essential tier or higher (or add-on for Starter)
