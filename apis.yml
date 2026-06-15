@@ -1,110 +1,119 @@
 aid: lightspeed
 name: Lightspeed Commerce
-description: Omnichannel commerce platform with REST APIs for retail and restaurant POS, inventory management, loyalty programs, and e-commerce integrations. Lightspeed serves retailers and restaurateurs with cloud-based point-of-sale systems, enabling custom integrations through APIs for sales, inventory, customers, orders, payments, and loyalty programs across multiple product lines including Retail X-Series, Retail R-Series, Restaurant K-Series, and eCom.
+description: Omnichannel commerce platform with REST APIs for retail and restaurant
+  POS, inventory management, loyalty programs, and e-commerce integrations. Lightspeed
+  serves retailers and restaurateurs with cloud-based point-of-sale systems, enabling
+  custom integrations through APIs for sales, inventory, customers, orders, payments,
+  and loyalty programs across multiple product lines including Retail X-Series, Retail
+  R-Series, Restaurant K-Series, and eCom.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/apis.yml
 created: 2026-06-13
 modified: 2026-06-13
 specificationVersion: '0.19'
 tags:
-  - Commerce
-  - Point of Sale
-  - POS
+- Commerce
+- Point of Sale
+- POS
+- Retail
+- Restaurant
+- Inventory
+- Loyalty
+- Payments
+- E-Commerce
+- Omnichannel
+apis:
+- aid: lightspeed:retail-x-series
+  name: Lightspeed Retail X-Series API
+  description: REST API for Lightspeed Retail X-Series point-of-sale system enabling
+    integrations for sales operations, product management, inventory updates, loyalty
+    handling, and webhooks for retail merchants.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://api.lightspeedhq.com
+  tags:
   - Retail
-  - Restaurant
+  - POS
   - Inventory
   - Loyalty
-  - Payments
-  - E-Commerce
-  - Omnichannel
-
-apis:
-  - aid: lightspeed:retail-x-series
-    name: Lightspeed Retail X-Series API
-    description: REST API for Lightspeed Retail X-Series point-of-sale system enabling integrations for sales operations, product management, inventory updates, loyalty handling, and webhooks for retail merchants.
-    humanURL: https://x-series-api.lightspeedhq.com/
-    baseURL: https://api.lightspeedhq.com
-    tags:
-      - Retail
-      - POS
-      - Inventory
-      - Loyalty
-      - Webhooks
-    properties:
-      - type: Documentation
-        url: https://x-series-api.lightspeedhq.com/docs
-      - type: OpenAPI
-        url: https://x-series-api.lightspeedhq.com/reference
-      - type: Changelog
-        url: https://x-series-api.lightspeedhq.com/changelog
-
-  - aid: lightspeed:retail-r-series
-    name: Lightspeed Retail R-Series API
-    description: REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory, customers, products, and reporting data for retail point-of-sale systems.
-    humanURL: https://developers.lightspeedhq.com/retail/
-    baseURL: https://api.lightspeedhq.com
-    tags:
-      - Retail
-      - POS
-      - Inventory
-      - Sales
-    properties:
-      - type: Documentation
-        url: https://developers.lightspeedhq.com/retail/introduction/introduction/
-
-  - aid: lightspeed:ecom-c-series
-    name: Lightspeed eCom API
-    description: REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products, orders, customers, shipments, payments, and inventory management. Requires Advanced or Professional subscription.
-    humanURL: https://developers.lightspeedhq.com/ecom/
-    baseURL: https://api.shoplightspeed.com
-    tags:
-      - E-Commerce
-      - Orders
-      - Products
-      - Customers
-      - Shipping
-    properties:
-      - type: Documentation
-        url: https://developers.lightspeedhq.com/ecom/introduction/introduction/
-
-  - aid: lightspeed:restaurant-k-series
-    name: Lightspeed Restaurant K-Series API
-    description: REST API for Lightspeed Restaurant K-Series POS system, enabling approved partners to build integrations for restaurant operations including menu management, orders, and payments.
-    humanURL: https://api-portal.lsk.lightspeed.app/
-    baseURL: https://api.lsk-prod.app
-    tags:
-      - Restaurant
-      - POS
-      - Menu Management
-      - Orders
-    properties:
-      - type: Documentation
-        url: https://api-portal.lsk.lightspeed.app/guides/tutorials/developer-portal
-
-common:
-  - type: Website
-    url: https://www.lightspeedhq.com/
+  - Webhooks
+  properties:
   - type: Documentation
-    url: https://developers.lightspeedhq.com/
-  - type: GitHubOrg
-    url: https://github.com/lightspeedpos
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/lightspeedcommerce
-  - type: Blog
-    url: https://www.lightspeedhq.com/blog/
-  - type: Pricing
-    url: https://www.lightspeedhq.com/pricing/
-  - type: StatusPage
-    url: https://status.lightspeedhq.com/
-  - type: X
-    url: https://x.com/LightspeedHQ
-  - type: Plans
-    url: plans/lightspeed-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/lightspeed-rate-limits.yml
-  - type: FinOps
-    url: finops/lightspeed-finops.yml
-
+    url: https://x-series-api.lightspeedhq.com/docs
+  - type: OpenAPI
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: Changelog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - url: graphql/lightspeed-graphql.md
+    type: GraphQL
+- aid: lightspeed:retail-r-series
+  name: Lightspeed Retail R-Series API
+  description: REST API for Lightspeed Retail R-Series (formerly Vend) providing access
+    to sales, inventory, customers, products, and reporting data for retail point-of-sale
+    systems.
+  humanURL: https://developers.lightspeedhq.com/retail/
+  baseURL: https://api.lightspeedhq.com
+  tags:
+  - Retail
+  - POS
+  - Inventory
+  - Sales
+  properties:
+  - type: Documentation
+    url: https://developers.lightspeedhq.com/retail/introduction/introduction/
+- aid: lightspeed:ecom-c-series
+  name: Lightspeed eCom API
+  description: REST API for Lightspeed eCom (C-Series) e-commerce platform providing
+    endpoints for products, orders, customers, shipments, payments, and inventory
+    management. Requires Advanced or Professional subscription.
+  humanURL: https://developers.lightspeedhq.com/ecom/
+  baseURL: https://api.shoplightspeed.com
+  tags:
+  - E-Commerce
+  - Orders
+  - Products
+  - Customers
+  - Shipping
+  properties:
+  - type: Documentation
+    url: https://developers.lightspeedhq.com/ecom/introduction/introduction/
+- aid: lightspeed:restaurant-k-series
+  name: Lightspeed Restaurant K-Series API
+  description: REST API for Lightspeed Restaurant K-Series POS system, enabling approved
+    partners to build integrations for restaurant operations including menu management,
+    orders, and payments.
+  humanURL: https://api-portal.lsk.lightspeed.app/
+  baseURL: https://api.lsk-prod.app
+  tags:
+  - Restaurant
+  - POS
+  - Menu Management
+  - Orders
+  properties:
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/guides/tutorials/developer-portal
+common:
+- type: Website
+  url: https://www.lightspeedhq.com/
+- type: Documentation
+  url: https://developers.lightspeedhq.com/
+- type: GitHubOrg
+  url: https://github.com/lightspeedpos
+- type: LinkedIn
+  url: https://www.linkedin.com/company/lightspeedcommerce
+- type: Blog
+  url: https://www.lightspeedhq.com/blog/
+- type: Pricing
+  url: https://www.lightspeedhq.com/pricing/
+- type: StatusPage
+  url: https://status.lightspeedhq.com/
+- type: X
+  url: https://x.com/LightspeedHQ
+- type: Plans
+  url: plans/lightspeed-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/lightspeed-rate-limits.yml
+- type: FinOps
+  url: finops/lightspeed-finops.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

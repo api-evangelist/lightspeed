@@ -1,0 +1,1465 @@
+"""
+Lightspeed Commerce GraphQL Schema
+Conceptual schema derived from Lightspeed Commerce REST APIs (Retail X-Series, Retail R-Series, eCom, Restaurant K-Series).
+Covers product catalog, inventory, orders, customers, suppliers, purchase orders, payments, and multi-location analytics.
+"""
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# ─── Root Query ─────────────────────────────────────────────────────────────
+
+type Query {
+  # Products
+  product(id: ID!): Product
+  products(filter: ProductFilter, pagination: PaginationInput): ProductConnection
+
+  # Variants
+  variant(id: ID!): Variant
+  variants(productId: ID!, pagination: PaginationInput): VariantConnection
+
+  # Categories
+  category(id: ID!): Category
+  categories(pagination: PaginationInput): CategoryConnection
+
+  # Inventory
+  inventoryItem(id: ID!): InventoryItem
+  inventoryItems(locationId: ID, filter: InventoryFilter, pagination: PaginationInput): InventoryItemConnection
+
+  # Locations
+  location(id: ID!): Location
+  locations(pagination: PaginationInput): LocationConnection
+
+  # Orders / Sales
+  order(id: ID!): Order
+  orders(filter: OrderFilter, pagination: PaginationInput): OrderConnection
+
+  sale(id: ID!): Sale
+  sales(filter: SaleFilter, pagination: PaginationInput): SaleConnection
+
+  # Customers
+  customer(id: ID!): Customer
+  customers(filter: CustomerFilter, pagination: PaginationInput): CustomerConnection
+
+  # Suppliers
+  supplier(id: ID!): Supplier
+  suppliers(pagination: PaginationInput): SupplierConnection
+
+  # Purchase Orders
+  purchaseOrder(id: ID!): PurchaseOrder
+  purchaseOrders(filter: PurchaseOrderFilter, pagination: PaginationInput): PurchaseOrderConnection
+
+  # Payments
+  payment(id: ID!): Payment
+  payments(filter: PaymentFilter, pagination: PaginationInput): PaymentConnection
+
+  # Taxes
+  taxRate(id: ID!): TaxRate
+  taxRates: [TaxRate!]!
+
+  # Discounts
+  discount(id: ID!): Discount
+  discounts(pagination: PaginationInput): DiscountConnection
+
+  # Loyalty
+  loyaltyAccount(customerId: ID!): LoyaltyAccount
+  loyaltyTiers: [LoyaltyTier!]!
+
+  # Employees / Staff
+  employee(id: ID!): Employee
+  employees(pagination: PaginationInput): EmployeeConnection
+
+  # Registers
+  register(id: ID!): Register
+  registers(locationId: ID): [Register!]!
+
+  # Webhooks
+  webhook(id: ID!): Webhook
+  webhooks: [Webhook!]!
+
+  # Reports / Analytics
+  salesReport(filter: ReportFilter!): SalesReport
+  inventoryReport(locationId: ID, filter: ReportFilter!): InventoryReport
+
+  # Shipments
+  shipment(id: ID!): Shipment
+  shipments(orderId: ID, pagination: PaginationInput): ShipmentConnection
+
+  # Restaurant-specific
+  menu(id: ID!): Menu
+  menus(locationId: ID): [Menu!]!
+  menuItem(id: ID!): MenuItem
+  table(id: ID!): Table
+  tables(locationId: ID): [Table!]!
+  restaurantOrder(id: ID!): RestaurantOrder
+  restaurantOrders(filter: RestaurantOrderFilter, pagination: PaginationInput): RestaurantOrderConnection
+}
+
+# ─── Root Mutation ───────────────────────────────────────────────────────────
+
+type Mutation {
+  # Products
+  createProduct(input: CreateProductInput!): ProductPayload!
+  updateProduct(id: ID!, input: UpdateProductInput!): ProductPayload!
+  deleteProduct(id: ID!): DeletePayload!
+
+  # Variants
+  createVariant(productId: ID!, input: CreateVariantInput!): VariantPayload!
+  updateVariant(id: ID!, input: UpdateVariantInput!): VariantPayload!
+  deleteVariant(id: ID!): DeletePayload!
+
+  # Inventory
+  adjustInventory(input: InventoryAdjustmentInput!): InventoryAdjustmentPayload!
+  transferInventory(input: InventoryTransferInput!): InventoryTransferPayload!
+
+  # Orders
+  createOrder(input: CreateOrderInput!): OrderPayload!
+  updateOrder(id: ID!, input: UpdateOrderInput!): OrderPayload!
+  cancelOrder(id: ID!, reason: String): OrderPayload!
+  fulfillOrder(id: ID!, input: FulfillOrderInput!): OrderPayload!
+
+  # Customers
+  createCustomer(input: CreateCustomerInput!): CustomerPayload!
+  updateCustomer(id: ID!, input: UpdateCustomerInput!): CustomerPayload!
+  deleteCustomer(id: ID!): DeletePayload!
+
+  # Suppliers
+  createSupplier(input: CreateSupplierInput!): SupplierPayload!
+  updateSupplier(id: ID!, input: UpdateSupplierInput!): SupplierPayload!
+
+  # Purchase Orders
+  createPurchaseOrder(input: CreatePurchaseOrderInput!): PurchaseOrderPayload!
+  updatePurchaseOrder(id: ID!, input: UpdatePurchaseOrderInput!): PurchaseOrderPayload!
+  receivePurchaseOrder(id: ID!, input: ReceivePurchaseOrderInput!): PurchaseOrderPayload!
+
+  # Payments
+  createPayment(input: CreatePaymentInput!): PaymentPayload!
+  refundPayment(id: ID!, input: RefundInput!): PaymentPayload!
+
+  # Loyalty
+  addLoyaltyPoints(customerId: ID!, points: Int!, reason: String): LoyaltyAccount!
+  redeemLoyaltyPoints(customerId: ID!, points: Int!, orderId: ID!): LoyaltyAccount!
+
+  # Webhooks
+  createWebhook(input: CreateWebhookInput!): WebhookPayload!
+  updateWebhook(id: ID!, input: UpdateWebhookInput!): WebhookPayload!
+  deleteWebhook(id: ID!): DeletePayload!
+
+  # Restaurant
+  createRestaurantOrder(input: CreateRestaurantOrderInput!): RestaurantOrderPayload!
+  updateRestaurantOrder(id: ID!, input: UpdateRestaurantOrderInput!): RestaurantOrderPayload!
+  updateTableStatus(id: ID!, status: TableStatus!): Table!
+}
+
+# ─── Pagination ──────────────────────────────────────────────────────────────
+
+input PaginationInput {
+  first: Int
+  after: String
+  last: Int
+  before: String
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ─── Product ─────────────────────────────────────────────────────────────────
+
+type Product {
+  id: ID!
+  name: String!
+  description: String
+  sku: String
+  barcode: String
+  brand: String
+  category: Category
+  variants: [Variant!]!
+  images: [ProductImage!]!
+  tags: [String!]!
+  supplier: Supplier
+  isActive: Boolean!
+  isTaxable: Boolean!
+  taxRate: TaxRate
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ProductConnection {
+  edges: [ProductEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ProductEdge {
+  node: Product!
+  cursor: String!
+}
+
+type ProductImage {
+  id: ID!
+  url: String!
+  altText: String
+  position: Int!
+}
+
+input ProductFilter {
+  name: String
+  sku: String
+  categoryId: ID
+  isActive: Boolean
+  supplierId: ID
+  tags: [String!]
+  createdAfter: DateTime
+  createdBefore: DateTime
+}
+
+input CreateProductInput {
+  name: String!
+  description: String
+  sku: String
+  barcode: String
+  brand: String
+  categoryId: ID
+  supplierId: ID
+  tags: [String!]
+  isActive: Boolean
+  isTaxable: Boolean
+  taxRateId: ID
+}
+
+input UpdateProductInput {
+  name: String
+  description: String
+  sku: String
+  barcode: String
+  brand: String
+  categoryId: ID
+  supplierId: ID
+  tags: [String!]
+  isActive: Boolean
+  isTaxable: Boolean
+  taxRateId: ID
+}
+
+type ProductPayload {
+  product: Product
+  userErrors: [UserError!]!
+}
+
+# ─── Variant ─────────────────────────────────────────────────────────────────
+
+type Variant {
+  id: ID!
+  product: Product!
+  name: String!
+  sku: String
+  barcode: String
+  price: Money!
+  compareAtPrice: Money
+  cost: Money
+  weight: Float
+  weightUnit: WeightUnit
+  attributes: [VariantAttribute!]!
+  inventoryItems: [InventoryItem!]!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type VariantAttribute {
+  name: String!
+  value: String!
+}
+
+type VariantConnection {
+  edges: [VariantEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type VariantEdge {
+  node: Variant!
+  cursor: String!
+}
+
+input CreateVariantInput {
+  name: String!
+  sku: String
+  barcode: String
+  price: MoneyInput!
+  compareAtPrice: MoneyInput
+  cost: MoneyInput
+  weight: Float
+  weightUnit: WeightUnit
+  attributes: [VariantAttributeInput!]
+  isActive: Boolean
+}
+
+input UpdateVariantInput {
+  name: String
+  sku: String
+  barcode: String
+  price: MoneyInput
+  compareAtPrice: MoneyInput
+  cost: MoneyInput
+  weight: Float
+  weightUnit: WeightUnit
+  attributes: [VariantAttributeInput!]
+  isActive: Boolean
+}
+
+input VariantAttributeInput {
+  name: String!
+  value: String!
+}
+
+type VariantPayload {
+  variant: Variant
+  userErrors: [UserError!]!
+}
+
+# ─── Category ────────────────────────────────────────────────────────────────
+
+type Category {
+  id: ID!
+  name: String!
+  description: String
+  parent: Category
+  children: [Category!]!
+  products: [Product!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CategoryConnection {
+  edges: [CategoryEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type CategoryEdge {
+  node: Category!
+  cursor: String!
+}
+
+# ─── Inventory ───────────────────────────────────────────────────────────────
+
+type InventoryItem {
+  id: ID!
+  variant: Variant!
+  location: Location!
+  quantity: Int!
+  reorderPoint: Int
+  reorderQuantity: Int
+  binLocation: String
+  updatedAt: DateTime!
+}
+
+type InventoryItemConnection {
+  edges: [InventoryItemEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type InventoryItemEdge {
+  node: InventoryItem!
+  cursor: String!
+}
+
+input InventoryFilter {
+  variantId: ID
+  lowStock: Boolean
+  outOfStock: Boolean
+}
+
+input InventoryAdjustmentInput {
+  variantId: ID!
+  locationId: ID!
+  quantity: Int!
+  reason: InventoryAdjustmentReason!
+  note: String
+}
+
+type InventoryAdjustmentPayload {
+  inventoryItem: InventoryItem
+  userErrors: [UserError!]!
+}
+
+input InventoryTransferInput {
+  variantId: ID!
+  fromLocationId: ID!
+  toLocationId: ID!
+  quantity: Int!
+  note: String
+}
+
+type InventoryTransferPayload {
+  transfer: InventoryTransfer
+  userErrors: [UserError!]!
+}
+
+type InventoryTransfer {
+  id: ID!
+  variant: Variant!
+  fromLocation: Location!
+  toLocation: Location!
+  quantity: Int!
+  note: String
+  createdAt: DateTime!
+}
+
+enum InventoryAdjustmentReason {
+  RECEIVED
+  DAMAGED
+  SHRINKAGE
+  COUNT_CORRECTION
+  RETURNED
+  OTHER
+}
+
+# ─── Location ────────────────────────────────────────────────────────────────
+
+type Location {
+  id: ID!
+  name: String!
+  type: LocationType!
+  address: Address!
+  phone: String
+  email: String
+  isActive: Boolean!
+  timezone: String!
+  currency: String!
+  registers: [Register!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type LocationConnection {
+  edges: [LocationEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type LocationEdge {
+  node: Location!
+  cursor: String!
+}
+
+enum LocationType {
+  RETAIL_STORE
+  WAREHOUSE
+  RESTAURANT
+  ONLINE
+}
+
+# ─── Order ───────────────────────────────────────────────────────────────────
+
+type Order {
+  id: ID!
+  orderNumber: String!
+  status: OrderStatus!
+  customer: Customer
+  lineItems: [OrderLineItem!]!
+  subtotal: Money!
+  taxTotal: Money!
+  discountTotal: Money!
+  shippingTotal: Money!
+  total: Money!
+  payments: [Payment!]!
+  shipments: [Shipment!]!
+  shippingAddress: Address
+  billingAddress: Address
+  notes: String
+  tags: [String!]!
+  location: Location
+  employee: Employee
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type OrderLineItem {
+  id: ID!
+  variant: Variant!
+  product: Product!
+  quantity: Int!
+  unitPrice: Money!
+  discount: Money!
+  taxAmount: Money!
+  total: Money!
+  note: String
+}
+
+type OrderConnection {
+  edges: [OrderEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type OrderEdge {
+  node: Order!
+  cursor: String!
+}
+
+input OrderFilter {
+  status: OrderStatus
+  customerId: ID
+  locationId: ID
+  createdAfter: DateTime
+  createdBefore: DateTime
+}
+
+input CreateOrderInput {
+  customerId: ID
+  locationId: ID
+  lineItems: [OrderLineItemInput!]!
+  shippingAddress: AddressInput
+  billingAddress: AddressInput
+  notes: String
+  tags: [String!]
+  discountId: ID
+}
+
+input UpdateOrderInput {
+  notes: String
+  tags: [String!]
+  shippingAddress: AddressInput
+  billingAddress: AddressInput
+}
+
+input OrderLineItemInput {
+  variantId: ID!
+  quantity: Int!
+  unitPrice: MoneyInput
+  note: String
+}
+
+input FulfillOrderInput {
+  locationId: ID!
+  trackingNumber: String
+  trackingUrl: String
+  carrier: String
+  lineItems: [FulfillLineItemInput!]!
+}
+
+input FulfillLineItemInput {
+  orderLineItemId: ID!
+  quantity: Int!
+}
+
+type OrderPayload {
+  order: Order
+  userErrors: [UserError!]!
+}
+
+enum OrderStatus {
+  PENDING
+  OPEN
+  PARTIALLY_FULFILLED
+  FULFILLED
+  CANCELLED
+  RETURNED
+  ARCHIVED
+}
+
+# ─── Sale ────────────────────────────────────────────────────────────────────
+
+type Sale {
+  id: ID!
+  saleNumber: String!
+  status: SaleStatus!
+  customer: Customer
+  register: Register
+  location: Location!
+  employee: Employee
+  lineItems: [SaleLineItem!]!
+  subtotal: Money!
+  taxTotal: Money!
+  discountTotal: Money!
+  total: Money!
+  payments: [Payment!]!
+  note: String
+  createdAt: DateTime!
+  completedAt: DateTime
+}
+
+type SaleLineItem {
+  id: ID!
+  variant: Variant!
+  quantity: Int!
+  unitPrice: Money!
+  discount: Money!
+  taxAmount: Money!
+  total: Money!
+}
+
+type SaleConnection {
+  edges: [SaleEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SaleEdge {
+  node: Sale!
+  cursor: String!
+}
+
+input SaleFilter {
+  status: SaleStatus
+  locationId: ID
+  registerId: ID
+  employeeId: ID
+  customerId: ID
+  createdAfter: DateTime
+  createdBefore: DateTime
+}
+
+enum SaleStatus {
+  OPEN
+  COMPLETED
+  VOID
+  LAYBY
+  ON_ACCOUNT
+}
+
+# ─── Customer ────────────────────────────────────────────────────────────────
+
+type Customer {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String
+  phone: String
+  address: Address
+  dateOfBirth: Date
+  gender: String
+  tags: [String!]!
+  loyaltyAccount: LoyaltyAccount
+  orders: [Order!]!
+  totalSpend: Money!
+  visitCount: Int!
+  notes: String
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CustomerConnection {
+  edges: [CustomerEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type CustomerEdge {
+  node: Customer!
+  cursor: String!
+}
+
+input CustomerFilter {
+  name: String
+  email: String
+  phone: String
+  tags: [String!]
+  isActive: Boolean
+  createdAfter: DateTime
+}
+
+input CreateCustomerInput {
+  firstName: String!
+  lastName: String!
+  email: String
+  phone: String
+  address: AddressInput
+  dateOfBirth: Date
+  gender: String
+  tags: [String!]
+  notes: String
+}
+
+input UpdateCustomerInput {
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  address: AddressInput
+  dateOfBirth: Date
+  gender: String
+  tags: [String!]
+  notes: String
+  isActive: Boolean
+}
+
+type CustomerPayload {
+  customer: Customer
+  userErrors: [UserError!]!
+}
+
+# ─── Supplier ────────────────────────────────────────────────────────────────
+
+type Supplier {
+  id: ID!
+  name: String!
+  contactName: String
+  email: String
+  phone: String
+  address: Address
+  website: String
+  accountNumber: String
+  products: [Product!]!
+  purchaseOrders: [PurchaseOrder!]!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SupplierConnection {
+  edges: [SupplierEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SupplierEdge {
+  node: Supplier!
+  cursor: String!
+}
+
+input CreateSupplierInput {
+  name: String!
+  contactName: String
+  email: String
+  phone: String
+  address: AddressInput
+  website: String
+  accountNumber: String
+}
+
+input UpdateSupplierInput {
+  name: String
+  contactName: String
+  email: String
+  phone: String
+  address: AddressInput
+  website: String
+  accountNumber: String
+  isActive: Boolean
+}
+
+type SupplierPayload {
+  supplier: Supplier
+  userErrors: [UserError!]!
+}
+
+# ─── Purchase Order ──────────────────────────────────────────────────────────
+
+type PurchaseOrder {
+  id: ID!
+  orderNumber: String!
+  supplier: Supplier!
+  status: PurchaseOrderStatus!
+  location: Location!
+  lineItems: [PurchaseOrderLineItem!]!
+  subtotal: Money!
+  taxTotal: Money!
+  shippingCost: Money!
+  total: Money!
+  expectedDate: Date
+  receivedDate: Date
+  notes: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PurchaseOrderLineItem {
+  id: ID!
+  variant: Variant!
+  quantity: Int!
+  receivedQuantity: Int!
+  unitCost: Money!
+  total: Money!
+}
+
+type PurchaseOrderConnection {
+  edges: [PurchaseOrderEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PurchaseOrderEdge {
+  node: PurchaseOrder!
+  cursor: String!
+}
+
+input PurchaseOrderFilter {
+  supplierId: ID
+  status: PurchaseOrderStatus
+  locationId: ID
+  createdAfter: DateTime
+}
+
+input CreatePurchaseOrderInput {
+  supplierId: ID!
+  locationId: ID!
+  lineItems: [PurchaseOrderLineItemInput!]!
+  expectedDate: Date
+  notes: String
+  shippingCost: MoneyInput
+}
+
+input UpdatePurchaseOrderInput {
+  expectedDate: Date
+  notes: String
+  shippingCost: MoneyInput
+}
+
+input PurchaseOrderLineItemInput {
+  variantId: ID!
+  quantity: Int!
+  unitCost: MoneyInput!
+}
+
+input ReceivePurchaseOrderInput {
+  receivedDate: Date!
+  lineItems: [ReceiveLineItemInput!]!
+  notes: String
+}
+
+input ReceiveLineItemInput {
+  purchaseOrderLineItemId: ID!
+  receivedQuantity: Int!
+}
+
+type PurchaseOrderPayload {
+  purchaseOrder: PurchaseOrder
+  userErrors: [UserError!]!
+}
+
+enum PurchaseOrderStatus {
+  DRAFT
+  SENT
+  PARTIALLY_RECEIVED
+  RECEIVED
+  CANCELLED
+}
+
+# ─── Payment ─────────────────────────────────────────────────────────────────
+
+type Payment {
+  id: ID!
+  order: Order
+  sale: Sale
+  amount: Money!
+  method: PaymentMethod!
+  status: PaymentStatus!
+  reference: String
+  refunds: [Refund!]!
+  processedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type Refund {
+  id: ID!
+  payment: Payment!
+  amount: Money!
+  reason: String
+  processedAt: DateTime!
+}
+
+type PaymentConnection {
+  edges: [PaymentEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PaymentEdge {
+  node: Payment!
+  cursor: String!
+}
+
+input PaymentFilter {
+  orderId: ID
+  saleId: ID
+  method: PaymentMethod
+  status: PaymentStatus
+  createdAfter: DateTime
+  createdBefore: DateTime
+}
+
+input CreatePaymentInput {
+  orderId: ID
+  saleId: ID
+  amount: MoneyInput!
+  method: PaymentMethod!
+  reference: String
+}
+
+input RefundInput {
+  amount: MoneyInput!
+  reason: String
+}
+
+type PaymentPayload {
+  payment: Payment
+  userErrors: [UserError!]!
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  GIFT_CARD
+  STORE_CREDIT
+  LAYBY
+  ACCOUNT
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  PARTIALLY_REFUNDED
+  REFUNDED
+  VOIDED
+  FAILED
+}
+
+# ─── Tax ─────────────────────────────────────────────────────────────────────
+
+type TaxRate {
+  id: ID!
+  name: String!
+  rate: Float!
+  isDefault: Boolean!
+  isActive: Boolean!
+  createdAt: DateTime!
+}
+
+# ─── Discount ────────────────────────────────────────────────────────────────
+
+type Discount {
+  id: ID!
+  name: String!
+  type: DiscountType!
+  value: Float!
+  code: String
+  isActive: Boolean!
+  startsAt: DateTime
+  expiresAt: DateTime
+  usageLimit: Int
+  usageCount: Int!
+  minimumOrderAmount: Money
+  applicableProducts: [Product!]!
+  applicableCategories: [Category!]!
+  createdAt: DateTime!
+}
+
+type DiscountConnection {
+  edges: [DiscountEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type DiscountEdge {
+  node: Discount!
+  cursor: String!
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  BUY_X_GET_Y
+  FREE_SHIPPING
+}
+
+# ─── Loyalty ─────────────────────────────────────────────────────────────────
+
+type LoyaltyAccount {
+  id: ID!
+  customer: Customer!
+  points: Int!
+  tier: LoyaltyTier
+  transactions: [LoyaltyTransaction!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type LoyaltyTier {
+  id: ID!
+  name: String!
+  minimumPoints: Int!
+  pointsMultiplier: Float!
+  perks: [String!]!
+}
+
+type LoyaltyTransaction {
+  id: ID!
+  type: LoyaltyTransactionType!
+  points: Int!
+  balance: Int!
+  reason: String
+  order: Order
+  createdAt: DateTime!
+}
+
+enum LoyaltyTransactionType {
+  EARNED
+  REDEEMED
+  ADJUSTED
+  EXPIRED
+}
+
+# ─── Employee / Staff ────────────────────────────────────────────────────────
+
+type Employee {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String
+  phone: String
+  role: EmployeeRole!
+  pin: String
+  locations: [Location!]!
+  isActive: Boolean!
+  hiredAt: Date
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type EmployeeConnection {
+  edges: [EmployeeEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type EmployeeEdge {
+  node: Employee!
+  cursor: String!
+}
+
+enum EmployeeRole {
+  OWNER
+  ADMIN
+  MANAGER
+  CASHIER
+  STAFF
+}
+
+# ─── Register ────────────────────────────────────────────────────────────────
+
+type Register {
+  id: ID!
+  name: String!
+  location: Location!
+  isActive: Boolean!
+  currentSession: RegisterSession
+  createdAt: DateTime!
+}
+
+type RegisterSession {
+  id: ID!
+  register: Register!
+  openedAt: DateTime!
+  closedAt: DateTime
+  openingFloat: Money!
+  closingFloat: Money
+  employee: Employee!
+  sales: [Sale!]!
+}
+
+# ─── Webhook ─────────────────────────────────────────────────────────────────
+
+type Webhook {
+  id: ID!
+  url: String!
+  events: [WebhookEvent!]!
+  isActive: Boolean!
+  secret: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CreateWebhookInput {
+  url: String!
+  events: [WebhookEvent!]!
+  secret: String
+}
+
+input UpdateWebhookInput {
+  url: String
+  events: [WebhookEvent!]
+  isActive: Boolean
+  secret: String
+}
+
+type WebhookPayload {
+  webhook: Webhook
+  userErrors: [UserError!]!
+}
+
+enum WebhookEvent {
+  PRODUCT_CREATED
+  PRODUCT_UPDATED
+  PRODUCT_DELETED
+  ORDER_CREATED
+  ORDER_UPDATED
+  ORDER_CANCELLED
+  ORDER_FULFILLED
+  CUSTOMER_CREATED
+  CUSTOMER_UPDATED
+  PAYMENT_CREATED
+  PAYMENT_REFUNDED
+  INVENTORY_UPDATED
+  SALE_COMPLETED
+}
+
+# ─── Shipment ────────────────────────────────────────────────────────────────
+
+type Shipment {
+  id: ID!
+  order: Order!
+  status: ShipmentStatus!
+  trackingNumber: String
+  trackingUrl: String
+  carrier: String
+  lineItems: [ShipmentLineItem!]!
+  shippedAt: DateTime
+  deliveredAt: DateTime
+  createdAt: DateTime!
+}
+
+type ShipmentLineItem {
+  id: ID!
+  orderLineItem: OrderLineItem!
+  quantity: Int!
+}
+
+type ShipmentConnection {
+  edges: [ShipmentEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ShipmentEdge {
+  node: Shipment!
+  cursor: String!
+}
+
+enum ShipmentStatus {
+  PENDING
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  RETURNED
+  FAILED
+}
+
+# ─── Restaurant ──────────────────────────────────────────────────────────────
+
+type Menu {
+  id: ID!
+  name: String!
+  location: Location!
+  sections: [MenuSection!]!
+  isActive: Boolean!
+  startTime: String
+  endTime: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type MenuSection {
+  id: ID!
+  menu: Menu!
+  name: String!
+  description: String
+  position: Int!
+  items: [MenuItem!]!
+}
+
+type MenuItem {
+  id: ID!
+  section: MenuSection!
+  name: String!
+  description: String
+  price: Money!
+  category: Category
+  modifierGroups: [ModifierGroup!]!
+  allergens: [String!]!
+  isAvailable: Boolean!
+  imageUrl: String
+  calories: Int
+  createdAt: DateTime!
+}
+
+type ModifierGroup {
+  id: ID!
+  name: String!
+  minSelections: Int!
+  maxSelections: Int!
+  modifiers: [Modifier!]!
+}
+
+type Modifier {
+  id: ID!
+  group: ModifierGroup!
+  name: String!
+  price: Money!
+  isDefault: Boolean!
+  isAvailable: Boolean!
+}
+
+type Table {
+  id: ID!
+  name: String!
+  location: Location!
+  capacity: Int!
+  status: TableStatus!
+  currentOrder: RestaurantOrder
+  section: TableSection
+}
+
+type TableSection {
+  id: ID!
+  name: String!
+  location: Location!
+  tables: [Table!]!
+}
+
+type RestaurantOrder {
+  id: ID!
+  orderNumber: String!
+  table: Table
+  status: RestaurantOrderStatus!
+  orderType: RestaurantOrderType!
+  customer: Customer
+  employee: Employee!
+  lineItems: [RestaurantOrderLineItem!]!
+  subtotal: Money!
+  taxTotal: Money!
+  discountTotal: Money!
+  total: Money!
+  payments: [Payment!]!
+  notes: String
+  guestCount: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type RestaurantOrderLineItem {
+  id: ID!
+  menuItem: MenuItem!
+  quantity: Int!
+  unitPrice: Money!
+  modifiers: [Modifier!]!
+  status: KitchenItemStatus!
+  note: String
+}
+
+type RestaurantOrderConnection {
+  edges: [RestaurantOrderEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type RestaurantOrderEdge {
+  node: RestaurantOrder!
+  cursor: String!
+}
+
+input RestaurantOrderFilter {
+  status: RestaurantOrderStatus
+  tableId: ID
+  orderType: RestaurantOrderType
+  employeeId: ID
+  createdAfter: DateTime
+}
+
+input CreateRestaurantOrderInput {
+  tableId: ID
+  orderType: RestaurantOrderType!
+  customerId: ID
+  lineItems: [RestaurantOrderLineItemInput!]!
+  guestCount: Int
+  notes: String
+}
+
+input UpdateRestaurantOrderInput {
+  status: RestaurantOrderStatus
+  lineItems: [RestaurantOrderLineItemInput!]
+  notes: String
+}
+
+input RestaurantOrderLineItemInput {
+  menuItemId: ID!
+  quantity: Int!
+  modifierIds: [ID!]
+  note: String
+}
+
+type RestaurantOrderPayload {
+  restaurantOrder: RestaurantOrder
+  userErrors: [UserError!]!
+}
+
+enum TableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  CLEANING
+}
+
+enum RestaurantOrderStatus {
+  OPEN
+  IN_PROGRESS
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+enum RestaurantOrderType {
+  DINE_IN
+  TAKE_OUT
+  DELIVERY
+  DRIVE_THROUGH
+}
+
+enum KitchenItemStatus {
+  PENDING
+  PREPARING
+  READY
+  SERVED
+}
+
+# ─── Reports / Analytics ─────────────────────────────────────────────────────
+
+type SalesReport {
+  period: DateRange!
+  totalRevenue: Money!
+  totalOrders: Int!
+  totalSales: Int!
+  averageOrderValue: Money!
+  grossProfit: Money!
+  taxCollected: Money!
+  discountsGiven: Money!
+  refundsIssued: Money!
+  topProducts: [ProductSalesSummary!]!
+  topCategories: [CategorySalesSummary!]!
+  salesByLocation: [LocationSalesSummary!]!
+  salesByEmployee: [EmployeeSalesSummary!]!
+  salesByPaymentMethod: [PaymentMethodSummary!]!
+}
+
+type InventoryReport {
+  location: Location
+  totalProducts: Int!
+  totalVariants: Int!
+  totalInventoryValue: Money!
+  lowStockItems: [InventoryItem!]!
+  outOfStockItems: [InventoryItem!]!
+  topMovingProducts: [ProductMovementSummary!]!
+}
+
+type ProductSalesSummary {
+  product: Product!
+  quantitySold: Int!
+  revenue: Money!
+}
+
+type CategorySalesSummary {
+  category: Category!
+  quantitySold: Int!
+  revenue: Money!
+}
+
+type LocationSalesSummary {
+  location: Location!
+  totalRevenue: Money!
+  totalOrders: Int!
+}
+
+type EmployeeSalesSummary {
+  employee: Employee!
+  totalRevenue: Money!
+  totalSales: Int!
+}
+
+type PaymentMethodSummary {
+  method: PaymentMethod!
+  totalAmount: Money!
+  transactionCount: Int!
+}
+
+type ProductMovementSummary {
+  variant: Variant!
+  quantitySold: Int!
+  quantityReceived: Int!
+  currentStock: Int!
+}
+
+input ReportFilter {
+  startDate: Date!
+  endDate: Date!
+  locationId: ID
+  employeeId: ID
+}
+
+type DateRange {
+  startDate: Date!
+  endDate: Date!
+}
+
+# ─── Shared / Scalar Types ───────────────────────────────────────────────────
+
+type Money {
+  amount: Float!
+  currency: String!
+}
+
+type Address {
+  line1: String!
+  line2: String
+  city: String!
+  state: String
+  postalCode: String
+  country: String!
+}
+
+input MoneyInput {
+  amount: Float!
+  currency: String!
+}
+
+input AddressInput {
+  line1: String!
+  line2: String
+  city: String!
+  state: String
+  postalCode: String
+  country: String!
+}
+
+type UserError {
+  field: String
+  message: String!
+  code: String
+}
+
+type DeletePayload {
+  id: ID!
+  userErrors: [UserError!]!
+}
+
+enum WeightUnit {
+  GRAMS
+  KILOGRAMS
+  POUNDS
+  OUNCES
+}
+
+scalar DateTime
+scalar Date
