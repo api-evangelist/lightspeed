@@ -28,5 +28,17 @@
       "url": "https://www.lightspeedhq.com/blog/financial-visibility-retail/",
       "date": "2026-05-26"
     }
-  ]
+  ],
+  "repo": "lightspeed",
+  "feeds": [
+    {
+      "source": "https://www.linkedin.com/company/lightspeedcommerce",
+      "feed_url": "https://www.linkedin.com/company/lightspeedcommerce",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-14T20:42:17Z"
 }
