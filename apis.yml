@@ -41,7 +41,7 @@ apis:
     url: https://x-series-api.lightspeedhq.com/docs
   - type: OpenAPI
     url: https://x-series-api.lightspeedhq.com/reference
-  - type: Changelog
+  - type: ChangeLog
     url: https://x-series-api.lightspeedhq.com/changelog
   - url: graphql/lightspeed-graphql.md
     type: GraphQL
