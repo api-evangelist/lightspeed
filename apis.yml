@@ -92,6 +92,8 @@ apis:
   - type: Documentation
     url: https://api-portal.lsk.lightspeed.app/guides/tutorials/developer-portal
 common:
+- type: DomainSecurity
+  url: security/lightspeed-domain-security.yml
 - type: Website
   url: https://www.lightspeedhq.com/
 - type: Documentation
