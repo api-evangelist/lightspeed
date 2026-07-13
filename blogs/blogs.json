@@ -5,14 +5,17 @@
       "source": "https://www.lightspeedhq.com/blog/feed/",
       "feed_url": "https://www.lightspeedhq.com/blog/feed/",
       "title": "",
-      "saved": 3,
+      "saved": 0,
       "method": "feed"
     },
     {
       "source": "https://www.linkedin.com/company/lightspeedcommerce",
-      "error": "HTTPError"
+      "feed_url": "https://www.linkedin.com/company/lightspeedcommerce",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-06-27T12:03:07Z",
-  "post_count": 3
+  "fetched": "2026-07-11T11:50:51Z",
+  "post_count": 21
 }
