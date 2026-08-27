@@ -1,11 +1,10 @@
 aid: lightspeed
 name: Lightspeed Commerce
-description: Omnichannel commerce platform with REST APIs for retail and restaurant
-  POS, inventory management, loyalty programs, and e-commerce integrations. Lightspeed
-  serves retailers and restaurateurs with cloud-based point-of-sale systems, enabling
-  custom integrations through APIs for sales, inventory, customers, orders, payments,
-  and loyalty programs across multiple product lines including Retail X-Series, Retail
-  R-Series, Restaurant K-Series, and eCom.
+description: Omnichannel commerce platform with REST APIs for retail and restaurant POS, inventory management,
+  loyalty programs, and e-commerce integrations. Lightspeed serves retailers and restaurateurs with cloud-based
+  point-of-sale systems, enabling custom integrations through APIs for sales, inventory, customers, orders,
+  payments, and loyalty programs across multiple product lines including Retail X-Series, Retail R-Series,
+  Restaurant K-Series, and eCom.
 accessModel:
   pricing: unknown
   onboarding: unknown
@@ -20,7 +19,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/lightspeed.png
 url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/apis.yml
 created: 2026-06-13
-modified: 2026-06-13
+modified: '2026-08-27'
 specificationVersion: '0.23'
 tags:
 - Commerce
@@ -44,41 +43,13 @@ tags_raw:
 - E-Commerce
 - Omnichannel
 apis:
-- aid: lightspeed:retail-x-series
-  name: Lightspeed Retail X-Series API
-  description: REST API for Lightspeed Retail X-Series point-of-sale system enabling
-    integrations for sales operations, product management, inventory updates, loyalty
-    handling, and webhooks for retail merchants.
-  humanURL: https://x-series-api.lightspeedhq.com/
-  baseURL: https://api.lightspeedhq.com
-  tags:
-  - Retail
-  - Point-of-Sale
-  - Inventory
-  - Loyalty
-  - Webhook
-  tags_raw:
-  - Retail
-  - POS
-  - Inventory
-  - Loyalty
-  - Webhooks
-  properties:
-  - type: Documentation
-    url: https://x-series-api.lightspeedhq.com/docs
-  - type: OpenAPI
-    url: https://x-series-api.lightspeedhq.com/reference
-  - type: ChangeLog
-    url: https://x-series-api.lightspeedhq.com/changelog
-  - url: graphql/lightspeed-graphql.md
-    type: GraphQL
 - aid: lightspeed:retail-r-series
   name: Lightspeed Retail R-Series API
-  description: REST API for Lightspeed Retail R-Series (formerly Vend) providing access
-    to sales, inventory, customers, products, and reporting data for retail point-of-sale
-    systems.
+  description: >-
+    REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory, customers,
+    products, and reporting data for retail point-of-sale systems.
   humanURL: https://developers.lightspeedhq.com/retail/
-  baseURL: https://api.lightspeedhq.com
+  baseURL: https://api.lightspeedapp.com
   tags:
   - Retail
   - Point-of-Sale
@@ -92,11 +63,19 @@ apis:
   properties:
   - type: Documentation
     url: https://developers.lightspeedhq.com/retail/introduction/introduction/
+  - type: APIReference
+    url: https://developers.lightspeedhq.com/retail/endpoints/Account/
+  - type: GettingStarted
+    url: https://developers.lightspeedhq.com/retail/introduction/introduction/
+  - type: Authentication
+    url: https://developers.lightspeedhq.com/retail/authentication/authentication-overview/
+  - type: ChangeLog
+    url: https://developers.lightspeedhq.com/retail/introduction/changelog/
 - aid: lightspeed:ecom-c-series
   name: Lightspeed eCom API
-  description: REST API for Lightspeed eCom (C-Series) e-commerce platform providing
-    endpoints for products, orders, customers, shipments, payments, and inventory
-    management. Requires Advanced or Professional subscription.
+  description: >-
+    REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products, orders,
+    customers, shipments, payments, and inventory management. Requires Advanced or Professional subscription.
   humanURL: https://developers.lightspeedhq.com/ecom/
   baseURL: https://api.shoplightspeed.com
   tags:
@@ -114,35 +93,1764 @@ apis:
   properties:
   - type: Documentation
     url: https://developers.lightspeedhq.com/ecom/introduction/introduction/
-- aid: lightspeed:restaurant-k-series
-  name: Lightspeed Restaurant K-Series API
-  description: REST API for Lightspeed Restaurant K-Series POS system, enabling approved
-    partners to build integrations for restaurant operations including menu management,
-    orders, and payments.
-  humanURL: https://api-portal.lsk.lightspeed.app/
-  baseURL: https://api.lsk-prod.app
+  - type: APIReference
+    url: https://developers.lightspeedhq.com/ecom/endpoints/account/
+  - type: Authentication
+    url: https://developers.lightspeedhq.com/ecom/introduction/authentication/
+  - type: Postman
+    url: >-
+      https://developers.lightspeedhq.com/ecom/introduction/images/Lightspeed_eCom.postman_collection.json
+  - type: ChangeLog
+    url: https://developers.lightspeedhq.com/ecom/introduction/releasenotes/
+- aid: lightspeed:ecom-e-series
+  name: Lightspeed eCom E-Series (Ecwid) API
+  description: >-
+    REST API for Lightspeed eCom E-Series, the Ecwid storefront platform Lightspeed acquired in 2021 and
+    now sells as eCom E-Series. Provides store profile, product catalog, categories, orders, customers,
+    discount coupons, shipping and payment application endpoints for building storefront apps and integrations.
+  humanURL: https://api-docs.ecwid.com/
+  baseURL: https://app.ecwid.com/api/v3
+  tags:
+  - E-Commerce
+  - Storefront
+  - Product
+  - Order
+  - Customers
+  tags_raw:
+  - E-Commerce
+  - Storefront
+  - Products
+  - Orders
+  - Customers
+  properties:
+  - type: Documentation
+    url: https://api-docs.ecwid.com/
+  - type: APIReference
+    url: https://api-docs.ecwid.com/reference/get-store-profile
+- aid: lightspeed:restaurant-o-series
+  name: Lightspeed Restaurant O-Series (Kounta) API
+  description: >-
+    REST API for Lightspeed Restaurant O-Series, the Kounta hospitality point-of-sale platform Lightspeed
+    acquired in 2019 and sells as O-Series. Exposes sites, registers, products, categories, orders, customers,
+    staff and webhook endpoints for hospitality integrations.
+  humanURL: https://apidoc.kounta.com/
+  baseURL: https://api.kounta.com
   tags:
   - Restaurant
   - Point-of-Sale
-  - Menu Management
   - Order
+  - Inventory
+  - Hospitality
   tags_raw:
   - Restaurant
   - POS
-  - Menu Management
   - Orders
+  - Inventory
+  - Hospitality
   properties:
   - type: Documentation
-    url: https://api-portal.lsk.lightspeed.app/guides/tutorials/developer-portal
+    url: https://apidoc.kounta.com/
+- aid: lightspeed:golf-g-series
+  name: Lightspeed Golf (Chronogolf) Partner API
+  description: >-
+    Partner REST API for Lightspeed Golf, the Chronogolf tee-sheet and golf course management platform
+    Lightspeed acquired in 2019. Covers organizations, courses, tee times, green fees, reservations and
+    customers for golf booking partners, published as Postman-hosted partner documentation.
+  humanURL: https://partner-api.docs.chronogolf.com/
+  baseURL: https://partner-api.chronogolf.com
+  tags:
+  - Golf
+  - Reservations
+  - Tee Sheet
+  - Booking
+  - Point-of-Sale
+  tags_raw:
+  - Golf
+  - Reservations
+  - Tee Sheet
+  - Booking
+  - POS
+  properties:
+  - type: Documentation
+    url: https://partner-api.docs.chronogolf.com/
+- aid: lightspeed:lightspeed-audit-api
+  name: Lightspeed Commerce Audit API
+  description: Audit and security operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Audit
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-audit-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-brands-api
+  name: Lightspeed Commerce Brands API
+  description: Brand operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Brands
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-brands-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-channel-request-log-api
+  name: Lightspeed Commerce Channel Request Log API
+  description: A log of requests and responses between Lightspeed and an integration channel.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Channel Request Log
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-channel-request-log-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-consignment-products-api
+  name: Lightspeed Commerce Consignment Products API
+  description: Consignment Product operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Consignment Products
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-consignment-products-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-consignments-api
+  name: Lightspeed Commerce Consignments API
+  description: Stock control operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Consignments
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-consignments-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-customer-addresses-api
+  name: Lightspeed Commerce Customer Addresses API
+  description: Customer Address operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Customer Addresses
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-customer-addresses-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-customer-groups-api
+  name: Lightspeed Commerce Customer Groups API
+  description: Customer Group operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Customer Groups
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-customer-groups-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-customers-api
+  name: Lightspeed Commerce Customers API
+  description: Customer operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-customers-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-financial-api
+  name: Lightspeed Commerce Financial API
+  description: >-
+    V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
+
+
+    For the newer V2 versions of these endpoints see FinancialV2
+
+
+    ### V1 behaviour
+
+
+    - **Sorting**: No guaranteed sorting order; internal transformations may alter order unpredictably
+
+    - **Transitory Accounts / Unsettled Sales**: Returns closed transactions only
+
+    - **Pagination**: `pageSize` max of 1000. Uses HATEOAS `_links` with `self` and `nextPage` URLs
+
+    - **Daily endpoints** (`getDailyFinancials`): No pagination, no hard cap on results. May have slower
+    response times for larger data sets
+
+    - **Backoffice transactions**: Historical dating supported. Transactions will be dated to a past date
+    if the action impacts past reports. Can query transactions by original business date
+
+    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the
+    original transaction date
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Financial
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-financial-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-financialv2-api
+  name: Lightspeed Commerce Financial V2 API
+  description: >-
+    V2 endpoints (`/f/v2/...`) for retrieving sales and financial data.
+
+
+    ### Endpoint Mapping
+
+
+    | V1 Endpoint | V2 Endpoint |
+
+    |-------------|-------------|
+
+    | `getFinancials` (`/f/finance/{id}/financials/{from}/{to}`) | `getSales` (`/f/v2/business-location/{id}/sales`)
+    |
+
+    | `getDailyFinancials` (`/f/finance/{id}/dailyFinancials`) | `getBusinessDaySales` (`/f/v2/business-location/{id}/sales-daily`)
+    |
+
+
+    Response DTOs are nearly identical to V1 with the exceptions noted below
+
+
+    ### V2 behaviour
+
+
+    - **Sorting**: Explicitly sorted by `timeClosed`
+
+    - **Transitory Accounts /  Unsettled Sales**: Returns closed transactions and ensures no transitory
+    (unclosed) transactions are included in reporting
+
+    - **Pagination**: `pageSize` max of 100. No HATEOAS `_links`; uses `nextPageToken` string for pagination
+    instead
+
+    - **Daily endpoints** (`getBusinessDaySales`): No pagination, no hard cap on results. May have slower
+    response times for larger data sets
+
+    - **Backoffice transactions**: Historical dating not currently supported — transactions appear as
+    if created at current time. Transactions can only be found by the date/time they were actually created.
+    *Historical dating support is planned for a future release.*
+
+    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the
+    date the modification was performed, not the original transaction date
+
+
+    If you need to query transactions by their original business date (e.g. for historical reporting or
+    reconciliation); The V1 endpoints may be more suitable until backwards compatibility is added to V2
+    for this aspect.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - FinancialV2
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-financialv2-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-fulfillments-api
+  name: Lightspeed Commerce Fulfillments API
+  description: Fulfillment operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Fulfillments
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-fulfillments-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-gift-cards-api
+  name: Lightspeed Commerce Gift Cards API
+  description: Gift Card operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Gift Cards
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-gift-cards-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-id-cards-api
+  name: Lightspeed Commerce ID Cards API
+  description: The ID Cards API from Lightspeed Commerce — 2 operation(s) for id cards.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - ID Cards
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-id-cards-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-inventory-api
+  name: Lightspeed Commerce Inventory API
+  description: Inventory operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-inventory-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-items-api
+  name: Lightspeed Commerce Items API
+  description: The Items API from Lightspeed Commerce — 2 operation(s) for items.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Items
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-items-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-loyalty-adjustments-beta-api
+  name: Lightspeed Commerce Loyalty Adjustments [BETA] API
+  description: >-
+    The Loyalty Adjustments [BETA] API from Lightspeed Commerce — 1 operation(s) for loyalty adjustments
+    [beta].
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Loyalty Adjustments [BETA]
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-loyalty-adjustments-beta-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-order-and-pay-api
+  name: Lightspeed Commerce Order and Pay API
+  description: The Order and Pay API from Lightspeed Commerce — 19 operation(s) for order and pay.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Order and Pay
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-order-and-pay-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-order-and-pay-webhook-api
+  name: 'Lightspeed Commerce Order and Pay: Webhook API'
+  description: >-
+    The Order and Pay: Webhook API from Lightspeed Commerce — 4 operation(s) for order and pay: webhook.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - 'Order and Pay: Webhook'
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-order-and-pay-webhook-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-outlet-product-taxes-api
+  name: Lightspeed Commerce Outlet Product Taxes API
+  description: Outlet Product Tax operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Outlet Product Taxes
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-outlet-product-taxes-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-outlets-api
+  name: Lightspeed Commerce Outlets API
+  description: Outlet operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Outlets
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-outlets-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-packing-slips-api
+  name: Lightspeed Commerce Packing Slips API
+  description: Packing slip rendering operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Packing Slips
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-packing-slips-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-partner-billing-api
+  name: Lightspeed Commerce Partner Billing API
+  description: Partner Billing operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Partner Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-partner-billing-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-payment-types-api
+  name: Lightspeed Commerce Payment Types API
+  description: Payment Type operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Payment Types
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-payment-types-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-pms-api
+  name: Lightspeed Commerce PMS API
+  description: The PMS API from Lightspeed Commerce — 3 operation(s) for pms.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - PMS
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-pms-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-pms-integration-api
+  name: Lightspeed Commerce PMS Integration API
+  description: The PMS Integration API from Lightspeed Commerce — 0 operation(s) for pms integration.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - PMS Integration
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-pms-integration-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-price-books-api
+  name: Lightspeed Commerce Price Books API
+  description: Price Book operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Price Books
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-price-books-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-product-categories-api
+  name: Lightspeed Commerce Product Categories API
+  description: Product Categories operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Product Categories
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-product-categories-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-product-images-api
+  name: Lightspeed Commerce Product Images API
+  description: Product Image operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Product Images
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-product-images-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-product-types-api
+  name: Lightspeed Commerce Product Types API
+  description: Product Type operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Product Types
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-product-types-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-products-api
+  name: Lightspeed Commerce Products API
+  description: Product operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Products
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-products-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-promo-code-api
+  name: Lightspeed Commerce Promo Code API
+  description: The Promo Code API from Lightspeed Commerce — 2 operation(s) for promo code.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Promo Code
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-promo-code-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-promotions-api
+  name: Lightspeed Commerce Promotions API
+  description: Promotion operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Promotions
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-promotions-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-purchase-orders-api
+  name: Lightspeed Commerce Purchase Orders API
+  description: Purchase order operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Purchase Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-purchase-orders-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-quotes-api
+  name: Lightspeed Commerce Quotes API
+  description: Quotes operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-quotes-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-registers-api
+  name: Lightspeed Commerce Registers API
+  description: Register operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Registers
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-registers-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-reservations-for-platforms-api
+  name: Lightspeed Commerce Reservations for Platforms API
+  description: >-
+    The Reservations for Platforms API from Lightspeed Commerce — 11 operation(s) for reservations for
+    platforms.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Reservations for Platforms
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-reservations-for-platforms-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-retailers-api
+  name: Lightspeed Commerce Retailers API
+  description: Retailer operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Retailers
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-retailers-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-rich-item-api
+  name: Lightspeed Commerce Rich Item API
+  description: The Rich Item API from Lightspeed Commerce — 6 operation(s) for rich item.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Rich Item
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-rich-item-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-sales-api
+  name: Lightspeed Commerce Sales API
+  description: Sale operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Sales
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-sales-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-search-api
+  name: Lightspeed Commerce Search API
+  description: Search related operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-search-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-serial-numbers-api
+  name: Lightspeed Commerce Serial Numbers API
+  description: Serial number related operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Serial Numbers
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-serial-numbers-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-service-orders-api
+  name: Lightspeed Commerce Service Orders API
+  description: Service orders and Job management
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Service Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-service-orders-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-shifts-api
+  name: Lightspeed Commerce Shifts API
+  description: The Shifts API from Lightspeed Commerce — 1 operation(s) for shifts.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Shifts
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-shifts-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-staff-api
+  name: Lightspeed Commerce Staff API
+  description: >-
+    Staff API. Authorisation Code grant type is required for this API with permission ROLE_CONFIG_USERS.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Staff
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-staff-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-store-credits-api
+  name: Lightspeed Commerce Store Credits API
+  description: Store Credit operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Store Credits
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-store-credits-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-suppliers-api
+  name: Lightspeed Commerce Suppliers API
+  description: Supplier operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Suppliers
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-suppliers-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-tags-api
+  name: Lightspeed Commerce Tags API
+  description: Tag operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-tags-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-tax-breakdown-api
+  name: Lightspeed Commerce Tax Breakdown API
+  description: The Tax Breakdown API from Lightspeed Commerce — 1 operation(s) for tax breakdown.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Tax Breakdown
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-tax-breakdown-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-taxes-api
+  name: Lightspeed Commerce Taxes API
+  description: Tax operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Taxes
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-taxes-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-users-api
+  name: Lightspeed Commerce Users API
+  description: User operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-users-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-variant-attributes-api
+  name: Lightspeed Commerce Variant Attributes API
+  description: >-
+    The Variant Attributes API from Lightspeed Commerce — 2 operation(s) for variant attributes.
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Variant Attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-variant-attributes-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-webhooks-api
+  name: Lightspeed Commerce Webhooks API
+  description: Webhook operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
+- aid: lightspeed:lightspeed-workflows-api
+  name: Lightspeed Commerce Workflows API
+  description: Workflow operations
+  humanURL: https://x-series-api.lightspeedhq.com/
+  baseURL: https://{domain_prefix}.retail.lightspeed.app
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/lightspeed-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://x-series-api.lightspeedhq.com/docs/introduction
+  - type: APIReference
+    url: https://x-series-api.lightspeedhq.com/reference
+  - type: GettingStarted
+    url: https://x-series-api.lightspeedhq.com/docs/quick_start
+  - type: ChangeLog
+    url: https://x-series-api.lightspeedhq.com/changelog
+  - type: LLMsTxt
+    url: llms/lightspeed-llms.txt
+  - type: SignUp
+    url: https://developers.retail.lightspeed.app/register
+  - type: Documentation
+    url: https://api-portal.lsk.lightspeed.app/
+  - type: APIReference
+    url: https://api-docs.lsk.lightspeed.app/
+  - type: GettingStarted
+    url: https://api-portal.lsk.lightspeed.app/quick-start/intro
+  - type: ChangeLog
+    url: https://api-docs.lsk.lightspeed.app/changes
 common:
+- type: OAuthScopes
+  url: scopes/lightspeed-scopes.yml
+- type: Authentication
+  url: authentication/lightspeed-authentication.yml
 - type: DomainSecurity
   url: security/lightspeed-domain-security.yml
 - type: Website
   url: https://www.lightspeedhq.com/
 - type: Documentation
   url: https://developers.lightspeedhq.com/
-- type: GitHubOrg
-  url: https://github.com/lightspeedpos
+- type: GitHubOrganization
+  url: https://github.com/LightspeedHQ
 - type: LinkedIn
   url: https://www.linkedin.com/company/lightspeedcommerce
 - type: Blog
@@ -159,6 +1867,83 @@ common:
   url: rate-limits/lightspeed-rate-limits.yml
 - type: FinOps
   url: finops/lightspeed-finops.yml
+- type: DeveloperPortal
+  url: https://developers.lightspeedhq.com/
+- type: Support
+  url: https://www.lightspeedhq.com/support/
+- type: TermsOfService
+  url: https://www.lightspeedhq.com/terms/
+- type: PrivacyPolicy
+  url: https://www.lightspeedhq.com/privacy-policy/
+- type: SignUp
+  url: https://www.lightspeedhq.com/login/
+- type: TrustCenter
+  url: https://trust.lightspeedhq.com/
+- type: Packages
+  url: packages/lightspeed-packages.yml
+- type: SDKs
+  url: packages/lightspeed-packages.yml
+- type: MCPServer
+  url: mcp/lightspeed-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/lightspeed-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/lightspeed-llms.txt
+- type: Overlay
+  url: overlays/lightspeed-x-series-overlay.yaml
+- type: Overlay
+  url: overlays/lightspeed-k-series-overlay.yaml
+- type: Conformance
+  url: conformance/lightspeed-conformance.yml
+- type: Compliance
+  url: security/lightspeed-trust-center.yml
+- type: TrustCenter
+  url: security/lightspeed-trust-center.yml
+- type: ErrorCatalog
+  url: errors/lightspeed-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/lightspeed-lifecycle.yml
+- type: Deprecation
+  url: lifecycle/lightspeed-lifecycle.yml
+- type: VulnerabilityDisclosure
+  url: security/lightspeed-vulnerability-disclosure.yml
+- type: Security
+  url: security/lightspeed-vulnerability-disclosure.yml
+- type: Sandbox
+  url: sandbox/lightspeed-sandbox.yml
+- type: Conventions
+  url: conventions/lightspeed-conventions.yml
+- type: Idempotency
+  url: conventions/lightspeed-conventions.yml
+- type: ChangeLog
+  url: changelog/lightspeed-changelog.yml
+- type: CLI
+  url: cli/lightspeed-cli.yml
+- type: Components
+  url: components/lightspeed-components.yml
+- type: DataModel
+  url: data-model/lightspeed-data-model.yml
+- type: Webhooks
+  url: asyncapi/lightspeed-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: OpenAPI
+  url: openapi/lightspeed-x-series-openapi.json
+- type: OpenAPI
+  url: openapi/lightspeed-k-series-openapi.json
+- type: JSONLD
+  url: json-ld/lightspeed.json
+- type: APIReference
+  url: https://x-series-api.lightspeedhq.com/reference
+- type: GettingStarted
+  url: https://x-series-api.lightspeedhq.com/docs/quick_start
+- type: Postman
+  url: https://developers.lightspeedhq.com/ecom/introduction/images/Lightspeed_eCom.postman_collection.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v1
