@@ -5,6 +5,17 @@ description: Omnichannel commerce platform with REST APIs for retail and restaur
   point-of-sale systems, enabling custom integrations through APIs for sales, inventory, customers, orders,
   payments, and loyalty programs across multiple product lines including Retail X-Series, Retail R-Series,
   Restaurant K-Series, and eCom.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: unknown
@@ -1839,6 +1850,9 @@ apis:
   - type: ChangeLog
     url: https://api-docs.lsk.lightspeed.app/changes
 common:
+- type: CapabilityMap
+  url: capabilities/lightspeed-capability-edges.yml
+  name: Lightspeed Commerce Business Capability Map
 - type: OAuthScopes
   url: scopes/lightspeed-scopes.yml
 - type: Authentication
