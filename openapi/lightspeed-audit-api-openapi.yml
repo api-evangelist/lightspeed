@@ -1,0 +1,264 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Audit API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Audit and security operations
+  name: Audit
+paths:
+  /auditlog_events:
+    get:
+      description: 'This API returns a list of all the audit log events that match the given filters.
+
+
+        **Note**: Not every single change in the system is audited. Currently the audited entities include:
+
+
+        | Object     | Action                    | Notes |
+
+        |------------|---------------------------|-------|
+
+        | customer   | form create/update/delete |       |
+
+        | customer   | api create/update/delete  |       |
+
+        | customer   | csv import                |       |
+
+        | register   | form create/update/delete |       |
+
+        | outlet     | form create/update/delete |       |
+
+        | csv import | init                      | Tracks CSV import requests and includes data about the import type (customer, product) and the CSV file line count. |
+
+        | product*   | create/update/delete      | All actions on products. |
+
+        | security   | terms_accepted, signin, signout, change_email, change_password, reset_password_confirm, user_switching_succes, user_switching_denied, new_personal_token, update_personal_token, delete_personal_tokenss, issue_oauth_token ||
+
+        | vend_consignment | insert/update | Receiving, creating and editing purchase orders as well as inventory counts. |
+
+        | vend_consignment_product | insert/update | Changes to the products in a purchase order. Such as creating purchase orders. |
+
+        | timeclock | clockin/clockout | Clock event where a user either clocked in or clocked out. |
+
+
+        ### Filters
+
+        - The from and to filters require a full isoformat date, for example `?from=2020-02-03T00:00:00&to=2020-02-05T23:59:59`.
+
+
+        🔒 Requires: `audit:read` scope'
+      operationId: GetAuditLogEvents
+      parameters:
+      - description: The size for a single page of results. By default 100 events will be returned.
+        in: query
+        name: page_size
+        schema:
+          maxLength: 100
+          type: string
+      - description: The number of objects to skip.
+        in: query
+        name: offset
+        schema:
+          maxLength: 0
+          type: string
+      - description: The lower limit for the `occurred_at` attribute. to be included in the response. The date and time from needs to be in isoformat.
+        in: query
+        name: from
+        schema:
+          type: string
+      - description: The upper limit for the `occurred_at` attribute. to be included in the response. The date and time from needs to be in isoformat.
+        in: query
+        name: to
+        schema:
+          type: string
+      - description: The sorting order for the results. Sorting is done by the `occurred_at` parameter. The default order is descending.
+        in: query
+        name: order
+        schema:
+          type: string
+      - description: The `id` of the user to filter the events by.
+        in: query
+        name: user_id
+        schema:
+          type: string
+      - description: The `type` of the events to be filtered for the response.
+        in: query
+        name: type
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            Insert of product example:
+              example:
+                action: insert
+                created_at: '2020-01-15T00:18:53Z'
+                data:
+                  active: 1
+                  adjustment: 0.2
+                  adjustment_type: MARKUP
+                  attributed_cost: 0
+                  brand_id: 02dcd191-aeba-11e9-f336-ff6699785796
+                  created_at: '2020-01-15 00:18:52'
+                  default_display_price: 0
+                  description: my product description
+                  handle: 02dcd191-aeba-11ea-f336-372c9c03224a
+                  has_inventory: 1
+                  has_variants: 0
+                  id: 02dcd191-aeba-11ea-f336-372c9c078432
+                  is_composite: 0
+                  name: productaroo-131852
+                  product_type_id: 02dcd191-aeba-11ea-f336-372c9c1b0b56
+                  retail_price: 0.87
+                  retail_tax: 0
+                  retailer_id: 02dcd191-ae2b-11e9-f336-cd2e6d82a87b
+                  sku: '10032'
+                  source: USER
+                  supply_price: 0
+                  tax_id: 02dcd191-ae2b-11e9-f336-cd2e6d864598
+                  updated_at: '2020-01-15 00:18:52'
+                  variant_name: productaroo-131852
+                entity_id: 02dcd191-aeba-11ea-f336-372c9c078432
+                id: '1217239695299842048'
+                ip_address: 14.1.34.16
+                occurred_at: '2020-01-15T00:18:52Z'
+                old_data: {}
+                type: vend_product
+                user_agent: vend/api-testing/0.0.1
+                user_id: 02dcd191-ae2b-11e9-f336-cd2e6d8a5806
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/AuditLogEvent'
+                    type: array
+                type: object
+          description: The response if the API call is successful.
+      summary: List audit events
+      tags:
+      - Audit
+  /security_events:
+    get:
+      description: 'This API returns a list of all the security log events **for the current user**. If you want a list of all the security events for all users please use the auditlog_events with filter type == "security". See the auditlog_events API in the beta documentation for more information.
+
+
+        🔒 Requires: `audit:read` scope'
+      operationId: get-security_events
+      responses:
+        '200':
+          content:
+            Security signin example:
+              example:
+                action: signin
+                created_at: '2020-01-29T22:26:18Z'
+                id: '1222647183683117056'
+                ip_address: 14.1.34.16
+                occurred_at: '2020-01-29T22:26:18Z'
+                type: security
+                user_agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
+                user_id: 02dcd191-ae2b-11e9-f336-cd2e6d8a5806
+            application/json:
+              schema:
+                properties:
+                  event:
+                    $ref: '#/components/schemas/AuditLogEvent'
+                type: object
+          description: OK
+      summary: List security events for current user
+      tags:
+      - Audit
+components:
+  schemas:
+    AuditLogEvent:
+      description: The structure of the event and security event model
+      properties:
+        action:
+          description: The type of the action performed on the object.
+          enum:
+          - insert
+          - update
+          - delete
+          type: string
+        created_at:
+          description: The timestamp indicating when the event was persisted to the audit log.
+          format: date-time
+          type: string
+        data:
+          description: An object in JSON format representing the new values of the attributes that were changed by the event.
+          oneOf:
+          - type: object
+          - items:
+              type: object
+            type: array
+        entity_id:
+          description: The id of the object involved in the event
+          maxLength: 36
+          type: string
+        id:
+          description: Autogenerated object identifier.
+          type: string
+        ip_address:
+          description: The ip address from which the request causing the event originated.
+          format: ipv4
+          maxLength: 64
+          type: string
+        occurred_at:
+          description: The timestamp indicating when the action causing the event occurred.
+          format: date-time
+          type: string
+        old_data:
+          description: An object in JSON format representing the old values of the attributes that were changed by the event.
+          type: object
+        type:
+          description: The type of the object involved in the event. This may be something like "security" for security events or the name of the table the action was performed on, like "vend_customer".
+          maxLength: 64
+          type: string
+        user_agent:
+          description: User agent of the http client which submitted the request.
+          maxLength: 500
+          type: string
+        user_id:
+          description: The `id` of the user executing the action registered by this event.
+          maxLength: 36
+          type: string
+      title: Audit Log Event
+      type: object
+      x-examples:
+        example-1:
+          action: insert
+          created_at: '2019-08-24T14:15:22Z'
+          data: {}
+          entity_id: string
+          id: string
+          ip_address: 192.168.0.1
+          occurred_at: '2019-08-24T14:15:22Z'
+          old_data: {}
+          type: string
+          user_agent: string
+          user_id: string
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

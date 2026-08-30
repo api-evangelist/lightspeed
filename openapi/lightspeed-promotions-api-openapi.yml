@@ -1,0 +1,1669 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Promotions API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Promotion operations
+  name: Promotions
+paths:
+  /discount:
+    post:
+      description: "This will find the best possible promotion to a sale, apply it and return the sale and the discount.\n\n * Despite its `POST` method, this endpoint does not modify any server-side state.\n * It is the caller's responsibility to pass along the full details of the sale, including all customer information and product information (product type, tags, etc.).\n\n \U0001F512 Requires: `promotions:read` `outlets:read` scopes\n"
+      operationId: ApplyDiscount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscountParam'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscountResponse'
+          description: ''
+      summary: Apply discounts to a sale object
+      tags:
+      - Promotions
+  /promotions:
+    get:
+      description: "This endpoint lists all promotions for a retailer.\n\nThere are optional query parameters that allow filtering promotions. They can't be combined:\n\n - `end_time_from` - only show promotions that have end\\_time after or equal to this time\n - `end_time_to` - only show promotions that have end\\_time before this time\n\nFor example. the time format for end\\_time\\_from and end\\_time\\_to are: `2047-06-21T13:00:00`\n\n\U0001F512 Requires: `promotions:read` scope\n"
+      operationId: ListPromotions
+      parameters:
+      - description: 'Upper limit for the promotion end date as UTC timestamp. Format: `2020-08-08T12:00:00Z`.'
+        in: query
+        name: end_time_to
+        schema:
+          type: string
+      - description: 'Lower limit for the promotion end date as UTC timestamp. Format: `2020-08-08T12:00:00Z`.'
+        in: query
+        name: end_time_from
+        schema:
+          type: string
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionCollection'
+          description: ''
+      summary: List promotions
+      tags:
+      - Promotions
+    post:
+      description: 'This endpoint creates a new promotion.
+
+
+        It responds with the newly-created promotion, including the promotion''s ID.
+
+
+        🔒 Requires: `promotions:write` scope'
+      operationId: CreatePromotion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Promotion'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionResponse'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionResponse'
+          description: Created
+      summary: Create a promotion
+      tags:
+      - Promotions
+  /promotions/search:
+    get:
+      description: 'This endpoint can be used to find promotions matching specific criteria.
+
+
+        🔒 Requires: `promotions:read` scope
+
+        '
+      operationId: SearchPromotions
+      parameters:
+      - description: Scope of the search
+        in: query
+        name: scope
+        schema:
+          default: all
+          enum:
+          - current_upcoming
+          - past
+          - all
+          type: string
+      - description: Part of promotion's name being searched
+        explode: true
+        in: query
+        name: name
+        schema:
+          example: choco
+          type: string
+      - description: Only show promotions that have a start time after or equal to this
+        explode: true
+        in: query
+        name: start_time
+        schema:
+          example: '2022-08-29T9:57:52'
+          type: string
+      - description: Only show promotions that have an end time before or equal to this
+        explode: true
+        in: query
+        name: end_time
+        schema:
+          example: '2023-08-29T9:57:52'
+          type:
+          - string
+          - 'null'
+      - description: Only show promotions linked to one or many of the outlets specified here
+        in: query
+        name: outlet_id
+        schema:
+          items:
+            example: 06326976-9d65-11ed-fa40-1347e4b4ae6d
+            type: string
+          type: array
+      - description: Sort the result by this field
+        in: query
+        name: order_by
+        schema:
+          default: name
+          enum:
+          - name
+          - start_date
+          - end_date
+          type: string
+      - description: Sort direction
+        in: query
+        name: direction
+        schema:
+          default: desc
+          enum:
+          - asc
+          - desc
+          type: string
+      - description: Offset
+        in: query
+        name: offset
+        schema:
+          default: 1
+          type: integer
+      - description: Number of results per page
+        in: query
+        name: page_size
+        schema:
+          default: 1000
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionCollection'
+          description: ''
+      summary: Search promotions
+      tags:
+      - Promotions
+  /promotions/{promotion_id}:
+    get:
+      description: 'This will retrieve a single promotion using the given ID.
+
+
+        🔒 Requires: `promotions:read` scope'
+      operationId: GetPromotionByID
+      parameters:
+      - description: The promotion id
+        in: path
+        name: promotion_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PromotionResponse'
+                type: object
+          description: ''
+      summary: Get a promotion by ID
+      tags:
+      - Promotions
+    put:
+      description: "This endpoint updates an existing promotion by ID.\n\n * All of a promotion's fields except its id may be updated.\n * There are no partial updates.\n * All fields must be specified in the update.\n * The response contains the updated promotion object.\n\n\U0001F512 Requires: `promotions:write` scope\n"
+      operationId: UpdatePromotion
+      parameters:
+      - description: The promotion id
+        in: path
+        name: promotion_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Promotion'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionResponse'
+          description: ''
+      summary: Update a promotion
+      tags:
+      - Promotions
+  /promotions/{promotion_id}/products:
+    get:
+      description: "Get a list of products applicable for this promotion, and their discount price.\n\nIt takes in `page_size`, `offset` and `name` (use for searching product by product name) as query parameters.\n\nThe endpoint returns:\n * a list of products with discount for the condition product set, and\n * another list for the action product sets.\n\n\U0001F512 Requires: `promotions:read` `products:read` scopes\n"
+      operationId: GetPromotionProducts
+      parameters:
+      - description: The promotion id
+        in: path
+        name: promotion_id
+        required: true
+        schema:
+          type: integer
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+      - in: query
+        name: offset
+        schema:
+          type: integer
+      - description: Filter products by product name.
+        in: query
+        name: name
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionProductsResponse'
+          description: ''
+      summary: Get products for a promotion
+      tags:
+      - Promotions
+  /promotions/{promotion_id}/promocodes:
+    get:
+      description: 'Get the promo codes associated with this promotion.
+
+
+        🔒 Requires: `promotions:read` scope'
+      operationId: GetPromotionPromoCodes
+      parameters:
+      - description: The promotion id
+        in: path
+        name: promotion_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionPromoCodesResponse'
+          description: ''
+      summary: Get the promo codes for a promotion
+      tags:
+      - Promotions
+components:
+  schemas:
+    Action:
+      description: Action triggered by a promotion.
+      properties:
+        exclude:
+          items:
+            $ref: '#/components/schemas/Filter'
+          type: array
+        include:
+          items:
+            $ref: '#/components/schemas/Filter'
+          type: array
+        max_quantity:
+          description: Maximum quantity, if required by the action type.
+          type: integer
+        min_quantity:
+          description: Minimum quantity, if required by the action type.
+          type: integer
+        quantity:
+          description: Quantity, if required by the action type.
+          type: integer
+        type:
+          description: The type of action.
+          enum:
+          - basic_percent_discount
+          - basic_fixed_discount
+          - fixed_discount
+          - percent_discount
+          - loyalty
+          - fixed_price_discount
+          - fixed_pool_discount
+          - percent_pool_discount
+          type: string
+        value:
+          description: Value associated with the action.
+          format: double
+          type: number
+      required:
+      - type
+      - value
+      title: Action
+      type: object
+    Promotion:
+      description: A Promotion defines rules and actions for discounting products as part of a sales promotion.
+      properties:
+        action:
+          $ref: '#/components/schemas/Action'
+        add_promo_code:
+          description: A list of promo codes to associate with this promotion.
+          items:
+            $ref: '#/components/schemas/PromoCode'
+          type: array
+        channels:
+          description: A list of channels for the promotion. Can be `Register`, `Ecommerce`.
+          items:
+            type: string
+          type: array
+        condition:
+          $ref: '#/components/schemas/Condition'
+        customer_group_ids:
+          description: A list of customer group IDs for the promotion.
+          items:
+            type: string
+          type: array
+        description:
+          description: A short description for the promotion.
+          type: string
+        end_time:
+          description: The time the promotion ends, in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        loyalty_multiplier:
+          description: The loyalty multiplier for the promotion.
+          format: double
+          type: number
+        name:
+          description: The name of the promotion.
+          type: string
+        outlet_ids:
+          description: A list of outlet IDs for the promotion.
+          items:
+            type: string
+          type: array
+        promo_code_summary:
+          $ref: '#/components/schemas/PromotionPromoCodeSummary'
+        start_time:
+          description: The time the promotion begins, in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).
+          type: string
+        status:
+          description: The status of the promotion.
+          type: string
+        use_promo_code:
+          description: Whether or not this promotion uses promo codes.
+          type: boolean
+      required:
+      - action
+      - condition
+      - name
+      - start_time
+      - use_promo_code
+      title: Promotion
+      type: object
+    ProductCategoryPath:
+      properties:
+        id:
+          description: Object id of the Product Type in the path.
+          type: string
+        name:
+          description: The Product Type name.
+          type: string
+      required:
+      - id
+      - name
+      title: Product Category Path
+      type: object
+    PromotionResponse:
+      description: A Promotion defines rules and actions for discounting products as part of a sales promotion.
+      properties:
+        action:
+          $ref: '#/components/schemas/Action'
+        add_promo_code:
+          description: A list of promo codes to associate with this promotion.
+          items:
+            $ref: '#/components/schemas/PromoCode'
+          type: array
+        channels:
+          description: A list of channels for the promotion. Can be `Register`, `Ecommerce`.
+          items:
+            type: string
+          type: array
+        combinable_with_coupon:
+          description: Whether this promotion can be combined with an online coupon.
+          type:
+          - boolean
+          - 'null'
+        condition:
+          $ref: '#/components/schemas/Condition'
+        customer_group_ids:
+          description: A list of customer group IDs for the promotion.
+          items:
+            type: string
+          type: array
+        description:
+          description: A short description for the promotion.
+          type: string
+        end_time:
+          description: The time the promotion ends, in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        loyalty_multiplier:
+          description: The loyalty multiplier for the promotion.
+          format: double
+          type:
+          - number
+          - 'null'
+        name:
+          description: The name of the promotion.
+          type: string
+        online_channel_ids:
+          description: A list of online channel IDs for the promotion.
+          items:
+            type: integer
+          type: array
+        outlet_ids:
+          description: A list of outlet IDs for the promotion.
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        promo_code_summary:
+          $ref: '#/components/schemas/PromotionPromoCodeSummary'
+        recurring_promotion:
+          allOf:
+          - $ref: '#/components/schemas/RecurringPromotion'
+          type:
+          - object
+          - 'null'
+        show_potential:
+          description: Whether this promotion is shown as part of potential promotions.
+          type: boolean
+        start_time:
+          description: The time the promotion begins, in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).
+          type: string
+        status:
+          description: The status of the promotion.
+          type: string
+        use_promo_code:
+          description: Whether or not this promotion uses promo codes.
+          type: boolean
+      title: Promotion response
+      type: object
+    RecurringPromotion:
+      properties:
+        end_time:
+          description: The time the recurring promotion ends.
+          type: string
+        id:
+          description: Recurring Promotion ID.
+          type: string
+        occurrence_type:
+          description: The occurrence type of the recurring promotion.
+          type: string
+        recurring_promotion_occurrences:
+          description: A list of the promotion occurrences.
+          items:
+            $ref: '#/components/schemas/RecurringPromotionOccurrence'
+          type: array
+        start_time:
+          description: The time the recurring promotion begins.
+          type: string
+      title: Recurring Promotion
+      type:
+      - object
+      - 'null'
+    ProductSupplier:
+      properties:
+        code:
+          description: The code associated with this supplier.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          format: UUID
+          type: string
+        price:
+          description: The price associated with this supplier.
+          format: double
+          type:
+          - number
+          - 'null'
+        product_id:
+          description: The ID of the product.
+          format: UUID
+          type: string
+        supplier_id:
+          description: The ID of the supplier.
+          format: UUID
+          type:
+          - string
+          - 'null'
+        supplier_name:
+          description: The name of the supplier.
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - product_id
+      - supplier_id
+      - supplier_name
+      title: Product Supplier
+      type: object
+    RecurringPromotionOccurrence:
+      properties:
+        day_of_week:
+          description: The day of week of the recurring promotion.
+          type: string
+        id:
+          description: Recurring Promotion occurrence ID.
+          type: string
+      title: Recurring Promotion occurrence
+      type: object
+    PromotionProductsResponse:
+      properties:
+        data:
+          properties:
+            action_products:
+              description: A list of product IDs that are required to fulfill the promotion action.
+              items:
+                $ref: '#/components/schemas/Product'
+              type: array
+            condition_products:
+              description: A list of product IDs that meet the promotion condition.
+              items:
+                $ref: '#/components/schemas/Product'
+              type: array
+          type: object
+      title: Promotion Products response
+      type: object
+    Product:
+      properties:
+        account_code:
+          description: ???
+          type:
+          - string
+          - 'null'
+        account_code_purchase:
+          description: ???
+          type:
+          - string
+          - 'null'
+        active:
+          description: Indicated whether the Product is active.
+          type: boolean
+        attributes:
+          description: A list of attributes
+          items:
+            $ref: '#/components/schemas/ProductAttribute'
+          type: array
+        brand:
+          $ref: '#/components/schemas/BrandSample'
+        brand_id:
+          description: The brand ID.
+          format: UUID
+          type:
+          - string
+          - 'null'
+        button_order:
+          description: ???
+          type: integer
+        categories:
+          description: A list of tag objects.
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        composite_bom:
+          description: A bill of materials object. This field is only relevant for composite products. It is a map of product ids to the quantity of each product that is needed to make up the composite product.
+          type: object
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        customizations:
+          description: A list of product family customization input fields.
+          items:
+            type: object
+          type: array
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        description:
+          description: A detailed description of the Product. **Note** Can contain HTML.
+          type:
+          - string
+          - 'null'
+        dimensions_unit:
+          description: Unit of measurement for product dimensions. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          enum:
+          - IN
+          - CM
+          - MM
+          - YD
+          type:
+          - string
+          - 'null'
+        family_id:
+          description: This is a family identifier. All members of a product family will have the same identifier. In the future, this will replace the variant_parent_id as the family group identifier. This field is currently read-only.
+          format: UUID
+          type: string
+        handle:
+          description: Product handle. **Note:** Variants share the same handle.
+          type: string
+        has_inventory:
+          description: Indicates whether inventory is being tracked for the Product.
+          type: boolean
+        has_variants:
+          description: Indicated whether product has variants.
+          type: boolean
+        height:
+          description: Product height. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type:
+          - number
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          format: UUID
+          type: string
+        image_thumbnail_url:
+          type: string
+        image_url:
+          type: string
+        images:
+          description: A list of image objects.
+          items:
+            $ref: '#/components/schemas/ImageSample'
+          type: array
+        is_composite:
+          description: Indicates whether the Product is a composite one.
+          type: boolean
+        length:
+          description: Product length. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type:
+          - number
+          - 'null'
+        loyalty_amount:
+          description: The amount of loyalty the customer receives buying this item.
+          type:
+          - number
+          - 'null'
+        name:
+          description: Product name.
+          type: string
+        outlet_taxes:
+          description: A list of outlet-specific tax overrides. Only present when non-empty.
+          items:
+            type: object
+          type: array
+        packaging:
+          description: Packaging relationships for this product.
+          properties:
+            breaks_into:
+              description: Packages this product can be broken into.
+              items:
+                $ref: '#/components/schemas/ProductPackage'
+              type: array
+            made_from:
+              description: Packages this product can be made from.
+              items:
+                $ref: '#/components/schemas/ProductPackage'
+              type: array
+          type: object
+        price_excluding_tax:
+          description: The price before tax is added.
+          type: number
+        price_including_tax:
+          description: The price including all the relevant taxes.
+          type:
+          - number
+          - 'null'
+        product_category:
+          allOf:
+          - $ref: '#/components/schemas/ProductCategory'
+          description: The product category this product belongs to.
+          type:
+          - object
+          - 'null'
+        product_codes:
+          description: A list of product code objects.
+          items:
+            $ref: '#/components/schemas/ProductCode'
+          type: array
+        product_suppliers:
+          description: A list of product supplier objects.
+          items:
+            $ref: '#/components/schemas/ProductSupplier'
+          type: array
+        product_type_id:
+          description: The product type.
+          format: UUID
+          type:
+          - string
+          - 'null'
+        sku:
+          description: Product sku. **Note:** Should be unique.
+          type: string
+        skuImages:
+          description: A list of variant-level image objects.
+          items:
+            $ref: '#/components/schemas/ImageSample'
+          type: array
+        source:
+          description: Indicates the origin of the product. Can be USER, SHOPIFY.
+          type: string
+        source_id:
+          description: External reference ID.
+          type:
+          - string
+          - 'null'
+        source_variant_id:
+          description: Secondary external reference ID.
+          type:
+          - string
+          - 'null'
+        supplier:
+          $ref: '#/components/schemas/SupplierSample'
+        supplier_code:
+          description: Supplier code.
+          type:
+          - string
+          - 'null'
+        supplier_id:
+          description: The supplier ID.
+          format: UUID
+          type:
+          - string
+          - 'null'
+        supply_price:
+          description: Default supply price,
+          format: double
+          type: number
+        tag_ids:
+          description: An array of tag IDs associated with this product.
+          items:
+            description: A tag ID.
+            format: UUID
+            type: string
+          type: array
+        tax_category:
+          description: Tax category identifier for the product.
+          type:
+          - string
+          - 'null'
+        type:
+          $ref: '#/components/schemas/ProductTypeSample'
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        variant_count:
+          description: The number of variants for this product.
+          type:
+          - integer
+          - 'null'
+        variant_name:
+          description: The name of the variant product.
+          type:
+          - string
+          - 'null'
+        variant_options:
+          description: A list of variant option objects.
+          items:
+            $ref: '#/components/schemas/VariantOption'
+          type: array
+        variant_parent_id:
+          description: This value is set if a Product is a variant of another Product.
+          format: UUID
+          type:
+          - string
+          - 'null'
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+        weight:
+          description: Product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type:
+          - number
+          - 'null'
+        weight_unit:
+          description: Unit of measurement for product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          enum:
+          - CT
+          - G
+          - OZ
+          - LB
+          - KG
+          type:
+          - string
+          - 'null'
+        width:
+          description: Product width. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type:
+          - number
+          - 'null'
+      required:
+      - id
+      - handle
+      - name
+      - sku
+      - active
+      - is_composite
+      - has_inventory
+      - has_variants
+      - version
+      - variant_options
+      - categories
+      - tag_ids
+      - images
+      - skuImages
+      - attributes
+      - product_codes
+      - product_suppliers
+      - packaging
+      - customizations
+      - price_including_tax
+      - price_excluding_tax
+      title: Product
+      type: object
+      x-examples:
+        Example:
+          data:
+          - active: true
+            attributes: []
+            button_order: 0
+            categories:
+            - id: 0242ac11-0002-11ea-e346-ec1fed46e828
+              name: Tag1
+              version: 150517
+            created_at: '2020-09-01T06:54:03+00:00'
+            description: Variant Product
+            dimensions_unit: CM
+            handle: Variant8
+            has_inventory: true
+            has_variants: false
+            height: 4
+            id: 0242ac12-0002-11e9-e8c4-659494e33101
+            image_thumbnail_url: https://local-demo.dev.vendhq.works/images/placeholder/product/no-image-white-thumb.png
+            image_url: https://local-demo.dev.vendhq.works/images/placeholder/product/no-image-white-standard.png
+            images: []
+            is_active: true
+            is_composite: false
+            length: 2
+            name: Variant + Tag
+            price_excluding_tax: 34.78261
+            price_including_tax: 40
+            sku: '1000033'
+            source: USER
+            supply_price: 10
+            tag_ids:
+            - 0242ac11-0002-11ea-e346-ec1fed46e828
+            updated_at: '2020-09-01T06:54:23+00:00'
+            variant_name: Variant + Tag / L / Green / Silk
+            variant_options:
+            - id: 0242ac11-0002-11ea-e346-ec1feb758875
+              name: Size
+              value: L
+            - id: 0242ac11-0002-11ea-e346-ec1feb761422
+              name: Colour
+              value: Green
+            - id: 0242ac11-0002-11ea-e346-ec1feb7696a4
+              name: Fabric
+              value: Silk
+            variant_parent_id: 0242ac12-0002-11e9-e8c4-659494e33138
+            version: 150578
+            weight: 1
+            weight_unit: KG
+            width: 3
+    DiscountResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/DiscountResponseParam'
+      title: DiscountParam consists of a Sale, and related information to check if a promotion applies, and to calculate the discount
+      type: object
+    ProductCode:
+      properties:
+        code:
+          description: The sku code being added.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        type:
+          description: The type of code being added.
+          enum:
+          - CUSTOM
+          - EAN
+          - ISBN
+          - ITF
+          - JAN
+          - UPC
+          type: string
+      required:
+      - code
+      - id
+      title: ProductCode
+      type: object
+    Role:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Role name.
+          type: string
+        system_role_id:
+          description: A system role id of the Role. Will be either '100', '200', or '300'.
+          type: string
+      title: Role
+      type: object
+    ProductAttribute:
+      properties:
+        name:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
+      required:
+      - name
+      - value
+      title: Attribute
+      type: object
+    DiscountSaleParam:
+      properties:
+        line_items:
+          description: Collection of line items.
+          items:
+            $ref: '#/components/schemas/DiscountLineItem'
+          type: array
+        sale_date:
+          description: Sale timestamp in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).
+          type: string
+        total_price:
+          description: Total (tax exclusive) price of the sale
+          format: double
+          type: number
+        total_tax:
+          description: Total tax.
+          format: double
+          type: number
+      required:
+      - line_items
+      - sale_date
+      - total_price
+      - total_tax
+      title: Sale object for use in a Discount request
+      type: object
+    DiscountCustomerParam:
+      properties:
+        customer_group_id:
+          description: Customer group ID
+          type: string
+      title: Customer applicable to a discount
+      type: object
+    PromotionDescription:
+      description: Basic description for a Promotion.
+      properties:
+        description:
+          description: A short description for the promotion.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The name of the promotion.
+          type: string
+      title: PromotionDescription
+      type: object
+    ImageSample:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        url:
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Image Sample
+      type: object
+    PromoCode:
+      properties:
+        code:
+          description: Code for use in the promotion.
+          type: string
+        created_at:
+          description: Time the code was created.
+          type: string
+        created_user:
+          $ref: '#/components/schemas/User'
+        created_user_id:
+          description: Created User ID.
+          type: string
+        group_name:
+          description: Name of the group.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        limit:
+          description: Redemption limit for this promotion.
+          type: integer
+        promotion_id:
+          description: Promotion ID.
+          type: string
+        redeemed:
+          description: Number of times this code has been redeemed.
+          type: integer
+      required:
+      - code
+      title: Promotion Code
+      type: object
+      x-examples:
+        example-1:
+          code: string
+          created_at: string
+          created_user:
+            account_type: cashier
+            created_at: string
+            deleted_at: string
+            display_name: string
+            email: user@example.com
+            email_verified_at: string
+            id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+            image_source: string
+            images:
+              original: string
+              sl: string
+              sm: string
+              ss: string
+              st: string
+              standard: string
+              thumb: string
+            is_primary_user: true
+            permissions:
+            - string
+            restricted_outlet_id: string
+            restricted_outlet_ids:
+            - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+            seen_at: string
+            target_daily: 0
+            target_monthly: 0
+            target_weekly: 0
+            updated_at: string
+            username: string
+            version: 0
+          created_user_id: string
+          group_name: string
+          id: string
+          limit: 0
+          promotion_id: string
+          redeemed: 0
+    Condition:
+      description: A condition to determine whether a promotion should apply to a sale.
+      properties:
+        exclude:
+          items:
+            $ref: '#/components/schemas/Filter'
+          type: array
+        include:
+          items:
+            $ref: '#/components/schemas/Filter'
+          type: array
+        max_quantity:
+          description: Minimum quantity, if required by the condition type.
+          type: integer
+        min_price:
+          description: Minimum price, if required by the condition type.
+          format: double
+          type: number
+        min_quantity:
+          description: Minimum quantity, if required by the condition type.
+          type: integer
+        quantity:
+          description: Quantity, if required by the condition type.
+          minimum: 1
+          type: integer
+        type:
+          description: Condition type.
+          enum:
+          - product_set
+          - sale_price
+          type: string
+      required:
+      - type
+      - quantity
+      title: Condition
+      type: object
+    PromotionPromoCodesResponse:
+      properties:
+        data:
+          description: An array of promotion promo codes.
+          items:
+            properties:
+              code:
+                type: string
+              created_at:
+                format: date-time
+                type: string
+              created_user_id:
+                type: string
+              group_name:
+                type:
+                - string
+                - 'null'
+              id:
+                type: string
+              limit:
+                type: integer
+              promotion_id:
+                type: string
+              redeemed:
+                type: integer
+            type: object
+          type: array
+      title: Promotion Promo Codes response
+    SupplierSample:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          type: string
+      title: Supplier Sample
+      type:
+      - object
+      - 'null'
+    VariantOption:
+      properties:
+        name:
+          description: The Variant Option name.
+          type: string
+        value:
+          description: The value of a Variant Option.
+          type: string
+      title: Variant Option
+      type: object
+    ProductTypeSample:
+      properties:
+        category_path:
+          description: The path of this product type (now product category) in the hierarchy.
+          items:
+            $ref: '#/components/schemas/ProductCategoryPath'
+          type: array
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        leaf_category:
+          description: Is this product type (now product category) at the bottom of the hierarchy.
+          type: boolean
+        name:
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Product Type Sample
+      type:
+      - object
+      - 'null'
+    PromoCodeValidation:
+      properties:
+        promo_code:
+          description: The promo code itself.
+          type: string
+        promo_code_id:
+          description: ID for the promo code.
+          type:
+          - string
+          - 'null'
+        promotion_id:
+          description: ID for the promotion.
+          type:
+          - string
+          - 'null'
+        status:
+          description: Status field for the promo code.
+          type: string
+      required:
+      - promo_code
+      - status
+      title: Promo Code validation result
+      type: object
+    BrandSample:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Brand Sample
+      type:
+      - object
+      - 'null'
+    ProductPackage:
+      properties:
+        amount:
+          description: The quantity involved in the packaging relationship.
+          type: number
+        destination_product_id:
+          description: The ID of the destination product (present in breaks_into entries).
+          format: UUID
+          type: string
+        package_id:
+          description: Auto-generated package ID.
+          format: UUID
+          type: string
+        source_product_id:
+          description: The ID of the source product (present in made_from entries).
+          format: UUID
+          type: string
+      required:
+      - package_id
+      - amount
+      type: object
+    PromotionCollection:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PromotionResponse'
+          type: array
+      title: Promotion Collection
+      type: object
+    User:
+      properties:
+        account_type:
+          description: User's account type.
+          enum:
+          - cashier
+          - manager
+          - admin
+          type: string
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        display_name:
+          description: Full user's name to be used for display in the UI.
+          type:
+          - string
+          - 'null'
+        email:
+          description: User's email address.
+          format: email
+          type:
+          - string
+          - 'null'
+        email_verified_at:
+          description: The timestamp of users email verification.
+          type:
+          - string
+          - 'null'
+        enabled:
+          description: Indicates whether the user is enabled.
+          type: boolean
+        enabled_mfa:
+          description: The user's enabled MFA factor, or null if MFA is not enabled.
+          properties:
+            created_at:
+              description: Timestamp when the MFA factor was created.
+              type: string
+            id:
+              description: Auto-generated MFA factor ID.
+              type: string
+            type:
+              description: The MFA factor type (e.g. "otp").
+              enum:
+              - otp
+              type: string
+          type:
+          - object
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        image_source:
+          description: URL of the default-sized user's avatar.
+          type: string
+        images:
+          $ref: '#/components/schemas/UserImages'
+        is_primary_user:
+          description: Indicated whether this user is the primary user for the account.
+          type: boolean
+        permissions:
+          description: The permissions assigned to the user.
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        require_password_change:
+          description: Indicates whether the user is required to change their password.
+          type: boolean
+        restricted_outlet_id:
+          deprecated: true
+          description: '**deprecated** Use the `restricted_outlet_ids` instead.'
+          type:
+          - string
+          - 'null'
+        restricted_outlet_ids:
+          description: A list of outlet IDs the user is associated with
+          items:
+            format: uuid
+            type: string
+          type: array
+        roles:
+          description: The roles assigned to the user.
+          items:
+            $ref: '#/components/schemas/Role'
+          type: array
+        rules:
+          description: The rules assigned to the user.
+          type: object
+        seen_at:
+          description: The timestamp of the user's last activity in the system.
+          type: string
+        switch_id:
+          description: The switch id for the user.
+          type: string
+        target_daily:
+          description: Daily sales target for the user.
+          type:
+          - number
+          - 'null'
+        target_monthly:
+          description: Monthly sales target for the user.
+          type:
+          - number
+          - 'null'
+        target_weekly:
+          description: Weekly sales target for the user.
+          type:
+          - number
+          - 'null'
+        time_until_deletion:
+          description: The time until the user is deleted.
+          type:
+          - string
+          - 'null'
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        username:
+          description: User's username used for login.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - account_type
+      - created_at
+      - id
+      - is_primary_user
+      - updated_at
+      - username
+      - version
+      title: User
+      type: object
+    DiscountParam:
+      properties:
+        channel:
+          description: The channel where the sale is coming from
+          type: string
+        customer:
+          $ref: '#/components/schemas/DiscountCustomerParam'
+        is_tax_inclusive:
+          description: Indication whether the sale is tax inclusive or tax exclusive
+          type: boolean
+        outlet_id:
+          description: The outlet ID for this sale
+          type: string
+        promo_code:
+          description: The promo code to apply to this sale
+          type: string
+        sale:
+          $ref: '#/components/schemas/DiscountSaleParam'
+      required:
+      - channel
+      - customer
+      - outlet_id
+      - sale
+      title: DiscountParam consists of a Sale, and related information to check if a promotion applies, and to calculate the discount
+      type: object
+    PromotionPromoCodeSummary:
+      properties:
+        redeemed_amount:
+          description: The redeemed amount
+          type: integer
+        total_promo_code:
+          description: The total for the promo code
+          type: integer
+      title: Promotion Promo Code Summary
+      type:
+      - object
+      - 'null'
+    ProductCategory:
+      properties:
+        category_path:
+          items:
+            $ref: '#/components/schemas/ProductCategoryPath'
+          type: array
+        id:
+          description: The category id
+          format: uuid
+          type: string
+        leaf_category:
+          description: True if the category does not have any more children (i.e. leaf).
+          type: boolean
+        name:
+          description: The name of the category
+          type: string
+        parent_category_id:
+          description: The parent category id, or null if its root category.
+          format: uuid
+          type: string
+        root_category_id:
+          description: The category id of the root of the category tree. If category is a root, this will be itself.
+          format: uuid
+          type: string
+      type: object
+    Tag:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Tag name.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Tag
+      type: object
+    DiscountLineItem:
+      properties:
+        confirmed:
+          description: Whether the line item is confirmed as part of a layby or on account sale.
+          type: boolean
+        explicit_loyalty_value:
+          description: Whether loyalty was explicitly set in the product or it just uses the default outlet ratio.
+          type: boolean
+        handle:
+          description: Handle.
+          type: string
+        id:
+          description: Line item ID.
+          type: string
+        loyalty_value:
+          description: The line item's loyalty value
+          format: double
+          type: number
+        price_adjusted:
+          description: Indicator to suggest that the price has been adjusted manually, such as through a discount.
+          type: boolean
+        product_brand_id:
+          description: Product Brand ID.
+          type: string
+        product_id:
+          description: Product ID
+          type: string
+        product_supplier_id:
+          description: Product Supplier ID.
+          type: string
+        product_tag_ids:
+          description: Product Tag IDs.
+          items:
+            type: string
+          type: array
+        product_type_id:
+          description: Product Type ID.
+          type: string
+        promotion_ids:
+          description: List of promotion IDs applied to this line item.
+          items:
+            type: string
+          type: array
+        quantity:
+          description: Quantity of the line item.
+          type: integer
+        unit_discount:
+          description: The line item's unit discount
+          format: double
+          type: number
+        unit_price:
+          description: The unit price for the line item.
+          format: double
+          type: number
+        unit_tax_discount:
+          description: The line item's unit tax discount
+          format: double
+          type: number
+        variant_parent_id:
+          description: Product variant parent ID
+          type: string
+      required:
+      - handle
+      - product_brand_id
+      - product_id
+      - product_supplier_id
+      - product_tag_ids
+      - product_type_id
+      - quantity
+      - unit_price
+      - unit_tax_discount
+      title: Line Item, for use while applying a discount
+      type: object
+    DiscountResponseParam:
+      properties:
+        promo_code_validation:
+          $ref: '#/components/schemas/PromoCodeValidation'
+        promotions:
+          items:
+            $ref: '#/components/schemas/PromotionDescription'
+          type: array
+        sale:
+          $ref: '#/components/schemas/DiscountSaleParam'
+      title: DiscountParam consists of a Sale, and related information to check if a promotion applies, and to calculate the discount
+      type: object
+    Filter:
+      properties:
+        field:
+          description: name of the filter field
+          enum:
+          - brand_id
+          - product_id
+          - supplier_id
+          - tag_id
+          - type_id
+          - variant_parent_id
+          type: string
+        value:
+          description: value of the filter field
+          type: string
+      required:
+      - field
+      - value
+      title: Condition Filter
+      type: object
+    UserImages:
+      description: On object containing URLs for different sizes of the user’s avatar.
+      properties:
+        original:
+          type: string
+        sl:
+          type: string
+        sm:
+          type: string
+        ss:
+          type: string
+        st:
+          type: string
+        standard:
+          type: string
+        thumb:
+          type: string
+      title: User Image
+      type:
+      - object
+      - 'null'
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

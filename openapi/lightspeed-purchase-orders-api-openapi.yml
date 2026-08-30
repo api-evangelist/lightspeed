@@ -1,0 +1,731 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Purchase Orders API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Purchase order operations
+  name: Purchase Orders
+paths:
+  /purchase_orders:
+    get:
+      description: 'Returns a paginated list of purchase orders using version-based cursor pagination.
+
+
+        The response includes only purchase orders accessible to the authenticated user. Costs
+
+        and discounts are included when available to the caller. Cost fields require the
+
+        `products:read:costs` scope.
+
+
+        🔒 Requires: `consignments:read` scope'
+      operationId: ListPurchaseOrders
+      parameters:
+      - $ref: '#/components/parameters/PurchaseOrderAfter'
+      - $ref: '#/components/parameters/PurchaseOrderBefore'
+      - $ref: '#/components/parameters/PurchaseOrderPageSize'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderCollectionResponse'
+          description: OK
+      summary: List purchase orders
+      tags:
+      - Purchase Orders
+  /purchase_orders/{purchase_order_id}:
+    get:
+      description: 'Returns a single purchase order with the requested ID.
+
+
+        Cost fields require the `products:read:costs` scope.
+
+
+        🔒 Requires: `consignments:read` scope'
+      operationId: GetPurchaseOrderByID
+      parameters:
+      - $ref: '#/components/parameters/PurchaseOrderID'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderResponse'
+          description: OK
+      summary: Get purchase order by ID
+      tags:
+      - Purchase Orders
+  /purchase_orders/{purchase_order_id}/deliveries:
+    get:
+      description: 'Returns a paginated list of deliveries belonging to a purchase order using version-based
+
+        cursor pagination. Cost fields require the `products:read:costs` scope.
+
+
+        🔒 Requires: `consignments:read` scope'
+      operationId: ListPurchaseOrderDeliveries
+      parameters:
+      - $ref: '#/components/parameters/PurchaseOrderID'
+      - $ref: '#/components/parameters/PurchaseOrderAfter'
+      - $ref: '#/components/parameters/PurchaseOrderBefore'
+      - $ref: '#/components/parameters/PurchaseOrderPageSize'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderDeliveryCollectionResponse'
+          description: OK
+      summary: List purchase order deliveries
+      tags:
+      - Purchase Orders
+  /purchase_orders/{purchase_order_id}/deliveries/{delivery_id}/line_items:
+    get:
+      description: 'Returns a paginated list of line items belonging to a purchase order delivery using
+
+        version-based cursor pagination. Cost fields require the `products:read:costs` scope.
+
+
+        🔒 Requires: `consignments:read` scope'
+      operationId: ListPurchaseOrderDeliveryLineItems
+      parameters:
+      - $ref: '#/components/parameters/PurchaseOrderID'
+      - description: The unique identifier of the purchase order delivery.
+        in: path
+        name: delivery_id
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/PurchaseOrderAfter'
+      - $ref: '#/components/parameters/PurchaseOrderBefore'
+      - $ref: '#/components/parameters/PurchaseOrderPageSize'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemCollectionResponse'
+          description: OK
+      summary: List purchase order delivery line items
+      tags:
+      - Purchase Orders
+  /purchase_orders/{purchase_order_id}/line_items:
+    get:
+      description: 'Returns a paginated list of line items belonging to a purchase order using version-based
+
+        cursor pagination. Cost fields require the `products:read:costs` scope.
+
+
+        🔒 Requires: `consignments:read` scope'
+      operationId: ListPurchaseOrderLineItems
+      parameters:
+      - $ref: '#/components/parameters/PurchaseOrderID'
+      - $ref: '#/components/parameters/PurchaseOrderAfter'
+      - $ref: '#/components/parameters/PurchaseOrderBefore'
+      - $ref: '#/components/parameters/PurchaseOrderPageSize'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderLineItemCollectionResponse'
+          description: OK
+      summary: List purchase order line items
+      tags:
+      - Purchase Orders
+components:
+  schemas:
+    PurchaseOrderLineItem:
+      properties:
+        allocations:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderLineItemAllocation'
+          type: array
+        components:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderLineItemComponent'
+          type: array
+        cost_price:
+          type:
+          - string
+          - 'null'
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        product_id:
+          type: string
+        purchase_order_id:
+          type: string
+        quantity:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        version:
+          format: int64
+          type: integer
+      required:
+      - id
+      - version
+      - purchase_order_id
+      - product_id
+      - quantity
+      - cost_price
+      - allocations
+      - created_at
+      - updated_at
+      title: Purchase Order Line Item
+      type: object
+    PurchaseOrderCost:
+      properties:
+        amount:
+          description: Cost amount represented as a decimal string.
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        purchase_order_delivery_id:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - purchase_order_delivery_id
+      - type
+      - amount
+      - created_at
+      - updated_at
+      title: Purchase Order Cost
+      type: object
+    PurchaseOrderResponse:
+      example:
+        data:
+          allocation_outlet_ids:
+          - 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          cost_price_total: '25.00'
+          created_at: '2026-04-01T12:00:00Z'
+          delivery_outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          due_at: '2026-04-15T10:00:00Z'
+          id: 550e8400-e29b-41d4-a716-446655440000
+          notes: Restock front outlet
+          order_number: PO-1001
+          quantity_total: '10'
+          status: OPEN
+          supplier_id: 6ba7b811-9dad-41d1-80b4-00c04fd430c8
+          supplier_invoice: null
+          updated_at: '2026-04-01T12:00:00Z'
+          user_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+          version: 42
+      properties:
+        data:
+          $ref: '#/components/schemas/PurchaseOrder'
+      required:
+      - data
+      title: Purchase Order Response
+      type: object
+    PurchaseOrderDeliveryLineItemAllocation:
+      properties:
+        expected_quantity:
+          type: string
+        outlet_id:
+          type: string
+        received_quantity:
+          type: string
+      required:
+      - outlet_id
+      - expected_quantity
+      - received_quantity
+      title: Purchase Order Delivery Line Item Allocation
+      type: object
+    PurchaseOrderVersion:
+      properties:
+        max:
+          description: Highest version number in the payload.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number in the payload.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - min
+      - max
+      title: Purchase Order Version
+      type: object
+    PurchaseOrderLineItemComponent:
+      properties:
+        bom_quantity:
+          type: string
+        component_product_id:
+          type: string
+        cost_price:
+          type:
+          - string
+          - 'null'
+      required:
+      - component_product_id
+      - bom_quantity
+      - cost_price
+      title: Purchase Order Line Item Component
+      type: object
+    PurchaseOrderDeliveryCollectionResponse:
+      example:
+        data:
+        - cost_price_total: '25.00'
+          created_at: '2026-04-01T12:00:00Z'
+          due_at: null
+          id: 550e8403-e29b-41d4-a716-446655440000
+          invoice_date: null
+          notes: null
+          outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          purchase_order_id: 550e8400-e29b-41d4-a716-446655440000
+          received_at: null
+          received_quantity_total: '0'
+          status: DRAFT
+          supplier_invoice: null
+          updated_at: '2026-04-01T12:00:00Z'
+          user_id: null
+          version: 3
+        version:
+          max: 3
+          min: 3
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDelivery'
+          type: array
+        version:
+          $ref: '#/components/schemas/PurchaseOrderVersion'
+      required:
+      - data
+      - version
+      title: Purchase Order Delivery Collection Response
+      type: object
+    PurchaseOrderCollectionResponse:
+      example:
+        data:
+        - allocation_outlet_ids: []
+          cost_price_total: null
+          created_at: '2026-04-01T12:00:00Z'
+          delivery_outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          due_at: null
+          id: 550e8400-e29b-41d4-a716-446655440000
+          notes: null
+          order_number: PO-1001
+          quantity_total: '10'
+          status: OPEN
+          supplier_id: 6ba7b811-9dad-41d1-80b4-00c04fd430c8
+          supplier_invoice: null
+          updated_at: '2026-04-01T12:00:00Z'
+          user_id: null
+          version: 42
+        version:
+          max: 42
+          min: 42
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PurchaseOrder'
+          type: array
+        version:
+          $ref: '#/components/schemas/PurchaseOrderVersion'
+      required:
+      - data
+      - version
+      title: Purchase Order Collection Response
+      type: object
+    PurchaseOrderDeliveryLineItemCollectionResponse:
+      example:
+        data:
+        - allocations:
+          - expected_quantity: '10'
+            outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+            received_quantity: '0'
+          cost_price: '2.50'
+          created_at: '2026-04-01T12:00:00Z'
+          expected_quantity: '10'
+          id: 550e8404-e29b-41d4-a716-446655440000
+          product_id: 550e8402-e29b-41d4-a716-446655440000
+          purchase_order_delivery_id: 550e8403-e29b-41d4-a716-446655440000
+          purchase_order_line_item_id: 550e8401-e29b-41d4-a716-446655440000
+          received_quantity: '0'
+          updated_at: '2026-04-01T12:00:00Z'
+          version: 4
+        version:
+          max: 4
+          min: 4
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItem'
+          type: array
+        version:
+          $ref: '#/components/schemas/PurchaseOrderVersion'
+      required:
+      - data
+      - version
+      title: Purchase Order Delivery Line Item Collection Response
+      type: object
+    PurchaseOrderLineItemAllocation:
+      properties:
+        outlet_id:
+          type: string
+        quantity:
+          type: string
+      required:
+      - outlet_id
+      - quantity
+      title: Purchase Order Line Item Allocation
+      type: object
+    PurchaseOrderDeliveryLineItem:
+      properties:
+        allocations:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemAllocation'
+          type: array
+        components:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemComponent'
+          type: array
+        cost_price:
+          type:
+          - string
+          - 'null'
+        created_at:
+          format: date-time
+          type: string
+        expected_quantity:
+          type: string
+        id:
+          type: string
+        product_id:
+          type: string
+        purchase_order_delivery_id:
+          type: string
+        purchase_order_line_item_id:
+          type: string
+        received_quantity:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        version:
+          format: int64
+          type: integer
+      required:
+      - id
+      - version
+      - purchase_order_delivery_id
+      - purchase_order_line_item_id
+      - product_id
+      - expected_quantity
+      - received_quantity
+      - cost_price
+      - allocations
+      - created_at
+      - updated_at
+      title: Purchase Order Delivery Line Item
+      type: object
+    PurchaseOrder:
+      properties:
+        allocation_outlet_ids:
+          items:
+            type: string
+          type: array
+        cost_price_total:
+          description: Total cost represented as a decimal string.
+          type:
+          - string
+          - 'null'
+        costs:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderCost'
+          type: array
+        created_at:
+          format: date-time
+          type: string
+        delivery_outlet_id:
+          type: string
+        discounts:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDiscount'
+          type: array
+        due_at:
+          format: date-time
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        order_number:
+          type:
+          - string
+          - 'null'
+        quantity_total:
+          description: Total quantity represented as a decimal string.
+          type: string
+        status:
+          type: string
+        supplier_id:
+          type:
+          - string
+          - 'null'
+        supplier_invoice:
+          type:
+          - string
+          - 'null'
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type:
+          - string
+          - 'null'
+        version:
+          format: int64
+          type: integer
+      required:
+      - id
+      - version
+      - user_id
+      - order_number
+      - notes
+      - delivery_outlet_id
+      - allocation_outlet_ids
+      - supplier_id
+      - supplier_invoice
+      - status
+      - due_at
+      - cost_price_total
+      - quantity_total
+      - created_at
+      - updated_at
+      title: Purchase Order
+      type: object
+    PurchaseOrderDeliveryLineItemComponent:
+      properties:
+        bom_quantity:
+          type: string
+        component_product_id:
+          type: string
+        cost_price:
+          type:
+          - string
+          - 'null'
+      required:
+      - component_product_id
+      - bom_quantity
+      - cost_price
+      title: Purchase Order Delivery Line Item Component
+      type: object
+    PurchaseOrderDelivery:
+      properties:
+        cost_price_total:
+          type:
+          - string
+          - 'null'
+        costs:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderCost'
+          type: array
+        created_at:
+          format: date-time
+          type: string
+        discounts:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDiscount'
+          type: array
+        due_at:
+          format: date-time
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        invoice_date:
+          format: date-time
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        outlet_id:
+          type: string
+        purchase_order_id:
+          type: string
+        received_at:
+          format: date-time
+          type:
+          - string
+          - 'null'
+        received_quantity_total:
+          type: string
+        status:
+          type: string
+        supplier_invoice:
+          type:
+          - string
+          - 'null'
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type:
+          - string
+          - 'null'
+        version:
+          format: int64
+          type: integer
+      required:
+      - id
+      - version
+      - purchase_order_id
+      - outlet_id
+      - user_id
+      - notes
+      - status
+      - due_at
+      - received_at
+      - invoice_date
+      - supplier_invoice
+      - cost_price_total
+      - received_quantity_total
+      - created_at
+      - updated_at
+      title: Purchase Order Delivery
+      type: object
+    PurchaseOrderDiscount:
+      properties:
+        amount:
+          description: Discount amount represented as a decimal string.
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        purchase_order_delivery_id:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - purchase_order_delivery_id
+      - type
+      - amount
+      - created_at
+      - updated_at
+      title: Purchase Order Discount
+      type: object
+    PurchaseOrderLineItemCollectionResponse:
+      example:
+        data:
+        - allocations:
+          - outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+            quantity: '10'
+          cost_price: '2.50'
+          created_at: '2026-04-01T12:00:00Z'
+          id: 550e8401-e29b-41d4-a716-446655440000
+          product_id: 550e8402-e29b-41d4-a716-446655440000
+          purchase_order_id: 550e8400-e29b-41d4-a716-446655440000
+          quantity: '10'
+          updated_at: '2026-04-01T12:00:00Z'
+          version: 7
+        version:
+          max: 7
+          min: 7
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderLineItem'
+          type: array
+        version:
+          $ref: '#/components/schemas/PurchaseOrderVersion'
+      required:
+      - data
+      - version
+      title: Purchase Order Line Item Collection Response
+      type: object
+  parameters:
+    PurchaseOrderAfter:
+      description: The lower limit for the version numbers to be included in the response.
+      in: query
+      name: after
+      schema:
+        format: int64
+        minimum: 0
+        type: integer
+    PurchaseOrderBefore:
+      description: The upper limit for the version numbers to be included in the response.
+      in: query
+      name: before
+      schema:
+        format: int64
+        minimum: 0
+        type: integer
+    PurchaseOrderPageSize:
+      description: The maximum number of items to return. Defaults to 100 and cannot exceed 1000.
+      in: query
+      name: page_size
+      schema:
+        format: int64
+        maximum: 1000
+        minimum: 0
+        type: integer
+    PurchaseOrderID:
+      description: The unique identifier of the purchase order.
+      in: path
+      name: purchase_order_id
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

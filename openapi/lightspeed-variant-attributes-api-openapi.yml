@@ -1,0 +1,260 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Variant Attributes API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- name: Variant Attributes
+paths:
+  /variant_attributes:
+    get:
+      description: 'Retrieve all Variant Attributes.
+
+
+        🔒 Requires: `products:read` scope'
+      operationId: ListVariantAttributes
+      parameters:
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantAttributesListResponse'
+          description: The list of variant attributes.
+      summary: Retrieve all Variant Attributes
+      tags:
+      - Variant Attributes
+    post:
+      description: 'Variant Attributes are required when creating variants. They are used to specify what properties make a particular SKU different to another. e.g. You may
+
+        have an attribute ''Size'' that lets you differentiate variants based on their size.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: CreateVariantAttribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantAttributeCreateUpdateBody'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantAttributeCreateResponse'
+          description: The created variant attribute.
+        '422':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Error response. Failed to process variant attribute.
+      summary: Create a Variant Attribute
+      tags:
+      - Variant Attributes
+  /variant_attributes/{attribute-id}:
+    delete:
+      description: 'Note you can''t delete a variant attribute that is currently being used by a family.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: DeleteVariantAttribute
+      parameters:
+      - description: The object identifier of the Variant Attribute to delete.
+        in: path
+        name: attribute-id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantAttributeDeleteResponse'
+          description: The deleted variant attribute.
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Error response. Attribute not found.
+      summary: Delete a variant attribute
+      tags:
+      - Variant Attributes
+    get:
+      description: 'Retrieves a single Variant Attribute with the given id.
+
+
+        🔒 Requires: `products:read` scope'
+      operationId: GetVariantAttributes
+      parameters:
+      - description: The object identifier of the Variant Attribute to retrieve.
+        in: path
+        name: attribute-id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantAttributeResponse'
+          description: The variant attribute.
+      summary: Retrieve a single Variant Attribute
+      tags:
+      - Variant Attributes
+    put:
+      description: 'Updates a Variant Attribute''s name.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: UpdateVariantAttribute
+      parameters:
+      - description: The object identifier of the Variant Attribute to update.
+        in: path
+        name: attribute-id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantAttributeCreateUpdateBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantAttributeUpdateResponse'
+          description: The updated variant attribute.
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Error response. Attribute not found.
+        '422':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Error response. Failed to process variant attribute.
+      summary: Update a Variant Attribute's
+      tags:
+      - Variant Attributes
+components:
+  schemas:
+    VariantAttributeCreateResponse:
+      properties:
+        data:
+          properties:
+            created_at:
+              description: Timestamp in UTC.
+              type: string
+            id:
+              type: string
+            name:
+              type: string
+            updated_at:
+              description: Timestamp in UTC.
+              type: string
+          type: object
+      title: VariantAttributeCreateResponse
+      type: object
+    VariantAttributesListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/VariantAttributeResponse'
+          type: array
+      title: VariantAttributesListResponse
+      type: object
+    VariantAttributeResponse:
+      properties:
+        deleted_at:
+          description: Timestamp in UTC.
+          format: date-time
+          type:
+          - string
+          - 'null'
+        id:
+          example: 06564c2b-6841-11eb-f2da-d2fb9abb0c90
+          format: uuid
+          type: string
+        name:
+          example: Size
+          type: string
+      title: VariantAttributeResponse
+      type: object
+    VariantAttributeDeleteResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+          type: object
+      title: VariantAttributeDeleteResponse
+      type: object
+    VariantAttributeCreateUpdateBody:
+      properties:
+        name:
+          example: Size
+          type: string
+      required:
+      - name
+      title: VariantAttributeCreateUpdateBody
+      type: object
+    VariantAttributeUpdateResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+          type: object
+      title: VariantAttributeUpdateResponse
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

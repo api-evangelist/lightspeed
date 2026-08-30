@@ -1,0 +1,338 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Outlets API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Outlet operations
+  name: Outlets
+paths:
+  /outlets:
+    get:
+      description: 'Returns a collection of outlets.
+
+
+        🔒 Requires: `outlets:read` scope'
+      operationId: ListOutlets
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - attributes: []
+                  currency: NZD
+                  currency_symbol: $
+                  default_tax_id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  display_prices: inclusive
+                  id: b8ca3a65-0183-11e4-fbb5-2816d2677218
+                  name: Second Outlet
+                  physical_address_1: Nuffield Street
+                  physical_address_2: ''
+                  physical_city: Auckland
+                  physical_country_id: NZ
+                  physical_postcode: '1023'
+                  physical_state: Auckland
+                  physical_suburb: Newmarket
+                  time_zone: Pacific/Auckland
+                  version: 816974914
+                - attributes: []
+                  currency: NZD
+                  currency_symbol: $
+                  default_tax_id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  display_prices: inclusive
+                  id: b1e04bd8-f019-11e3-a0f5-b8ca3a64f8f4
+                  name: Main Outlet
+                  physical_address_1: Baker Street
+                  physical_address_2: ''
+                  physical_city: London
+                  physical_country_id: GB
+                  physical_postcode: ''
+                  physical_state: ''
+                  physical_suburb: ''
+                  time_zone: Pacific/Auckland
+                  version: 909257071
+                - attributes:
+                  - key: order_reference
+                    value: '1'
+                  - key: order_reference_prefix
+                    value: SYD
+                  - key: return_reference
+                    value: '1'
+                  - key: return_reference_prefix
+                    value: SYD
+                  currency: NZD
+                  currency_symbol: $
+                  default_tax_id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  display_prices: inclusive
+                  id: 06bf537b-c783-11e6-f6b9-53a81bd6b215
+                  name: Sydney
+                  physical_address_1: ''
+                  physical_address_2: ''
+                  physical_city: Sydney
+                  physical_country_id: AU
+                  physical_postcode: ''
+                  physical_state: NSW
+                  physical_suburb: ''
+                  time_zone: Australia/Sydney
+                  version: 1690497245
+                version:
+                  max: 1690497245
+                  min: 816974914
+              schema:
+                $ref: '#/components/schemas/OutletCollection'
+          description: ''
+      summary: List outlets
+      tags:
+      - Outlets
+  /outlets/{outlet_id}:
+    get:
+      description: 'Returns a single outlet with the requested ID.
+
+
+        🔒 Requires: `outlets:read` scope'
+      operationId: GetOutletByID
+      parameters:
+      - description: The outlet id
+        in: path
+        name: outlet_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  attributes: []
+                  currency: NZD
+                  currency_symbol: $
+                  default_tax_id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  display_prices: inclusive
+                  id: b8ca3a65-0183-11e4-fbb5-2816d2677218
+                  name: Second Outlet
+                  physical_address_1: Nuffield Street
+                  physical_address_2: ''
+                  physical_city: Auckland
+                  physical_country_id: NZ
+                  physical_postcode: '1023'
+                  physical_state: Auckland
+                  physical_suburb: Newmarket
+                  time_zone: Pacific/Auckland
+                  version: 816974914
+              schema:
+                $ref: '#/components/schemas/OutletResponse'
+          description: ''
+      summary: Get a single outlet
+      tags:
+      - Outlets
+components:
+  schemas:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    OutletResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Outlet'
+      title: Outlet Response
+      type: object
+    Outlet:
+      properties:
+        attributes:
+          description: The outlet attributes such as `low_stock_warning`, `order_reference`, `order_reference_prefix`, `return_reference`, `return_reference_prefix`.
+          items:
+            $ref: '#/components/schemas/Attribute'
+          type: array
+        currency:
+          description: Currency name.
+          type: string
+        currency_symbol:
+          description: Currency symbol.
+          type: string
+        default_tax_id:
+          deprecated: true
+          description: Default tax id used for sales in this outlet. **deprecated**
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        display_prices:
+          description: Indicates whether prices in this outlet should be displayed as tax-inclusive.
+          enum:
+          - inclusive
+          - exclusive
+          type: string
+        email:
+          description: Specified email for the outlet.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        latitude:
+          description: Geographical latitude of the outlet.
+          type:
+          - string
+          - 'null'
+        longitude:
+          description: Geographical longitude of the outlet.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The outlet name.
+          type: string
+        phone:
+          description: Contact phone number for the outlet.
+          type:
+          - string
+          - 'null'
+        physical_address_1:
+          description: Physical address, line 1.
+          type:
+          - string
+          - 'null'
+        physical_address_2:
+          description: Physical address, line 2.
+          type:
+          - string
+          - 'null'
+        physical_city:
+          description: Physical address, city.
+          type:
+          - string
+          - 'null'
+        physical_country_id:
+          description: Physical address, country code.
+          type:
+          - string
+          - 'null'
+        physical_postcode:
+          description: Physical address, post code.
+          type:
+          - string
+          - 'null'
+        physical_state:
+          description: Physical address, state.
+          type:
+          - string
+          - 'null'
+        physical_suburb:
+          description: Physical address, suburb.
+          type:
+          - string
+          - 'null'
+        time_zone:
+          description: Outlet timezone. **read only**
+          type:
+          - string
+          - 'null'
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - id
+      - name
+      - default_tax_id
+      - currency
+      - display_prices
+      - time_zone
+      - currency_symbol
+      - attributes
+      - version
+      title: Outlet
+      type: object
+    Attribute:
+      properties:
+        key:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
+      required:
+      - key
+      - value
+      title: Attribute
+      type: object
+    OutletCollection:
+      properties:
+        data:
+          description: An array of Outlet objects  wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Outlet'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Outlet Collection
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

@@ -1,0 +1,206 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Packing Slips API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Packing slip rendering operations
+  name: Packing Slips
+paths:
+  /packing_slip/{fulfillment_id}:
+    get:
+      description: 'Renders a packing slip for a fulfillment as an HTML document (which can be
+
+        printed or converted to PDF).
+
+
+        A packing slip lists the items to be packed and shipped for a fulfillment, along with
+
+        the customer delivery address and any relevant serial number custom fields.
+
+
+        Use the optional `lang` query parameter to control the language of the static template
+
+        strings (labels and headings). When omitted or invalid, the packing slip defaults to
+
+        `en-US`.
+
+
+        🔒 Requires: `sales:read` scope'
+      operationId: getPackingSlip
+      parameters:
+      - description: The unique identifier of the fulfillment to render a packing slip for. Must be a positive integer.
+        example: 12345
+        in: path
+        name: fulfillment_id
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+      - description: BCP 47 language tag used to localize the static template strings on the packing slip. Defaults to `en-US` when omitted or unrecognized.
+        example: en-US
+        in: query
+        name: lang
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/html:
+              schema:
+                description: The rendered packing slip as an HTML document.
+                type: string
+          description: Successful response with the rendered packing slip HTML
+        '400':
+          description: Bad Request — the fulfillment ID is missing, non-numeric, or not a positive integer
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found — the fulfillment does not exist
+        '406':
+          description: Not Acceptable — the fulfillment has no items to render
+      summary: Render Packing Slip
+      tags:
+      - Packing Slips
+  /partial_packing_slip/{fulfillment_id}:
+    post:
+      description: 'Renders a partial packing slip for a fulfillment as an HTML document (which can be
+
+        printed or converted to PDF).
+
+
+        Note: although the path parameter is named `fulfillment_id`, this value is the
+
+        pick-list-group ID used by the packing-slip flow.
+
+
+        Unlike the full packing slip, a partial packing slip includes only the specified subset
+
+        of sale line items and the exact quantities being packed. This is useful when a
+
+        fulfillment is shipped across multiple parcels or in multiple stages.
+
+
+        Each entry in `packed_line_items` must reference a valid sale line item and specify a
+
+        positive quantity that does not exceed the quantity already packed on the pick lists.
+
+
+        Use the optional `lang` field to control the language of the static template strings.
+
+        When omitted or invalid, the packing slip defaults to `en-US`.
+
+
+        🔒 Requires: `sales:read` scope'
+      operationId: getPartialPackingSlip
+      parameters:
+      - description: The unique identifier of the fulfillment to render a partial packing slip for. Must be a positive integer.
+        example: 12345
+        in: path
+        name: fulfillment_id
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialPackingSlipRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            text/html:
+              schema:
+                description: The rendered partial packing slip as an HTML document.
+                type: string
+          description: Successful response with the rendered partial packing slip HTML
+        '400':
+          description: 'Bad Request — one of the following:
+
+            - the fulfillment ID is missing, non-numeric, or not a positive integer
+
+            - the request body is missing or empty
+
+            - `packed_line_items` is empty or contains an item without a `sale_line_item_id`
+
+            - a packed line item quantity is not a positive finite number
+
+            - a packed line item quantity exceeds the quantity packed on the pick lists'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found — the fulfillment does not exist
+        '406':
+          description: Not Acceptable — the fulfillment has no items to render
+      summary: Render Partial Packing Slip
+      tags:
+      - Packing Slips
+components:
+  schemas:
+    PartialPackingSlipRequest:
+      description: Request body describing the subset of line items and quantities to render on a partial packing slip
+      properties:
+        lang:
+          description: BCP 47 language tag used to localize the static template strings on the packing slip. Defaults to `en-US` when omitted or unrecognized.
+          example: en-US
+          type: string
+        packed_line_items:
+          description: The sale line items and quantities to include on the partial packing slip. Must contain at least one item.
+          items:
+            $ref: '#/components/schemas/PackedLineItem'
+          minItems: 1
+          type: array
+      required:
+      - packed_line_items
+      title: Partial Packing Slip Request
+      type: object
+    PackedLineItem:
+      description: A single sale line item and the quantity to include on the partial packing slip
+      properties:
+        quantity:
+          description: The quantity of this line item to pack. Must be a positive finite number and must not exceed the quantity already packed on the pick lists.
+          example: 2
+          format: double
+          type: number
+        sale_line_item_id:
+          description: The ID of the sale line item to include on the packing slip
+          example: 81b37e5f-aa50-4fe3-95d3-a3cec73a7e2c
+          format: uuid
+          type: string
+      required:
+      - sale_line_item_id
+      - quantity
+      title: Packed Line Item
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

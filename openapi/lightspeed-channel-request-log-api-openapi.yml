@@ -1,0 +1,387 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Channel Request Log API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: A log of requests and responses between Lightspeed and an integration channel.
+  name: Channel Request Log
+paths:
+  /channel_requests:
+    get:
+      description: 'Returns a list of request log records.
+
+
+        🔒 Requires: `channels:read` scope'
+      operationId: listRequests
+      parameters:
+      - description: Limit the requests to 1 or more status codes.
+        in: query
+        name: status_code
+        schema:
+          type: string
+      - description: Limit the requests to 1 or more request methods.
+        in: query
+        name: request_method
+        schema:
+          type: string
+      - description: Limit requests to before this RFC3339 date.
+        in: query
+        name: occurred_before
+        schema:
+          format: date-time
+          type: string
+      - description: Limit requests to after this RFC3339 date.
+        in: query
+        name: occurred_after
+        schema:
+          format: date-time
+          type: string
+      - description: Limit requests to those with status codes less than this value.
+        in: query
+        name: status_code_before
+        schema:
+          type: string
+      - description: Limit requests to those with status codes greater than this value.
+        in: query
+        name: status_code_after
+        schema:
+          type: string
+      - description: If provided, request logs will be limited to the supplied channel id. If no id is provided, only requests logged with no channel id will be returned. Requests with no channel id indicate requests made during the setup process.
+        in: query
+        name: channel_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - grouping_id: job-5aa0bfd3f948109e314610883da6a6edf4c826db-1544662705
+                  id: '1073019276397793280'
+                  occurred_at: '2018-12-13T00:58:25.919065Z'
+                  request: 'POST /wp-json/wc/v2/products/batch HTTP/1.1
+
+                    Host: woocommerce-domain.com
+
+                    User-Agent: vend/integrations/268506b80c1d/go1.11
+
+                    Content-Length: 229
+
+                    Authorization: [REDACTED]
+
+                    Content-Type: application/json
+
+                    Accept-Encoding: gzip
+
+
+                    {"update":[{"id":8,"permalink":"","date_created":"","date_created_gmt":"0001-01-01T00:00:00","date_modified":"","date_modified_gmt":"0001-01-01T00:00:00","price":"0","stock_quantity":"0","shipping_class_id":0,"variations":null}]}'
+                  request_method: POST
+                  response: 'HTTP/2.0 200 OK
+
+                    Content-Length: 2137
+
+                    Access-Control-Allow-Headers: Authorization, Content-Type
+
+                    Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages
+
+                    Allow: POST, PUT, PATCH
+
+                    Cache-Control: no-cache, must-revalidate, max-age=0
+
+                    Content-Type: application/json; charset=UTF-8
+
+                    Date: Thu, 13 Dec 2018 00:58:25 GMT
+
+                    Expires: Wed, 11 Jan 1984 05:00:00 GMT
+
+                    Link: <https://woocommerce-domain.com/wp-json/>; rel="https://api.w.org/"
+
+                    Server: nginx/1.14.1
+
+                    Strict-Transport-Security: max-age=31536000
+
+                    X-Content-Type-Options: nosniff
+
+                    X-Powered-By: PHP/7.2.12
+
+                    X-Robots-Tag: noindex
+
+
+                    {"update":[{"id":8,"name":"Simple + All 2","slug":"simple1","permalink":"https:\/\/woocommerce-domain.com\/product\/simple1\/","date_created":"2018-12-12T23:39:14","date_created_gmt":"2018-12-12T23:39:14","date_modified":"2018-12-13T00:58:25","date_modified_gmt":"2018-12-13T00:58:25","type":"simple","status":"publish","featured":false,"catalog_visibility":"visible","description":"Simple product","short_description":"","sku":"1000001","price":"40","regular_price":"40","sale_price":"","date_on_sale_from":null,"date_on_sale_from_gmt":null,"date_on_sale_to":null,"date_on_sale_to_gmt":null,"price_html":"<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&#36;<\/span>40.00<\/span>","on_sale":false,"purchasable":true,"total_sales":0,"virtual":false,"downloadable":false,"downloads":[],"download_limit":-1,"download_expiry":-1,"external_url":"","button_text":"","tax_status":"taxable","tax_class":"","manage_stock":true,"stock_quantity":0,"in_stock":false,"backorders":"no","backorders_allowed":false,"backordered":false,"sold_individually":false,"weight":"","dimensions":{"length":"","width":"","height":""},"shipping_required":true,"shipping_taxable":true,"shipping_class":"","shipping_class_id":0,"reviews_allowed":true,"average_rating":"0","rating_count":0,"related_ids":[],"upsell_ids":[],"cross_sell_ids":[],"parent_id":0,"purchase_note":"","categories":[{"id":16,"name":"Type 1","slug":"type-1"}],"tags":[{"id":17,"name":"Tag2","slug":"tag2"}],"images":[{"id":0,"date_created":"2018-12-13T00:58:25","date_created_gmt":"2018-12-13T00:58:25","date_modified":"2018-12-13T00:58:25","date_modified_gmt":"2018-12-13T00:58:25","src":"https:\/\/woocommerce-domain.com\/wp-content\/plugins\/woocommerce\/assets\/images\/placeholder.png","name":"Placeholder","alt":"Placeholder","position":0}],"attributes":[],"default_attributes":[],"variations":[],"grouped_products":[],"menu_order":0,"meta_data":[],"_links":{"self":[{"href":"https:\/\/woocommerce-domain.com\/wp-json\/wc\/v2\/products\/8"}],"collection":[{"href":"https:\/\/woocommerce-domain.com\/wp-json\/wc\/v2\/products"}]}}]}'
+                  status_code: 200
+                  url: https://woocommerce-domain.com/wp-json/wc/v2/products/batch
+              schema:
+                $ref: '#/components/schemas/RequestCollectionResponse'
+          description: ''
+      summary: List request records
+      tags:
+      - Channel Request Log
+  /channel_requests/{request_log_id}:
+    get:
+      description: 'Returns a single request log entry with a specific ID.
+
+
+        🔒 Requires: `channels:read` scope'
+      operationId: getSingleRequest
+      parameters:
+      - description: The request log id
+        in: path
+        name: request_log_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  grouping_id: job-5aa0bfd3f948109e314610883da6a6edf4c826db-1544662705
+                  id: '1073019276397793280'
+                  occurred_at: '2018-12-13T00:58:25.919065Z'
+                  request: 'POST /wp-json/wc/v2/products/batch HTTP/1.1
+
+                    Host: woocommerce-domain.com
+
+                    User-Agent: vend/integrations/268506b80c1d/go1.11
+
+                    Content-Length: 229
+
+                    Authorization: [REDACTED]
+
+                    Content-Type: application/json
+
+                    Accept-Encoding: gzip
+
+
+                    {"update":[{"id":8,"permalink":"","date_created":"","date_created_gmt":"0001-01-01T00:00:00","date_modified":"","date_modified_gmt":"0001-01-01T00:00:00","price":"0","stock_quantity":"0","shipping_class_id":0,"variations":null}]}'
+                  request_method: POST
+                  response: 'HTTP/2.0 200 OK
+
+                    Content-Length: 2137
+
+                    Access-Control-Allow-Headers: Authorization, Content-Type
+
+                    Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages
+
+                    Allow: POST, PUT, PATCH
+
+                    Cache-Control: no-cache, must-revalidate, max-age=0
+
+                    Content-Type: application/json; charset=UTF-8
+
+                    Date: Thu, 13 Dec 2018 00:58:25 GMT
+
+                    Expires: Wed, 11 Jan 1984 05:00:00 GMT
+
+                    Link: <https://woocommerce-domain.com/wp-json/>; rel="https://api.w.org/"
+
+                    Server: nginx/1.14.1
+
+                    Strict-Transport-Security: max-age=31536000
+
+                    X-Content-Type-Options: nosniff
+
+                    X-Powered-By: PHP/7.2.12
+
+                    X-Robots-Tag: noindex
+
+
+                    {"update":[{"id":8,"name":"Simple + All 2","slug":"simple1","permalink":"https:\/\/woocommerce-domain.com\/product\/simple1\/","date_created":"2018-12-12T23:39:14","date_created_gmt":"2018-12-12T23:39:14","date_modified":"2018-12-13T00:58:25","date_modified_gmt":"2018-12-13T00:58:25","type":"simple","status":"publish","featured":false,"catalog_visibility":"visible","description":"Simple product","short_description":"","sku":"1000001","price":"40","regular_price":"40","sale_price":"","date_on_sale_from":null,"date_on_sale_from_gmt":null,"date_on_sale_to":null,"date_on_sale_to_gmt":null,"price_html":"<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\">&#36;<\/span>40.00<\/span>","on_sale":false,"purchasable":true,"total_sales":0,"virtual":false,"downloadable":false,"downloads":[],"download_limit":-1,"download_expiry":-1,"external_url":"","button_text":"","tax_status":"taxable","tax_class":"","manage_stock":true,"stock_quantity":0,"in_stock":false,"backorders":"no","backorders_allowed":false,"backordered":false,"sold_individually":false,"weight":"","dimensions":{"length":"","width":"","height":""},"shipping_required":true,"shipping_taxable":true,"shipping_class":"","shipping_class_id":0,"reviews_allowed":true,"average_rating":"0","rating_count":0,"related_ids":[],"upsell_ids":[],"cross_sell_ids":[],"parent_id":0,"purchase_note":"","categories":[{"id":16,"name":"Type 1","slug":"type-1"}],"tags":[{"id":17,"name":"Tag2","slug":"tag2"}],"images":[{"id":0,"date_created":"2018-12-13T00:58:25","date_created_gmt":"2018-12-13T00:58:25","date_modified":"2018-12-13T00:58:25","date_modified_gmt":"2018-12-13T00:58:25","src":"https:\/\/woocommerce-domain.com\/wp-content\/plugins\/woocommerce\/assets\/images\/placeholder.png","name":"Placeholder","alt":"Placeholder","position":0}],"attributes":[],"default_attributes":[],"variations":[],"grouped_products":[],"menu_order":0,"meta_data":[],"_links":{"self":[{"href":"https:\/\/woocommerce-domain.com\/wp-json\/wc\/v2\/products\/8"}],"collection":[{"href":"https:\/\/woocommerce-domain.com\/wp-json\/wc\/v2\/products"}]}}]}'
+                  status_code: 200
+                  url: https://woocommerce-domain.com/wp-json/wc/v2/products/batch
+              schema:
+                $ref: '#/components/schemas/RequestSingleResponse'
+          description: ''
+      summary: Get a single request log
+      tags:
+      - Channel Request Log
+  /channel_requests/{request_log_id}.txt:
+    get:
+      description: 'Returns a text representation of a single request log entry with a specific ID.
+
+
+        🔒 Requires: `channels:read` scope'
+      operationId: getSingleRequestText
+      parameters:
+      - description: The request log id
+        in: path
+        name: request_log_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              example: "ID                   1074422697280679936\nGroupingID           api-TOx0VMzYJX\nURL                  https://woo-i9n.dev.vendhq.works/wp-json/wc/v2/system_status\nRequestMethod        GET\nRequest              GET /wp-json/wc/v2/system_status HTTP/1.1\n                     Host: woo-i9n.dev.vendhq.works\n                     User-Agent: vend/integrations/8e029c23748a/go1.10\n                     Authorization: [REDACTED]\n                     Content-Type: application/json\n                     Accept-Encoding: gzip\n\n\nStatusCode           401\nResponse             HTTP/2.0 401 Unauthorized\n                     Content-Length: 107\n                     Access-Control-Allow-Headers: Authorization, Content-Type\n                     Access-Control-Expose-Headers: X-WP-Total, X-WP-TotalPages\n                     Content-Type: application/json; charset=UTF-8\n                     Date: Sun, 16 Dec 2018 21:55:07 GMT\n                     Link: <https://woo-i9n.dev.vendhq.works/wp-json/>; rel=\"https://api.w.org/\"\n                     Server: nginx/1.14.0\n                     Strict-Transport-Security: max-age=31536000\n                     X-Content-Type-Options: nosniff\n                     X-Powered-By: PHP/7.2.12\n                     X-Robots-Tag: noindex\n\n                     {\"code\":\"woocommerce_rest_cannot_view\",\"message\":\"Sorry, you cannot list resources.\",\"data\":{\"status\":401}}"
+              schema:
+                description: Plain text representation of the request object.
+                type: string
+          description: ''
+      summary: Get a single request log as text
+      tags:
+      - Channel Request Log
+  /channels:
+    get:
+      description: 'Returns a list of configured channels.
+
+
+        🔒 Requires: `channels:read` scope'
+      operationId: listChannels
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCollectionResponse'
+          description: ''
+      summary: List channel records
+      tags:
+      - Channel Request Log
+components:
+  schemas:
+    RequestLog:
+      description: An object representing a single request and response made to a channel.
+      properties:
+        error:
+          description: f an error occurred with the request, such as an inability to resolve a hostname, connect or TLS errors, this will be recorded here. Only errors with the ability to make the request are logged here, rather than errors when interpreting a response.
+          type:
+          - string
+          - 'null'
+        grouping_id:
+          description: An identifier used to group together requests that occurred together as part of the same job or Lightspeed Retail (X-Series) API request.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        occurred_at:
+          description: An RFC3339 representation of the time at which the request was logged.
+          format: date-time
+          type: string
+        request:
+          description: A dump of the full request information in HTTP format, including headers and any request body.
+          type: string
+        request_method:
+          description: The HTTP method used to make the request.
+          enum:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          type: string
+        response:
+          description: A dump of the full response information in HTTP format, including headers and any response body.
+          type: string
+        status_code:
+          description: The HTTP status code received in the response.
+          type: number
+      required:
+      - grouping_id
+      - id
+      - occurred_at
+      - request
+      - request_method
+      - response
+      title: Request Log
+      type: object
+    RequestSingleResponse:
+      description: A single request log record wrapped in the top-level data object.
+      properties:
+        data:
+          $ref: '#/components/schemas/RequestLog'
+      title: Request Log response
+      type: object
+    ChannelCollectionResponse:
+      description: A collection of channel records wrapped in a top-level data object.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Channel'
+          type: array
+      title: Channels response
+      type: object
+    Channel:
+      description: An object representing a single channel.
+      properties:
+        channel_type:
+          description: The type of channel this is.
+          enum:
+          - woocommerce
+          type: string
+        created_at:
+          description: An RFC3339 representation of the time at which the channel was created.
+          format: date-time
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        inventory_outlet_ids:
+          description: IDs of the outlets that count towards inventory.
+          items:
+            minLength: 1
+            type: string
+          type: array
+        payment_type_id:
+          description: The payment type id that sale payments will be associated to.
+          type: string
+        products_last_imported_at:
+          description: An RFC3339 representation of the time at which products were last imported.
+          format: date-time
+          type: string
+        register_id:
+          description: The register id that sales will be associated to.
+          type: string
+        sales_last_imported_at:
+          description: An RFC3339 representation of the time at which sales were last imported.
+          format: date-time
+          type: string
+        store_url:
+          description: The store identifier.
+          type: string
+      required:
+      - channel_type
+      - id
+      - inventory_outlet_ids
+      - payment_type_id
+      - products_last_imported_at
+      - register_id
+      - sales_last_imported_at
+      - store_url
+      title: Channel
+      type: object
+    RequestCollectionResponse:
+      description: A collection of request log records wrapped in the top-level data object.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/RequestLog'
+          type: array
+      title: Request Logs response
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

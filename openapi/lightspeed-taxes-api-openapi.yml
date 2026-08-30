@@ -1,0 +1,311 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Taxes API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Tax operations
+  name: Taxes
+paths:
+  /taxes:
+    get:
+      description: 'Returns a paginated list of taxes.
+
+
+        🔒 Requires: `taxes:read` scope'
+      operationId: ListTaxes
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - deleted_at: null
+                  display_name: No Tax
+                  id: b1cecdf6-f019-11e3-a0f5-b8ca3a64f8f4
+                  is_default: false
+                  name: No Tax
+                  rates:
+                  - display_name: No Tax
+                    id: b1cfbc85-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: No Tax
+                    rate: 0
+                  version: 391487
+                - deleted_at: null
+                  display_name: GST
+                  id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  is_default: true
+                  name: GST
+                  rates:
+                  - display_name: GST
+                    id: b1dfed8b-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: GST
+                    rate: 0.15
+                  version: 391490
+                - deleted_at: null
+                  display_name: VAT
+                  id: dc85058a-a683-11e5-e112-4600acd0096a
+                  is_default: false
+                  name: VAT
+                  rates:
+                  - display_name: VAT
+                    id: accff2bf-4600-11e5-8112-dc85058aa69e
+                    name: VAT
+                    rate: 0.2
+                  version: 478922
+              schema:
+                $ref: '#/components/schemas/TaxCollection'
+          description: ''
+      summary: List taxes
+      tags:
+      - Taxes
+    post:
+      description: 'Creates a new tax.
+
+
+        🔒 Requires: `taxes:write` scope'
+      operationId: CreateTax
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaxRequest'
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  deleted_at: null
+                  display_name: GST
+                  id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  is_default: true
+                  name: GST
+                  rates:
+                  - display_name: GST
+                    id: b1dfed8b-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: GST
+                    rate: 0.15
+                  version: 391490
+              schema:
+                $ref: '#/components/schemas/TaxResponse'
+          description: Tax created successfully.
+        '409':
+          description: Conflict - A tax with the given name already exists.
+      summary: Create tax
+      tags:
+      - Taxes
+  /taxes/{tax_id}:
+    get:
+      description: 'Returns a single tax with a given ID.
+
+
+        🔒 Requires: `taxes:read` scope'
+      operationId: GetTaxByID
+      parameters:
+      - description: The tax id.
+        in: path
+        name: tax_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  deleted_at: null
+                  display_name: GST
+                  id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                  is_default: true
+                  name: GST
+                  rates:
+                  - display_name: GST
+                    id: b1dfed8b-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: GST
+                    rate: 0.15
+                  version: 391490
+              schema:
+                $ref: '#/components/schemas/TaxResponse'
+          description: ''
+      summary: Get a single tax
+      tags:
+      - Taxes
+components:
+  schemas:
+    RateRule:
+      description: 'Rule that applies to a rate.
+
+        E.g.: Tax rate that applies for clothing and footwear costing $90 or more.'
+      properties:
+        tax_code:
+          description: Label assigned to a product which indicates the tax obligation.
+          enum:
+          - vend_clothing_footwear
+          example: vend_clothing_footwear
+          type: string
+        type:
+          description: Type of rule to apply.
+          enum:
+          - threshold
+          example: threshold
+          type: string
+        value:
+          description: An optional value that can be used for the rule.
+          example: 90
+          type: number
+      required:
+      - tax_code
+      - type
+      title: Rate Rule
+      type: object
+    TaxRate:
+      properties:
+        display_name:
+          description: The name of the tax rate used for display.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        name:
+          description: The name of the tax rate.
+          type: string
+        rate:
+          description: Tax rate value. `0.1 = 10%`.
+          format: double
+          type: number
+        rules:
+          description: Rules that apply to the rate for tax exclusive outlets.
+          items:
+            $ref: '#/components/schemas/RateRule'
+          type: array
+      required:
+      - display_name
+      - id
+      - name
+      - rate
+      title: Tax rate
+      type: object
+    TaxCollection:
+      properties:
+        data:
+          description: An array of tax objects.
+          items:
+            $ref: '#/components/schemas/Tax'
+          type: array
+      required:
+      - data
+      title: Tax Collection
+      type: object
+    Tax:
+      properties:
+        deleted_at:
+          description: The deletion timestamp.
+          type:
+          - string
+          - 'null'
+        display_name:
+          description: The name of the tax used for display.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        is_default:
+          description: Indicates whether the tax is used as the default one.
+          type: boolean
+        name:
+          description: The name of the tax.
+          type: string
+        rates:
+          items:
+            $ref: '#/components/schemas/TaxRate'
+          type: array
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - deleted_at
+      - display_name
+      - id
+      - is_default
+      - version
+      title: Tax
+      type: object
+    CreateTaxRequest:
+      properties:
+        clothing_footwear_exemption:
+          description: Whether the tax is exempt for clothing and footwear. This is applicable for tax exclusive retailers only.
+          type: boolean
+        clothing_footwear_threshold_value:
+          description: The threshold value for clothing and footwear exemption. This is applicable for tax exclusive retailers only.
+          format: double
+          type: number
+        name:
+          description: The Tax name.
+          type: string
+        rate:
+          description: The Tax rate percentage.
+          example: 0.1
+          format: double
+          type: number
+        tax_over_threshold:
+          description: Whether the tax applies over the threshold. This is applicable for tax exclusive retailers only.
+          type: boolean
+      required:
+      - name
+      - rate
+      title: CreateTaxRequest
+      type: object
+    TaxResponse:
+      description: A response for a single tax GET request.
+      properties:
+        data:
+          $ref: '#/components/schemas/Tax'
+      title: Tax Response
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

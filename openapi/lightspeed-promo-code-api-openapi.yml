@@ -1,0 +1,96 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Promo Code API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- name: Promo Code
+paths:
+  /promocode/bulk:
+    delete:
+      description: 'Delete promo codes, by promocode IDs
+
+
+        🔒 Requires: `promotions:write` scope'
+      operationId: DeletePromoCodesBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+              type: array
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDeletePromoCodesResponse'
+          description: Remaining promo codes
+      summary: Delete promo codes
+      tags:
+      - Promo Code
+  /promocode/bulk/active:
+    post:
+      description: 'Get promo codes, with their associated promotions.
+
+
+        🔒 Requires: `promotions:read` scope'
+      operationId: GetActivePromoCodesBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                type: string
+              type: array
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoCodesMap'
+          description: ''
+      summary: Get the active status of promo codes
+      tags:
+      - Promo Code
+components:
+  schemas:
+    PromotionDeletePromoCodesResponse:
+      description: An array of codes which were not deleted.
+      items:
+        type: string
+      title: Promotion Promo Codes response
+      type: array
+    PromoCodesMap:
+      additionalProperties:
+        description: A map of promo codes to booleans.
+        type: boolean
+      title: Map of Promo Codes to booleans
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

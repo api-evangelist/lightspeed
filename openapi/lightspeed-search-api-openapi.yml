@@ -1,0 +1,347 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Search API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Search related operations
+  name: Search
+paths:
+  /search:
+    get:
+      description: "This endpoint allows integrators to search all of the most commonly used resources, **sales**, **products** and **customers**. Each type allowing search by a number of different parameters.\n### Supported resource types and attributes\n- **Sales**\n  - date_from\n  - date_to\n  - time_from\n  - time_to\n  - timezone\n  - status\n  - state\n  - attributes\n  - invoice_number\n  - customer_id\n  - user_id\n  - outlet_id\n  - register_id\n  - payment_type_id\n  - product_id\n  - sale_total\n  - customer_name\n- **Products**\n  - sku **_(values must be lowercased)_**\n  - supplier_id\n  - brand_id\n  - tag_id\n  - product_type_id\n  - variant_parent_id\n- **Customers**\n  - customer_code\n  - first_name\n  - last_name\n  - company_name\n  - mobile\n  - phone\n  - email\n### Sorting and pagination\nUnlike other endpoints, search results from this endpoint can be sorted by any of the attributes above. Because of that, the default [pagination](https://x-series-api.lightspeedhq.com/docs/pagination#api-20) mechanism is not appropriate for this endpoint. Instead, this endpoint uses `offset` and `page_size` attributes to handle search results spanning multiple pages.\n\n\U0001F512 Requires one of the following:\n- `sales:read` scope when searching for sales\n- `products:read` scope when searching for products\n- `customers:read` scope when searching for customers\n"
+      operationId: Search
+      parameters:
+      - description: The entity type to search for.
+        in: query
+        name: type
+        required: true
+        schema:
+          enum:
+          - sales
+          - products
+          - customers
+          type: string
+      - description: The attribute used to sort items returned in the response. Supported values depend on the entity type.
+        in: query
+        name: order_by
+        schema:
+          type: string
+      - description: Sorting direction.
+        in: query
+        name: order_direction
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+      - description: The maximum number of objects to be included in the response, currently limited to 1000. Specifying more than 1000 will result in 1000 objects being returned.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: The number of objects to be "skipped" for the response. Used for pagination.
+        in: query
+        name: offset
+        schema:
+          type: integer
+      - description: The `id` of the object to be included in the response.
+        in: query
+        name: _id
+        schema:
+          format: UUID
+          type: string
+      - description: The `id` of the object to be excluded from the response.
+        in: query
+        name: -_id
+        schema:
+          format: UUID
+          type: string
+      - description: Indicated whether deleted objects should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      - deprecated: true
+        description: '**SALES** Status of the sale to find.
+
+          Can be used multiple times to search for objects with different values of this parameter.
+
+          Deprecated, please use state and attributes instead.'
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: '**SALES** State of the sale to find.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: state
+        schema:
+          type: string
+      - description: '**SALES** Attributes of the sale to find.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: attributes
+        schema:
+          items:
+            type: string
+          type: array
+      - description: '**SALES** Invoice number of the sale.'
+        in: query
+        name: invoice_number
+        schema:
+          type: string
+      - description: '**SALES** The `ID` of the customer associated with the sales.'
+        in: query
+        name: customer_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**SALES** The `ID` of the user associated with the sales.'
+        in: query
+        name: user_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**SALES** The `ID` of the outlet associated with the sales.'
+        in: query
+        name: outlet_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**SALES** Lower limit for the sale date as UTC timestamp. Format: `2016-08-08T12:00:00Z`.'
+        in: query
+        name: date_from
+        schema:
+          type: string
+      - description: '**SALES** Upper limit for the sale date as UTC timestamp. Format: `2016-08-08T12:00:00Z`.'
+        in: query
+        name: date_to
+        schema:
+          type: string
+      - description: '**SALES** Lower time-of-day limit (in local time) for filtering sales. Format: `H:MM` or `HH:MM` (e.g. `09:00`). Use with `timezone` for accurate local-time filtering. When only `time_from` is provided, `time_to` defaults to `24:00`.'
+        in: query
+        name: time_from
+        schema:
+          type: string
+      - description: '**SALES** Upper time-of-day limit (in local time) for filtering sales. Format: `H:MM` or `HH:MM` (e.g. `17:00`). Use with `timezone` for accurate local-time filtering. When only `time_to` is provided, `time_from` defaults to `00:00`.'
+        in: query
+        name: time_to
+        schema:
+          type: string
+      - description: '**SALES** IANA timezone identifier used to interpret `time_from` and `time_to` (e.g. `America/Toronto`). Defaults to UTC when omitted. See the [list of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for valid values.'
+        in: query
+        name: timezone
+        schema:
+          type: string
+      - description: '**SALES** The ID of the register associated with the sale.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: register_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**SALES** The ID of a payment type used in the sale.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: payment_type_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**SALES** The ID of a product included in the sale.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: product_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**SALES** The exact total amount of the sale to find.'
+        in: query
+        name: sale_total
+        schema:
+          format: float
+          type: number
+      - description: '**SALES** The name of the customer associated with the sale. Supports prefix matching.'
+        in: query
+        name: customer_name
+        schema:
+          type: string
+      - description: '**PRODUCTS** The SKU of products to include in the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: sku
+        schema:
+          type: string
+      - description: '**PRODUCTS** The SKU of products to exclude from the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: -sku
+        schema:
+          type: string
+      - description: '**PRODUCTS** The ID of the supplier associated with the product to include in the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: supplier_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the supplier associated with the product to exclude from the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: -supplier_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the brand associated with the product to include in the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: brand_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the brand associated with the product to exclude from the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: -brand_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the tag associated with the product to include in the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: tag_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the brand associated with the product to exclude from the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: -tag_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the product type associated with the product to include in the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: product_type_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the product type associated with the product to exclude from the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: -product_type_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the variant parent product associated with the product to include in the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: variant_parent_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**PRODUCTS** The ID of the variant parent product associated with the product to exclude from the search.
+
+          Can be used multiple times to search for objects with different values of this parameter.'
+        in: query
+        name: -variant_parent_id
+        schema:
+          format: UUID
+          type: string
+      - description: '**CUSTOMERS** The `customer_code` associated with the customer to find.'
+        in: query
+        name: customer_code
+        schema:
+          type: string
+      - description: '**CUSTOMERS** The `email` address associated with the customer to find.'
+        in: query
+        name: email
+        schema:
+          type: string
+      - description: '**CUSTOMERS** The `first_name` for the customers to find.'
+        in: query
+        name: first_name
+        schema:
+          type: string
+      - description: '**CUSTOMERS** The `last_name` for the customers to find.'
+        in: query
+        name: last_name
+        schema:
+          type: string
+      - description: '**CUSTOMERS** The `company_name` for the customers to find.'
+        in: query
+        name: company_name
+        schema:
+          type: string
+      - description: '**CUSTOMERS** The `mobile number` for the customers to find.'
+        in: query
+        name: mobile
+        schema:
+          type: string
+      - description: '**CUSTOMERS** The `phone number` for the customers to find.'
+        in: query
+        name: phone
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+          description: ''
+      summary: Search for resources
+      tags:
+      - Search
+components:
+  schemas:
+    SearchResponse:
+      properties:
+        data:
+          description: 'A collection of objects of one of the supported types: sales, products or customers.'
+          items:
+            type: object
+          type: array
+      title: Search Response
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

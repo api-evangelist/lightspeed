@@ -1,0 +1,1434 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Service Orders API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Service orders and Job management
+  name: Service Orders
+paths:
+  /service_items/customer/{customer_id}:
+    get:
+      description: 'Returns a paginated list of customer''s service items.
+
+
+        🔒 Requires: `services:read` scope'
+      operationId: ListServiceItems
+      parameters:
+      - description: The customer id
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          type: string
+      - description: The lower limit for the service id to be included in the response. For proper pagination, it needs to be the item id of the last item in the response from your previous request.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: limit
+        schema:
+          default: 100
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                has_next: false
+                job_items:
+                - created_at: '2025-08-12T18:46:30.216844Z'
+                  created_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+                  initial_condition: Screen cracked, minor water damage
+                  item_details:
+                    description: Customer's primary phone with cracked screen
+                    serial_number: F2LXN1234A
+                  item_id: e6fd369e-e579-4768-b12d-6754af620f2d
+                  item_name: iPhone 15 Pro
+                  updated_at: '2025-08-12T18:46:30.216844Z'
+                  updated_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+                - created_at: '2025-08-12T18:44:14.387026Z'
+                  created_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+                  initial_condition: Spacebar key not responding consistently
+                  item_details:
+                    description: 13-inch laptop with keyboard issues
+                    serial_number: C02D12345678
+                  item_id: a57dc842-1075-458a-ab98-f658c4f985de
+                  item_name: MacBook Air M2
+                  updated_at: '2025-08-12T18:44:14.387026Z'
+                  updated_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+                total_job_items: 2
+              schema:
+                properties:
+                  has_next:
+                    type: boolean
+                  job_items:
+                    items:
+                      properties:
+                        created_at:
+                          type: string
+                        created_by:
+                          type: string
+                        initial_condition:
+                          type: string
+                        item_details:
+                          properties:
+                            description:
+                              type: string
+                            serial_number:
+                              type: string
+                          type: object
+                        item_id:
+                          type: string
+                        item_name:
+                          type: string
+                        updated_at:
+                          type: string
+                        updated_by:
+                          type: string
+                      type: object
+                    type: array
+                  total_job_items:
+                    type: integer
+                type: object
+          description: ''
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+          description: Unauthorized
+      summary: List a customer's service items
+      tags:
+      - Service Orders
+  /service_statuses:
+    get:
+      description: 'Returns all service statuses for the retailer, including system defaults and custom ones.
+
+
+        **Only available with the Service Orders module enabled.**
+
+
+        🔒 Requires: `services:read` scope'
+      operationId: ListServiceStatuses
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+              - created_at: '2026-01-15T10:00:00Z'
+                display_name: New
+                display_order: 1
+                id: '2038696150067306496'
+                retailer_id: 00000000-0001-0001-0001-000000000001
+                status_key: NEW
+                system_default: true
+                updated_at: '2026-01-15T10:00:00Z'
+              - created_at: '2026-01-15T10:00:00Z'
+                display_name: Waiting for Parts
+                display_order: 2
+                id: '2038696150067306497'
+                retailer_id: 00000000-0001-0001-0001-000000000001
+                status_key: CUSTOM
+                system_default: false
+                updated_at: '2026-01-15T10:00:00Z'
+              schema:
+                items:
+                  $ref: '#/components/schemas/ServiceStatusDetails'
+                type: array
+          description: List of service statuses
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              example:
+                error: user missing required permissions
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Forbidden — missing `services:read` scope
+      summary: List service statuses
+      tags:
+      - Service Orders
+    post:
+      description: 'Creates a new custom service status for the retailer. The new status is
+
+        appended at the end of the display order. Use the PATCH endpoint to
+
+        change its position after creation.
+
+
+        **Only available with the Service Orders module enabled.**
+
+
+        🔒 Requires: `services:write` scope'
+      operationId: CreateServiceStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: Human-readable name for the status.
+                  type: string
+              required:
+              - name
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                created_at: '2026-03-31T18:23:47.719422Z'
+                display_name: Waiting for Parts
+                display_order: 5
+                id: '2039046012672835584'
+                retailer_id: 00000000-0001-0001-0001-000000000001
+                status_key: CUSTOM
+                system_default: false
+                updated_at: '2026-03-31T18:23:47.719422Z'
+              schema:
+                $ref: '#/components/schemas/ServiceStatusDetails'
+          description: Service status created successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error: name cannot be empty
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Bad request — name is missing or blank
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              example:
+                error: user missing required permissions
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Forbidden — missing `services:write` scope
+        '409':
+          content:
+            application/json:
+              example:
+                error: a status already exists with this name
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Conflict — a status with this name already exists
+      summary: Create a service status
+      tags:
+      - Service Orders
+  /service_statuses/{id}:
+    parameters:
+    - description: ID of the service status
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    delete:
+      description: 'Deletes a custom service status.
+
+
+        System default statuses cannot be deleted. A status cannot be deleted if it is still assigned to one or more service orders.
+
+
+        **Only available with the Service Orders module enabled.**
+
+
+        🔒 Requires: `services:write` scope'
+      operationId: DeleteServiceStatus
+      responses:
+        '204':
+          description: Service status deleted successfully
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              example:
+                error: cannot modify system status
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Forbidden — missing `services:write` scope, or attempting to delete a system default status
+        '404':
+          content:
+            application/json:
+              example:
+                error: job status not found
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              example:
+                error: status is in use by one or more jobs and cannot be deleted without a replacement
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Conflict — status is still assigned to one or more service orders
+      summary: Delete a service status
+      tags:
+      - Service Orders
+    get:
+      description: 'Returns a single service status by ID.
+
+
+        **Only available with the Service Orders module enabled.**
+
+
+        🔒 Requires: `services:read` scope'
+      operationId: GetServiceStatus
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created_at: '2026-03-30T19:28:37.155851Z'
+                display_name: newest custom edited?
+                display_order: 4
+                id: '2038699938241933312'
+                retailer_id: 00000000-0001-0001-0001-000000000001
+                status_key: CUSTOM
+                system_default: false
+                updated_at: '2026-03-31T18:23:07.400648Z'
+              schema:
+                $ref: '#/components/schemas/ServiceStatusDetails'
+          description: Service status found
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              example:
+                error: user missing required permissions
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Forbidden — missing `services:read` scope
+        '404':
+          content:
+            application/json:
+              example:
+                error: job status not found
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Not Found
+      summary: Get a service status
+      tags:
+      - Service Orders
+    patch:
+      description: 'Partially updates a custom service status. Only provided fields are updated.
+
+
+        System default statuses cannot be modified.
+
+
+        **Only available with the Service Orders module enabled.**
+
+
+        🔒 Requires: `services:write` scope'
+      operationId: UpdateServiceStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                display_order:
+                  description: New display order. Can be set to null to clear it.
+                  type:
+                  - integer
+                  - 'null'
+                name:
+                  description: New human-readable name for the status. If provided, must not be blank.
+                  type: string
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                created_at: '2026-03-30T19:28:37.155851Z'
+                display_name: newest custom edited?
+                display_order: 4
+                id: '2038699938241933312'
+                retailer_id: 00000000-0001-0001-0001-000000000001
+                status_key: CUSTOM
+                system_default: false
+                updated_at: '2026-03-31T18:23:07.400648Z'
+              schema:
+                $ref: '#/components/schemas/ServiceStatusDetails'
+          description: Service status updated successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error: name cannot be empty
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Bad request — name is provided but blank
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              example:
+                error: cannot modify system status
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Forbidden — missing `services:write` scope, or attempting to modify a system default status
+        '404':
+          content:
+            application/json:
+              example:
+                error: job status not found
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              examples:
+                duplicate_display_order:
+                  value:
+                    error: a status already exists with this display order
+                duplicate_name:
+                  value:
+                    error: a status already exists with this name
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Conflict — a status with this name or display order already exists
+      summary: Update a service status
+      tags:
+      - Service Orders
+  /services:
+    get:
+      description: 'Returns a paginated list of services.
+
+
+        🔒 Requires: `services:read` scope'
+      operationId: ListServices
+      parameters:
+      - description: The lower limit for the service id to be included in the response. For proper pagination, it needs to be the service id of the last item in the response from your previous request.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: limit
+        schema:
+          default: 100
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                has_next: false
+                jobs:
+                - service:
+                    agenda:
+                      date: '2025-08-27T04:00:00Z'
+                      minutes_scheduled: 120
+                    assigned_user_id: ''
+                    created_at: '2025-08-25T16:26:29.56854Z'
+                    id: '1960015938019700736'
+                    line_items:
+                    - fulfillment_type: UNSPECIFIED
+                      gift_card: null
+                      id: dc8fcea9-e4eb-47b1-9994-fa7fa8d10f53
+                      is_picklist_pickable: false
+                      note: ''
+                      price_set: false
+                      product_id: ced180dd-1234-47ae-b16e-149897b26681
+                      promotions: []
+                      quantity: '1'
+                      register_id: 06e94082-ed4f-11ed-fd41-fef5ad8737fa
+                      register_sequence_id: 0698ab21-5f72-11f0-f6d9-785ab008ba49
+                      sales_person_id: ''
+                      sequence: '0'
+                      sku: '10026'
+                      state: CONFIRMED
+                      tax_components: []
+                      unit_discount: '0'
+                      unit_loyalty: '0'
+                      unit_price: '15'
+                    retailer_id: 06e94082-ed4f-11ed-fd41-fef5ad4ffc39
+                    sale_id: 6872a358-0089-89ae-11f0-81cfbf9b0ca1
+                    status: NEW
+                    status_details:
+                      created_at: '2025-08-25T16:26:29.56854Z'
+                      display_name: New
+                      display_order: 1
+                      id: '2038696150067306496'
+                      retailer_id: 06e94082-ed4f-11ed-fd41-fef5ad4ffc39
+                      status_key: NEW
+                      system_default: true
+                      updated_at: '2025-08-25T16:26:29.56854Z'
+                    totals:
+                      is_sale_level_discount_percentage: false
+                      sale_level_discount_value: '0'
+                      sub_total: '15'
+                      total_amount: '16.95'
+                      total_promotion: '0'
+                      total_tax: '1.95'
+                    updated_at: '2025-08-25T16:26:29.732308Z'
+                  service_item:
+                    created_at: '2025-08-21T18:08:14.277021Z'
+                    created_by: tech-001
+                    initial_condition: Needs new brake pads and general tune-up.
+                    item_details:
+                      description: 2022 Trek FX 3 Disc, 21-speed hybrid bike, black.
+                      serial_number: TREKFX3-2022-12345
+                    item_id: bike-001
+                    item_name: Trek FX 3 Disc Hybrid Bike
+                    updated_at: '2025-08-21T18:08:14.43438Z'
+                    updated_by: tech-001
+                total_jobs: 1
+              schema:
+                properties:
+                  has_next:
+                    description: Whether or not there are more pages available
+                    type: boolean
+                  jobs:
+                    items:
+                      properties:
+                        service:
+                          $ref: '#/components/schemas/ServiceOrder'
+                        service_item:
+                          type:
+                          - object
+                          - 'null'
+                      type: object
+                    type: array
+                  total_jobs:
+                    description: Total number of jobs
+                    type: integer
+                type: object
+          description: A paginated list of service orders
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+          description: Unauthorized
+      summary: List services
+      tags:
+      - Service Orders
+    post:
+      description: '**Only available with the Service Orders module enabled.**
+
+
+        Creates a new service order. This endpoint allows you to create service orders with a customer, a service item, note and location.
+
+
+        🔒 Requires: `services:write` `sales:write` scopes'
+      operationId: CreateService
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceOrderRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedService'
+          description: Service order created successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error: 'twirp error invalid_argument: register_id register ID can''t be empty'
+              schema:
+                properties:
+                  error:
+                    description: Error message describing the bad request
+                    type: string
+                type: object
+          description: Bad request
+        '401':
+          content:
+            application/json:
+              example:
+                error: CSRF validation fail
+              schema:
+                properties:
+                  error:
+                    description: Error message describing the authentication failure
+                    type: string
+                type: object
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              example:
+                error: user missing required permissions
+              schema:
+                properties:
+                  error:
+                    description: Error message describing the authorization failure
+                    type: string
+                type: object
+          description: Forbidden
+      summary: Create a service order
+      tags:
+      - Service Orders
+  /services/{service_id}:
+    parameters:
+    - description: ID of the service to get
+      in: path
+      name: service_id
+      required: true
+      schema:
+        type: string
+    get:
+      description: 'Get a single service order.
+
+
+        🔒 Requires: `services:read` scope'
+      operationId: GetService
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                notes:
+                - body: ''
+                  created_at: '2025-08-25T16:26:29.56854Z'
+                  created_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+                  id: '1960015938019700737'
+                  service_id: '1960015938019700736'
+                  service_status: NEW
+                service:
+                  agenda:
+                    date: '2025-08-27T04:00:00Z'
+                    minutes_scheduled: 120
+                  assigned_user_id: ''
+                  created_at: '2025-08-25T16:26:29.56854Z'
+                  id: '1960015938019700736'
+                  line_items:
+                  - fulfillment_type: UNSPECIFIED
+                    gift_card: null
+                    id: dc8fcea9-e4eb-47b1-9994-fa7fa8d10f53
+                    is_picklist_pickable: false
+                    note: ''
+                    price_set: false
+                    product_id: ced180dd-1234-47ae-b16e-149897b26681
+                    promotions: []
+                    quantity: '1'
+                    register_id: 06e94082-ed4f-11ed-fd41-fef5ad8737fa
+                    register_sequence_id: 0698ab21-5f72-11f0-f6d9-785ab008ba49
+                    sales_person_id: ''
+                    sequence: '0'
+                    sku: '10026'
+                    state: CONFIRMED
+                    tax_components: []
+                    unit_discount: '0'
+                    unit_loyalty: '0'
+                    unit_price: '15'
+                  location: 'Bike rack #123'
+                  retailer_id: 06e94082-ed4f-11ed-fd41-fef5ad4ffc39
+                  sale_id: 6872a358-0089-89ae-11f0-81cfbf9b0ca1
+                  status: NEW
+                  status_details:
+                    created_at: '2025-08-25T16:26:29.56854Z'
+                    display_name: New
+                    display_order: 1
+                    id: '2038696150067306496'
+                    retailer_id: 06e94082-ed4f-11ed-fd41-fef5ad4ffc39
+                    status_key: NEW
+                    system_default: true
+                    updated_at: '2025-08-25T16:26:29.56854Z'
+                  totals:
+                    is_sale_level_discount_percentage: false
+                    sale_level_discount_value: '0'
+                    sub_total: '15'
+                    total_amount: '16.95'
+                    total_promotion: '0'
+                    total_tax: '1.95'
+                  updated_at: '2025-08-25T16:26:29.732308Z'
+                service_item:
+                  created_at: '2025-07-25T23:59:10.335813Z'
+                  created_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+                  initial_condition: Needs new brake pads and general tune-up.
+                  item_details:
+                    description: 2022 Trek FX 3 Disc, 21-speed hybrid bike, black.
+                    serial_number: TREKFX3-2022-12345
+                  item_id: f808afa3-c8f6-4b13-aa37-4b90dfae77a5
+                  item_name: Trek FX 3 Disc Hybrid Bike
+                  updated_at: '2025-08-25T16:26:29.619284Z'
+                  updated_by: 662d3131-6434-2d65-3832-303665393430
+              schema:
+                $ref: '#/components/schemas/DetailedService'
+          description: Service has been found
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+          description: Unauthorized
+        '404':
+          content:
+            application/json:
+              example:
+                error: service not found
+          description: Not Found
+      summary: Get service
+      tags:
+      - Service Orders
+  /services_agenda/outlet/{outlet_id}:
+    parameters:
+    - description: The size, in days, of the time window for which the agenda is requested.
+      in: query
+      name: days
+      schema:
+        default: 7
+        example: 31
+        type: integer
+    - description: The first date of the time window for which the agenda is requested.
+      in: query
+      name: start_date
+      required: true
+      schema:
+        example: '2017-07-21T17:32:28Z'
+        format: date-time
+        type: string
+    - description: The timezone in which the agenda is requested. When provided, the agenda returned will account for time changes like daylight savings.
+      in: query
+      name: timezone
+      schema:
+        example: America/New_York
+        type: string
+    - in: path
+      name: outlet_id
+      required: true
+      schema:
+        type: string
+    get:
+      description: 'Returns the service agenda for the specified outlet within the given time window.
+
+
+        🔒 Requires: `services:read` scope'
+      operationId: get-agenda-outlet_id
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/DailyAgenda'
+                type: array
+          description: Outlet's service agenda
+        '401':
+          content:
+            application/json:
+              example:
+                error: Access token is not valid
+          description: Unauthorized
+      summary: Get services agenda by outlet
+      tags:
+      - Service Orders
+components:
+  schemas:
+    DetailedService:
+      properties:
+        notes:
+          description: An array of service notes, or null if no notes exist.
+          items:
+            $ref: '#/components/schemas/ServiceNote'
+          type:
+          - array
+          - 'null'
+        service:
+          $ref: '#/components/schemas/ServiceOrder'
+        serviceItems:
+          $ref: '#/components/schemas/ServiceItems'
+      title: DetailedService
+      type: object
+      x-stoplight:
+        id: 2fu3rgyr0q1gp
+    DailyAgenda:
+      properties:
+        date:
+          type: string
+        minutes_scheduled:
+          type: integer
+      title: DailyAgenda
+      type: object
+    ServiceOrder:
+      properties:
+        agenda:
+          $ref: '#/components/schemas/DailyAgenda'
+        assigned_user_id:
+          type: string
+        created_at:
+          type: string
+        id:
+          type: string
+        line_items:
+          description: Collection of line items associated with this service order.
+          items:
+            properties:
+              fulfillment_type:
+                description: Type of fulfillment for this line item.
+                type: string
+              gift_card:
+                description: Gift card information if applicable.
+                type:
+                - object
+                - 'null'
+              id:
+                description: The ID of this line item.
+                type: string
+              is_picklist_pickable:
+                description: Indicates if this line item can be picked from a picklist.
+                type: boolean
+              note:
+                description: Line item note.
+                type: string
+              price_set:
+                description: Indicates whether the price was set manually.
+                type: boolean
+              product_id:
+                description: The ID of the product associated with this line item.
+                type: string
+              promotions:
+                description: Array of promotions applied to this line item.
+                items:
+                  $ref: '#/components/schemas/PromotionDescription'
+                type: array
+              quantity:
+                description: Quantity of products for the line item.
+                type: string
+              register_id:
+                description: The register ID associated with this line item.
+                type: string
+              register_sequence_id:
+                description: The register sequence ID for this line item.
+                type: string
+              sales_person_id:
+                description: The ID of the salesperson associated with this line item.
+                type: string
+              sequence:
+                description: Order of the line item in the service order.
+                type: integer
+              sku:
+                description: The SKU of the product.
+                type: string
+              state:
+                description: State of the line item.
+                type: string
+              tax_components:
+                description: Collection of tax components associated with the line item.
+                items:
+                  $ref: '#/components/schemas/LineItemTaxComponent'
+                type: array
+              unit_discount:
+                description: Unit discount value for the line item.
+                type: string
+              unit_loyalty:
+                description: Unit loyalty value for the line item.
+                type: string
+              unit_price:
+                description: Unit price of the line item.
+                type: string
+            type: object
+          type: array
+        location:
+          type: string
+        retailer_id:
+          type: string
+        sale_id:
+          type: string
+        status:
+          type: string
+        status_details:
+          $ref: '#/components/schemas/ServiceStatusDetails'
+        totals:
+          description: Financial totals for the service order.
+          properties:
+            is_sale_level_discount_percentage:
+              description: Indicates if the sale level discount is a percentage.
+              type: boolean
+            sale_level_discount_value:
+              description: Total discount value applied at the sale level.
+              type: string
+            sub_total:
+              description: Subtotal amount before taxes and discounts.
+              type: string
+            total_amount:
+              description: Final total amount including all taxes and discounts.
+              type: string
+            total_promotion:
+              description: Total promotion value applied.
+              type: string
+            total_tax:
+              description: Total tax amount.
+              type: string
+          type: object
+        updated_at:
+          type:
+          - string
+          - 'null'
+        updated_by:
+          type: string
+      type:
+      - object
+      - 'null'
+      x-examples:
+        agenda:
+          date: '2025-08-27T04:00:00Z'
+          minutes_scheduled: 120
+        assigned_user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
+        created_at: '2025-08-25T16:26:29.56854Z'
+        id: '1960015938019700736'
+        line_items:
+        - fulfillment_type: UNSPECIFIED
+          id: dc8fcea9-e4eb-47b1-9994-fa7fa8d10f53
+          is_picklist_pickable: false
+          note: ''
+          price_set: false
+          product_id: ced180dd-1234-47ae-b16e-149897b26681
+          quantity: 1
+          register_id: 06e94082-ed4f-11ed-fd41-fef5ad8737fa
+          register_sequence_id: 0698ab21-5f72-11f0-f6d9-785ab008ba49
+          sequence: 0
+          sku: '10026'
+          state: CONFIRMED
+          tax_components: []
+          unit_discount: 0
+          unit_loyalty: 0
+          unit_price: 15
+        location: Service Bay 2
+        retailer_id: 06e94082-ed4f-11ed-fd41-fef5ad4ffc39
+        sale_id: 6872a358-0089-89ae-11f0-81cfbf9b0ca1
+        status: NEW
+        status_details:
+          created_at: '2025-08-25T16:26:29.56854Z'
+          display_name: New
+          display_order: 1
+          id: '2038696150067306496'
+          retailer_id: 06e94082-ed4f-11ed-fd41-fef5ad4ffc39
+          status_key: NEW
+          system_default: true
+          updated_at: '2025-08-25T16:26:29.56854Z'
+        totals:
+          is_sale_level_discount_percentage: false
+          sale_level_discount_value: '0'
+          sub_total: '15'
+          total_amount: '16.95'
+          total_promotion: '0'
+          total_tax: '1.95'
+        updated_at: '2025-08-25T16:26:29.732308Z'
+        updated_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+    User:
+      properties:
+        account_type:
+          description: User's account type.
+          enum:
+          - cashier
+          - manager
+          - admin
+          type: string
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        display_name:
+          description: Full user's name to be used for display in the UI.
+          type:
+          - string
+          - 'null'
+        email:
+          description: User's email address.
+          format: email
+          type:
+          - string
+          - 'null'
+        email_verified_at:
+          description: The timestamp of users email verification.
+          type:
+          - string
+          - 'null'
+        enabled:
+          description: Indicates whether the user is enabled.
+          type: boolean
+        enabled_mfa:
+          description: The user's enabled MFA factor, or null if MFA is not enabled.
+          properties:
+            created_at:
+              description: Timestamp when the MFA factor was created.
+              type: string
+            id:
+              description: Auto-generated MFA factor ID.
+              type: string
+            type:
+              description: The MFA factor type (e.g. "otp").
+              enum:
+              - otp
+              type: string
+          type:
+          - object
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        image_source:
+          description: URL of the default-sized user's avatar.
+          type: string
+        images:
+          $ref: '#/components/schemas/UserImages'
+        is_primary_user:
+          description: Indicated whether this user is the primary user for the account.
+          type: boolean
+        permissions:
+          description: The permissions assigned to the user.
+          items:
+            type: string
+          type:
+          - array
+          - 'null'
+        require_password_change:
+          description: Indicates whether the user is required to change their password.
+          type: boolean
+        restricted_outlet_id:
+          deprecated: true
+          description: '**deprecated** Use the `restricted_outlet_ids` instead.'
+          type:
+          - string
+          - 'null'
+        restricted_outlet_ids:
+          description: A list of outlet IDs the user is associated with
+          items:
+            format: uuid
+            type: string
+          type: array
+        roles:
+          description: The roles assigned to the user.
+          items:
+            $ref: '#/components/schemas/Role'
+          type: array
+        rules:
+          description: The rules assigned to the user.
+          type: object
+        seen_at:
+          description: The timestamp of the user's last activity in the system.
+          type: string
+        switch_id:
+          description: The switch id for the user.
+          type: string
+        target_daily:
+          description: Daily sales target for the user.
+          type:
+          - number
+          - 'null'
+        target_monthly:
+          description: Monthly sales target for the user.
+          type:
+          - number
+          - 'null'
+        target_weekly:
+          description: Weekly sales target for the user.
+          type:
+          - number
+          - 'null'
+        time_until_deletion:
+          description: The time until the user is deleted.
+          type:
+          - string
+          - 'null'
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        username:
+          description: User's username used for login.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - account_type
+      - created_at
+      - id
+      - is_primary_user
+      - updated_at
+      - username
+      - version
+      title: User
+      type: object
+    LineItemTaxComponent:
+      properties:
+        rate_id:
+          description: Tax rate ID.
+          type: string
+        total_tax:
+          description: Tax total.
+          format: double
+          type: number
+      required:
+      - rate_id
+      - total_tax
+      title: Line Item Tax Component
+      type: object
+    ServiceItems:
+      properties:
+        item_details:
+          $ref: '#/components/schemas/ItemDetails'
+        location:
+          type: string
+      title: ServiceItems
+      type: object
+    ServiceNote:
+      properties:
+        body:
+          type: string
+        createdAt:
+          type: string
+        id:
+          type: string
+        is_visible_to_customer:
+          description: Whether the note should be printed in the service receipt or not
+          type: boolean
+        location:
+          deprecated: true
+          description: 'Deprecated: Use top-level location field on ServiceOrder instead. Location where the service will be performed'
+          type: string
+        serviceId:
+          type: string
+        serviceStatus:
+          deprecated: true
+          type: number
+        user:
+          $ref: '#/components/schemas/User'
+        userId:
+          type: string
+      title: ServiceNote
+      type: object
+      x-stoplight:
+        id: 2fu3rgyr0q1gp
+    ServiceOrderRequest:
+      description: Request payload for creating a service order
+      example:
+        assigned_user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
+        customer_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
+        item:
+          description: Red mountain bike requiring brake service
+          initial_condition: Brakes not functioning properly
+          item_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
+          item_name: Mountain Bike
+          serial_number: MB2025-001
+        location: Service Bay 2
+        notes:
+        - body: Customer requested bike before the weekend
+          created_at: '2026-01-27T10:00:00Z'
+          is_visible_to_customer: true
+        - body: 'Internal note: Check brake fluid levels'
+        outlet_id: 348fff91-8c43-4599-812b-13636760895a
+        register_id: b1e198a9-f019-11e3-a0f5-b8ca3a64f8f4
+        status: NEW
+      properties:
+        assigned_user_id:
+          description: The user assigned to work on the service order
+          format: uuid
+          type: string
+        customer_id:
+          description: The customer associated with the service
+          format: uuid
+          type: string
+        extra_fields:
+          deprecated: true
+          description: Deprecated. Additional custom fields for the service order
+          properties:
+            location:
+              deprecated: true
+              description: 'Deprecated: Use top-level location field instead. Location where the service will be performed'
+              type: string
+            note:
+              deprecated: true
+              description: 'Deprecated: Use top-level Notes field instead. Additional note for the service order'
+              type: string
+          type: object
+        item:
+          description: Service item and its details
+          properties:
+            description:
+              description: Item description
+              type: string
+            initial_condition:
+              description: Item's initial condition
+              type: string
+            item_id:
+              description: ID of an already existing item
+              format: uuid
+              type: string
+            item_name:
+              description: Item name
+              type: string
+            serial_number:
+              description: Item serial number
+              type: string
+          type: object
+        job_status_id:
+          description: The ID of a custom service status to assign to this order. When provided, overrides the `status` field.
+          type:
+          - string
+          - 'null'
+        location:
+          description: Location where the service will be performed
+          type: string
+        notes:
+          description: Notes associated with the service order
+          items:
+            properties:
+              body:
+                description: The body of the note
+                type: string
+              created_at:
+                description: The date and time when the note was created (possible to pre-date the note)
+                format: date-time
+                type: string
+              is_visible_to_customer:
+                default: false
+                description: Whether the note is visible to customer (printed on the service receipt or not)
+                type: boolean
+            type: object
+          type: array
+        outlet_id:
+          description: The outlet of the service order
+          format: uuid
+          type: string
+        register_id:
+          description: The register of the service order
+          format: uuid
+          type: string
+        status:
+          default: NEW
+          description: The status of the service order
+          type: string
+      required:
+      - outlet_id
+      - register_id
+      - customer_id
+      type: object
+    Role:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Role name.
+          type: string
+        system_role_id:
+          description: A system role id of the Role. Will be either '100', '200', or '300'.
+          type: string
+      title: Role
+      type: object
+    PromotionDescription:
+      description: Basic description for a Promotion.
+      properties:
+        description:
+          description: A short description for the promotion.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The name of the promotion.
+          type: string
+      title: PromotionDescription
+      type: object
+    ServiceStatusDetails:
+      description: Details of a custom service status assigned to a service order.
+      properties:
+        created_at:
+          description: The date and time the status was created.
+          format: date-time
+          type: string
+        display_name:
+          description: Human-readable name of the status.
+          type: string
+        display_order:
+          description: The order in which this status appears in the UI. Null if not set.
+          type:
+          - integer
+          - 'null'
+        id:
+          description: The unique ID of the status.
+          type: string
+        retailer_id:
+          description: The retailer this status belongs to.
+          type: string
+        status_key:
+          description: The underlying key mapping this status to a system status (e.g. NEW, IN_PROGRESS).
+          type: string
+        system_default:
+          description: Whether this is a system-managed default status.
+          type: boolean
+        updated_at:
+          description: The date and time the status was last updated.
+          format: date-time
+          type: string
+      type:
+      - object
+      - 'null'
+    ItemDetails:
+      properties:
+        description:
+          type: string
+        initial_condition:
+          type: string
+        item_id:
+          type: string
+        item_name:
+          type: string
+        serial_number:
+          type: string
+      title: ItemDetails
+      type: object
+    UserImages:
+      description: On object containing URLs for different sizes of the user’s avatar.
+      properties:
+        original:
+          type: string
+        sl:
+          type: string
+        sm:
+          type: string
+        ss:
+          type: string
+        st:
+          type: string
+        standard:
+          type: string
+        thumb:
+          type: string
+      title: User Image
+      type:
+      - object
+      - 'null'
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

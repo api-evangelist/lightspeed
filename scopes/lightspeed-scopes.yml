@@ -1,0 +1,619 @@
+generated: '2026-08-27'
+method: searched
+source: https://x-series-api.lightspeedhq.com/docs/scopes.md, https://developers.lightspeedhq.com/retail/authentication/scopes/,
+  openapi/lightspeed-k-series-openapi.json
+schemes:
+- name: OAuth2
+  source: openapi/lightspeed-k-series-openapi.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: /oauth/authorize
+    tokenUrl: /oauth/token
+  description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization
+    code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+    See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview)
+    for more details on how to authenticate.'
+- name: X-Series OAuth 2.0
+  product: X-Series
+  source: https://x-series-api.lightspeedhq.com/docs/authorization
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://secure.retail.lightspeed.app/connect
+    tokenUrl: https://{domain_prefix}.retail.lightspeed.app/api/1.0/token
+  note: The token response echoes the scopes actually GRANTED in a `scope` field; the access token can
+    only call endpoints whose required scopes are a subset of that list. Refresh responses echo them too
+    and they do not change unless the app re-authorizes.
+- name: R-Series OAuth 2.0
+  product: R-Series
+  source: https://developers.lightspeedhq.com/retail/authentication/scopes/
+  flows:
+  - flow: authorizationCode
+  note: Scopes mirror in-app employee permissions rather than API resources; employee:all is a full-access
+    grant.
+scopes:
+- scope: audit:read
+  description: Read audit and security events
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: billing:partner_subscription:read
+  description: Read Billing Partner Subscription.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: billing:partner_subscription:write
+  description: Write Billing Partner Subscription.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: business_rules:read
+  description: Read business rules.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: business_rules:write
+  description: Create and delete business rules.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: channels:read
+  description: Read e-commerce channel information.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: consignments:read
+  description: Read in-progress inventory counts and historical stock consignments.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: consignments:write:inventory_count
+  description: Perform Inventory Counts.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: consignments:write:stock_order
+  description: Process stock orders and stock returns.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: consignments:write:stock_transfer
+  description: Create, send and receive stock transfers between outlets.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: customers:read
+  description: Read customers and customer groups.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: customers:write
+  description: Create, update and delete customers and customer groups.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: custom_fields:read
+  description: Read custom fields.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: custom_fields:write
+  description: Create, update and delete custom fields.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: fulfillments:read
+  description: Read sale order fulfillments
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: fulfillments:write
+  description: Create and update sale order fulfillments.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: gift_cards:read
+  description: Read gift cards and gift card transactions.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: gift_cards:write:issue
+  description: Issue a gift card to a customer.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: gift_cards:write:redeem
+  description: Redeem or reload an amount against a customers gift card.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: inventory:read
+  description: Read current and historical product inventory levels.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: inventory:write
+  description: Set reorder points, create custom inventory adjustment reasons, and record stock adjustments.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: outlets:read
+  description: Read outlets.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: payments:read
+  description: Read Payments.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: payment_types:read
+  description: Read payment types, excluding internal payment types.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: products:read
+  description: Read products, product types, product images, brands and tags, excluding product costs.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: products:read:price_books
+  description: Read product price books.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: products:write
+  description: Create and update products (excluding product costs), delete products, upload product images
+    and create product types.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: products:write:price_books
+  description: Write Products Price Books.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: promotions:read
+  description: Read promotions, get products a specific promotion can be used on and find the best promotion
+    for a sale and determine the discount.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: promotions:write
+  description: Create, update and archive any promotion.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: register:close
+  description: Close a register and reconcile payments.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: register:open
+  description: Open a register to create sales and payments.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: registers:read
+  description: Read registers.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: remote_rules:read
+  description: Read remote rules.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: remote_rules:write
+  description: Create and delete remote rules.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: retailer:read
+  description: Read all your account configuration. E.g. your loyalty ratio, timezone, country and currency.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: sales:read
+  description: Read all sales and payments in your account.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: sales:write
+  description: Create sales and payments, and adjust, void or return sales.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: serial_numbers:read
+  description: Read serial numbers.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: serial_numbers:write
+  description: Add and delete serial numbers.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: services:read
+  description: Read services
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: services:write
+  description: Create, edit services.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: store_credits:read
+  description: Read store credit transactions, overall and for customers.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: store_credits:write:issue
+  description: Issue store credits to a customer for a return.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: suppliers:read
+  description: Read suppliers.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: suppliers:write
+  description: Create, update and delete suppliers.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: taxes:read
+  description: 'If tax inclusive: Read tax rates and tax rules. If tax exclusive: Read tax rates, tax
+    rules and tax groups.'
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: taxes:write
+  description: Create, update and delete taxes.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: users:read
+  description: Read user information (except user passwords).
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: users:write
+  description: Create, update and delete users and customise groups.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: webhooks
+  description: Manage webhooks created by the application.
+  product: X-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://x-series-api.lightspeedhq.com/docs/scopes
+- scope: employee:all
+  description: Grants full read and write access to the account. This grant will automatically assume
+    all access rights that the authorizing user possesses
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:admin
+  description: View, create, update, and archive administrative records.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:admin_employees
+  description: View, create, update, and archive employees.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:admin_inventory
+  description: View, create, update, and archive vendors and manufacturers.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:admin_purchases
+  description: View, create, update, and archive payment types, discounts, and taxes.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:admin_shops
+  description: View, create, update, and archive shops.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:admin_void_sale
+  description: Void sales.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:categories
+  description: View, create, update, and archive product categories.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:customers
+  description: View, create, update, and archive customers.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:customers_read
+  description: View customer accounts.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:customers_view_gift_card_numbers
+  description: View the code field unmasked in the response payloads of the credit account endpoints.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:inventory
+  description: View, create, update, and archive items and inventory.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:inventory_counts
+  description: View, create, update inventory counts.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:inventory_counts_reconcile
+  description: Reconcile inventory counts.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:inventory_read
+  description: View items and inventory.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:manufacturers
+  description: View, create, update, and archive manufacturers.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:product_cost
+  description: View and edit product cost values
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:product_edit
+  description: create, update, and archive products
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:purchase_orders
+  description: View, create, and update purchase orders
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:register
+  description: Create new sales and read sales history.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:register_layaway
+  description: Create layaway sales.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:register_read
+  description: Read sales history.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:register_refund
+  description: Create refund sales.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:reports
+  description: View reports.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:special_orders
+  description: View, create and update special orders.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:tags
+  description: View, create, update, and archive product tags.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:transfers
+  description: View, create, update, and archive transfers.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:vendors
+  description: View, create, update and archive vendors.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:vendor_returns
+  description: View vendor returns.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: employee:workbench
+  description: View, create, update, and archive work orders.
+  product: R-Series
+  request_style: space-delimited scope parameter
+  sources:
+  - https://developers.lightspeedhq.com/retail/authentication/scopes/
+- scope: financial-api
+  description: Read financial data
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: id-cards
+  description: Create and manage ID card batches and cards.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: items
+  description: Read and write items
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: orders-api
+  description: 'Read business information, floors, menus, discounts, and production instructions.
+
+    Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item)
+    data.'
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: propertymanagement
+  description: Read and write Property Management System configurations.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: reservation-***
+  description: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code)
+    of the reservation platform.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: reservations-api
+  description: 'Configure *legacy* reservation integrations.
+
+    **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms)
+    API.
+
+    More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: staff-api
+  description: Read shift information, read and write user information.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+- scope: user-token-by-authorization-code
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+  product: K-Series
+  request_style: space-delimited scope parameter
+  description: 'Referenced in the security[] block of the Reservations for Platforms operations but NOT
+    declared in the OAuth2 authorizationCode scopes map. An undeclared scope: a client cannot request
+    it from the scope reference, only discover it by reading the operation.'
+  declared_in_flow: false
+docs:
+- https://x-series-api.lightspeedhq.com/docs/scopes
+- https://developers.lightspeedhq.com/retail/authentication/scopes/
+- https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview
+note: Three separate OAuth scope vocabularies, one per product line, with no shared naming. X-Series uses
+  resource:action (products:read) with sub-actions (consignments:write:stock_order); R-Series uses employee:permission
+  (employee:inventory); K-Series uses product-area names (orders-api, financial-api). A partner integrating
+  two Lightspeed products must learn two unrelated permission models.
+counts:
+  x_series: 50
+  r_series: 30
+  k_series: 9
+  total: 90

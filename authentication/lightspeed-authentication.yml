@@ -1,0 +1,100 @@
+generated: '2026-08-27'
+method: searched
+source: https://x-series-api.lightspeedhq.com/docs/authorization.md, https://developers.lightspeedhq.com/retail/authentication/authentication-overview/,
+  https://developers.lightspeedhq.com/ecom/introduction/authentication/, openapi/lightspeed-k-series-openapi.json,
+  openapi/lightspeed-x-series-openapi.json
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: /oauth/authorize
+    tokenUrl: /oauth/token
+    scopes: 8
+  description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization
+    code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+    See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview)
+    for more details on how to authenticate.'
+  sources:
+  - openapi/lightspeed-k-series-openapi.json
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Bearer Token for API authentication.
+  sources:
+  - openapi/lightspeed-x-series-openapi.json
+docs:
+- https://x-series-api.lightspeedhq.com/docs/authorization
+- https://developers.lightspeedhq.com/retail/authentication/authentication-overview/
+- https://developers.lightspeedhq.com/ecom/introduction/authentication/
+- https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview
+note: 'Four product lines, three different authentication models. The specs alone understate this: the
+  X-Series spec declares only a generic http/bearer scheme, but the docs show that bearer token is issued
+  by a full OAuth 2.0 authorization-code flow (or, on the Plus plan, by a personal token). eCom C-Series
+  does not use OAuth at all.'
+profiles:
+- product: Retail X-Series
+  api: lightspeed:retail-x-series
+  primary: OAuth 2.0 authorization code (RFC 6749)
+  header: 'Authorization: Bearer <access_token>'
+  authorization_url: https://secure.retail.lightspeed.app/connect
+  token_url: https://{domain_prefix}.retail.lightspeed.app/api/1.0/token
+  token_request_encoding: application/x-www-form-urlencoded POST body (never query string)
+  access_token_ttl_seconds: 86400
+  refresh: rotating — each refresh issues a NEW refresh token and revokes the prior access token
+  state_parameter: required, minimum 8 characters
+  authorization_code_ttl: 10 minutes, single use
+  callback_params:
+  - code
+  - domain_prefix
+  - state
+  - scope
+  alternative:
+    name: Personal tokens
+    availability: Plus plan retailers only
+    header: 'Authorization: Bearer <personal_token>'
+    caveats:
+    - Tied to the creating user but survive that user resetting their password
+    - Recommended only for testing/exploration on multi-store apps
+    docs: https://x-series-support.lightspeedhq.com/hc/en-us/articles/204886420-Retail-POS-X-Series-Personal-Tokens
+  app_approval: New apps are "Not Approved" and capped at 30 connected stores until Lightspeed approves
+    them.
+  token_endpoint_rate_limit: Rate limited independently of the API; returns X-RateLimit-Limit / -Remaining
+    / -Reset and 429 on exhaustion.
+  docs: https://x-series-api.lightspeedhq.com/docs/authorization
+- product: Retail R-Series
+  api: lightspeed:retail-r-series
+  primary: OAuth 2.0 authorization code
+  scope_model: employee:* permissions mirroring in-app roles (30 scopes, employee:all = full access)
+  docs: https://developers.lightspeedhq.com/retail/authentication/authentication-overview/
+- product: eCom C-Series
+  api: lightspeed:ecom-c-series
+  primary: API key + secret over HTTP Basic, per cluster
+  clusters:
+  - id: EU1
+    base: https://api.webshopapp.com/en/
+  - id: US1
+    base: https://api.shoplightspeed.com/en/
+  note: No OAuth. Credentials are per shop connection, which is why eCom is described as a single-shop-connection
+    API.
+  docs: https://developers.lightspeedhq.com/ecom/introduction/authentication/
+- product: Restaurant K-Series
+  api: lightspeed:restaurant-k-series
+  primary: OAuth 2.0 authorization code with 8 declared scopes
+  authorizationUrl: /oauth/authorize
+  tokenUrl: /oauth/token
+  note: One scope (user-token-by-authorization-code) is used in security[] but never declared in the flow.
+  docs: https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview
+gaps:
+- No OpenID Connect on any product line; /.well-known/openid-configuration 404s everywhere.
+- No RFC 8414 authorization-server metadata; every endpoint above is prose-only.
+- No mTLS, no signed requests, no DPoP or sender-constrained tokens.
+- The X-Series OpenAPI declares only http/bearer, so a spec-only reader would never discover the OAuth
+  flow, the 24h TTL or the rotating refresh token.

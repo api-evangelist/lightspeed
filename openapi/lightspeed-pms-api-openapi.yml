@@ -1,0 +1,461 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series PMS API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: PMS
+paths:
+  /pms/v1/business-locations/{businessLocationId}/revenue-centers:
+    get:
+      summary: Get PMS Revenue Centers
+      operationId: pms-apiGetRevenueCenters
+      description: Returns a list of all POS Configurations which can be mapped to PMS Revenue Centers. For more details on revenue centers, see our [Integration Guide](https://api-portal.lsk.lightspeed.app/guides/integration-guides/property-management-systems/financial-api-endpoints#revenue-centers).
+      tags:
+      - PMS
+      parameters:
+      - name: businessLocationId
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/pms-apiBusinessLocationId'
+      responses:
+        '200':
+          description: Found a list of Revenue Centers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/pms-apiRevenueCenterId'
+                    name:
+                      $ref: '#/components/schemas/pms-apiRevenueCenterName'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+        '404':
+          description: Invalid input business location id
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+      security:
+      - OAuth2:
+        - propertymanagement
+  /pms/v1/providers/{id}:
+    get:
+      summary: Get a PMS provider by ID
+      operationId: pms-apiGetProvider
+      description: 'Returns the details of a specific PMS provider.
+
+
+        Only PMS providers created by the authenticated OAuth client will be returned.
+
+        '
+      tags:
+      - PMS
+      parameters:
+      - in: path
+        schema:
+          $ref: '#/components/schemas/pms-apiProviderId'
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Provider found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pms-apiGetProvider'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+        '404':
+          description: Provider not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+      security:
+      - OAuth2:
+        - propertymanagement
+    put:
+      summary: Update a PMS provider
+      operationId: pms-apiUpdateProvider
+      description: 'Modifies the values of an existing **PMS** provider.
+
+
+        Only PMS providers created by the authenticated OAuth client can be updated.
+
+        '
+      tags:
+      - PMS
+      parameters:
+      - in: path
+        schema:
+          $ref: '#/components/schemas/pms-apiProviderId'
+        name: id
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - endpoint
+              - apiKey
+              - features
+              properties:
+                name:
+                  $ref: '#/components/schemas/pms-apiProviderName'
+                endpoint:
+                  $ref: '#/components/schemas/pms-apiProviderEndpoint'
+                apiKey:
+                  $ref: '#/components/schemas/pms-apiProviderApiKey'
+                features:
+                  $ref: '#/components/schemas/pms-apiProviderFeatures'
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Provider updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pms-apiGetProvider'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+        '404':
+          description: Provider not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+      security:
+      - OAuth2:
+        - propertymanagement
+    delete:
+      summary: Delete a PMS provider
+      operationId: pms-apiDeleteProvider
+      description: Permanently removes a PMS provider from a businessLocation.
+      tags:
+      - PMS
+      parameters:
+      - in: path
+        schema:
+          $ref: '#/components/schemas/pms-apiProviderId'
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Provider deleted
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+        '404':
+          description: Provider not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+      security:
+      - OAuth2:
+        - propertymanagement
+  /pms/v1/providers:
+    get:
+      summary: Get PMS providers
+      operationId: pms-apiGetProviders
+      description: 'Returns a list of PMS providers that have been configured for the business location. Only PMS providers created by the authenticated OAuth client will be returned.
+
+        '
+      tags:
+      - PMS
+      parameters:
+      - in: query
+        schema:
+          $ref: '#/components/schemas/pms-apiBusinessLocationId'
+        name: businessLocationId
+        required: false
+      responses:
+        '200':
+          description: Result
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/pms-apiGetProvider'
+      security:
+      - OAuth2:
+        - propertymanagement
+    post:
+      summary: Create PMS provider
+      operationId: pms-apiCreateProvider
+      description: Creates a new PMS provider for the businessLocation.
+      tags:
+      - PMS
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - endpoint
+              - apiKey
+              - features
+              - businessLocationId
+              properties:
+                businessLocationId:
+                  $ref: '#/components/schemas/pms-apiBusinessLocationId'
+                name:
+                  $ref: '#/components/schemas/pms-apiProviderName'
+                endpoint:
+                  $ref: '#/components/schemas/pms-apiProviderEndpoint'
+                apiKey:
+                  $ref: '#/components/schemas/pms-apiProviderApiKey'
+                features:
+                  $ref: '#/components/schemas/pms-apiProviderFeatures'
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Provider created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pms-apiGetProvider'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+        '404':
+          description: Provider not found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/pms-apiErrorResponse'
+      security:
+      - OAuth2:
+        - propertymanagement
+components:
+  schemas:
+    pms-apiGetProvider:
+      properties:
+        id:
+          description: The unique identifier for the provider.
+          type: integer
+          format: int64
+          example: 3012455645
+        name:
+          description: The name of the PMS provider.
+          type: string
+        apiKey:
+          description: The API key for the PMS provider.
+          type: string
+          example: fake-secret
+        businessLocationId:
+          description: The unique identifier for the business location.
+          type: integer
+          format: int64
+          example: 45454565682155
+        endpoint:
+          description: The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.
+          type: string
+          example: http://integration.com/pms/endpoint
+        features:
+          description: The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.
+          items:
+            $ref: '#/components/schemas/pms-apiProviderFeature'
+          type: array
+          uniqueItems: true
+      type: object
+    pms-apiProviderId:
+      description: The unique identifier for the provider.
+      type: integer
+      format: int64
+      example: 3012455645
+    pms-apiProviderApiKey:
+      description: The API key for the PMS provider.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: fake-secret
+    pms-apiErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        apiSubExceptions:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              rejectedValue:
+                type: object
+              message:
+                type: string
+    pms-apiProviderFeature:
+      type: string
+      enum:
+      - SEARCH_BY_NAME
+      - MIRRORING
+      - PARTIAL_PAYMENTS
+      - MULTI_PAYMENTS
+      - SERVICE_CHARGE
+      - ENRICHED_PAYLOAD
+      example: MIRRORING
+    pms-apiProviderFeatures:
+      type: array
+      uniqueItems: true
+      description: The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.
+      items:
+        $ref: '#/components/schemas/pms-apiProviderFeature'
+    pms-apiProviderEndpoint:
+      description: The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: http://integration.com/pms/endpoint
+    pms-apiRevenueCenterName:
+      example: Bar
+      description: The name of the revenue center.
+      type: string
+    pms-apiRevenueCenterId:
+      example: 343243933
+      description: The unique identifier for the revenue center.
+      type: integer
+      format: int64
+    pms-apiProviderName:
+      description: The name of the PMS provider.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: My PMS Provider
+    pms-apiBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Retailers API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Retailer operations
+  name: Retailers
+paths:
+  /retailer:
+    get:
+      description: 'This endpoint returns information about the retailer.
+
+
+        🔒 Requires: `retailer:read` `payment_types:read` scopes'
+      operationId: GetRetailer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailerResponse'
+          description: OK
+      summary: Get information about this retailer
+      tags:
+      - Retailers
+components:
+  schemas:
+    Retailer:
+      description: A Retailer record.
+      properties:
+        account_status:
+          description: Status of this account.
+          type: string
+        account_type:
+          description: Type of this account.
+          type: string
+        activated_at:
+          description: Activation timestamp, e.g. '2019-08-15T23:05:28Z'. This field can be null, e.g. for 'demo' retailers.
+          type:
+          - string
+          - 'null'
+        country:
+          description: 2-letter country code for this Retailer.
+          type: string
+        created_at:
+          description: Creation timestamp, e.g. '2019-08-15T23:05:28Z'
+          type: string
+        culture:
+          description: Culture (language name) for this Retailer.
+          type: string
+        currency:
+          $ref: '#/components/schemas/RetailerCurrency'
+        discount_product_id:
+          description: A reference to the default discount product used for sale-level discounts.
+          format: uuid
+          type: string
+        domain_prefix:
+          description: The subdomain of vendhq.com for this retailer.
+          type: string
+        embedded_barcode_option:
+          description: Which value, if any, is embedded in scanned barcodes for this Retailer.
+          enum:
+          - none
+          - price
+          - weight
+          type: string
+        enable_line_item_consolidation:
+          description: Whether the Retailer has enabled consolidation of duplicate line items on a sale.
+          type: boolean
+        gift_cards:
+          properties:
+            enabled:
+              description: Whether the Retailer has enabled Gift Cards.
+              type: boolean
+            never_enabled:
+              description: Whether the Retailer has _never_ had Gift Cards enabled. Can be used to indicate whether historical Gift Card data exists.
+              type: boolean
+          type: object
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        loyalty:
+          properties:
+            claim_url:
+              description: URL for this Retailer's Loyalty plan.
+              type: string
+            enabled:
+              description: Whether Loyalty has been enabled.
+              type: boolean
+            ratio:
+              description: Ratio of Loyalty Points.
+              type: number
+            send_welcome_email:
+              description: Denotes Whether the Retailer's Loyalty plan is configured to send Welcome emails.
+              type: boolean
+          type: object
+        name:
+          description: Unique name for this Retailer.
+          type: string
+        no_tax_group_id:
+          description: A reference to the default 0% rate tax used for tax-free line items.
+          format: uuid
+          type: string
+        on_account:
+          description: On Account payment settings for this Retailer.
+          properties:
+            default_limit:
+              description: Default On Account credit limit applied to customers, or null if no default is set.
+              type:
+              - number
+              - 'null'
+          type: object
+        sku_sequence:
+          properties:
+            enabled:
+              description: Whether the Retailer has enabled auto-generation of SKUs, in a numeric sequence.
+              type: boolean
+            value:
+              description: The current value of the auto-generated SKU.
+              type: integer
+          type: object
+        sso_enabled:
+          description: Whether Single Sign-On has been enabled for this Retailer.
+          type: boolean
+        store_credit:
+          description: Whether the Retailer has enabled Store Credit.
+          type: boolean
+        store_url:
+          description: URL for the store itself.
+          type: string
+        tax_exclusive:
+          description: Whether Prices should be interpreted as Tax-Exclusive.
+          type: boolean
+        timezone:
+          description: 'Default Timezone for retailer - e.g. Pacific/Auckland. NOTE: timezones can vary between Outlets.'
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          type: string
+      title: Retailer
+      type: object
+    RetailerResponse:
+      description: A Retailer record wrapped in the top-level data object.
+      properties:
+        data:
+          $ref: '#/components/schemas/Retailer'
+      title: Retailer response
+      type: object
+    RetailerCurrency:
+      properties:
+        code:
+          description: 3-letter Currency Code for this Retailer.
+          type: string
+        symbol:
+          description: Currency Symbol for this Retailer.
+          type: string
+      title: Retailer Currency
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

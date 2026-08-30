@@ -1,0 +1,84 @@
+name: Lightspeed Commerce MCP Servers
+generated: '2026-08-27'
+method: probed
+source: >-
+  POST tools/list against https://x-series-api.lightspeedhq.com/mcp and
+  https://api-docs.lsk.lightspeed.app/mcp on 2026-08-27; both returned HTTP 200 with a real tool list
+  and no authentication challenge.
+description: >-
+  Lightspeed runs two hosted, anonymous MCP servers — one per documentation platform. Both are
+  documentation-plane servers: they let an agent read and search the API contract. Only the X-Series
+  server carries a tool that actually calls the API (execute-request), and that call still requires the
+  caller to supply their own Lightspeed bearer token inside the HAR request.
+deployment:
+  mode: remote
+  endpoint: https://x-series-api.lightspeedhq.com/mcp
+  auth: none
+  verified: probed
+  note: >-
+    Two remote endpoints exist; the X-Series one is recorded here as the primary because it is the only
+    one that can execute API requests. The K-Series endpoint is https://api-docs.lsk.lightspeed.app/mcp
+    and is listed in servers[] below. No stdio package is published for either.
+servers:
+- id: x-series
+  api: lightspeed:retail-x-series
+  endpoint: https://x-series-api.lightspeedhq.com/mcp
+  platform: ReadMe (docs-hosted MCP)
+  transport: streamable-http (SSE framed responses)
+  auth: none
+  status: live
+  http_status: 200
+  probed: '2026-08-27'
+  advertised_at: https://x-series-api.lightspeedhq.com/
+  tools:
+  - name: list-endpoints
+    description: Lists all API paths and their HTTP methods with summaries, organized by path.
+    input: []
+  - name: get-endpoint
+    description: Gets detailed information about a specific API endpoint, including security schemes and servers.
+    input: [path, method]
+  - name: search-endpoints
+    description: Deep search through paths, operations and parameters to discover relevant API endpoints.
+    input: [pattern]
+  - name: execute-request
+    description: Executes an API request with a given HAR request object.
+    input: [harRequest]
+  - name: get-server-variables
+    description: Gets the server variables for each server within a specific OpenAPI spec.
+    input: []
+  raw: mcp/lightspeed-x-series-tools-list.json
+- id: k-series
+  api: lightspeed:restaurant-k-series
+  endpoint: https://api-docs.lsk.lightspeed.app/mcp
+  platform: Bump.sh (docs-hosted MCP)
+  transport: streamable-http (JSON responses)
+  auth: none
+  status: live
+  http_status: 200
+  probed: '2026-08-27'
+  advertised_at: >-
+    https://api-docs.lsk.lightspeed.app/ — the page ships one-click install deeplinks for VS Code and
+    Cursor naming this endpoint as "Lightspeed Restaurant K-Series MCP server".
+  tools:
+  - name: search
+    description: Search across all documentation pages in the portal by keyword, filterable by object type.
+    input: [url, query, type]
+  - name: get_pages
+    description: Retrieve the full content of one or more documentation pages by URL (1-10 per call).
+    input: [urls]
+  - name: list_pages
+    description: List all child pages under a given URL in the portal hierarchy.
+    input: [url]
+  - name: list_changes
+    description: List visible documentation changes for a hub, an API documentation, or a version.
+    input: [url, page, limit]
+  - name: get_change
+    description: Retrieve a single visible documentation change by identifier.
+    input: [id]
+  raw: mcp/lightspeed-k-series-tools-list.json
+gaps:
+- No MCP server exists for Retail R-Series, eCom C-Series, eCom E-Series, Restaurant O-Series or Golf.
+- >-
+  Neither server exposes Lightspeed business objects as tools. An agent cannot call "create a sale" or
+  "list products" as an MCP tool; it can only read the contract, or hand-build a HAR request for
+  execute-request on X-Series.

@@ -1,0 +1,601 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Customer Groups API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Customer Group operations
+  name: Customer Groups
+paths:
+  /customer_groups:
+    get:
+      description: 'Return a list of Customer Groups
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: ListCustomerGroups
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - created_at: '2014-06-09T21:04:49+00:00'
+                  group_id: '1111111111'
+                  id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                  name: All Customers
+                  updated_at: '2014-06-09T21:04:49+00:00'
+                  version: 29483
+                - created_at: '2015-08-19T21:32:06+00:00'
+                  group_id: VIP-Y968
+                  id: dc85058a-a683-11e5-e112-46b9bd1f069e
+                  name: VIP
+                  updated_at: '2015-08-19T21:32:06+00:00'
+                  version: 157810
+                - created_at: '2016-04-26T21:45:53+00:00'
+                  group_id: Students-2SFG
+                  id: 06e35f89-3783-11e6-ec7e-0bf840380a64
+                  name: Students
+                  updated_at: '2016-04-26T21:45:53+00:00'
+                  version: 1205737356
+                version:
+                  max: 1205737356
+                  min: 29483
+              schema:
+                $ref: '#/components/schemas/CustomerGroupCollection'
+          description: OK
+      summary: List customer groups
+      tags:
+      - Customer Groups
+    post:
+      description: 'Create a new customer group
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: CreateCustomerGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerGroup'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerGroupResponse'
+          description: Created
+      summary: Create new customer group
+      tags:
+      - Customer Groups
+  /customer_groups/{customer_group_id}:
+    get:
+      description: 'Return given customer group
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: GetCustomerGroupById
+      parameters:
+      - description: The customer group id
+        in: path
+        name: customer_group_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerGroupResponse'
+          description: OK
+      summary: Get single customer group
+      tags:
+      - Customer Groups
+    put:
+      description: 'Update the given Customer Group
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: UpdateCustomerGroup
+      parameters:
+      - description: The customer group id
+        in: path
+        name: customer_group_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerGroup'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerGroupResponse'
+          description: OK
+      summary: Update the given customer group
+      tags:
+      - Customer Groups
+  /customer_groups/{customer_group_id}/customers:
+    delete:
+      description: 'Deletes the given customers from the customer group.
+
+
+        **Note**: Only the link is deleted, the customers are not.
+
+
+        🔒 Requires: `customers:write` scope
+
+        '
+      operationId: DeleteCustomersFromCustomerGroup
+      parameters:
+      - description: The customer group id
+        in: path
+        name: customer_group_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: An array of Customer ids to delete from the Customer Group.
+              properties:
+                customer_ids:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        required: true
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OK
+      summary: Delete customers from customer group
+      tags:
+      - Customer Groups
+    get:
+      description: 'Returns a list of customers for the given Customer Group
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: GetCustomerGroupCustomers
+      parameters:
+      - description: The customer group id
+        in: path
+        name: customer_group_id
+        required: true
+        schema:
+          type: string
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerCollection'
+          description: OK
+      summary: Get customers for customer group
+      tags:
+      - Customer Groups
+    post:
+      description: 'Associates one or more customers with the given customer group
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: AddCustomersToCustomerGroup
+      parameters:
+      - description: The customer group id
+        in: path
+        name: customer_group_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: An array of Customer ids to add to the Customer Group.
+              properties:
+                customer_ids:
+                  items:
+                    type: string
+                  type: array
+              required:
+              - customer_ids
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: OK
+      summary: Add customers to customer group
+      tags:
+      - Customer Groups
+components:
+  schemas:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    Customer:
+      properties:
+        balance:
+          description: Customer's unpaid balance.
+          format: double
+          type: number
+        company_name:
+          description: Company name.
+          type:
+          - string
+          - 'null'
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        custom_field_1:
+          description: Custom field 1. Can be used to store random data.
+          type:
+          - string
+          - 'null'
+        custom_field_2:
+          description: Custom field 2.
+          type:
+          - string
+          - 'null'
+        custom_field_3:
+          description: Custom field 3.
+          type:
+          - string
+          - 'null'
+        custom_field_4:
+          description: Custom field 4.
+          type:
+          - string
+          - 'null'
+        customer_code:
+          description: Customer code used for claiming loyalty.
+          type: string
+        customer_group_id:
+          description: Customer group ID.
+          type: string
+        date_of_birth:
+          description: Birthday.
+          type:
+          - string
+          - 'null'
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        do_not_email:
+          default: false
+          description: Indicates whether the customer opted out of email communications.
+          type: boolean
+        email:
+          description: Customer's email address.
+          type:
+          - string
+          - 'null'
+        enable_loyalty:
+          type: boolean
+        enable_promotional_sms:
+          default: false
+          description: Indicates whether the customer opted in to SMS communications.
+          type: boolean
+        fax:
+          description: Fax no.
+          type:
+          - string
+          - 'null'
+        first_name:
+          description: Customer's first name.
+          type:
+          - string
+          - 'null'
+        gender:
+          description: Customer's gender. Can be `M`, `F` or null.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        last_name:
+          description: Customer 's last name.
+          type:
+          - string
+          - 'null'
+        loyalty_balance:
+          description: Customer's loyalty balance.
+          format: double
+          type: number
+        mobile:
+          description: Mobile phone no.
+          type:
+          - string
+          - 'null'
+        name:
+          deprecated: true
+          description: Customers full name. **deprecated**
+          type:
+          - string
+          - 'null'
+        note:
+          description: Customer note.
+          type:
+          - string
+          - 'null'
+        on_account_limit:
+          description: Customer's OnAccount Limit.
+          format: double
+          type:
+          - number
+          - 'null'
+        phone:
+          description: Phone no.
+          type:
+          - string
+          - 'null'
+        physical_address_1:
+          description: Physical address, line 1.
+          type:
+          - string
+          - 'null'
+        physical_address_2:
+          description: Physical address, line 2.
+          type:
+          - string
+          - 'null'
+        physical_city:
+          description: Physical address, city.
+          type:
+          - string
+          - 'null'
+        physical_country_id:
+          description: Physical address, country code.
+          type:
+          - string
+          - 'null'
+        physical_postcode:
+          description: Physical address, post code.
+          type:
+          - string
+          - 'null'
+        physical_state:
+          description: Physical address, state.
+          type:
+          - string
+          - 'null'
+        physical_suburb:
+          description: Physical address, suburb.
+          type:
+          - string
+          - 'null'
+        postal_address_1:
+          description: Postal address, line 1.
+          type:
+          - string
+          - 'null'
+        postal_address_2:
+          description: Postal address, line 2.
+          type:
+          - string
+          - 'null'
+        postal_city:
+          description: Postal address, city.
+          type:
+          - string
+          - 'null'
+        postal_country_id:
+          description: Postal address, country code.
+          type:
+          - string
+          - 'null'
+        postal_postcode:
+          description: Postal address, post code.
+          type:
+          - string
+          - 'null'
+        postal_state:
+          description: Postal address, state.
+          type:
+          - string
+          - 'null'
+        postal_suburb:
+          description: Postal address, suburb.
+          type:
+          - string
+          - 'null'
+        tax_id:
+          description: Customer's tax ID.
+          type:
+          - string
+          - 'null'
+        twitter:
+          description: Twitter handle.
+          type:
+          - string
+          - 'null'
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+        website:
+          description: Website URL.
+          type:
+          - string
+          - 'null'
+        year_to_date:
+          description: Customer's spending this year.
+          format: double
+          type: number
+      required:
+      - first_name
+      - last_name
+      title: Customer
+      type: object
+    CustomerGroup:
+      properties:
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        group_id:
+          description: The customer group identifier.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The customer group name.
+          type: string
+        retailer_id:
+          description: The retailer identifier
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - name
+      title: Customer Group
+      type: object
+      x-examples:
+        All customers:
+          created_at: '2023-04-16T12:44:54+00:00'
+          deleted_at: null
+          group_id: '1111111111'
+          id: 28020918-a068-aae4-11e9-cad0d053ea28
+          name: All Customers
+          retailer_id: 00000000-0001-0001-0001-000000000001
+          updated_at: '2023-04-16T12:44:54+00:00'
+          version: 150547
+    CustomerGroupCollection:
+      properties:
+        data:
+          description: An array of customer group objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Customer Group Collection
+      type: object
+    CustomerCollection:
+      properties:
+        data:
+          description: An array of Customer objects.
+          items:
+            $ref: '#/components/schemas/Customer'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Customer Collection
+      type: object
+    CustomerGroupResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerGroup'
+      title: Customer Group Response
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

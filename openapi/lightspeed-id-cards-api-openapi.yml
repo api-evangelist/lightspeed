@@ -1,0 +1,244 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series ID Cards API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: ID Cards
+paths:
+  /id-cards/v1/business-locations/{businessLocationId}/batches:
+    post:
+      summary: Create an ID Card Batch
+      description: Creates a new batch of ID cards for a specific business location.
+      operationId: id-cards-apiCreateIdCardBatch
+      x-beta: true
+      security:
+      - OAuth2:
+        - id-cards
+      parameters:
+      - $ref: '#/components/parameters/id-cards-apiBusinessLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id-cards-apiCreateIdCardBatchRequest'
+      responses:
+        '201':
+          description: Successfully created an ID card batch.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id-cards-apiIdCardBatch'
+      tags:
+      - ID Cards
+  /id-cards/v1/business-locations/{businessLocationId}/batches/{batchId}/cards:
+    post:
+      summary: Create ID Cards
+      description: Creates a specified number of ID cards for an existing ID card batch.
+      operationId: id-cards-apiCreateIdCards
+      x-beta: true
+      security:
+      - OAuth2:
+        - id-cards
+      parameters:
+      - $ref: '#/components/parameters/id-cards-apiBusinessLocationId'
+      - name: batchId
+        in: path
+        required: true
+        description: The unique identifier for the ID card batch.
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id-cards-apiCreateIdCardsRequest'
+      responses:
+        '201':
+          description: Successfully created ID cards.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id-cards-apiCreateIdCardsResponse'
+      tags:
+      - ID Cards
+components:
+  schemas:
+    id-cards-apiCreateIdCardsRequest:
+      type: object
+      properties:
+        cardCount:
+          type: integer
+          format: int32
+          description: The number of ID cards to create.
+          example: 1
+          minimum: 1
+          maximum: 100
+      required:
+      - cardCount
+    id-cards-apiCreateIdCardsResponse:
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+          description: The unique identifier for the batch the cards were added to.
+          example: 12345
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/id-cards-apiCardReference'
+    id-cards-apiCreateIdCardBatchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the ID card batch.
+          example: Sample Batch Name
+          pattern: .*\S.*
+          maxLength: 255
+      required:
+      - name
+    id-cards-apiCardReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The unique identifier for the ID card.
+          example: 98765
+        consumerRecordId:
+          type: integer
+          format: int64
+          description: The unique identifier for the associated consumer record.
+          example: 54321
+        consumerId:
+          type: integer
+          format: int64
+          description: The unique identifier for the associated consumer.
+          example: 13579
+        url:
+          type: string
+          description: The URL for the QR code associated with the ID card.
+          example: https://example.com/id-cards/98765/qr-code
+    id-cards-apiIdCardBatch:
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+          description: The unique identifier for the ID card batch.
+          example: 12345
+        name:
+          type: string
+          description: The name of the ID card batch.
+        businessLocationId:
+          type: integer
+          format: int64
+          description: The unique identifier for the business location this batch belongs to.
+          example: 67890
+  parameters:
+    id-cards-apiBusinessLocationId:
+      name: businessLocationId
+      in: path
+      required: true
+      description: The unique identifier for the business location.
+      schema:
+        type: integer
+        format: int64
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

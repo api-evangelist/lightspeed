@@ -1,0 +1,457 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Consignment Products API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Consignment Product operations
+  name: Consignment Products
+paths:
+  /consignments/{consignment_id}/bulk:
+    post:
+      description: 'Add or update the products in a consignment in bulk.
+
+
+        **Note**: Must include either count or received for each product.
+
+
+        **Note**: It is not recommended to update more than 500 products at a time, as this may lead to server timeouts.
+
+
+        **Note**:
+
+
+        If the type is SUPPLIER then:
+
+
+        - Cannot add a composite product by this api
+
+        - Cannot update products if the consignment has a status of RECEIVED or CANCELLED
+
+        - If status is OPEN or SENT, the count value will be accumulated
+
+        - If status is DISPATCHED, the received quantity will be accumulated
+
+        - If status is OPEN, SENT or DISPATCHED, the cost will be updated
+
+        - If a received field is provided for consignment products in an OPEN or SENT Supplier Order - the order will be automatically marked as DISPATCHED. Remove the received field if you don''t intend to dispatch the OPEN or SENT purchase order
+
+
+        🔒 Requires: One of the following scopes:
+
+        - `consignments:write:stock_order` scope for `SUPPLIER` and `RETURN` consignments
+
+        - `consignments:write:stock_transfer` scope for `OUTLET` consignments
+
+        - `consignments:write:inventory_count` scope for `STOCKTAKE` consignments'
+      operationId: CreateOrUpdateConsignmentProducts
+      parameters:
+      - description: The consignment id
+        in: path
+        name: consignment_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/ConsignmentProduct'
+              type: array
+        required: true
+      responses:
+        '200':
+          content:
+            Example:
+              example:
+                data:
+                  0242ac14-002c-11eb-f66d-538dab104309:
+                    count: '60.00000'
+                  353a59ba-eb4a-de10-4f85-b8fdb8a08813:
+                    count: '60.00000'
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      product_id:
+                        properties:
+                          count:
+                            minLength: 1
+                            type: string
+                          received:
+                            type: string
+                        type: object
+                    type: object
+                type: object
+          description: OK
+      summary: Bulk update consignment products
+      tags:
+      - Consignment Products
+  /consignments/{consignment_id}/products:
+    get:
+      description: 'Returns a collection of consignment products associated with the specified consignment.
+
+
+        🔒 Requires: `consignments:read` scope'
+      operationId: ListProductsByConsignmentID
+      parameters:
+      - description: The consignment id
+        in: path
+        name: consignment_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - cost: '0.00000'
+                  count: '10.00000'
+                  created_at: '2015-02-23T18:46:12+00:00'
+                  is_included: false
+                  product_id: fa16cdf8-063c-11e4-a0f5-b8ca3a64f8f4
+                  received: '10.00000'
+                  status: RECEIVE_SUCCESS
+                  updated_at: '2015-07-30T02:59:51+00:00'
+                  version: 3542970
+                - cost: '0.00000'
+                  created_at: '2015-02-23T18:46:24+00:00'
+                  is_included: false
+                  product_id: fa16cdf8-063c-11e4-a0f5-b8ca3a64f8f4
+                  received: '0.00000'
+                  status: RECEIVE_SUCCESS
+                  updated_at: '2015-07-30T02:59:51+00:00'
+                  version: 3542975
+                - cost: '100.00000'
+                  count: '10.00000'
+                  created_at: '2014-07-13T23:22:59+00:00'
+                  is_included: true
+                  product_id: fa16cdf8-063c-11e4-a0f5-b8ca3a64f8f4
+                  received: '0.00000'
+                  status: RECEIVE_SUCCESS
+                  updated_at: '2015-07-30T02:59:51+00:00'
+                  version: 20813790
+                version:
+                  max: 20813790
+                  min: 3542970
+              schema:
+                $ref: '#/components/schemas/ConsignmentProductCollection'
+          description: ''
+      summary: List all products for a specific consignment
+      tags:
+      - Consignment Products
+    post:
+      description: 'Add a product to the given consignment.
+
+
+        If the type is SUPPLIER then:
+
+
+        - Cannot add a product to a `RECEIVED` or `CANCELLED` order
+
+        - Cannot add a composite product to the order
+
+        - If a received value is provided for a consignment product for a SENT Supplier Order - the order will be automatically marked as DISPATCHED
+
+
+        If the type is OUTLET then:
+
+
+        - If a cost value is not provided for a consignment product on an OPEN Outlet order - the cost will be automatically populated after the fact using the most accurate average cost of the product at the time of marking the consignment as sent.
+
+
+        🔒 Requires: One of the following scopes:
+
+        - `consignments:write:stock_order` scope for `SUPPLIER` and `RETURN` consignments
+
+        - `consignments:write:stock_transfer` scope for `OUTLET` consignments
+
+        - `consignments:write:inventory_count` scope for `STOCKTAKE` consignments'
+      operationId: CreateConsignmentProduct
+      parameters:
+      - description: The consignment id
+        in: path
+        name: consignment_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsignmentProductRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryCountItemResponse'
+          description: OK
+      summary: Add a product to a consignment
+      tags:
+      - Consignment Products
+  /consignments/{consignment_id}/products/{product_id}:
+    delete:
+      description: 'Removes the specific product from the consignment.
+
+
+        For `SUPPLIER` workflow:
+
+
+        - Cannot delete a product from a consignment with a status of `DISPATCHED`, `RECEIVED` or `CANCELLED`
+
+
+        For consignment type `OUTLET`:
+
+
+        - Cannot delete a product if the consignment has a status of `SENT` or `RECEIVED`
+
+
+        For consignment type `RETURN`:
+
+
+        - Cannot delete a product if the consignment has a status of `SENT`
+
+
+        🔒 Requires: One of the following scopes:
+
+        - `consignments:write:stock_order` scope for `SUPPLIER` and `RETURN` consignments
+
+        - `consignments:write:stock_transfer` scope for `OUTLET` consignments
+
+        - `consignments:write:inventory_count` scope for `STOCKTAKE` consignments'
+      operationId: DeleteProductFromConsignment
+      parameters:
+      - description: The consignment id to be updated.
+        in: path
+        name: consignment_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The product id of the product to be added to the consignment.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '204':
+          description: ''
+      summary: Delete an item from a consignment
+      tags:
+      - Consignment Products
+    put:
+      description: "Updates the specific product within the consignment.\n\n**Notes**:\n\n- If the type is SUPPLIER then:\n  * If status is OPEN or SENT, the count value will be updated\n  * If status is DISPATCHED, the received quantity will be updated\n  * If status is OPEN, SENT or DISPATCHED, the cost can be updated\n  * Cannot update a product in RECEIVED or CANCELLED status\n  * Any updates to the received quantity field on a product in a `SENT` consignment, will set the consignment status to `DISPATCHED`\n- If the type is OUTLET then:\n  * If the status is OPEN and there is a cost the cost will be updated.\n  * If the status is SENT or DISPATCHED and received is not null the received quantity will be updated.\n  * If the status is OPEN or SENT and count is not null then the count quantity will be updated.\n- If the type is RETURN and the status is OPEN or SENT and count is not null then the count quantity will be updated.\n- If the type is STOCKTAKE and the status is STATUS\\_STOCKTAKE\\_IN\\_PROGRESS or STATUS\\_STOCKTAKE\\_IN\\_PROCESS\\_PROCESSED and received is not null then the received quantity will be updated.\n\n\U0001F512 Requires: One of the following scopes:\n- `consignments:write:stock_order` scope for `SUPPLIER` and `RETURN` consignments\n- `consignments:write:stock_transfer` scope for `OUTLET` consignments\n- `consignments:write:inventory_count` scope for `STOCKTAKE` consignments"
+      operationId: UpdateProductInConsignment
+      parameters:
+      - description: The consignment id to be updated.
+        in: path
+        name: consignment_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The product id of the product to be added to the consignment.
+        in: path
+        name: product_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsignmentProductRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsignmentProductResponse'
+          description: OK
+      summary: Update a product in a consignment
+      tags:
+      - Consignment Products
+components:
+  schemas:
+    ConsignmentProductResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ConsignmentProductCollection'
+      required:
+      - data
+      title: Consignment Product Response
+      type: object
+    InventoryCountItem:
+      properties:
+        cost:
+          description: The cost of the item.
+          type: string
+        count:
+          description: Expected item count.
+          type: string
+        created_at:
+          description: The creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: The deletion timestamp in UTC.
+          type: string
+        is_included:
+          description: Indicated whether the item was included via a filter. Can be `null`. For full count (no filters) always `true`.
+          type: boolean
+        product_id:
+          description: The ID of the product associated with this count item.
+          format: uuid
+          type: string
+        product_sku:
+          type: string
+        received:
+          description: Observed item count.
+          type: string
+        status:
+          description: 'The status of the item. One of: `PENDING`, `SUCCESS`.'
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - cost
+      - count
+      - created_at
+      - deleted_at
+      - product_id
+      - received
+      - status
+      - updated_at
+      - version
+      title: Inventory Count Item
+      type: object
+    InventoryCountItemResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/InventoryCountItem'
+      required:
+      - data
+      title: Inventory Count Item Response
+      type: object
+    ConsignmentProductCollection:
+      properties:
+        data:
+          description: An array of consignment products.
+          items:
+            $ref: '#/components/schemas/ConsignmentProduct'
+          type: array
+      title: Consignment Product Collection
+      type: object
+    ConsignmentProductRequest:
+      properties:
+        data:
+          $ref: '#/components/schemas/ConsignmentProduct'
+      required:
+      - data
+      title: Consignment Product Request
+      type: object
+    ConsignmentProduct:
+      properties:
+        cost:
+          description: The cost of the item.
+          type:
+          - string
+          - 'null'
+        count:
+          description: Expected item count.
+          type:
+          - string
+          - 'null'
+        created_at:
+          description: The creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: The deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        is_included:
+          description: Indicated whether the item was included via a filter. Can be `null`. For full count (no filters) always `true`.
+          type: boolean
+        product_id:
+          description: The ID of the product.
+          format: uuid
+          type: string
+        product_sku:
+          description: The SKU of the product.
+          type:
+          - string
+          - 'null'
+        received:
+          description: Observed item count.
+          type: string
+        status:
+          description: 'The status of the item. One of: `PENDING`, `SUCCESS`.'
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - product_id
+      title: Consignment Product
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

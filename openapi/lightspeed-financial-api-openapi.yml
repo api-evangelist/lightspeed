@@ -1,0 +1,1263 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series Financial API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: Financial
+  description: 'V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
+
+
+    For the newer V2 versions of these endpoints see FinancialV2
+
+
+    ### V1 behaviour
+
+
+    - **Sorting**: No guaranteed sorting order; internal transformations may alter order unpredictably
+
+    - **Transitory Accounts / Unsettled Sales**: Returns closed transactions only
+
+    - **Pagination**: `pageSize` max of 1000. Uses HATEOAS `_links` with `self` and `nextPage` URLs
+
+    - **Daily endpoints** (`getDailyFinancials`): No pagination, no hard cap on results. May have slower response times for larger data sets
+
+    - **Backoffice transactions**: Historical dating supported. Transactions will be dated to a past date if the action impacts past reports. Can query transactions by original business date
+
+    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the original transaction date
+
+    '
+paths:
+  /f/data/businesses:
+    get:
+      summary: Get Businesses
+      operationId: financial-apiGetBusinesses
+      description: Returns all businesses the token has access to. Pagination is supported by providing the `page` and `size` query parameters. The maximum number of business locations per business returned is 500.
+      tags:
+      - Financial
+      parameters:
+      - description: Starting page of results, when paginating.
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: Number of results to return, when paginating.
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 1000
+          format: int32
+          type: integer
+      responses:
+        '200':
+          description: Businesses returned
+          content:
+            application/json:
+              schema:
+                properties:
+                  _embedded:
+                    properties:
+                      businessList:
+                        items:
+                          properties:
+                            businessName:
+                              type: string
+                              example: My Business
+                              description: The name of the business.
+                            businessId:
+                              type: number
+                              example: 1234
+                              description: The unique identifier for the business.
+                            currencyCode:
+                              type: string
+                              description: The ISO 4217 currency code
+                              example: GBP
+                            businessLocations:
+                              items:
+                                properties:
+                                  blName:
+                                    type: string
+                                    example: My Business Location 1
+                                    description: The name of the business location.
+                                  blID:
+                                    type: number
+                                    example: 1234567890
+                                    description: The unique identifier for the business location.
+                                  country:
+                                    type: string
+                                    example: GB
+                                    description: The ISO 3166 country code.
+                                  timezone:
+                                    type: string
+                                    example: Europe/London
+                                    description: The time zone in ICANN format.
+                                type: object
+                              type: array
+                          type: object
+                        type: array
+                    type: object
+                  _links:
+                    properties:
+                      self:
+                        properties:
+                          href:
+                            example: https:///api.ikentoo.com/data/businesses
+                            type: string
+                        type: object
+                    type: object
+                type: object
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/tax-rates:
+    get:
+      summary: Get Tax Rates
+      operationId: financial-apiGetTaxRates
+      description: Returns tax rates for a business location.
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Tax rates returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/financial-apiResourcesTaxRate'
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/paymentMethods:
+    get:
+      summary: Get Payment Methods
+      operationId: financial-apiGetPaymentMethods
+      description: Returns all payment methods for a business location.
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Payment methods returned
+          content:
+            application/json:
+              schema:
+                properties:
+                  _embedded:
+                    properties:
+                      paymentMethodList:
+                        items:
+                          properties:
+                            name:
+                              type: string
+                              description: Name of the payment type.
+                              example: Cash
+                            code:
+                              type: string
+                              description: System code for the payment type.
+                              example: CASH
+                            accountingReference:
+                              type: string
+                              description: Accounting reference code, if assigned.
+                              example: cash-payment
+                            pmId:
+                              type: number
+                              description: System identification number for payment type.
+                              example: 1234567890
+                          type: object
+                        type: array
+                    type: object
+                  _links:
+                    properties:
+                      self:
+                        properties:
+                          href:
+                            example: https:///api.ikentoo.com/finance/1234567/paymentMethodss
+                            type: string
+                        type: object
+                    type: object
+                type: object
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/accountingGroups:
+    get:
+      summary: Get Accounting Groups
+      operationId: financial-apiGetAccountingGroups
+      description: Returns all accounting groups for a business location.
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Accounting groups returned
+          content:
+            application/json:
+              schema:
+                properties:
+                  _embedded:
+                    description: The list of accounting groups.
+                    properties:
+                      accountingGroupList:
+                        items:
+                          properties:
+                            accountingGroupId:
+                              type: number
+                              example: 1234567890
+                              description: The numeric identifier of the accounting group.
+                            name:
+                              type: string
+                              example: Food
+                              description: The name of the accounting group.
+                            statisticGroup:
+                              type: string
+                              example: '[{"category":"default","value":"Food"}]'
+                              description: The assigned statistic group, if applicable.
+                            code:
+                              type: string
+                              example: fd
+                              description: The code assigned to the accounting group, if applicable.
+                          type: object
+                        type: array
+                    type: object
+                  _links:
+                    properties:
+                      self:
+                        properties:
+                          href:
+                            example: https://api.ikentoo.com/f/finance/1234567/accountingGroups
+                            type: string
+                        type: object
+                    type: object
+                type: object
+        '400':
+          description: Bad Request
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/financials/{from}/{to}:
+    get:
+      summary: Get Financials
+      operationId: financial-apiGetFinancials
+      description: 'Returns financial data for a business location for a specified date range.
+
+
+        Note: Will only return sales created after migration from iKentoo 2.0 to Lightspeed K-Series.'
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      - schema:
+          example: '2022-09-21T10:11:56Z'
+          type: string
+          format: date-time
+        name: from
+        description: 'Start of requested results, in ISO 8601 format.
+
+
+          The date range between ''from'' and ''to'' cannot exceed 365 days (1 year).
+
+
+          Example:`2022-09-21T10:11:56Z` or `2022-09-21T06:11:56-04:00`'
+        in: path
+        required: true
+      - schema:
+          example: '2022-09-21T10:11:56Z'
+          type: string
+          format: date-time
+        name: to
+        description: 'End of requested results, in ISO 8601 format.
+
+
+          Example:`2022-09-21T10:11:56Z` or `2022-09-21T06:11:56-04:00`'
+        in: path
+        required: true
+      - $ref: '#/components/parameters/financial-apiIncludeParameter'
+      - schema:
+          default: 1000
+          maximum: 1000
+          type: integer
+          format: int32
+        name: pageSize
+        description: Number of entries to return.
+        in: query
+        required: false
+      - schema:
+          type: string
+        name: nextPageToken
+        description: 'The `accountId` where the results should begin.
+
+
+          Example: `A65315.18`'
+        in: query
+        required: false
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Financials returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/financial-apiFinancialDto'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/dailyFinancials:
+    get:
+      summary: Get Daily Financials
+      operationId: financial-apiGetDailyFinancials
+      description: Returns the financial data for the current business day or for the specified date.
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      - $ref: '#/components/parameters/financial-apiIncludeParameter'
+      - $ref: '#/components/parameters/financial-apiDateParameter'
+      - schema:
+          example: true
+          default: false
+          type: boolean
+        name: includeConsumers
+        in: query
+        required: false
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Daily financials returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/financial-apiFinancialDto'
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/saleByExternalReference:
+    get:
+      summary: Get Receipt by External Reference
+      operationId: financial-apiGetReceiptByExternalReference
+      description: Returns a single receipt matching the external reference supplied in the request. See [`externalReferences`](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences) for examples.
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      - $ref: '#/components/parameters/financial-apiExternalReferenceId'
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Receipt returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/financial-apiSaleDto'
+      security:
+      - OAuth2:
+        - financial-api
+  /f/finance/{businessLocationId}/aggregatedSales:
+    get:
+      summary: Get Aggregated Sales
+      operationId: financial-apiGetAggregatedSales
+      description: 'Get sales for the current business day or the specified date range, aggregated by one or more values.
+
+        The values are specified in the `groupBy` parameter and are nested in the order provided in the request.
+
+
+        - Use either the `date` parameter **or** the `from` and `to` parameters to specify the period.
+
+        - The `date` parameter specifies a single date for aggregation.
+
+        - The `from` and `to` parameters specify a date-time range and must be used together.
+
+        - **If neither `date` nor `from`/`to` are provided it defaults to today''s date**.
+
+        - The date range between `from` and `to` cannot exceed 365 days (1 year).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/financial-apiBusinessLocationId'
+      - name: date
+        in: query
+        required: false
+        description: 'Specify a single date for which to retrieve aggregated sales data. Cannot be combined with `from` and `to`. Use either `date`, or both `from` and `to`.
+
+          '
+        schema:
+          type: string
+          format: date
+      - name: from
+        in: query
+        required: false
+        description: 'Specify the start datetime for the aggregation range. Must be used together with `to`. Cannot be combined with `date`.
+
+          '
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        description: 'Specify the end datetime for the aggregation range. Must be used together with `from`. Cannot be combined with `date`.
+
+          '
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/financial-apiFlattenedParameter'
+      - $ref: '#/components/parameters/financial-apiGroupByParameter'
+      tags:
+      - Financial
+      responses:
+        '200':
+          description: Aggregated sales returned
+          content:
+            application/json:
+              schema:
+                properties:
+                  groupByKey:
+                    type: string
+                    description: The groupBy parameter provided.
+                    examples:
+                    - staff
+                  groupByValue:
+                    type: string
+                    description: The value that corresponds to the groupBy parameter.
+                    examples:
+                    - manager
+                  totalAmount:
+                    type: string
+                    description: 'The aggregated total of sales for this data set (ex. `staff: manager`).'
+                    examples:
+                    - '47.00'
+                  serviceCharge:
+                    type: string
+                    description: 'The aggregated total of service charges for this data set (ex. `staff: manager`).'
+                    examples:
+                    - '0.00'
+                  totalDiscountedAmount:
+                    type: string
+                    description: 'The aggregated total of discounts for this data set (ex. `staff: manager`).'
+                    examples:
+                    - '0.00'
+                  totalTaxAmount:
+                    type: string
+                    description: 'The aggregated tax total for this data set (ex. `staff: manager`).'
+                    examples:
+                    - '7.04'
+                  numberOfSales:
+                    type: number
+                    description: 'The total number of sale lines for this data set (ex. `staff: manager`).'
+                    examples:
+                    - 7.0
+                  children:
+                    items:
+                      properties:
+                        groupByKey:
+                          type: string
+                          description: The second groupBy parameter provided, if applicable. The parameters will be nested based on the order provided. For example, `staff,device` will show totals for each `staff` value, and then those totals broken down by `device`.
+                          example: device
+                        children:
+                          items:
+                            properties:
+                              groupByValue:
+                                type: string
+                                description: The value that corresponds to the second groupBy parameter provided.
+                                example: iPad7
+                              totalAmount:
+                                type: string
+                                description: 'The aggregated total of sales for this nested data set (ex. `staff:manager -> device: iPad7 `).'
+                                example: '28.00'
+                              serviceCharge:
+                                type: string
+                                description: 'The aggregated total of service charges for this nested data set (ex. `staff:manager -> device: iPad7 `).'
+                                example: '0.00'
+                              totalDiscountedAmount:
+                                type: string
+                                description: 'The aggregated total of discounts for this nested data set (ex. `staff:manager -> device: iPad7 `).'
+                                example: '0.00'
+                              totalTaxAmount:
+                                type: string
+                                description: 'The aggregated tax total for this nested data set (ex. `staff:manager -> device: iPad7 `).'
+                                example: '4.19'
+                              numberOfSales:
+                                type: number
+                                description: 'The total number of sales for this nested data set (ex. `staff:manager -> device: iPad7 `).'
+                                example: 3.0
+                              children:
+                                items:
+                                  properties:
+                                    groupByKey:
+                                      type: string
+                                    children:
+                                      description: This would continue with as many nested data sets as specified by the groupBy parameters.
+                                      items:
+                                        properties: {}
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  nextStartOfDayAsIso8601:
+                    type: string
+                  dataComplete:
+                    type: boolean
+                  businessName:
+                    type: string
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+      security:
+      - OAuth2:
+        - financial-api
+components:
+  schemas:
+    financial-apiResourcesTaxRate:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            taxRateList:
+              type: array
+              items:
+                $ref: '#/components/schemas/financial-apiTaxRate'
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+                  example: https://api.ikentoo.com/f/finance/141948669132802/tax-rates
+    financial-apiTaxRate:
+      type: object
+      properties:
+        code:
+          type: string
+          example: VAT20
+          description: System code for the tax rate.
+        description:
+          type: string
+          example: VAT 20%
+          description: Name of the tax rate.
+        rate:
+          type: number
+          example: 1.2
+          description: Multiplier for the tax rate.
+        taxIncluded:
+          type: boolean
+          description: Whether or not the tax is included.
+        accountingReference:
+          type: string
+    financial-apiFinancialDto:
+      properties:
+        businessName:
+          type: string
+          description: Name of the business
+          example: My Business
+        nextStartOfDayAsIso8601:
+          type: string
+          description: Start of next business day, in the merchant's local time.
+          example: '2023-07-28T05:30:00-05:00'
+        businessLocationId:
+          type: number
+          description: The unique identifier for the business location.
+          example: 123456789
+        sales:
+          items:
+            $ref: '#/components/schemas/financial-apiSaleDto'
+          type: array
+        dataComplete:
+          type: boolean
+          example: false
+        _links:
+          properties:
+            self:
+              properties:
+                href:
+                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments
+                  type: string
+                templated:
+                  example: true
+                  type: boolean
+              type: object
+            nextPage:
+              properties:
+                href:
+                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments&nextPageToken=A65315.18
+                  description: The URL for the next set of results.
+                  type: string
+                templated:
+                  example: true
+                  type: boolean
+              type: object
+          type: object
+    financial-apiServiceChargeType:
+      type: string
+      description: The type of service charge applied to the sale line.
+      example: APPORTIONED
+      enum:
+      - UNTAXED
+      - APPORTIONED
+      - NO_SERVICE_CHARGE
+    financial-apiSaleDto:
+      properties:
+        accountReference:
+          type: string
+          description: Unique reference code for the account.
+          example: 57X0j3hzTZ2oo9sdVWiUog==
+        accountFiscId:
+          type: string
+          description: The account identifier
+          example: A65315.17
+        receiptId:
+          type: string
+          description: The unique identifier for the receipt associated with this account.
+          example: R65315.13
+        source:
+          properties:
+            initialAccountId:
+              type: string
+              description: 'The `accountFiscId` of the initial transaction associated with the current account, if applicable. For example, in the case of a refund.
+
+
+                This will match the `accountFiscId` of the sale if there is no associated account.'
+              example: A65315.13
+            previousAccountId:
+              type: string
+              description: 'The `accountFiscId` of the previous transaction associated with the current account, if applicable. For example, in the case of a refund.
+
+
+                This may be different from `initialAccountId` if there is more than one associated account.
+
+
+                It will not be displayed if there is no associated account.'
+              example: A65315.15
+          type: object
+        salesLines:
+          items:
+            properties:
+              id:
+                type: string
+                description: The sale line identifier
+                example: S65315.33
+              parentLineId:
+                type: string
+                description: The sale line this item is associated with, if applicable.
+                example: S65315.32
+              totalNetAmountWithTax:
+                type: string
+                description: 'Total amount of sale line, including tax. **Important Note:** This field is for use with tax inclusive businesses.
+
+                  For tax exclusive businesses, see `taxAmount` and `taxLines` for tax calculations.'
+                example: '11.00'
+              totalNetAmountWithoutTax:
+                type: string
+                description: Total amount of the sale line, before tax.
+                example: '8.33'
+              menuListPrice:
+                type: string
+                description: The price listed on the menu.
+                example: '10.00'
+              unitCostPrice:
+                type: string
+                description: The unit cost price.
+                example: '5.00'
+              serviceCharge:
+                type: string
+                description: The service charge amount.
+                example: '1.00'
+              serviceChargeType:
+                $ref: '#/components/schemas/financial-apiServiceChargeType'
+              serviceChargeRate:
+                type: string
+                description: The service charge rate, as a percentage.
+                example: '10.00'
+              discountAmount:
+                type: string
+                description: The discount amount.
+                example: '0.00'
+              taxCode:
+                type: string
+                description: The system code for the tax rate.
+                example: VAT20
+              taxAmount:
+                type: string
+                description: The tax total.
+                example: '1.6667'
+              taxRatePercentage:
+                type: string
+                description: The tax rate, as a percentage.
+                example: '20.00'
+              taxLines:
+                items:
+                  properties:
+                    taxId:
+                      type: string
+                      description: The unique identifier for the tax.
+                      example: '41910290874374'
+                    taxCode:
+                      type: string
+                      description: The system code for the tax rate.
+                      example: VAT20
+                    taxRate:
+                      type: string
+                      description: The tax rate, as a multiplier.
+                      example: '1.2'
+                    taxAmount:
+                      type: string
+                      description: The tax total.
+                      example: '1.666667'
+                    taxIncluded:
+                      type: boolean
+                      description: Whether or not the business is tax inclusive.
+                      example: true
+              discountType:
+                type: string
+                description: The type of discount.
+                example: DISCOUNT
+              discountCode:
+                type: string
+                description: The discount code.
+                example: 10PCT
+              discountName:
+                type: string
+                description: The name of the discount.
+                example: 10% Discount
+              accountDiscountAmount:
+                type: string
+                description: The account discount amount.
+                example: '1.00'
+              accountDiscountType:
+                type: string
+                description: The account discount type (if any).
+                example: DISCOUNT
+              accountDiscountCode:
+                type: string
+                description: The account discount code (if any).
+                example: Staff 20%
+              accountDiscountName:
+                type: string
+                description: The account discount name (if any).
+                example: Staff Discount
+              totalDiscountAmount:
+                type: string
+                description: The total discount amount.
+                example: '1.00'
+              sku:
+                type: string
+                description: The item SKU
+                example: '52'
+              name:
+                type: string
+                description: The item name.
+                example: Burger
+              nameOverride:
+                type: string
+                description: Item name entered manually by the POS user upon item selection.
+                example: Burger Double Cheese
+              statisticGroup:
+                type: string
+                description: The item's statistic group.
+                example: Food
+              quantity:
+                type: string
+                description: The item quantity.
+                example: '1'
+              accountingGroup:
+                properties:
+                  accountingGroupId:
+                    type: number
+                    description: The unique identifier for the item's accounting group.
+                    example: 141948669132845
+                  name:
+                    type: string
+                    description: The name of the accounting group.
+                    example: Food
+                  statisticGroup:
+                    type: string
+                    description: The accounting group's statistic group.
+                    example: Food
+                  code:
+                    type: string
+                    description: The code assigned to the accounting group.
+                    example: '123'
+                type: object
+              currency:
+                type: string
+                description: The currency for the sale line.
+                example: GBP
+              tags:
+                items:
+                  type: string
+                type: array
+                description: The tags attached to the line item.
+              revenueCenter:
+                type: string
+                description: The name of the revenue center where the sale line was created.
+                example: Fixed POS
+              revenueCenterId:
+                type: number
+                description: The unique identifier for the revenue center where the sale line was created.
+                example: 141948669132822
+              categories:
+                items:
+                  properties:
+                    category:
+                      type: string
+                      description: The line item's category.
+                      example: default
+                    value:
+                      type: string
+                      description: The category value.
+                      example: Food
+                  type: object
+                type: array
+              timeofSale:
+                type: string
+                description: The timestamp of when the line item was created.
+                example: '2023-07-27T19:58:22.474Z'
+              staffId:
+                type: number
+                description: The unique identifier for the user who created the line item.
+                example: 14670
+              staffName:
+                type: string
+                description: The name of the user who created the line item.
+                example: Manager
+              deviceId:
+                type: number
+                description: The unique identifier for the device where the sale line was created.
+                example: 75125
+              deviceName:
+                type: string
+                description: The name of the device where the sale line was created.
+                example: iPad9
+              voidReason:
+                type: string
+                enum:
+                - Broken
+                - Cooking
+                - Other
+                - Taste
+                - Unhappy Client
+                - User Mistake
+                - Waited too long
+                description: The void reason, if applicable.
+                example: Unhappy Client
+              accountProfileCode:
+                type: string
+                description: The code of the account profile used.
+                example: AAP
+            type: object
+          type: array
+        payments:
+          items:
+            properties:
+              code:
+                type: string
+                description: The code of the payment method.
+                example: CASH
+              description:
+                type: string
+                description: The name of the payment method.
+                example: Cash
+              paymentMethodId:
+                type: number
+                description: The unique identifier for the payment method.
+                example: 141948669132824
+              netAmountWithTax:
+                type: string
+                description: The net payment amount, including tax.
+                example: '11.00'
+              currency:
+                type: string
+                description: The payment currency.
+                example: GBP
+              tip:
+                type: string
+                description: The tip amount.
+                example: '0.00'
+              consumer:
+                properties:
+                  id:
+                    type: string
+                    description: The UUID of the customer associated with the payment, if applicable.
+                    example: ec021fb0-4c12-425e-b30f-320ab720448b
+                  customerId:
+                    type: number
+                    description: The unique identifier for the customer.
+                    example: 120913
+                  title:
+                    description: The title of the customer.
+                    type: string
+                    example: Mr
+                  firstName:
+                    description: The first name of the customer.
+                    type: string
+                    example: John
+                  lastName:
+                    description: The last name of the customer.
+                    type: string
+                    example: Doe
+                  phoneNumber1:
+                    description: The primary phone number of the customer.
+                    type: string
+                    example: 555-555-5555
+                  phoneNumber2:
+                    description: The secondary phone number of the customer.
+                    type: string
+                    example: 555-555-5556
+                  companyName:
+                    description: The company name of the customer.
+                    type: string
+                    example: Company Name
+                  addressLine1:
+                    description: The first line of the customer's address.
+                    type: string
+                    example: 123 Street st.
+                  addressLine2:
+                    description: The second line of the customer's address.
+                    type: string
+                    example: Unit 123
+                  zipCode:
+                    description: The postal code of the customer's address.
+                    type: string
+                    example: '12345'
+                  city:
+                    description: The city of the customer's address.
+                    type: string
+                    example: Some City
+                  state:
+                    description: The state of the customer's address.
+                    type: string
+                    example: Some State
+                  email:
+                    description: The email address of the customer.
+                    type: string
+                    example: customer@email.com
+                  taxIdentifier:
+                    description: The tax identifier of the customer.
+                    type: string
+                    example: '123456789'
+                  fiscalCode:
+                    description: The fiscal code of the customer.
+                    type: string
+                    example: '123456789'
+                  destinationCode:
+                    description: The destination code of the customer.
+                    type: string
+                    example: '123456789'
+                type: object
+              type:
+                example: NORMAL
+                description: The type of payment.
+                enum:
+                - NORMAL
+                - ACCOUNTS_RECEIVABLE
+                type: string
+              deviceId:
+                type: string
+                description: The unique identifier for the device where the payment was processed.
+                example: '72676'
+              deviceName:
+                type: string
+                description: The name of the device where the payment was processed.
+                example: ipad9
+              staffId:
+                type: number
+                description: The unique identifier for the user who processed the payment.
+                example: 180480
+              staffName:
+                type: string
+                description: The name of the user who processed the payment.
+                example: Manager
+              authorization:
+                type: string
+                description: The authorization code for the payment.
+                example: '001'
+              externalReference:
+                type: string
+                description: The external reference code for the payment.
+                example: '1000'
+              revenueCenter:
+                type: string
+                description: The name of the revenue center where the payment was processed.
+                example: Fixed POS
+              revenueCenterId:
+                type: number
+                description: The unique identifier for the revenue center where the payment was processed.
+                example: 141948669132822
+              fiscId:
+                type: string
+                description: The unique identifier for the payment.
+                example: T72691.8
+              uuid:
+                type: string
+                description: The base64url encoded UUID of the payment.
+                example: bc7i2X_CTkeg8qlec66wmg==
+              fiscDate:
+                type: string
+                description: The time stamp of the payment.
+                example: '2023-02-14T20:04:08.665Z'
+              surcharge:
+                type: string
+                description: The surcharge amount.
+                example: '0.00'
+            type: object
+          type: array
+        timeofOpening:
+          type: string
+          description: The account creation timestamp.
+          example: '2023-02-14T19:58:48.224Z'
+        timeofCloseAndPaid:
+          type: string
+          description: The account close timestamp.
+          example: '2023-02-14T20:04:08.734Z'
+        cancelled:
+          type: boolean
+        externalFiscalNumber:
+          type: string
+        tableNumber:
+          type: string
+          description: The table number.
+          example: '1'
+        tableName:
+          type: string
+          description: The name of the table.
+          example: Dining Room, Table 1
+        accountProfileCode:
+          type: string
+          description: The account profile associated with the account.
+          example: AAP
+        ownerName:
+          type: string
+          description: The name of the user associated with the account.
+          example: Manager
+        ownerId:
+          type: number
+          description: The unique identifier for the user associated with the account.
+          example: 14670
+        type:
+          example: SALE
+          enum:
+          - SALE
+          - VOID
+          - RECALL
+          - REFUND
+          - SPLIT
+          - UPDATE
+          - TRANSFER
+          - FLOAT
+          - TRANSITORY
+          - CROSS_BL
+          - CANCEL
+          type: string
+          description: The sale type.
+        externalReferences:
+          items:
+            type: string
+            description: List of external references for online orders. Includes the TASK prefix, `businessLocationId`, and the unique reference code provided in the [`thirdPartyReference`](https://api-docs.lsk.lightspeed.app/operation/operation-apelocalorder#operation-apelocalorder-body-application-json-thirdpartyreference) field of an online order.
+            example: '"TASK:OO-{businessLocationId}-{unique-reference-code}", "TASK:OO-{businessLocationId}-(another-unique-reference-code)"'
+          type: array
+        nbCovers:
+          type: number
+          description: The number of covers.
+          example: 2.0
+        dineIn:
+          type: boolean
+          description: Whether the order is dine-in.
+          example: true
+        deviceId:
+          description: The unique identifier for the device where the account was created.
+          type: number
+          example: 75125
+        deviceName:
+          description: The name of the device where the account was created.
+          type: string
+          example: ipad9
+        voidReason:
+          type: string
+          enum:
+          - Broken
+          - Cooking
+          - Other
+          - Taste
+          - Unhappy Client
+          - User Mistake
+          - Waited too long
+          description: The void reason, if applicable.
+          example: Unhappy Client
+      type: object
+  parameters:
+    financial-apiExternalReferenceId:
+      schema:
+        type: string
+        example: TASK:OO-{businessLocationId}-{unique-reference-code}
+      name: externalReferenceId
+      description: The external reference of the receipt. See [externalReferences](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences).
+      in: query
+      required: true
+    financial-apiBusinessLocationId:
+      in: path
+      name: businessLocationId
+      required: true
+      schema:
+        format: int64
+        type: integer
+        minimum: 1
+      example: 45454565682155
+      description: The unique identifier for the business location.
+    financial-apiGroupByParameter:
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 2147483647
+      description: 'Comma-separated list of parameters to group the results by.
+
+        The allowed values are: `staff`, `device`, `deviceId`, `tag`, `accountingGroup`, and `statisticGroup`.
+
+        For example, `groupBy` can be set to `staff,device`.'
+      name: groupBy
+      in: query
+      required: true
+    financial-apiFlattenedParameter:
+      schema:
+        example: true
+        default: false
+        type: boolean
+      name: flattened
+      in: query
+      required: false
+    financial-apiDateParameter:
+      schema:
+        example: '2021-10-28'
+        type: string
+        format: date
+      name: date
+      description: The date in YYYY-MM-DD format.
+      in: query
+      required: false
+    financial-apiIncludeParameter:
+      schema:
+        type: string
+        default: ''
+      description: 'Objects to be included in the response.
+
+
+        The allowed values are: `staff`, `table`, `consumer`, `payments`, `revenue_center`, `account_profile`, `payment_authorization`.'
+      name: include
+      in: query
+      required: false
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

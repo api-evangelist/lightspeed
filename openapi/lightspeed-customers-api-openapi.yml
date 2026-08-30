@@ -1,0 +1,760 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Customers API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Customer operations
+  name: Customers
+paths:
+  /customers:
+    get:
+      description: 'Returns a paginated list of customers.
+
+
+        To search for customers, please have a look at our [Search endpoint](/reference/search-1) on what is supported.
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: ListCustomers
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - balance: -25840.85
+                  company_name: Stark Industries Inc
+                  created_at: '2014-10-09T05:20:09+00:00'
+                  custom_field_1: test
+                  custom_field_2: ''
+                  custom_field_3: ''
+                  custom_field_4: ''
+                  customer_code: Tony-N4ZJ
+                  customer_group_id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                  date_of_birth: '1963-03-03'
+                  do_not_email: false
+                  email: tony@stark.com
+                  enable_loyalty: true
+                  enable_promotional_sms: false
+                  fax: +001 555 12345345
+                  first_name: Anthony
+                  gender: M
+                  id: b8ca3a65-0183-11e4-fbb5-4f73f02a9d1c
+                  last_name: Stark
+                  loyalty_balance: 5809.64
+                  mobile: +001 485 23456789
+                  name: Anthony Stark
+                  note: ''
+                  on_account_limit: 1000
+                  phone: +001 555 12345678
+                  physical_address_1: Street 1
+                  physical_address_2: Street 2
+                  physical_city: Los Angeles
+                  physical_country_id: NZ
+                  physical_postcode: '23422'
+                  physical_state: California
+                  physical_suburb: Suburb
+                  postal_address_1: Street 1
+                  postal_address_2: Street 2
+                  postal_city: Los Angeles
+                  postal_country_id: NZ
+                  postal_postcode: '23422'
+                  postal_state: California
+                  postal_suburb: Suburb
+                  twitter: '@ironman'
+                  updated_at: '2017-01-19T16:49:35+00:00'
+                  version: 2691964626
+                  website: http://www.starkinc.com
+                  year_to_date: 0
+                - balance: 0
+                  created_at: '2017-02-13T17:33:25+00:00'
+                  customer_code: UNNAMED-669D
+                  customer_group_id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                  do_not_email: false
+                  enable_loyalty: true
+                  enable_promotional_sms: false
+                  first_name: null
+                  id: 06bf537b-c783-11e6-ff13-f21286299973
+                  last_name: null
+                  loyalty_balance: 0
+                  on_account_limit: null
+                  updated_at: '2017-02-13T17:33:25+00:00'
+                  version: 2847386277
+                  year_to_date: 0
+              schema:
+                $ref: '#/components/schemas/CustomerCollection'
+          description: ''
+      summary: List customers
+      tags:
+      - Customers
+    post:
+      description: 'Creates a new customer.
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: CreateCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerBase'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+            new:
+              example:
+                data:
+                  balance: 0
+                  created_at: '2017-05-24T01:53:25+00:00'
+                  customer_code: Tony-37YP
+                  customer_group_id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                  do_not_email: false
+                  email: tony@starkinc.com
+                  enable_loyalty: true
+                  enable_promotional_sms: false
+                  first_name: Tony
+                  id: 0af7b240-ab83-11e7-eddc-4023c64c85e5
+                  last_name: Stark
+                  loyalty_balance: 0
+                  name: Tony Stark
+                  tax_id: null
+                  updated_at: '2017-05-24T01:53:25+00:00'
+                  version: 3505346597
+                  year_to_date: 0
+          description: ''
+      summary: Create a new customer
+      tags:
+      - Customers
+  /customers/{customer_id}:
+    delete:
+      description: 'Deletes the customer with the requested ID.
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: DeleteCustomerByID
+      parameters:
+      - description: The customer id
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      summary: Delete a customer
+      tags:
+      - Customers
+    get:
+      description: 'Returns a single customer with a requested ID.
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: GetCustomerByID
+      parameters:
+      - description: The customer id
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  balance: -25840.85
+                  company_name: Stark Industries Inc
+                  created_at: '2014-10-09T05:20:09+00:00'
+                  custom_field_1: test
+                  custom_field_2: ''
+                  custom_field_3: ''
+                  custom_field_4: ''
+                  customer_code: Tony-N4ZJ
+                  customer_group_id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                  date_of_birth: '1963-03-03'
+                  do_not_email: false
+                  email: tony@stark.com
+                  enable_loyalty: true
+                  enable_promotional_sms: false
+                  fax: +001 555 12345345
+                  first_name: Anthony
+                  gender: M
+                  id: b8ca3a65-0183-11e4-fbb5-4f73f02a9d1c
+                  last_name: Stark
+                  loyalty_balance: 5809.64
+                  mobile: +001 485 23456789
+                  name: Anthony Stark
+                  note: ''
+                  phone: +001 555 12345678
+                  physical_address_1: Street 1
+                  physical_address_2: Street 2
+                  physical_city: Los Angeles
+                  physical_country_id: NZ
+                  physical_postcode: '23422'
+                  physical_state: California
+                  physical_suburb: Suburb
+                  postal_address_1: Street 1
+                  postal_address_2: Street 2
+                  postal_city: Los Angeles
+                  postal_country_id: NZ
+                  postal_postcode: '23422'
+                  postal_state: California
+                  postal_suburb: Suburb
+                  twitter: '@ironman'
+                  updated_at: '2017-01-19T16:49:35+00:00'
+                  version: 2691964626
+                  website: http://www.starkinc.com
+                  year_to_date: 0
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+          description: ''
+      summary: Get a single customer
+      tags:
+      - Customers
+    put:
+      description: 'Updates the customer with the requested ID.
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: UpdateCustomerByID
+      parameters:
+      - description: The customer id
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerBase'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  balance: 0
+                  company_name: Stark Inc.
+                  created_at: '2017-05-24T02:02:18+00:00'
+                  custom_field_1: Custom value 1
+                  custom_field_2: Custom value 2
+                  custom_field_3: Custom value 3
+                  custom_field_4: Custom value 4
+                  customer_code: Tony-AB2W
+                  customer_group_id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                  do_not_email: false
+                  email: tony@starkinc.com
+                  enable_loyalty: true
+                  enable_promotional_sms: false
+                  first_name: Tony
+                  id: 0af7b240-ab83-11e7-eddc-4025043113d5
+                  last_name: Stark
+                  loyalty_balance: 0
+                  name: Tony Stark
+                  tax_id: null
+                  updated_at: '2017-05-24T02:03:59+00:00'
+                  version: 3505431251
+                  year_to_date: 0
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+          description: ''
+      summary: Update a customer
+      tags:
+      - Customers
+components:
+  schemas:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    CustomerBase:
+      properties:
+        company_name:
+          description: Company name.
+          type:
+          - string
+          - 'null'
+        custom_field_1:
+          description: Custom field 1. Can be used to store random data.
+          type:
+          - string
+          - 'null'
+        custom_field_2:
+          description: Custom field 2.
+          type:
+          - string
+          - 'null'
+        custom_field_3:
+          description: Custom field 3.
+          type:
+          - string
+          - 'null'
+        custom_field_4:
+          description: Custom field 4.
+          type:
+          - string
+          - 'null'
+        customer_code:
+          description: Customer code used for claiming loyalty.
+          type: string
+        customer_group_id:
+          description: Customer group ID.
+          type: string
+        date_of_birth:
+          description: Birthday.
+          type: string
+        do_not_email:
+          default: false
+          description: Indicates whether the customer opted out of email communications.
+          type: boolean
+        email:
+          description: Customer's email address.
+          type:
+          - string
+          - 'null'
+        enable_loyalty:
+          type: boolean
+        enable_promotional_sms:
+          default: false
+          description: Indicates whether the customer opted in to SMS communications.
+          type: boolean
+        fax:
+          description: Fax no.
+          type:
+          - string
+          - 'null'
+        first_name:
+          description: Customer's first name.
+          type:
+          - string
+          - 'null'
+        gender:
+          description: Customer's gender. Can be `M`, `F` or null.
+          type:
+          - string
+          - 'null'
+        last_name:
+          description: Customer 's last name.
+          type:
+          - string
+          - 'null'
+        mobile:
+          description: Mobile phone no.
+          type:
+          - string
+          - 'null'
+        note:
+          description: Customer note.
+          type:
+          - string
+          - 'null'
+        on_account_limit:
+          description: Customer's OnAccount Limit.
+          format: double
+          type:
+          - number
+          - 'null'
+        phone:
+          description: Phone no.
+          type:
+          - string
+          - 'null'
+        physical_address_1:
+          description: Physical address, line 1.
+          type:
+          - string
+          - 'null'
+        physical_address_2:
+          description: Physical address, line 2.
+          type:
+          - string
+          - 'null'
+        physical_city:
+          description: Physical address, city.
+          type:
+          - string
+          - 'null'
+        physical_country_id:
+          description: Physical address, country code.
+          type:
+          - string
+          - 'null'
+        physical_postcode:
+          description: Physical address, post code.
+          type:
+          - string
+          - 'null'
+        physical_state:
+          description: Physical address, state.
+          type:
+          - string
+          - 'null'
+        physical_suburb:
+          description: Physical address, suburb.
+          type:
+          - string
+          - 'null'
+        postal_address_1:
+          description: Postal address, line 1.
+          type:
+          - string
+          - 'null'
+        postal_address_2:
+          description: Postal address, line 2.
+          type:
+          - string
+          - 'null'
+        postal_city:
+          description: Postal address, city.
+          type:
+          - string
+          - 'null'
+        postal_country_id:
+          description: Postal address, country code.
+          type:
+          - string
+          - 'null'
+        postal_postcode:
+          description: Postal address, post code.
+          type:
+          - string
+          - 'null'
+        postal_state:
+          description: Postal address, state.
+          type:
+          - string
+          - 'null'
+        postal_suburb:
+          description: Postal address, suburb.
+          type:
+          - string
+          - 'null'
+        tax_id:
+          description: Customer's tax ID.
+          type:
+          - string
+          - 'null'
+        twitter:
+          description: Twitter handle.
+          type:
+          - string
+          - 'null'
+        website:
+          description: Website URL.
+          type:
+          - string
+          - 'null'
+      required:
+      - first_name
+      - last_name
+      title: Customer Base
+      type: object
+    Customer:
+      properties:
+        balance:
+          description: Customer's unpaid balance.
+          format: double
+          type: number
+        company_name:
+          description: Company name.
+          type:
+          - string
+          - 'null'
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        custom_field_1:
+          description: Custom field 1. Can be used to store random data.
+          type:
+          - string
+          - 'null'
+        custom_field_2:
+          description: Custom field 2.
+          type:
+          - string
+          - 'null'
+        custom_field_3:
+          description: Custom field 3.
+          type:
+          - string
+          - 'null'
+        custom_field_4:
+          description: Custom field 4.
+          type:
+          - string
+          - 'null'
+        customer_code:
+          description: Customer code used for claiming loyalty.
+          type: string
+        customer_group_id:
+          description: Customer group ID.
+          type: string
+        date_of_birth:
+          description: Birthday.
+          type:
+          - string
+          - 'null'
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        do_not_email:
+          default: false
+          description: Indicates whether the customer opted out of email communications.
+          type: boolean
+        email:
+          description: Customer's email address.
+          type:
+          - string
+          - 'null'
+        enable_loyalty:
+          type: boolean
+        enable_promotional_sms:
+          default: false
+          description: Indicates whether the customer opted in to SMS communications.
+          type: boolean
+        fax:
+          description: Fax no.
+          type:
+          - string
+          - 'null'
+        first_name:
+          description: Customer's first name.
+          type:
+          - string
+          - 'null'
+        gender:
+          description: Customer's gender. Can be `M`, `F` or null.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        last_name:
+          description: Customer 's last name.
+          type:
+          - string
+          - 'null'
+        loyalty_balance:
+          description: Customer's loyalty balance.
+          format: double
+          type: number
+        mobile:
+          description: Mobile phone no.
+          type:
+          - string
+          - 'null'
+        name:
+          deprecated: true
+          description: Customers full name. **deprecated**
+          type:
+          - string
+          - 'null'
+        note:
+          description: Customer note.
+          type:
+          - string
+          - 'null'
+        on_account_limit:
+          description: Customer's OnAccount Limit.
+          format: double
+          type:
+          - number
+          - 'null'
+        phone:
+          description: Phone no.
+          type:
+          - string
+          - 'null'
+        physical_address_1:
+          description: Physical address, line 1.
+          type:
+          - string
+          - 'null'
+        physical_address_2:
+          description: Physical address, line 2.
+          type:
+          - string
+          - 'null'
+        physical_city:
+          description: Physical address, city.
+          type:
+          - string
+          - 'null'
+        physical_country_id:
+          description: Physical address, country code.
+          type:
+          - string
+          - 'null'
+        physical_postcode:
+          description: Physical address, post code.
+          type:
+          - string
+          - 'null'
+        physical_state:
+          description: Physical address, state.
+          type:
+          - string
+          - 'null'
+        physical_suburb:
+          description: Physical address, suburb.
+          type:
+          - string
+          - 'null'
+        postal_address_1:
+          description: Postal address, line 1.
+          type:
+          - string
+          - 'null'
+        postal_address_2:
+          description: Postal address, line 2.
+          type:
+          - string
+          - 'null'
+        postal_city:
+          description: Postal address, city.
+          type:
+          - string
+          - 'null'
+        postal_country_id:
+          description: Postal address, country code.
+          type:
+          - string
+          - 'null'
+        postal_postcode:
+          description: Postal address, post code.
+          type:
+          - string
+          - 'null'
+        postal_state:
+          description: Postal address, state.
+          type:
+          - string
+          - 'null'
+        postal_suburb:
+          description: Postal address, suburb.
+          type:
+          - string
+          - 'null'
+        tax_id:
+          description: Customer's tax ID.
+          type:
+          - string
+          - 'null'
+        twitter:
+          description: Twitter handle.
+          type:
+          - string
+          - 'null'
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+        website:
+          description: Website URL.
+          type:
+          - string
+          - 'null'
+        year_to_date:
+          description: Customer's spending this year.
+          format: double
+          type: number
+      required:
+      - first_name
+      - last_name
+      title: Customer
+      type: object
+    CustomerResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Customer'
+      title: Customer Response
+      type: object
+    CustomerCollection:
+      properties:
+        data:
+          description: An array of Customer objects.
+          items:
+            $ref: '#/components/schemas/Customer'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Customer Collection
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

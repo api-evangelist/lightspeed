@@ -1,0 +1,538 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Store Credits API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Store Credit operations
+  name: Store Credits
+paths:
+  /store_credits:
+    get:
+      description: 'Returns all the store credit customers in a store with their store credit balance
+
+        and a list of last store credit transactions for each customer
+
+
+        🔒 Requires: `store_credits:read` scope'
+      operationId: ListStoreCredit
+      parameters:
+      - description: The maximum number of items to be returned in the response
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Include supplementary data. The only valid value for includes[] is 'customer'.
+        in: query
+        name: includes[]
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Store Credit customer data in the shop
+                items:
+                  $ref: '#/components/schemas/StoreCreditCustomer'
+                type: array
+          description: The list of store credit customers.
+      summary: Get store credit usage for the store
+      tags:
+      - Store Credits
+  /store_credits/balances-bulk:
+    post:
+      description: 'Returns all the store credit customers in a store with their store credit balance.
+
+
+        🔒 Requires: `store_credits:read` scope'
+      operationId: BulkBalancesStoreCreditList
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: uuid
+                type: string
+              type: array
+        description: The list of customer ids to get related store credit for.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditBalancesBulkResponse'
+          description: A list of customers with associated store credit balances.
+      summary: Bulk Store Credit customers balances
+      tags:
+      - Store Credits
+  /store_credits/bulk:
+    post:
+      description: 'Returns all the store credit customers in a store with their store credit balance
+
+        and a list of last store credit transactions for each customer
+
+
+        🔒 Requires: `store_credits:read` scope'
+      operationId: BulkStoreCreditList
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                format: uuid
+                type: string
+              type: array
+        description: The list of customer ids to get related store credit for.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditBulkResponse'
+          description: A list of customers with associated store credit balances.
+      summary: Bulk Store Credit customers
+      tags:
+      - Store Credits
+  /store_credits/report:
+    get:
+      description: 'Returns a report of store credits.
+
+
+        🔒 Requires: `store_credits:read` scope'
+      operationId: StoreCreditReport
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditReport'
+          description: A summary of a Store Credit usage in a store
+      summary: Store credit report
+      tags:
+      - Store Credits
+  /store_credits/{customerId}:
+    get:
+      description: 'Returns a balance and a history of store credit operations for the given customer id.
+
+
+        🔒 Requires: `store_credits:read` scope'
+      operationId: ListStoreCreditForCustomer
+      parameters:
+      - description: Customer id
+        in: path
+        name: customerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditCustomer'
+          description: The store credit details for the given customer.
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The given customer not found.
+      summary: Store Credit operations and a balance of a customer
+      tags:
+      - Store Credits
+  /store_credits/{customerId}/balance:
+    get:
+      description: 'Returns a balance for the given customer id.
+
+
+        🔒 Requires: `store_credits:read` scope'
+      operationId: StoreCreditBalanceForCustomer
+      parameters:
+      - description: Customer id
+        in: path
+        name: customerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditCustomerBalance'
+          description: The store credit details for the given customer.
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The given customer not found.
+      summary: Store Credit balance of a customer
+      tags:
+      - Store Credits
+  /store_credits/{customerId}/hold:
+    post:
+      description: 'Creates a tranaction that represents temporary store credit redemption
+
+        That redemption should be reverted later AND may get followed by a REDEMPTION'
+      operationId: CreateStoreCreditHold
+      parameters:
+      - description: The customer id to create a hold for.
+        in: path
+        name: customerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreCreditCreateHoldParams'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditTransaction'
+          description: A HOLD Transaction successfully created for a customer
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Invalid parameters or insufficient store credit balance
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The given customer was not found.
+      summary: Create a store credit HOLD transaction
+      tags:
+      - Store Credits
+  /store_credits/{customerId}/hold/reverse:
+    post:
+      description: Creates a tranaction reverting a HOLD operation
+      operationId: ReverseStoreCreditHold
+      parameters:
+      - description: The customer id of the hold owner
+        in: path
+        name: customerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reference_id:
+                  description: id of a previous HOLD transaction
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: The hold transaction was reverted succesfully
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The given customer was not found.
+      summary: Reverse a store credit HOLD transaction
+      tags:
+      - Store Credits
+  /store_credits/{customerId}/transactions:
+    post:
+      description: "Creates a new store credit transaction. The type determines what sort of transaction it is.\n\n* \"REDEMPTION\" - Use this type when you want to redeem a certain amount from the store credit balance. The amount MUST be negative. If you want to add an amount to the balance use the \"ISSUE\" type.\n\U0001F512 Requires: `store_credits:write:redeem`\n* \"ISSUE\" - Use this type when you issue store credit to a customer.\n\U0001F512 Requires: `store_credits:write:issue`\n* \"REVERSE\" - Use this type when voiding an earlier ISSUE or REDEMPTION transaction.\n\U0001F512 Requires: `store_credits:write:redeem`\n\nIf the customer account does not have enough credit to honour a REDEMPTION transaction a 422 HTTP status code will be returned.\n\n## Idempotency\n\n  Please populate the client_id field with a unique transaction identifier, to ensure that the transaction is safe from double-submit problems.\n  When creating an REVERSE operation, client_id must be equal to client_id of a reversed operation.\n  See [the tutorial](/docs/store_credit#idempotency) for more information."
+      operationId: CreateStoreCreditTransaction
+      parameters:
+      - description: The customer id to apply the store transaction to.
+        in: path
+        name: customerId
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreCreditTransactionParams'
+        description: The store credit transaction details
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCreditTransaction'
+          description: A transaction successfully created for the customer
+        '404':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The given customer was not found.
+        '422':
+          content:
+            application/json:
+              schema:
+                type: object
+          description: There is insufficient balance for this customer to honour the transaction.
+      summary: Create a store credit transaction
+      tags:
+      - Store Credits
+components:
+  schemas:
+    StoreCreditTransaction:
+      description: A store credit operation
+      properties:
+        amount:
+          description: The amount of the transaction
+          format: double
+          type: number
+        client_id:
+          description: 'An operation idempotency identifier.
+
+            The client must provide this and normally it should be the transaction id from the client system.
+
+            An operation and it''s reverse operation must have the same client_id
+
+            '
+          type: string
+        created_at:
+          description: The date time the transaction was created.
+          example: '2026-01-02T15:04:05Z'
+          format: date-time
+          pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})$
+          type: string
+        id:
+          description: transaction unique identifier (base64 encoded)
+          type: string
+        notes:
+          description: The notes associated with the transaction.
+          type: string
+        sale_id:
+          description: The sale id the transaction is associated with. This should be null for transactions initiated outside of Lightspeed Retail. If it is a sale id, it will be in UUID format.
+          format: uuid
+          type: string
+        type:
+          description: The type of the transaction
+          enum:
+          - ISSUE
+          - REDEMPTION
+          - REVERSE
+          type: string
+        user_id:
+          description: The user id of the person who performed the transaction (during a sale or a manual issue)
+          format: uuid
+          type: string
+      title: Store Credit Transaction for Customer
+      type: object
+    StoreCreditBalancesBulkResponse:
+      description: The fields returned by the store_credit /store_credits/balances-bulk
+      properties:
+        data:
+          description: An array of Store Credit Customer balances
+          items:
+            $ref: '#/components/schemas/StoreCreditCustomerBalance'
+          type: array
+      required:
+      - data
+      title: Store Credit Bulk Response
+      type: object
+    StoreCreditTransactionParams:
+      description: The store credit transaction parameters for a customer transaction.
+      properties:
+        amount:
+          description: The amount of the transaction.
+          format: double
+          type: number
+        client_id:
+          description: 'The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.
+
+            '
+          type: string
+        notes:
+          description: The notes associated with the transaction.
+          type: string
+        type:
+          description: The type of the transaction
+          enum:
+          - ISSUE
+          - REDEMPTION
+          - REVERSE
+          type: string
+        user_id:
+          description: The user id of the person who handled the transaction.
+          format: uuid
+          type: string
+      required:
+      - amount
+      - client_id
+      - type
+      title: Store Credit Transaction Parameters for Customer
+      type: object
+    StoreCreditCustomerBalance:
+      description: The store credit balance and statistics for the customer
+      properties:
+        balance:
+          description: The customers store credit balance.
+          format: double
+          type: number
+        customer_id:
+          description: The customers public id.
+          type: string
+        total_credit_issued:
+          description: Total amount of store credit issued to this customer.
+          format: double
+          type: number
+        total_credit_redeemed:
+          description: Total amount of store credit spent by this customer.
+          format: double
+          type: number
+      title: Store Credit Customer Balance
+      type: object
+    StoreCreditReport:
+      description: The store credit report for a retailer.
+      properties:
+        outstanding_balance:
+          description: The outstanding balance.
+          format: double
+          type: number
+        total_value_issued:
+          description: The total credit issued.
+          format: double
+          type: number
+        total_value_redeemed:
+          description: The total value redeemed.
+          format: double
+          type: number
+      title: Store Credit Report
+      type: object
+    StoreCreditCustomer:
+      description: The store credit information for a customer.
+      properties:
+        balance:
+          description: The customers store credit balance.
+          format: double
+          type: number
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        customer_id:
+          description: The customer id.
+          format: uuid
+          type: string
+        id:
+          description: Store Credit Customer's internal ID.
+          format: string
+          type: string
+        store_credit_transactions:
+          description: The transactions associated with this customer.
+          items:
+            $ref: '#/components/schemas/StoreCreditTransaction'
+          type: array
+        total_credit_issued:
+          description: Total amount of store credit issued to this customer.
+          format: double
+          type: number
+        total_credit_redeemed:
+          description: Total amount of store credit spent by this customer.
+          format: double
+          type: number
+      required:
+      - customer_id
+      - balance
+      - total_credit_issued
+      - total_credit_redeemed
+      title: Store Credit Customer
+      type: object
+      x-examples:
+        example-1:
+          balance: 10
+          customer_id: 160c0c4b-9966-4dc1-a916-8407eb10d74e
+          store_credit_transactions:
+          - amount: 10
+            client_id: string
+            created_at: string
+            notes: string
+            sale_id: 7e9bee0e-09d3-495f-848b-5926aa2ded33
+            type: ISSUE
+            user_id: a169451c-8525-4352-b8ca-070dd449a1a5
+          total_credit_issued: 10
+          total_credit_redeemed: 0
+    StoreCreditBulkResponse:
+      description: Store credit customer list with balance and transactions
+      properties:
+        data:
+          description: An array of Store Credit Customers
+          items:
+            $ref: '#/components/schemas/StoreCreditCustomer'
+          type: array
+      required:
+      - data
+      title: Store Credit Bulk Response
+      type: object
+      x-examples:
+        example-1:
+          data:
+          - balance: 10
+            customer_id: 160c0c4b-9966-4dc1-a916-8407eb10d74e
+            store_credit_transactions:
+            - amount: 10
+              client_id: string
+              created_at: string
+              notes: string
+              sale_id: 7e9bee0e-09d3-495f-848b-5926aa2ded33
+              type: ISSUE
+              user_id: a169451c-8525-4352-b8ca-070dd449a1a5
+            total_credit_issued: 10
+            total_credit_redeemed: 10
+    StoreCreditCreateHoldParams:
+      properties:
+        amount:
+          description: The amount of the transaction.
+          format: double
+          type: number
+        client_id:
+          description: 'The client id is a unique transaction identifier. See StoreCreditTransactionParams
+
+            '
+          type: string
+      required:
+      - amount
+      title: Store Credit Transaction Parameters to create a HOLD transaction
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

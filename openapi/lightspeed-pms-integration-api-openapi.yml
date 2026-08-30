@@ -1,0 +1,430 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series PMS Integration API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: PMS Integration
+paths: {}
+webhooks:
+  pms-integration{subscriber-host}/charge:
+    post:
+      summary: Transaction Details
+      operationId: transactionDetails
+      description: "What subscriber endpoint implementation will receive when a transaction is made.\nSubscriber path need to end with `/charge`.\nSubscriber implementation should follow the payload backward compatibility rules below:\n  - What considered as backward **compatible**:\n    - Addition of new fields, enums, headers, or parameters.\n    - Transition from optional to required fields. Which means Lightspeed will consistently send the parameter/field from now on.\n  - What considered as backward **incompatible**:\n    - Alteration of schema structure, such as switching from a map to an array.\n    - Removal of field/enum/header\n    - Changes in data types, such as converting from string to integer.\n    - Changes of property name\n"
+      parameters:
+      - in: header
+        name: Accept
+        required: true
+        schema:
+          type: string
+          example: application/json
+          description: 'The expected response content type from subscriber.
+
+            Only application/json is supported.
+
+            '
+      - in: header
+        name: X-Lightspeed-Idempotency-Key
+        required: true
+        schema:
+          type: string
+          example: LS1_123e4567-e89b-12d3-a456-426614174000
+          description: 'Subscribers should utilize the Idempotency Key to ensure duplicates are handled appropriately on their end.
+
+            '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pms-integrationSalesWebhookDto'
+      responses:
+        '200':
+          description: 'Subscriber should return this code if it successfully processed the charge request at PMS.
+
+            Following that, Lightspeed will mark the PMS charge transaction as SUCCESS as well.
+
+            '
+        5XX:
+          description: 'If any server error occurs subscriber can pass their own custom message to the POS.
+
+            The response body content need to follow the schema, else only `5XX {Error Type}` will be sent.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pms-integrationErrorWebhookDto'
+        4XX:
+          description: 'If any client error occurs subscriber can pass their own custom message to the POS.
+
+            The response body content need to follow the schema, else only `4XX {Error Type}` will be sent.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pms-integrationErrorWebhookDto'
+      tags:
+      - PMS Integration
+components:
+  schemas:
+    pms-integrationPmsTaxLineWebhookDto:
+      type: object
+      properties:
+        taxId:
+          type: string
+          description: The tax identifier.
+          example: '12345'
+        taxName:
+          type: string
+          description: The name of the tax.
+          example: VAT 10%
+        taxAmount:
+          type: number
+          description: The amount of the tax.
+          example: 1.0
+        taxRate:
+          type: number
+          description: The rate of the tax.
+          example: 1.1
+        taxIncluded:
+          type: boolean
+          description: Whether the tax is included in the price (VAT).
+          example: true
+    pms-integrationErrorWebhookDto:
+      type: object
+      description: 'The error response body content should follow this schema.
+
+        If the response body content does not follow this schema, only the status code will be sent.
+
+        All other property beside customerErrorMessage will be ignored.
+
+        '
+      properties:
+        customerErrorMessage:
+          type: string
+          maxLength: 50
+          example: Network failure
+          description: 'The error message that will be sent and printed at the POS.
+
+            Length should not exceed 50 characters to avoid truncation.
+
+            '
+    pms-integrationPmsTransactionWebhookDto:
+      type: object
+      properties:
+        unitAmount:
+          type: number
+          description: The price of single item.
+          example: 10.0
+        quantity:
+          type: number
+          description: 'The quantity of the items. Negative quantity indicates a refund/cancellation/void.
+
+            '
+          example: 2.0
+        amount:
+          type: number
+          description: The total pre-tax amount of this transaction sale line.
+          example: 20.0
+        description:
+          type: string
+          description: The item name
+          example: French Fries
+        staffId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who processed this transaction line
+          example: 6
+        staffName:
+          type: string
+          description: The name of the POS user (staff) who processed this transaction line
+          example: John Doe
+        groupId:
+          type: integer
+          format: int64
+          description: Lightspeed accounting group id which the item belongs to.
+          example: 25769803810
+        groupName:
+          type: string
+          description: Lightspeed accounting group name which the item belongs to.
+          example: Food
+        taxId:
+          deprecated: true
+          type: integer
+          format: int64
+          description: Deprecated, refer to taxLines.
+          example: 12345
+        taxName:
+          deprecated: true
+          type: string
+          description: Deprecated, refer to taxLines.
+          example: VAT 10%
+        taxRate:
+          deprecated: true
+          type: number
+          description: The tax rate of the items.
+          example: 1.1
+        taxIncluded:
+          deprecated: true
+          type: boolean
+          description: Deprecated, refer to taxLines.
+          example: true
+        sku:
+          type: string
+          description: The SKU of the items.
+          example: F07
+        type:
+          type: string
+          enum:
+          - Sale
+          - LineDiscount
+          - AccountDiscount
+          - PercentItem
+          description: The type of the transaction line.
+        serviceChargeContribution:
+          type: number
+          description: The amount of the service charge contribution.
+          example: 4.5
+        taxLines:
+          type: array
+          items:
+            $ref: '#/components/schemas/pms-integrationPmsTaxLineWebhookDto'
+    pms-integrationPmsPaymentWebhookDto:
+      type: object
+      properties:
+        paymentDate:
+          type: string
+          format: date-time
+          description: The date and time when the payment was made in UTC
+          example: '2021-01-01T00:00:00Z'
+        staffId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who processed this payment
+          example: 6
+        staffName:
+          type: string
+          description: The name of the POS user (staff) who processed this payment
+          example: John Doe
+        gratuity:
+          type: number
+          description: The amount of the gratuity (tips).
+          example: 1.0
+        amount:
+          type: number
+          description: The total amount of the received payment.
+          example: 66.0
+        methodName:
+          type: string
+          description: The name of the payment method.
+          example: MEWS
+        methodCode:
+          type: string
+          description: The code of the payment method.
+          example: IKPMS
+        reservationId:
+          type: string
+          description: The reservation ID of the payment.
+          example: '001'
+    pms-integrationSalesWebhookDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the transaction
+        openDate:
+          type: string
+          format: date-time
+          description: The date and time when the transaction was opened in UTC
+          example: '2021-01-01T00:00:00Z'
+        closeDate:
+          type: string
+          format: date-time
+          description: The date and time when the transaction was closed in UTC
+          example: '2021-01-01T00:00:00Z'
+        covers:
+          type: number
+          description: The number of covers (guests) in this transaction.
+          example: 2
+        ownerId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who owns this transaction
+          example: 12345
+        ownerName:
+          type: string
+          description: The name of the POS user (staff) who owns this transaction
+          example: John Doe
+        deviceId:
+          type: integer
+          format: int64
+          description: The ID of the device on which the transaction was started
+          example: 12345
+        businessExternalReference:
+          type: string
+          description: Client name
+          example: quickbooks-123
+        apiKey:
+          type: string
+          description: API Key.
+          example: quickbooks-key-345
+        receiptId:
+          type: string
+          description: Receipt ID
+          example: R51.3
+        fiscId:
+          type: string
+          description: 'Unique identifier for the transaction, can be used this for any identification purposes.
+
+            '
+          example: A1234.5
+        uuid:
+          type: string
+          description: 'A b64 encoded uuid which also act as unique identifier for the transaction,
+
+            also can be used for any identification purposes.
+
+            '
+          example: xfe9ldKWSfW8VrAYUcnvGA==
+        initialAccountId:
+          type: string
+          description: 'Initial Account ID, if any.
+
+            This is used to correlate the transaction with the initial account, such on REFUND or VOID.
+
+            '
+          example: A1234.1
+        identifier:
+          deprecated: true
+          type: string
+          description: Refer to the non null value of either the fiscId or uuid as fallback.
+          example: A1234.5
+        revenueCenterId:
+          type: integer
+          format: int64
+          description: Revenue Center (POS Configuration) ID
+          example: 94489280528
+        revenueCenterName:
+          type: string
+          description: Revenue Center (POS Configuration) Name
+          example: Fixed POS
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/pms-integrationPmsTransactionWebhookDto'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/pms-integrationPmsPaymentWebhookDto'
+        serviceCharge:
+          $ref: '#/components/schemas/pms-integrationPmsServiceChargeWebhookDto'
+    pms-integrationPmsServiceChargeWebhookDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The amount of the service charge.
+          example: 1.0
+        type:
+          type: string
+          enum:
+          - UNTAXED
+          - APPORTIONED
+          description: The type of the service charge.
+          example: UNTAXED
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

@@ -1,0 +1,416 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Suppliers API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Supplier operations
+  name: Suppliers
+paths:
+  /suppliers:
+    get:
+      description: 'Returns a paginated list of suppliers.
+
+
+        🔒 Requires: `suppliers:read` scope'
+      operationId: ListSuppliers
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - id: dc85058a-a683-11e5-ef46-05a1ba8c8c08
+                  name: Supplier post new test
+                  source: USER
+                - description: ''
+                  id: dc85058a-a683-11e5-ef46-08f9a926615e
+                  name: Peak
+                  source: ''
+                - description: API Supplier description
+                  id: dc85058a-a683-11e5-e112-5734f1f3a2ca
+                  name: API Supplier
+                  source: USER
+              schema:
+                $ref: '#/components/schemas/SupplierCollection'
+          description: ''
+      summary: List suppliers
+      tags:
+      - Suppliers
+    post:
+      description: 'Creates a new supplier.
+
+
+        🔒 Requires: `suppliers:write` scope'
+      operationId: CreateSupplier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSupplierRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    description: The id of the supplier created.
+                    format: uuid
+                    type: string
+                type: object
+          description: ''
+      summary: Create new supplier
+      tags:
+      - Suppliers
+  /suppliers/{supplier_id}:
+    delete:
+      description: 'Deletes a supplier. If there are products associated with the supplier, the products will be disassociated from the supplier.
+
+
+        🔒 Requires: `suppliers:write` scope'
+      operationId: DeleteSupplierById
+      parameters:
+      - description: The supplier id.
+        in: path
+        name: supplier_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      id:
+                        description: The id of the supplier deleted.
+                        format: uuid
+                        type: string
+                      job_id:
+                        description: The id of the asynchronous job to disassociate products from the supplier.
+                        type: string
+                    type: object
+                type: object
+          description: The deleted supplier.
+      summary: Delete a single supplier
+      tags:
+      - Suppliers
+    get:
+      description: 'Returns a single supplier with a given ID.
+
+
+        🔒 Requires: `suppliers:read` scope'
+      operationId: GetSupplierByID
+      parameters:
+      - description: The supplier id
+        in: path
+        name: supplier_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  id: 06bf537b-c783-11e7-ff13-02d1589727d5
+                  name: Best supplies
+              schema:
+                $ref: '#/components/schemas/SupplierResponse'
+          description: ''
+      summary: Get a single supplier
+      tags:
+      - Suppliers
+    put:
+      description: 'Updates a supplier.
+
+
+        🔒 Requires: `suppliers:write` scope'
+      operationId: UpdateSupplierByID
+      parameters:
+      - description: The supplier id
+        in: path
+        name: supplier_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSupplierRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the supplier updated.
+                    format: uuid
+                    type: string
+                type: object
+          description: ''
+      summary: Update a supplier
+      tags:
+      - Suppliers
+components:
+  schemas:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    BaseSupplier:
+      properties:
+        contact:
+          description: Contact information for the supplier.
+          properties:
+            company_name:
+              description: The name of the supplier company. This field is defaulted to the supplier name if not provided.
+              type:
+              - string
+              - 'null'
+            email:
+              description: The contact email of the supplier.
+              type:
+              - string
+              - 'null'
+            fax:
+              description: Fax number of the supplier.
+              type:
+              - string
+              - 'null'
+            first_name:
+              description: The firstname of the contact person.
+              type:
+              - string
+              - 'null'
+            last_name:
+              description: The last name of the contact person.
+              type:
+              - string
+              - 'null'
+            mobile:
+              description: Mobile contact number of the supplier.
+              type:
+              - string
+              - 'null'
+            phone:
+              description: Physical contact number of the supplier.
+              type:
+              - string
+              - 'null'
+            physical_address1:
+              description: Line 1 address of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            physical_address2:
+              description: Line 2 address of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            physical_city:
+              description: City of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            physical_country_id:
+              description: ID of the country of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            physical_postcode:
+              description: Postcode of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            physical_state:
+              description: State of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            physical_suburb:
+              description: Suburb of the supplier's physical address.
+              type:
+              - string
+              - 'null'
+            postal_address1:
+              description: Line 1 address of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            postal_address2:
+              description: Line 2 address of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            postal_city:
+              description: City of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            postal_country_id:
+              description: ID of the country of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            postal_postcode:
+              description: Postcode of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            postal_state:
+              description: State of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            postal_suburb:
+              description: Suburb of the supplier's postal address.
+              type:
+              - string
+              - 'null'
+            twitter:
+              description: Twitter handle of the supplier contact.
+              type:
+              - string
+              - 'null'
+            website:
+              description: The website address of the supplier
+              type:
+              - string
+              - 'null'
+          type:
+          - object
+          - 'null'
+        default_markup:
+          description: This is used for record-keeping purposes and it does not have any effect on your products.
+          type: number
+        description:
+          description: The Supplier description.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The Supplier name.
+          type: string
+      required:
+      - name
+      - contact
+      title: BaseSupplier
+      type: object
+    Supplier:
+      allOf:
+      - $ref: '#/components/schemas/BaseSupplier'
+      properties:
+        deleted_at:
+          type:
+          - string
+          - 'null'
+        id:
+          type: string
+        source:
+          description: Origin of the supplier record (e.g. USER, SHOPIFY).
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - id
+      - source
+      - version
+      title: Supplier
+      type: object
+    CreateSupplierRequest:
+      allOf:
+      - $ref: '#/components/schemas/BaseSupplier'
+      required:
+      - name
+      title: CreateSupplierRequest
+    SupplierResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Supplier'
+      title: Supplier Response
+      type: object
+    SupplierCollection:
+      properties:
+        data:
+          description: An array of Suppliers wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Supplier'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Supplier Collection
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

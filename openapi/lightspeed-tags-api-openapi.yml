@@ -1,0 +1,267 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Tags API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Tag operations
+  name: Tags
+paths:
+  /tags:
+    get:
+      description: 'Returns a collection of tags.
+
+
+        🔒 Requires: `products:read` scope'
+      operationId: ListTags
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Indicates whether deleted items should be included in the response.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagCollection'
+            new:
+              example:
+                data:
+                - id: a0bb3580-027a-11e4-a0f5-b8ca3a64f8f4
+                  name: test
+                - id: a72bb4ec-027a-11e4-a0f5-b8ca3a64f8f4
+                  name: some_other_tag
+                - id: b1e2e709-f019-11e3-a0f5-b8ca3a64f8f4
+                  name: General
+          description: ''
+      summary: List tags
+      tags:
+      - Tags
+    post:
+      description: 'Creates a new tag.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: CreateTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    description: The id of the created tag.
+                    format: uuid
+                    type: string
+                type: object
+          description: ''
+      summary: Create tag
+      tags:
+      - Tags
+  /tags/{tag_id}:
+    delete:
+      description: 'Deletes a tag. If there are products associated with the tag, the products will be disassociated from the tag.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: DeleteTagByID
+      parameters:
+      - description: The tag id.
+        in: path
+        name: tag_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      id:
+                        description: The id of the tag deleted.
+                        format: uuid
+                        type: string
+                      job_id:
+                        description: The id of the asynchronous job to disassociate products from the tag.
+                        type: string
+                    type: object
+                type: object
+          description: The deleted tag.
+      summary: Delete a single tag
+      tags:
+      - Tags
+    get:
+      description: 'Returns a single tag with a given ID.
+
+
+        🔒 Requires: `products:read` scope'
+      operationId: GetTagByID
+      parameters:
+      - description: The tag id.
+        in: path
+        name: tag_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  id: a0bb3580-027a-11e4-a0f5-b8ca3a64f8f4
+                  name: test
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+          description: ''
+      summary: Get a single tag
+      tags:
+      - Tags
+    put:
+      description: 'Updates a tag.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: UpdateTagByID
+      parameters:
+      - description: The tag id
+        in: path
+        name: tag_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTagRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagResponse'
+          description: ''
+      summary: Update a single tag
+      tags:
+      - Tags
+components:
+  schemas:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    TagCollection:
+      properties:
+        data:
+          description: An array of Tag objects.
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Tag Collection
+      type: object
+    Tag:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Tag name.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Tag
+      type: object
+    CreateTagRequest:
+      properties:
+        name:
+          description: The Tag name.
+          type: string
+      required:
+      - name
+      title: CreateTagRequest
+      type: object
+    TagResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Tag'
+      title: Tag Response
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

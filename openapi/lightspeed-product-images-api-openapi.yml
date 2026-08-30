@@ -1,0 +1,148 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Product Images API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Product Image operations
+  name: Product Images
+paths:
+  /product_images/{product_image_id}:
+    delete:
+      description: 'Deletes the product image with the requested ID.
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: DeleteProductImageByID
+      parameters:
+      - description: The product image id
+        in: path
+        name: product_image_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      summary: Delete a product image
+      tags:
+      - Product Images
+    get:
+      description: 'Returns the metadata for a single product image with a given ID.
+
+        This method is useful for checking the status of an image after it was uploaded.
+
+
+        🔒 Requires: `products:read` scope'
+      operationId: GetProductImageDataByID
+      parameters:
+      - description: The product image id
+        in: path
+        name: product_image_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+          description: ''
+      summary: Get a single product image data
+      tags:
+      - Product Images
+    put:
+      description: 'Allows for changing the image position in the list
+
+
+        🔒 Requires: `products:write` scope'
+      operationId: SetImagePosition
+      parameters:
+      - description: The product image id
+        in: path
+        name: product_image_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImagePosition'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+          description: ''
+      summary: Set image position
+      tags:
+      - Product Images
+components:
+  schemas:
+    ImageResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Image'
+      title: Image Response
+      type: object
+    Image:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        position:
+          description: Position of the image in collection of images associated with a product.
+          format: double
+          type: number
+        product_id:
+          description: The ID of the product this image is associated with.
+          format: uuid
+          type: string
+        status:
+          description: Status if the image upload processing. Can be `processing`, `uploaded`, `error`.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Image
+      type: object
+    ImagePosition:
+      properties:
+        position:
+          description: New position for the image.
+          format: double
+          type: number
+      required:
+      - position
+      title: Image Position
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

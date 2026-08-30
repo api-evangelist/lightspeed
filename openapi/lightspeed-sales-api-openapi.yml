@@ -1,0 +1,1401 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Sales API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Sale operations
+  name: Sales
+paths:
+  /sales:
+    get:
+      description: 'Returns a paginated list of sales.
+
+
+        To search for sales, please have a look at our [Search endpoint](/reference/search-1) on what is supported.
+
+
+        🔒 Requires: `sales:read` scope'
+      operationId: ListSales
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleCollection'
+          description: ''
+      summary: List Sales
+      tags:
+      - Sales
+    post:
+      description: 'Create a sale. Returns the ID of the created sale. See [Sales 101](/docs/sales_101) for usage information.
+
+
+        Migrating from `v0.9`? See the [migration guide](/docs/sales_migration_guide).
+
+
+        🔒 Requires: `sales:write` scope'
+      operationId: CreateSale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaleRequest'
+        description: New sale object.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleCreateResponse'
+          description: The created sale.
+      summary: Create a sale
+      tags:
+      - Sales
+  /sales/{sale_id}:
+    get:
+      description: 'Returns a single sale with a given ID.
+
+
+        🔒 Requires: `sales:read` scope'
+      operationId: GetSaleByID
+      parameters:
+      - description: A valid sale ID.
+        in: path
+        name: sale_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleResponse'
+          description: ''
+      summary: Get a single sale
+      tags:
+      - Sales
+    put:
+      description: 'Update an existing sale by ID.
+
+
+        🔒 Requires: `sales:write` scope'
+      operationId: UpdateSale
+      parameters:
+      - description: A valid sale ID.
+        in: path
+        name: sale_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaleUpdateRequest'
+        description: Updated sale object.
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleCreateResponse'
+          description: The updated sale.
+      summary: Update a sale
+      tags:
+      - Sales
+  /sales/{sale_id}/actions/return:
+    post:
+      description: 'Initializes a return for an existing closed sale and returns the newly created SAVED return sale. Use this endpoint to start the return workflow before adding refund payments or finalizing the returned items. See [the tutorial](/docs/sales_returns) for more information.
+
+
+        🔒 Requires: `sales:write` `users:read` scopes'
+      operationId: initReturnSale
+      parameters:
+      - description: A valid sale ID.
+        in: path
+        name: sale_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  created_at: '2016-09-19T20:28:03+00:00'
+                  customer_id: b1cabb53-f019-11e3-a0f5-b8ca3a64f8f4
+                  id: 06bf537b-c783-11e6-f6b9-7ea7909ffedd
+                  invoice_number: '1570'
+                  invoice_sequence: 1570
+                  line_items:
+                  - cost: 100
+                    cost_total: -100
+                    discount: 0
+                    discount_total: 0
+                    id: 06bf537b-c783-11e6-f6b9-7ea7909c64b9
+                    is_return: true
+                    loyalty_value: 23
+                    price: 200
+                    price_set: true
+                    price_total: -200
+                    product_id: 188a87aa-06fe-11e4-a0f5-b8ca3a64f8f4
+                    quantity: -1
+                    sequence: 1
+                    status: SAVED
+                    tax: 30
+                    tax_components:
+                    - rate_id: b1dfed8b-f019-11e3-a0f5-b8ca3a64f8f4
+                      total_tax: 30
+                    tax_id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                    tax_total: -30
+                    total_cost: -100
+                    total_discount: 0
+                    total_loyalty_value: -23
+                    total_price: -200
+                    total_tax: -30
+                    unit_cost: 100
+                    unit_discount: 0
+                    unit_loyalty_value: 23
+                    unit_price: 200
+                    unit_tax: 30
+                  - cost: 100
+                    cost_total: -100
+                    discount: 0
+                    discount_total: 0
+                    id: 06bf537b-c783-11e6-f6b9-7ea7909d949a
+                    is_return: true
+                    loyalty_value: 0
+                    price: 0
+                    price_set: true
+                    price_total: 0
+                    product_id: 188a87aa-06fe-11e4-a0f5-b8ca3a64f8f4
+                    quantity: -1
+                    sequence: 0
+                    status: SAVED
+                    tax: 0
+                    tax_components:
+                    - rate_id: b1dfed8b-f019-11e3-a0f5-b8ca3a64f8f4
+                      total_tax: 0
+                    tax_id: b1d192bc-f019-11e3-a0f5-b8ca3a64f8f4
+                    tax_total: 0
+                    total_cost: -100
+                    total_discount: 0
+                    total_loyalty_value: 0
+                    total_price: 0
+                    total_tax: 0
+                    unit_cost: 100
+                    unit_discount: 0
+                    unit_loyalty_value: 0
+                    unit_price: 0
+                    unit_tax: 0
+                  note: ''
+                  outlet_id: b1e04bd8-f019-11e3-a0f5-b8ca3a64f8f4
+                  payments: []
+                  receipt_number: '1570'
+                  receipt_sequence: 1570
+                  register_id: b1e198a9-f019-11e3-a0f5-b8ca3a64f8f4
+                  return_for: b8ca3a65-0183-11e4-fbb5-39f7fce5e39b
+                  sale_date: '2016-09-19T20:28:03+00:00'
+                  short_code: ovvfkk
+                  state: parked
+                  status: SAVED
+                  taxes: []
+                  total_loyalty: 0
+                  total_price: -200
+                  total_tax: -30
+                  updated_at: '2016-09-19T20:28:03+00:00'
+                  user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
+                  version: 1978890425
+              schema:
+                $ref: '#/components/schemas/SaleResponse'
+          description: ''
+      summary: Return a sale
+      tags:
+      - Sales
+components:
+  schemas:
+    FulfillmentDetail:
+      properties:
+        note:
+          description: The fulfillment note for fulfillments of the specified type.
+          type: string
+        shipping_address_id:
+          description: The ID of the shipping address to use for DISPATCH fulfillments. Either this or shipping_address_token must be provided for DISPATCH.
+          type:
+          - string
+          - 'null'
+        shipping_address_token:
+          description: The token of a newly created shipping address to use for DISPATCH fulfillments. Either this or shipping_address_id must be provided for DISPATCH.
+          type:
+          - string
+          - 'null'
+        type:
+          description: The fulfillment type to which this fulfillment detail applies.
+          enum:
+          - DISPATCH
+          - PICKUP
+          type: string
+      type: object
+    LineItemTaxComponentResponse:
+      properties:
+        rate_id:
+          description: Tax rate ID.
+          type: string
+        total_tax:
+          description: Tax total.
+          format: double
+          type: number
+      title: Line Item Tax Component
+      type: object
+    PaymentExternalApplication:
+      properties:
+        application_id:
+          description: ID of the external application.
+          type: string
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        external_id:
+          description: ID from the external application.
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+      title: Payment External Application
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    LineItemAttribute:
+      properties:
+        name:
+          description: Attribute name. (`line_note` for a line item note.)
+          type: string
+        value:
+          description: Attribute value. (For `line_note`, the string value of the line_item note.)
+          type: string
+      required:
+      - name
+      - value
+      title: Line Item Attribute
+      type: object
+    LineItemCustomization:
+      properties:
+        field_type:
+          description: The field type of the customization.
+          type: string
+        files:
+          description: Files attached to this customization.
+          items:
+            $ref: '#/components/schemas/CustomizationFile'
+          type: array
+        id:
+          description: The ID of the customization.
+          type: string
+        name:
+          description: The name of the customization.
+          type: string
+        value:
+          description: The value of the customization.
+          type: string
+      title: Line Item Customization
+      type: object
+    PaymentTypeConfig:
+      properties:
+        config_id:
+          description: Payment type id to be used for the payment.
+          format: uuid
+          type: string
+      required:
+      - config_id
+      title: Payment Type Config
+      type: object
+    LineItemProductDetails:
+      properties:
+        id:
+          description: The ID of the product associated with this line item.
+          format: uuid
+          type: string
+      title: Line Item Product Details
+      type: object
+    SaleExternalApplication:
+      properties:
+        application_id:
+          description: ID of the external application.
+          type: string
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        external_id:
+          description: ID from the external application.
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Version of the external application record.
+          type: string
+      title: Sale External Application
+      type: object
+    SaleAuthor:
+      properties:
+        id:
+          description: The ID of the user (cashier) who created the sale.
+          format: uuid
+          type: string
+      title: Sale Author
+      type: object
+    SaleResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Sale'
+      title: Sale Response
+      type: object
+    LineItemSurcharge:
+      properties:
+        tax_components:
+          description: Collection of tax components associated with the surcharge.
+          items:
+            $ref: '#/components/schemas/LineItemTaxComponentResponse'
+          type: array
+        value:
+          description: Tax exclusive surcharge amount for a specific payment.
+          format: double
+          type: number
+      title: Line Item Surcharge
+      type: object
+    LineItemPromotion:
+      properties:
+        amount:
+          description: Promotion discount amount.
+          format: double
+          type: number
+        id:
+          description: Promotion ID.
+          type: string
+        name:
+          description: Promotion name.
+          type: string
+        promo_code:
+          description: Promo code used.
+          type: string
+        promo_code_id:
+          description: Promo code ID.
+          type: string
+      title: Line Item Promotion
+      type: object
+    SaleCollection:
+      properties:
+        data:
+          description: An array of Sales wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Sale'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Sale Collection
+      type: object
+    PaymentSurcharge:
+      properties:
+        amount:
+          description: Surcharge amount.
+          format: double
+          type: number
+        rule:
+          description: Specifies the rule of the surcharge to be applied.
+          type: string
+      title: Payment Surcharge
+      type: object
+    LineItemTax:
+      properties:
+        amount:
+          description: The unit tax value associated with this line item.
+          format: double
+          type: number
+        id:
+          description: The ID of the tax associated with this line item. Tax IDs can be retrieved from the /api/2.0/taxes endpoint; for tax-free items, please use the ID of the tax named 'No Tax'
+          format: uuid
+          type: string
+      required:
+      - id
+      - amount
+      title: Line Item Tax
+      type: object
+    ServiceOrderLineItem:
+      allOf:
+      - $ref: '#/components/schemas/SaleLineItem'
+      - properties:
+          promotions:
+            items:
+              $ref: '#/components/schemas/PromotionDescription'
+            type: array
+          tax_component:
+            items:
+              $ref: '#/components/schemas/LineItemTaxComponent'
+            type: array
+        type: object
+      title: Service Order Line Item
+    PaymentSource:
+      properties:
+        register_id:
+          description: The ID of the register used to add this payment to the sale.
+          format: uuid
+          type: string
+      title: Payment Source
+      type: object
+    PaymentExternalAttribute:
+      additionalProperties: true
+      description: External attributes for the payment. Additional dynamic keys may be present.
+      properties:
+        card_last_four_digits:
+          description: Last 4 digits of the card.
+          type: string
+        source:
+          description: Source of the external attribute.
+          type: string
+        transaction_id:
+          description: Transaction ID from the external system.
+          type: string
+      title: Payment External Attribute
+      type: object
+    DailyAgenda:
+      properties:
+        date:
+          type: string
+        minutes_scheduled:
+          type: integer
+      title: DailyAgenda
+      type: object
+    SaleAdjustment:
+      properties:
+        amount:
+          $ref: '#/components/schemas/AdjustmentAmount'
+        name:
+          description: The name of the adjustment.
+          type: string
+        source:
+          $ref: '#/components/schemas/AdjustmentSource'
+        type:
+          description: The type of the adjustment.
+          enum:
+          - NON_CASH_FEE
+          - DISCOUNT
+          - TIP
+          type: string
+      required:
+      - type
+      title: Sale Adjustment
+      type: object
+    LineItemResponseTax:
+      properties:
+        amount:
+          description: The unit tax value associated with this line item.
+          format: double
+          type: number
+        id:
+          description: The ID of the tax associated with this line item.
+          format: uuid
+          type: string
+        total:
+          description: Total tax value.
+          format: double
+          type: number
+      title: Line Item Response Tax
+      type: object
+    SaleLineItem:
+      properties:
+        _metadata:
+          $ref: '#/components/schemas/LineItemMetadata'
+        attributes:
+          description: Additional line item attributes.
+          items:
+            $ref: '#/components/schemas/LineItemAttribute'
+          type: array
+        fulfilment_outlet_id:
+          description: The outlet that should fulfill this line item. Mutually exclusive with pick lists created via `/sales/{sale_id}/pick_lists`.
+          format: uuid
+          type: string
+        id:
+          description: Existing line item ID. If included in the POST request it will cause an update instead of a creating a new object.
+          format: uuid
+          type: string
+        pricing:
+          $ref: '#/components/schemas/LineItemPricing'
+        product:
+          $ref: '#/components/schemas/LineItemProduct'
+        quantity:
+          description: Quantity of products for the line item.
+          format: double
+          type: number
+        source:
+          $ref: '#/components/schemas/LineItemSource'
+        status:
+          description: If defined as `CONFIRMED` for pending sales, the line item will be added as **read-only**.
+          type: string
+        tax:
+          $ref: '#/components/schemas/LineItemTax'
+      required:
+      - product
+      - quantity
+      - pricing
+      - tax
+      title: Sale Line Item
+      type: object
+    LineItemPricing:
+      properties:
+        adjustments:
+          description: Adjustments.
+          items:
+            $ref: '#/components/schemas/LineItemAdjustment'
+          type: array
+        cost:
+          description: Unit cost of the line item
+          format: double
+          type: number
+        discount:
+          description: Discount value of the line item.
+          format: double
+          type: number
+        loyalty_amount:
+          description: The value of loyalty that will be incurred by the customer for this line item.
+          format: double
+          type: number
+        price:
+          description: Unit price of the line item.
+          format: double
+          type: number
+      required:
+      - price
+      title: Line Item Pricing
+      type: object
+    SaleResponsePayment:
+      properties:
+        _metadata:
+          $ref: '#/components/schemas/PaymentResponseMetadata'
+        amount:
+          description: Payment amount.
+          format: double
+          type: number
+        billing_address_id:
+          description: The ID of the billing address associated with this payment.
+          format: uuid
+          type: string
+        date:
+          description: Payment date in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type: string
+        external_applications:
+          description: External applications associated with the payment.
+          items:
+            $ref: '#/components/schemas/PaymentExternalApplication'
+          type: array
+        external_attributes:
+          description: External attributes for the payment.
+          items:
+            $ref: '#/components/schemas/PaymentExternalAttribute'
+          type: array
+        id:
+          description: Auto-generated payment ID.
+          format: uuid
+          type: string
+        source:
+          $ref: '#/components/schemas/PaymentResponseSource'
+        surcharge:
+          $ref: '#/components/schemas/PaymentSurcharge'
+        type:
+          $ref: '#/components/schemas/PaymentTypeDetails'
+      title: Sale Response Payment
+      type: object
+    PaymentResponseMetadata:
+      properties:
+        register_open_sequence_id:
+          description: Register open sequence ID.
+          format: uuid
+          type: string
+      title: Payment Response Metadata
+      type: object
+    SaleCreateResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Sale'
+      title: Sale Create Response
+      type: object
+    SaleResponseAdjustment:
+      description: Sale-level adjustment totals compounded by adjustment type. E-commerce custom charge adjustments are returned separately in `ecom_custom_charges`.
+      properties:
+        adjustment_type:
+          description: The adjustment type, such as `NON_CASH_FEE` or `SURCHARGE`.
+          type: string
+        name:
+          description: Display name from the first adjustment in the compounded adjustment group.
+          type: string
+        tax_components:
+          description: Tax component totals for this adjustment group.
+          items:
+            $ref: '#/components/schemas/LineItemTaxComponentResponse'
+          type: array
+        total:
+          description: Sum of fixed, non-each adjustment values for this credit or debit adjustment group.
+          format: double
+          type: number
+      title: Sale Response Adjustment
+      type: object
+    SaleResponseMetadata:
+      properties:
+        complete_open_sequence_id:
+          description: The sequence ID of the register open at the time the sale was completed.
+          type: string
+        has_unsynced_on_account_payments:
+          description: Whether the sale has unsynced on-account payments.
+          type: boolean
+        version:
+          description: Monotonically increasing version number of the sale.
+          type: integer
+        xero_reference:
+          description: Xero invoice reference ID. Only editable for `ONACCOUNT` sales.
+          type: string
+      title: Sale Response Metadata
+      type: object
+    SalePricing:
+      properties:
+        adjustments:
+          description: Adjustments.
+          items:
+            $ref: '#/components/schemas/SaleAdjustment'
+          type: array
+      title: Sale Pricing
+      type: object
+    PromotionDescription:
+      description: Basic description for a Promotion.
+      properties:
+        description:
+          description: A short description for the promotion.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The name of the promotion.
+          type: string
+      title: PromotionDescription
+      type: object
+    LineItemSource:
+      properties:
+        author_id:
+          description: The ID of the salesperson associated with this line item. Salesperson IDs can be retrieved from the /api/2.0/users endpoint. Only needed when this line item is not sold by current login user.
+          format: uuid
+          type: string
+        register_id:
+          description: The ID of the register which was used to add this line item to the sale.
+          format: uuid
+          type: string
+      title: Line Item Source
+      type: object
+    SaleReturn:
+      properties:
+        is_return:
+          description: Indicates whether this sale is a return.
+          type: boolean
+        original_sale_id:
+          description: Reference ID to a different sale if this sale was created as a return.
+          type: string
+        return_sale_ids:
+          description: IDs of return sales created from this sale.
+          items:
+            type: string
+          type: array
+      title: Sale Return
+      type: object
+    SalePayment:
+      properties:
+        amount:
+          description: Payment amount.
+          format: double
+          type: number
+        billing_address_id:
+          description: The ID of the billing address to use for this payment. Either this or billing_address_token must be provided when billing address is required.
+          type:
+          - string
+          - 'null'
+        billing_address_token:
+          description: The token of the billing address to use for this payment. Required when billing_address_id is provided.
+          type:
+          - string
+          - 'null'
+        date:
+          description: The date and time of the payment.
+          type: string
+        id:
+          description: Existing payment ID. If included in the POST request it will cause an update instead of a creating a new supplier.
+          format: uuid
+          type: string
+        source:
+          $ref: '#/components/schemas/PaymentSource'
+        type:
+          $ref: '#/components/schemas/PaymentTypeConfig'
+      required:
+      - amount
+      - type
+      title: Sale Payment
+      type: object
+    SaleResponseSource:
+      properties:
+        author:
+          $ref: '#/components/schemas/SaleAuthor'
+        id:
+          description: The ID of the sale on the client side or another system where the sale was originally created.
+          type: string
+        outlet_id:
+          description: The ID of the outlet where the sale was created.
+          format: uuid
+          type: string
+        register_id:
+          description: The ID of the register where the sale was created.
+          format: uuid
+          type: string
+        type:
+          description: This is the identifier of the 3rd party system that the `source_id` is associated with. 'Xero' or 'Magento' would be examples.
+          type: string
+      title: Sale Response Source
+      type: object
+    LineItemTaxComponent:
+      properties:
+        rate_id:
+          description: Tax rate ID.
+          type: string
+        total_tax:
+          description: Tax total.
+          format: double
+          type: number
+      required:
+      - rate_id
+      - total_tax
+      title: Line Item Tax Component
+      type: object
+    CustomizationFile:
+      properties:
+        filename:
+          description: The name of the file.
+          type: string
+        id:
+          description: The ID of the file.
+          type: string
+        provider:
+          description: Storage provider of the file.
+          type: string
+        size:
+          description: Size of the file in bytes.
+          type: integer
+      title: Customization File
+      type: object
+    LineItemResponseMetadata:
+      properties:
+        is_price_override:
+          description: Indicates whether the price was overridden, preventing recalculation of the total price based on the price from the database.
+          type: boolean
+        sequence:
+          description: Order of the line item in the sale.
+          type: integer
+        tax_components:
+          description: Tax components for this line item.
+          items:
+            $ref: '#/components/schemas/LineItemTaxComponentResponse'
+          type: array
+      title: Line Item Response Metadata
+      type: object
+    LineItemResponsePricing:
+      properties:
+        cost:
+          description: Unit cost for the line item.
+          format: double
+          type: number
+        cost_total:
+          description: Total cost for the line item (`cost` × `quantity`).
+          format: double
+          type: number
+        discount:
+          description: Discount value of the line item.
+          format: double
+          type: number
+        discount_total:
+          description: Total discount for the line item (`discount` × `quantity`).
+          format: double
+          type: number
+        loyalty_amount:
+          description: The value that should be added to associated customer's loyalty balance.
+          format: double
+          type: number
+        loyalty_amount_total:
+          description: Total loyalty value for the line item (`loyalty_amount` × `quantity`).
+          format: double
+          type: number
+        price:
+          description: Unit price of the line item.
+          format: double
+          type: number
+        total:
+          description: Total price for the line item.
+          format: double
+          type: number
+      title: Line Item Response Pricing
+      type: object
+    SaleUpdateRequest:
+      allOf:
+      - $ref: '#/components/schemas/SaleRequestBase'
+      description: Editable attributes of the sale for an update operation. The sale ID is provided in the URL.
+      title: Sale Update Request
+    SaleTotals:
+      properties:
+        loyalty:
+          description: Total loyalty value for this sale.
+          format: double
+          type: number
+        price:
+          description: Total price for this sale, tax exclusive.
+          format: double
+          type: number
+        price_incl_tax:
+          description: Total price for this sale, tax inclusive.
+          format: double
+          type: number
+        surcharge:
+          description: Total surcharge value for this sale.
+          format: double
+          type: number
+        tax:
+          description: Total tax value for this sale.
+          format: double
+          type: number
+      title: Sale Totals
+      type: object
+    ItemDetails:
+      properties:
+        description:
+          type: string
+        initial_condition:
+          type: string
+        item_id:
+          type: string
+        item_name:
+          type: string
+        serial_number:
+          type: string
+      title: ItemDetails
+      type: object
+    LineItemReturn:
+      properties:
+        is_return:
+          description: Indicates whether this line item is a return.
+          type: boolean
+        reason:
+          description: Return reason.
+          type: string
+      title: Line Item Return
+      type: object
+    SaleRequest:
+      allOf:
+      - $ref: '#/components/schemas/SaleRequestBase'
+      - properties:
+          id:
+            description: User-provided sale ID. If not included, one will be generated.
+            format: uuid
+            type: string
+        type: object
+      description: Editable attributes of the sale.
+      title: Sale Request
+    SaleResponseTax:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        tax:
+          description: The total tax value for this tax.
+          format: double
+          type: number
+      title: Sale Response Tax
+      type: object
+    EcomCustomCharge:
+      properties:
+        name:
+          description: Display name of eCom custom charge
+          type: string
+        source_id:
+          description: Unique identifier of eCom custom charge type
+          type: string
+        tax_components:
+          description: Collection of tax components associated with specific eCom custom charge
+          items:
+            $ref: '#/components/schemas/EcomCustomChargeTaxComponent'
+          type: array
+        total:
+          description: Tax exclusive amount for specific eCom custom charge
+          format: double
+          type: number
+        total_incl:
+          description: Tax inclusive amount for specific eCom custom charge
+          format: double
+          type: number
+        total_tax:
+          description: Total tax for specific eCom custom charge
+          format: double
+          type: number
+      title: Ecom Custom Charges
+      type: object
+    SaleResponseLineItem:
+      properties:
+        _metadata:
+          $ref: '#/components/schemas/LineItemResponseMetadata'
+        customizations:
+          description: Product customizations for this line item.
+          items:
+            $ref: '#/components/schemas/LineItemCustomization'
+          type: array
+        gift_card_number:
+          description: Gift card number if this line item is a gift card.
+          type: string
+        id:
+          description: The ID of this line item.
+          format: uuid
+          type: string
+        note:
+          description: Line item note.
+          type: string
+        pricing:
+          $ref: '#/components/schemas/LineItemResponsePricing'
+        product:
+          $ref: '#/components/schemas/LineItemProductDetails'
+        promotions:
+          description: Promotions applied to this line item.
+          items:
+            $ref: '#/components/schemas/LineItemPromotion'
+          type: array
+        quantity:
+          description: Quantity of products for the line item.
+          format: double
+          type: number
+        return:
+          $ref: '#/components/schemas/LineItemReturn'
+        salesperson_id:
+          description: The ID of the salesperson associated with this line item. Salesperson IDs can be retrieved from the /api/2.0/users endpoint. Only needed when this line item is not sold by current login user.
+          format: uuid
+          type: string
+        source:
+          $ref: '#/components/schemas/LineItemResponseSource'
+        status:
+          description: If defined as `CONFIRMED` for pending sales, the line item will be added as **read-only**.
+          type: string
+        surcharges:
+          description: Collection of surcharges associated with the line item.
+          items:
+            $ref: '#/components/schemas/LineItemSurcharge'
+          type: array
+        tax:
+          $ref: '#/components/schemas/LineItemResponseTax'
+      title: Sale Response Line Item
+      type: object
+    ServiceItems:
+      properties:
+        item_details:
+          $ref: '#/components/schemas/ItemDetails'
+        location:
+          type: string
+      title: ServiceItems
+      type: object
+    SaleRequestBase:
+      description: Editable attributes of the sale.
+      properties:
+        accounts_transaction_id:
+          description: Xero invoice reference ID. Only editable for `ONACCOUNT` sales.
+          type: string
+        attributes:
+          description: An array of attributes
+          example:
+          - onaccount
+          items:
+            description: Attributes for this sale
+            type: string
+          type: array
+        customer_id:
+          description: The ID of the customer associated with this sale.
+          format: uuid
+          type: string
+        date:
+          description: The date of the sale in RFC3339 format. If not provided will be added as the time the sale reached the server.
+          example: '2009-11-10T23:00:00Z'
+          type: string
+        fulfillment_details:
+          description: Fulfillment details for DISPATCH or PICKUP fulfillments.
+          items:
+            $ref: '#/components/schemas/FulfillmentDetail'
+          type: array
+        fulfillment_outlet_id:
+          description: The default outlet that should fulfill this sale when a line item does not specify its own `fulfilment_outlet_id`. Mutually exclusive with pick lists created via `/sales/{sale_id}/pick_lists`.
+          format: uuid
+          type: string
+        invoice_number:
+          description: The invoice number for the sale. If left null it will be populated by Lightspeed with the next available invoice number.
+          type: string
+        line_items:
+          description: Line items.
+          items:
+            $ref: '#/components/schemas/SaleLineItem'
+          type: array
+        note:
+          description: A note on the sale entered by the cashier.
+          type: string
+        payments:
+          description: Payments.
+          items:
+            $ref: '#/components/schemas/SalePayment'
+          type: array
+        pricing:
+          $ref: '#/components/schemas/SalePricing'
+        service_fields:
+          properties:
+            service_action:
+              type: string
+            service_agenda:
+              $ref: '#/components/schemas/DailyAgenda'
+            service_items:
+              $ref: '#/components/schemas/ServiceItems'
+            service_line_items:
+              description: An array of service line items.
+              items:
+                $ref: '#/components/schemas/ServiceOrderLineItem'
+              type: array
+          type: object
+        short_code:
+          description: Short, unique code to be printed on the receipt for loyalty tracking purposes.
+          type: string
+        source:
+          $ref: '#/components/schemas/SaleRequestSource'
+        state:
+          description: State of the sale.
+          enum:
+          - parked
+          - pending
+          - voided
+          - closed
+          example: closed
+          type: string
+      required:
+      - source
+      - state
+      title: Sale Request Base
+      type: object
+    PaymentResponseSource:
+      properties:
+        id:
+          description: Integrator-derived payment source ID. Non-null when the integrator provides a transaction ID.
+          type: string
+        outlet_id:
+          description: A valid outlet ID.
+          format: uuid
+          type: string
+        register_id:
+          description: The ID of the register used to add this payment to the sale.
+          format: uuid
+          type: string
+      title: Payment Response Source
+      type: object
+    LineItemResponseSource:
+      properties:
+        register_id:
+          description: The ID of the register which was used to add this line item to the sale.
+          format: uuid
+          type: string
+      title: Line Item Response Source
+      type: object
+    LineItemMetadata:
+      properties:
+        fulfillment_method:
+          description: The fulfillment type for this line item. Only used when creating new sales, ignored when updating existing sales.
+          enum:
+          - DISPATCH
+          - PICKUP
+          type: string
+        is_price_override:
+          description: Indicates whether the price was overridden, preventing recalculation of the total price based on the price from the database.
+          type: boolean
+        sequence:
+          description: Order number of the line item.
+          format: int32
+          type: integer
+      title: Line Item Metadata
+      type: object
+    AdjustmentTarget:
+      properties:
+        ids:
+          description: An array of target IDs.
+          items:
+            format: uuid
+            type: string
+          type: array
+        method:
+          description: The method of the adjustment.
+          enum:
+          - PROPORTIONED
+          - EACH
+          - SINGLE
+          type: string
+      required:
+      - method
+      title: Adjustment Target
+      type: object
+    AdjustmentSource:
+      properties:
+        id:
+          description: The ID of the source of the adjustment.
+          format: uuid
+          type: string
+      title: Adjustment Source
+      type: object
+    AdjustmentAmount:
+      properties:
+        type:
+          description: The value type of the adjustment.
+          enum:
+          - FIXED
+          - PERCENT
+          type: string
+        value:
+          description: The value of the adjustment.
+          type: string
+      required:
+      - type
+      - value
+      title: Adjustment Amount
+      type: object
+    SaleRequestSource:
+      properties:
+        author_id:
+          description: The ID of the user (cashier) who created the sale.
+          format: uuid
+          type: string
+        id:
+          description: The ID of the sale on the client side or another system where the sale was originally created.
+          type: string
+        register_id:
+          description: The ID of the register where the sale was created.
+          format: uuid
+          type: string
+        type:
+          description: This is the identifier of the 3rd party system that the `source_id` is associated with. 'Xero' or 'Magento' would be examples.
+          type: string
+      required:
+      - author_id
+      title: Sale Request Source
+      type: object
+    Sale:
+      description: Sale object
+      properties:
+        _metadata:
+          $ref: '#/components/schemas/SaleResponseMetadata'
+        adjustments:
+          description: Collection of aggregated adjustments.
+          items:
+            $ref: '#/components/schemas/SaleResponseAdjustment'
+          type: array
+        attributes:
+          description: Attributes for this sale.
+          items:
+            type: string
+          type: array
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        customer_id:
+          description: The ID of the customer associated with this sale.
+          format: uuid
+          type: string
+        date:
+          description: Sale timestamp in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type: string
+        ecom_custom_charges:
+          description: Collection of eCom custom charges associated with the sale.
+          items:
+            $ref: '#/components/schemas/EcomCustomCharge'
+          type: array
+        external_applications:
+          description: External applications associated with the sale.
+          items:
+            $ref: '#/components/schemas/SaleExternalApplication'
+          type: array
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        invoice_number:
+          description: Invoice number which if provided, should use the prefix and suffix defined for the register.
+          type: string
+        line_items:
+          description: Collection of line items.
+          items:
+            $ref: '#/components/schemas/SaleResponseLineItem'
+          type: array
+        note:
+          description: Sale Note.
+          type: string
+        payments:
+          description: Collection of payments.
+          items:
+            $ref: '#/components/schemas/SaleResponsePayment'
+          type: array
+        receipt_number:
+          description: The receipt number for the sale.
+          type: string
+        return:
+          $ref: '#/components/schemas/SaleReturn'
+        short_code:
+          description: Short, unique code used for loyalty tracking purposes.
+          type: string
+        source:
+          $ref: '#/components/schemas/SaleResponseSource'
+        state:
+          description: State of the sale.
+          enum:
+          - parked
+          - pending
+          - voided
+          - closed
+          type: string
+        taxes:
+          description: Collection of taxes.
+          items:
+            $ref: '#/components/schemas/SaleResponseTax'
+          type: array
+        totals:
+          $ref: '#/components/schemas/SaleTotals'
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+      title: Sale
+      type: object
+    LineItemAdjustment:
+      properties:
+        amount:
+          $ref: '#/components/schemas/AdjustmentAmount'
+        name:
+          description: The name of the adjustment.
+          type: string
+        source:
+          $ref: '#/components/schemas/AdjustmentSource'
+        target:
+          $ref: '#/components/schemas/AdjustmentTarget'
+        type:
+          description: The type of the adjustment.
+          enum:
+          - NON_CASH_FEE
+          - DISCOUNT
+          - TIP
+          type: string
+      required:
+      - type
+      - target
+      title: Line Item Adjustment
+      type: object
+    EcomCustomChargeTaxComponent:
+      properties:
+        rate_id:
+          description: Tax rate ID.
+          type: string
+        total_tax:
+          description: Tax total.
+          format: double
+          type: number
+      title: Ecom Custom Charge Tax Component
+      type: object
+    LineItemProduct:
+      properties:
+        id:
+          description: The ID of the product associated with this line item.
+          format: uuid
+          type: string
+      required:
+      - id
+      title: Line Item Product
+      type: object
+    PaymentTypeDetails:
+      properties:
+        config_id:
+          description: Payment type id to be used for the payment.
+          format: uuid
+          type: string
+        id:
+          description: '**internal** Global payment type ID. Irrelevant for external use.'
+          type: string
+        name:
+          description: The name of the payment type.
+          type: string
+      title: Payment Type Details
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

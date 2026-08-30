@@ -1,0 +1,126 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Loyalty Adjustments [BETA] API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- name: Loyalty Adjustments [BETA]
+paths:
+  /loyalty/adjustments/bulk:
+    post:
+      description: 'Performs an operation which updates loyalty balance for multiple customers
+
+
+        Requires the `loyalty.transaction.write` permission.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyAdjustmentCreateBody'
+        description: The store credit transaction details
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyAdjustmentResponse'
+          description: Successful response with updated balances
+        '207':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyAdjustmentResponse'
+          description: Successful response with updated balances and errors
+        '400':
+          description: Bad Request — validation errors
+        '403':
+          description: Forbidden
+        '409':
+          description: 'Session Conflict:
+
+            The same session_id passed with a different set of adjustment items'
+      summary: Perform a Loyalty Adjustment bulk operation
+      tags:
+      - Loyalty Adjustments [BETA]
+components:
+  schemas:
+    LoyaltyAdjustmentCreateBody:
+      description: Request body to perform loyalty balance adjustment
+      properties:
+        adjustments:
+          items:
+            description: single customer loyalty adjustment item
+            properties:
+              credit:
+                description: how much loyalty to add to the balance (mutually exclusive with debit)
+                type: number
+              customer_id:
+                description: id of a customer to perform an adjustment
+                format: uuid
+                type: string
+              debit:
+                description: how much loyalty to subtract from the balance (mutually exclusive with credit)
+                type: number
+              reason:
+                description: Arbitrary note that would be associated with the transaction
+                type: string
+            type: object
+          type: array
+        session_id:
+          description: 'An unique ID that prevents double adjustment (same request sent twice will be only applied once)
+
+            Must be an uuidv4'
+          format: uuid
+          type: string
+      type: object
+    LoyaltyAdjustmentResponse:
+      description: Response for the loyalty balance adjustment request
+      properties:
+        applied:
+          description: adjustments that were successful
+          items:
+            properties:
+              balance:
+                description: updated customer balance
+                type: number
+              customer_id:
+                type: string
+            type: object
+          type: array
+        errors:
+          description: adjustments that failed
+          items:
+            properties:
+              customer_id:
+                type: string
+              error:
+                description: update error
+                type: string
+            type: object
+          type: array
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

@@ -1,0 +1,625 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: 'Lightspeed Restaurant K Series Order and Pay: Webhook API'
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: 'Order and Pay: Webhook'
+paths:
+  /o/wh/1/webhook:
+    put:
+      summary: Create a Webhook
+      operationId: apeCreateWebhookOo
+      description: Configures a new webhook to be used for order status updates.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/apeWebhookEndpoint'
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: Webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apeWebhookEndpoint'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response object for error code 400.
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: The date and time at which the error occurred.
+                    examples:
+                    - 2023-11-07T19:15:05.043+0000
+                  status:
+                    type: integer
+                    description: The HTTP status code of the error response.
+                    examples:
+                    - 400
+                  error:
+                    type: string
+                    description: A brief title of the error status.
+                    examples:
+                    - Bad Request
+                  message:
+                    type: string
+                    description: A message describing the nature of the error in detail.
+                    examples:
+                    - 'Validation failed for object=''webhookEndpointDto''. Error count: 1'
+                  errors:
+                    type: array
+                    description: An array of error details, outlining specific issues with the request.
+                    items:
+                      type: object
+                      properties:
+                        codes:
+                          type: array
+                          items:
+                            type: string
+                          description: A set of code strings that correspond to the validation error.
+                          example:
+                          - NotNull.webhookEndpointDto.endpointId
+                          - NotNull.endpointId
+                          - NotNull.java.lang.String
+                          - NotNull
+                        arguments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              codes:
+                                type: array
+                                items:
+                                  type: string
+                                description: Argument codes that are related to the field in validation.
+                                example:
+                                - webhookEndpointDto.endpointId
+                                - endpointId
+                              defaultMessage:
+                                type: string
+                                description: The default message associated with the failed validation.
+                                example: endpointId
+                              code:
+                                type: string
+                                description: A single code that represents the specific validation rule that was not satisfied.
+                                example: endpointId
+                        defaultMessage:
+                          type: string
+                          description: The default error message provided when the associated field fails validation.
+                          example: must not be null
+                        objectName:
+                          type: string
+                          description: The name of the object that failed validation.
+                          example: webhookEndpointDto
+                        field:
+                          type: string
+                          description: The name of the field that failed validation.
+                          example: endpointId
+                        bindingFailure:
+                          type: boolean
+                          description: Indicates whether the error was a result of a binding failure.
+                          example: false
+                        code:
+                          type: string
+                          description: A code representing the specific type of validation error.
+                          example: NotNull
+                  path:
+                    type: string
+                    description: The path of the failed request.
+                    examples:
+                    - /o/wh/1/webhook
+      security:
+      - OAuth2:
+        - orders-api
+    post:
+      summary: Update a webhook
+      operationId: apeUpdateWebhookOo
+      description: 'Updates an existing webhook entry.
+
+
+        Important Note: if `provideAccount`, `expandTransactions`, or `expandPayments` are excluded from the update request, they will be reset to their default values.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/apeWebhookEndpoint'
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: Webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apeWebhookEndpoint'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response object for error code 400.
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: The date and time at which the error occurred.
+                    examples:
+                    - 2023-11-07T19:15:05.043+0000
+                  status:
+                    type: integer
+                    description: The HTTP status code of the error response.
+                    examples:
+                    - 400
+                  error:
+                    type: string
+                    description: A brief title of the error status.
+                    examples:
+                    - Bad Request
+                  message:
+                    type: string
+                    description: A message describing the nature of the error in detail.
+                    examples:
+                    - 'Validation failed for object=''webhookEndpointDto''. Error count: 1'
+                  errors:
+                    type: array
+                    description: An array of error details, outlining specific issues with the request.
+                    items:
+                      type: object
+                      properties:
+                        codes:
+                          type: array
+                          items:
+                            type: string
+                          description: A set of code strings that correspond to the validation error.
+                          example:
+                          - NotNull.webhookEndpointDto.endpointId
+                          - NotNull.endpointId
+                          - NotNull.java.lang.String
+                          - NotNull
+                        arguments:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              codes:
+                                type: array
+                                items:
+                                  type: string
+                                description: Argument codes that are related to the field in validation.
+                                example:
+                                - webhookEndpointDto.endpointId
+                                - endpointId
+                              defaultMessage:
+                                type: string
+                                description: The default message associated with the failed validation.
+                                example: endpointId
+                              code:
+                                type: string
+                                description: A single code that represents the specific validation rule that was not satisfied.
+                                example: endpointId
+                        defaultMessage:
+                          type: string
+                          description: The default error message provided when the associated field fails validation.
+                          example: must not be null
+                        objectName:
+                          type: string
+                          description: The name of the object that failed validation.
+                          example: webhookEndpointDto
+                        field:
+                          type: string
+                          description: The name of the field that failed validation.
+                          example: endpointId
+                        bindingFailure:
+                          type: boolean
+                          description: Indicates whether the error was a result of a binding failure.
+                          example: false
+                        code:
+                          type: string
+                          description: A code representing the specific type of validation error.
+                          example: NotNull
+                  path:
+                    type: string
+                    description: The path of the failed request.
+                    examples:
+                    - /o/wh/1/webhook
+      security:
+      - OAuth2:
+        - orders-api
+  /o/wh/1/webhook/{endpointId}:
+    get:
+      summary: Retrieve a Webhook
+      operationId: apeGetWebhookOo
+      description: Retrieve an existing webhook.
+      parameters:
+      - schema:
+          example: endpoint
+          type: string
+        name: endpointId
+        in: path
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: Webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apeWebhookEndpoint'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: The date and time at which the error occurred.
+                    examples:
+                    - 2023-11-07T22:18:49.101+0000
+                  status:
+                    type: integer
+                    description: The HTTP status code associated with the error.
+                    examples:
+                    - 404
+                  error:
+                    type: string
+                    description: A short description of the HTTP status code meaning.
+                    examples:
+                    - Not Found
+                  message:
+                    type: string
+                    description: A human-readable message providing more details about the error.
+                    examples:
+                    - endpoint ID not found for MISSING-ENDPOINT
+                  path:
+                    type: string
+                    description: The request path where the error occurred.
+                    examples:
+                    - /o/wh/1/webhook/MISSING-ENDPOINT
+      security:
+      - OAuth2:
+        - orders-api
+    delete:
+      summary: Delete a Webhook
+      operationId: apeDeleteWebhookEndpoint
+      description: Delete an existing webhook.
+      parameters:
+      - schema:
+          example: endpoint
+          type: string
+        name: endpointId
+        in: path
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: Webhook deleted
+      security:
+      - OAuth2:
+        - orders-api
+  /o/wh/1/webhook/{endpointId}/business-locations:
+    get:
+      summary: Get webhook business locations
+      operationId: apeGetWebhookBusinessLocations
+      description: Get all business locations added to a webhook endpoint via the API.
+      parameters:
+      - schema:
+          type: string
+          example: endpoint
+        name: endpointId
+        in: path
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: Business location IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/apeWebhookEndpointBusinessLocationDto'
+        '404':
+          description: Not Found
+      security:
+      - OAuth2:
+        - orders-api
+  /o/wh/1/webhook/{endpointId}/business-locations/{businessLocationId}:
+    parameters:
+    - in: path
+      name: businessLocationId
+      required: true
+      schema:
+        $ref: '#/components/schemas/apeBusinessLocationId'
+    put:
+      summary: Add a Business Location to a Webhook
+      operationId: apeAddWebhookBusinessLocation
+      description: 'Enables a webhook for the specified business location.
+
+        Required to receive item availability notifications (type ''item'').
+
+        Not required for ''order'' and ''payment'' webhooks.'
+      parameters:
+      - schema:
+          type: string
+          example: endpoint
+        name: endpointId
+        in: path
+        required: true
+      - schema:
+          $ref: '#/components/schemas/apeBusinessLocationId'
+        name: businessLocationId
+        in: path
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apeWebhookEndpointBusinessLocationDto'
+        '404':
+          description: Not Found
+      security:
+      - OAuth2:
+        - orders-api
+    delete:
+      summary: Remove Business Location from a Webhook
+      operationId: apeRemoveWebhookBusinessLocation
+      description: Remove a business location ID from a webhook endpoint.
+      parameters:
+      - schema:
+          type: string
+          example: endpoint
+        name: endpointId
+        in: path
+        required: true
+      - schema:
+          $ref: '#/components/schemas/apeBusinessLocationId'
+        name: businessLocationId
+        in: path
+        required: true
+      tags:
+      - 'Order and Pay: Webhook'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apeWebhookEndpointBusinessLocationDto'
+        '404':
+          description: Not Found
+      security:
+      - OAuth2:
+        - orders-api
+components:
+  schemas:
+    apeBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
+    apeCurrentWarning:
+      type: object
+      properties:
+        information:
+          type: string
+        type:
+          type: string
+    apeWebhookEndpoint:
+      required:
+      - endpointId
+      - url
+      properties:
+        endpointId:
+          example: MY-AWESOME-ENDPOINT-ID
+          description: The unique endpoint ID, for example the integration name. Case sensitive.
+          type: string
+        url:
+          example: https://webhook.site/1dc40b86-3d0d
+          description: The URL which this endpoint points to.
+          type: string
+        withBasicAuth:
+          default: false
+          description: If basic auth should be used, defaults to false.
+          type: boolean
+          example: true
+        username:
+          example: username
+          description: The username for basic auth.
+          type: string
+        password:
+          example: password
+          description: The password for basic auth.
+          type: string
+        provideAccount:
+          description: Whether or not to include account info in the notification.
+          example: true
+          default: false
+          type: boolean
+        expandTransactions:
+          example: true
+          description: Whether or not to include transaction lines in the notification.
+          default: false
+          type: boolean
+        expandPayments:
+          example: true
+          description: Whether or not to include payment lines in the notification.
+          default: false
+          type: boolean
+        subscribeTo:
+          items:
+            $ref: '#/components/schemas/apeEventResource'
+          type: array
+      type: object
+    apeWebhookEndpointBusinessLocationDto:
+      type: object
+      properties:
+        businessLocationId:
+          type: integer
+          format: int64
+          description: The unique identifier for the business location.
+          example: 45454565682155
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when this association was created.
+          example: 2023-11-07T19:15:05.043+0000
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when this association was last updated.
+          example: 2023-11-07T19:15:05.043+0000
+        warnings:
+          description: A list of warnings that occurred during the request, but which did not prevent a successful response.  For instance, if the Business Location does not have the required POS app version to support item availability.
+          type: array
+          items:
+            $ref: '#/components/schemas/apeCurrentWarning'
+      required:
+      - businessLocationId
+    apeEventResource:
+      description: Event to listen to by resource
+      example:
+        name: DELIVERED
+        resource: order
+      properties:
+        name:
+          type: string
+          description: 'Events to subscribe to.
+
+            * order: `DELIVERED`
+
+            * item: `SALES_RESTRICTION_UPDATED` - Business locations for this webhook must be specified [here](https://api-docs.lsk.lightspeed.app/operation/operation-apegetwebhookbusinesslocations).
+
+            * order_api: `ONLINE_ORDER_READINESS` - Business locations for this webhook must be specified [here](https://api-docs.lsk.lightspeed.app/operation/operation-apegetwebhookbusinesslocations).
+
+
+            The following are always sent:
+
+            * Account: `CLOSED` and `CHECK_WAS_UPDATED`.
+
+            * Order: `FAILURE`, `READY_FOR_PICKUP` and `CANCELLED`.
+
+            * Payment: `SUCCESS` and `FAILURE`.
+
+            * Order API: `READY` and `NOT_READY`.'
+        resource:
+          enum:
+          - order
+          - payment
+          - item
+          - order_api
+          type: string
+      type: object
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

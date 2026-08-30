@@ -1,0 +1,621 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Workflows API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Workflow operations
+  name: Workflows
+paths:
+  /workflows/custom_fields:
+    get:
+      description: 'Returns the custom field definitions for a given entity type.
+
+
+        🔒 Requires: `custom_fields:read` scope'
+      operationId: GetCustomFields
+      parameters:
+      - description: The entity type.
+        in: query
+        name: entity
+        required: true
+        schema:
+          enum:
+          - sale
+          - line_item
+          - customer
+          - product
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldDefinitionCollection'
+          description: A list of all the custom field definitions associated with the entity type.
+      summary: List custom field definitions
+      tags:
+      - Workflows
+    post:
+      description: 'Create a new custom field definition for a given entity type.
+
+
+        🔒 Requires: `custom_fields:write` scope'
+      operationId: CreateCustomField
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomFieldDefinitionParams'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomFieldDefinition'
+                type: object
+          description: A custom field definition.
+      summary: Define a new custom field
+      tags:
+      - Workflows
+  /workflows/custom_fields/values:
+    get:
+      description: 'Returns the custom field values for a given entity.
+
+
+        🔒 Requires: `custom_fields:read` scope'
+      operationId: GetCustomFieldValues
+      parameters:
+      - description: The entity type.
+        in: query
+        name: entity
+        required: true
+        schema:
+          enum:
+          - sale
+          - line_item
+          - customer
+          - product
+          type: string
+      - description: The entity ID.
+        in: query
+        name: entity_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldValueCollection'
+          description: A list of all the custom field values associated with entity.
+      summary: List custom field values
+      tags:
+      - Workflows
+    post:
+      description: 'Set new custom field values on a given entity.
+
+
+        🔒 Requires: `custom_fields:write` scope'
+      operationId: SetCustomFieldValues
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomFieldValuesParams'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldValueCollection'
+          description: A list of all the custom field values associated with the entity.
+      summary: Set new custom field values
+      tags:
+      - Workflows
+  /workflows/custom_fields/{customFieldId}:
+    delete:
+      description: 'Delete a custom field and all the values stored on that field.
+
+
+        🔒 Requires: `custom_fields:write` scope'
+      operationId: delete-custom-field
+      parameters:
+      - description: The ID of the custom field that you want deleted.
+        in: path
+        name: customFieldId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The custom field was deleted.
+      summary: Delete a custom field
+      tags:
+      - Workflows
+    put:
+      description: 'Updates properties on a custom field.
+
+
+        🔒 Requires: `custom_fields:write` scope'
+      operationId: update-custom-field
+      parameters:
+      - description: The ID of the custom field that you want to update.
+        in: path
+        name: customFieldId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomFieldParams'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CustomFieldDefinition'
+                type: object
+          description: A custom field definition.
+      summary: Update a custom field
+      tags:
+      - Workflows
+  /workflows/remote_rules:
+    get:
+      description: 'Returns the remote business rules registered on the retailer.
+
+
+        🔒 Requires: `remote_rules:read` scope'
+      operationId: get-remote-rules
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/RemoteBusinessRule'
+                    type: array
+                required:
+                - data
+                type: object
+          description: A list of all the remote business rules associated with the retailer.
+      summary: List remote rules
+      tags:
+      - Workflows
+    post:
+      description: 'Register a new remote rule for the retailer.
+
+
+        🔒 Requires: `remote_rules:write` scope'
+      operationId: create-remote-rule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteBusinessRuleParams'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RemoteBusinessRule'
+                type: object
+          description: A remote business rule.
+      summary: Create remote rule
+      tags:
+      - Workflows
+  /workflows/remote_rules/{remoteRuleId}:
+    delete:
+      description: 'Delete a remote business rule.
+
+
+        🔒 Requires: `remote_rules:write` scope'
+      operationId: delete-remote-rule
+      parameters:
+      - description: The ID of the remote business rules that you want deleted.
+        in: path
+        name: remoteRuleId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The remote business rule was deleted.
+      summary: Delete a remote rule
+      tags:
+      - Workflows
+  /workflows/rules:
+    get:
+      description: 'Returns the business rules for the retailer.
+
+
+        🔒 Requires: `business_rules:read` scope'
+      operationId: get-rules
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/BusinessRule'
+                    type: array
+                type: object
+          description: A list of all the business rules associated with the retailer.
+      summary: List rules
+      tags:
+      - Workflows
+    post:
+      description: 'Create a rule for the retailer.
+
+
+        🔒 Requires: `business_rules:write` scope'
+      operationId: create-rule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRuleParams'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/BusinessRule'
+                type: object
+          description: A business rule.
+      summary: Create rule
+      tags:
+      - Workflows
+  /workflows/rules/{ruleId}:
+    delete:
+      description: 'Delete a business rule.
+
+
+        🔒 Requires: `business_rules:write` scope'
+      operationId: delete-rule
+      parameters:
+      - description: The ID of the business rules that you want deleted.
+        in: path
+        name: ruleId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The business rule was deleted.
+      summary: Delete a business rule
+      tags:
+      - Workflows
+components:
+  schemas:
+    BusinessRuleParams:
+      description: The parameters that can be passed to the create rule API.
+      properties:
+        event_type:
+          enum:
+          - sale.ready_for_payment
+          - sale.line_items.added
+          - sale.customer.changed
+          - sale.created
+          - sale.updated
+          type: string
+        remote_rule_id:
+          example: '1239349157873029120'
+          type: string
+      required:
+      - event_type
+      - remote_rule_id
+      title: Rule Parameters
+      type: object
+    CustomFieldDefinition:
+      description: The type, name, and configuration of a custom field.
+      properties:
+        created_at:
+          description: The creation timestamp in UTC.
+          format: date-time
+          readOnly: true
+          type: string
+        editable_in_ui:
+          description: Is this custom field be editable in the UI.
+          type: boolean
+        entity:
+          description: The type of entity.
+          enum:
+          - sale
+          - line_item
+          - customer
+          - product
+          type: string
+        id:
+          example: '1239349157873029120'
+          readOnly: true
+          type: string
+        name:
+          example: my_custom_field
+          type: string
+        title:
+          example: My Custom Field
+          type: string
+        type:
+          description: The type of the value to be stored using this custom field.
+          enum:
+          - string
+          - integer
+          - boolean
+          - date
+          - product_id
+          - qrcode
+          - string_array
+          type: string
+        visible_in_ui:
+          description: Is this custom field visible in the UI.
+          type: boolean
+      title: Custom Field Definition
+      type: object
+    CustomFieldValueCollection:
+      description: The fields returned by the custom field value list API.
+      properties:
+        data:
+          description: An array of Custom Field Values.
+          items:
+            $ref: '#/components/schemas/CustomFieldValue'
+          type: array
+      required:
+      - data
+      title: Custom Field Value Collection
+      type: object
+    CustomFieldDefinitionParams:
+      description: The parameters that can be passed to the create custom field definition API.
+      properties:
+        editable_in_ui:
+          default: false
+          description: Should this custom field be editable in the UI.
+          type: boolean
+        entity:
+          description: The type of entity.
+          enum:
+          - sale
+          - line_item
+          - customer
+          - product
+          type: string
+        name:
+          example: my_custom_field
+          type: string
+        print_on_receipt:
+          default: false
+          description: Should this custom field be printed on receipts.
+          type: boolean
+        title:
+          example: My Custom Field
+          type: string
+        type:
+          description: The type of the value to be stored using this custom field.
+          enum:
+          - string
+          - integer
+          - boolean
+          - date
+          - product_id
+          - qrcode
+          - string_array
+          type: string
+        visible_in_ui:
+          default: false
+          description: Should this custom field be visible in the UI.
+          type: boolean
+      required:
+      - entity
+      - name
+      - title
+      - type
+      title: Custom Field Definition Parameters
+      type: object
+    CustomFieldDefinitionCollection:
+      description: The fields returned by the custom fields definition list API.
+      properties:
+        data:
+          description: An array of Custom Field Definitions.
+          items:
+            $ref: '#/components/schemas/CustomFieldDefinition'
+          type: array
+      required:
+      - data
+      title: Custom Field Definition Collection
+      type: object
+    RemoteBusinessRuleParams:
+      description: The parameters that can be passed to the create remote rule API.
+      properties:
+        url:
+          example: https://retailer.com/vend-business-rule
+          format: uri
+          type: string
+      required:
+      - url
+      title: Remote Rule Parameters
+      type: object
+    CustomFieldValue:
+      description: The value of a custom field on an entity.
+      properties:
+        boolean_value:
+          type: boolean
+        definition_id:
+          description: The ID of the custom field definition associated with this value.
+          example: '1239349157873029120'
+          readOnly: true
+          type: string
+        integer_value:
+          format: int64
+          type: integer
+        name:
+          example: my_custom_field
+          type: string
+        string_value:
+          type: string
+        title:
+          example: My Custom Field
+          type: string
+        type:
+          description: The type of the value to be stored using this custom field.
+          enum:
+          - string
+          - integer
+          - boolean
+          - date
+          type: string
+      title: Custom Field Value
+      type: object
+    CustomFieldValuesParams:
+      description: The parameters that can be passed to the set custom field values API.
+      properties:
+        entity:
+          description: The entity type.
+          enum:
+          - sale
+          - line_item
+          - customer
+          - product
+          type: string
+        entity_id:
+          description: The ID of entity.
+          format: uuid
+          type: string
+        values:
+          description: The values.
+          items:
+            properties:
+              boolean_value:
+                type: boolean
+              integer_value:
+                format: int64
+                type: integer
+              name:
+                description: The name of the custom field to set a value for. Must match an existing custom field name for the entity type.
+                example: my_custom_field
+                type: string
+              string_value:
+                example: spec-test-value
+                type: string
+            required:
+            - name
+            - string_value
+            type: object
+          type: array
+      required:
+      - entity
+      - entity_id
+      - values
+      title: Custom Field Value Parameters
+      type: object
+    BusinessRule:
+      properties:
+        created_at:
+          description: The creation timestamp in UTC.
+          format: date-time
+          readOnly: true
+          type: string
+        event_type:
+          enum:
+          - sale.ready_for_payment
+          - sale.line_items.added
+          - sale.customer.changed
+          - sale.created
+          - sale.updated
+          type: string
+        id:
+          example: '1239349747718000640'
+          readOnly: true
+          type: string
+        remote_rule_id:
+          example: '1239349157873029120'
+          type: string
+      required:
+      - event_type
+      - remote_rule_id
+      title: Business Rule
+      type: object
+    RemoteBusinessRule:
+      description: The configuration of a remote business rule.
+      properties:
+        created_at:
+          description: The creation timestamp in UTC.
+          format: date-time
+          readOnly: true
+          type: string
+        id:
+          example: '1239349157873029120'
+          readOnly: true
+          type: string
+        oauth_application_id:
+          description: The ID of the application the created the remote business rule.
+          example: 043eec148ae192a2d88b1d658e8084a3
+          readOnly: true
+          type: string
+        url:
+          example: https://retailer.com/vend-business-rule
+          format: uri
+          type: string
+      required:
+      - url
+      title: Remote Business Rules
+      type: object
+    UpdateCustomFieldParams:
+      properties:
+        editable_in_ui:
+          description: Should this custom field be editable in the UI.
+          type: boolean
+        print_on_receipt:
+          description: Should this custom field be printed on receipts.
+          type: boolean
+        title:
+          example: My Custom Field
+          type: string
+        visible_in_ui:
+          description: Should this custom field be visible in the UI.
+          type: boolean
+      title: Parameters for updating a custom field
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

@@ -1,0 +1,268 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Webhooks API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Webhook operations
+  name: Webhooks
+paths:
+  /webhooks:
+    get:
+      description: 'List all webhooks.
+
+
+        🔒 Requires: `webhooks` scope'
+      operationId: get-webhooks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: '#/components/schemas/Webhook'
+                    type: array
+                type: object
+            example-1:
+              example: {}
+          description: OK
+      summary: List webhooks
+      tags:
+      - Webhooks
+    post:
+      description: 'Create a webhook.
+
+
+        🔒 Requires: `webhooks` scope'
+      operationId: post-webhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Webhook'
+                type: object
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: A webhook with this type and URL already exists.
+      summary: Create Webhook
+      tags:
+      - Webhooks
+  /webhooks/{webhookId}:
+    delete:
+      description: 'Delete a webhook
+
+
+        🔒 Requires: `webhooks` scope'
+      operationId: delete-webhooks-webhookId
+      parameters:
+      - in: path
+        name: webhookId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Not Found
+      summary: Delete Webhook
+      tags:
+      - Webhooks
+    get:
+      description: 'Fetch a single webhook by its ID.
+
+
+        🔒 Requires: `webhooks` scope'
+      operationId: get-webhooks-id
+      parameters:
+      - in: path
+        name: webhookId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Webhook'
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Not Found
+      summary: Get Webhook
+      tags:
+      - Webhooks
+    put:
+      description: 'Update an existing webhook
+
+
+        🔒 Requires: `webhooks` scope'
+      operationId: put-webhooks-id
+      parameters:
+      - in: path
+        name: webhookId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Webhook'
+                type: object
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                type: object
+          description: Not Found
+      summary: Update Webhook
+      tags:
+      - Webhooks
+components:
+  schemas:
+    WebhookRequest:
+      description: Webhook create/update request data.
+      properties:
+        active:
+          description: Whether this webhook is enabled or not
+          type: boolean
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          description: The URL to send webhooks to
+          minLength: 3
+          type: string
+      required:
+      - active
+      - type
+      - url
+      title: WebhookRequest
+      type: object
+      x-examples:
+        example-1:
+          active: true
+          type: sale.update
+          url: string
+    Webhook:
+      description: The configuration for a webhook.
+      properties:
+        active:
+          description: Whether this webhook is enabled or not
+          type: boolean
+        id:
+          description: The ID of this webhook
+          type: string
+        retailer_id:
+          description: The ID of the retailer this webhook belongs to
+          type: string
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          description: The URL to send this webhook to
+          type: string
+      title: Webhook
+      type: object
+      x-examples: {}
+    WebhookType:
+      description: 'The webhook type. These can be one of:
+
+        - sale.update
+
+        - product.update
+
+        - customer.update
+
+        - inventory.update
+
+        - register_closure.create
+
+        - consignment.send
+
+        - consignment.receive
+
+        '
+      enum:
+      - sale.update
+      - product.update
+      - customer.update
+      - inventory.update
+      - register_closure.create
+      - consignment.send
+      - consignment.receive
+      title: WebhookType
+      type: string
+      x-examples:
+        example-1: sale.update
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

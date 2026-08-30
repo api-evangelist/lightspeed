@@ -1,0 +1,2071 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series Reservations for Platforms API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: Reservations for Platforms
+paths:
+  /reservation/api/1/platform/{platform-code}/integration/onboarding:
+    post:
+      description: Once the external platform receives the [onboarding webhook](https://api-docs.lsk.lightspeed.app/operation/operation-reservationonboardingnotification), the process needs to be completed using this callback.
+      operationId: reservation-serviceOnboardingCallback
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-serviceOnboardingCallbackRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-serviceOnboardingCallbackResponse'
+          description: Accepted
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-serviceOnboardingCallbackResponse'
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-serviceOnboardingCallbackResponse'
+          description: Platform not found
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Callback to Complete Onboarding
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/profile:
+    get:
+      description: Retrieve platform profile details.
+      operationId: reservation-serviceGetByPlatformCode
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformProfileResponse'
+          description: Platform profile details
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Platform Profile Details
+      tags:
+      - Reservations for Platforms
+    post:
+      description: Create or update details for external reservation platform.
+      operationId: reservation-serviceSetByPlatformCode
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformProfile'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformProfileResponse'
+          description: Platform profile details
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Create or Update Platform Profile
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/course-settings:
+    patch:
+      description: Setup platform's course settings definition.
+      operationId: reservation-servicePlatformCourseSettings
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformCourseSettingsDto'
+      responses:
+        '200':
+          description: Accepted
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Platform course settings definition
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/restaurant/{platform-restaurant-id}/reservation/{platform-reservation-id}/push:
+    put:
+      description: Create a new reservation or provide updates about guests, deposits, status, etc.
+      operationId: reservation-servicePushPlatformReservation
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      - in: path
+        name: platform-restaurant-id
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+      - description: The external identifier of the reservation.
+        in: path
+        name: platform-reservation-id
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformReservation'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformReservationAcceptedDto'
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+        '404':
+          description: Integration not found
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Create or Update Reservation
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/webhook/auth/api-keys:
+    patch:
+      description: Activate XApiKey authentication for webhooks.
+      operationId: reservation-serviceActivateApiKeysAuth
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformAPIKeysWebhook'
+      responses:
+        '200':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformWebhookResponseDto'
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+        '404':
+          description: Platform not found
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Add authentication by XApiKey
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/webhook/auth/basic-auth:
+    patch:
+      description: Activate BasicAuth authentication for webhooks.
+      operationId: reservation-serviceActivateBasicAuth
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformBasicAuthWebhook'
+      responses:
+        '200':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformWebhookResponseDto'
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+        '404':
+          description: Platform not found
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Add authentication with BasicAuth
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/webhook/auth/bearer-auth:
+    patch:
+      description: Activate BearerAuth authentication for webhooks.
+      operationId: reservation-serviceActivateBearerAuthAuth
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformBearerTokenWebhook'
+      responses:
+        '200':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformWebhookResponseDto'
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+        '404':
+          description: Platform not found
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Add authentication with BearerAuth
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/platform/{platform-code}/webhook/auth/oauth2:
+    patch:
+      description: Activate OAuth2 authentication for webhooks.
+      operationId: reservation-serviceActivateOAuth2
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformOAuth2Webhook'
+      responses:
+        '200':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation-servicePlatformWebhookResponseDto'
+        '400':
+          description: Non relevant request
+        '403':
+          description: Scope 'reservation-{platform-code}' not found in the token
+        '404':
+          description: Platform not found
+      security:
+      - OAuth2:
+        - reservation-platform-code
+      summary: Add authentication with OAuth2
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/user/platform/{platform-code}/business-locations:
+    get:
+      description: Retrieve all the business locations accessible for a User
+      operationId: reservation-serviceGetBusinessLocations
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      - description: The page number, when paginating
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      - description: The items per page, when paginating
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 1000
+          format: int32
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/reservation-servicePlatformBusinessLocation'
+                type: array
+                examples:
+                - - businessLocationId: '123456789'
+                    city: Genève
+                    country: CH
+                    name: Le Gâteau
+                    state: Canton de Genève
+                    street1: Rue de la Servette 10
+                    street2: Suite 2
+                    zip: '101201'
+          description: A list of business locations
+        '400':
+          description: Non relevant request
+        '403':
+          description: Access token not relevant for the businessLocation, use authorization-code
+        '404':
+          description: No business locations found
+      security:
+      - OAuth2:
+        - user-token-by-authorization-code
+      summary: Get Business Locations
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/user/platform/{platform-code}/integration/activate:
+    post:
+      description: Activate the integration between the K-Series business location and the external reservation platform.
+      operationId: reservation-serviceActivatePlatformIntegration
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformIntegrationDto'
+      responses:
+        '200':
+          description: Accepted
+        '400':
+          description: Non relevant request
+        '403':
+          description: Access token not relevant for the businessLocation, use authorization-code
+        '404':
+          description: Platform not found
+      security:
+      - OAuth2:
+        - user-token-by-authorization-code
+      summary: Activate Integration for Restaurant
+      tags:
+      - Reservations for Platforms
+  /reservation/api/1/user/platform/{platform-code}/integration/deactivate:
+    post:
+      description: Deactivate the integration between the K-Series business location and the external reservation platform.
+      operationId: reservation-serviceDeactivatePlatformIntegration
+      parameters:
+      - in: path
+        name: platform-code
+        required: true
+        schema:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePlatformIntegrationDto'
+      responses:
+        '200':
+          description: Accepted
+        '400':
+          description: Non relevant request
+        '403':
+          description: Access token not relevant for the businessLocation, use authorization-code
+        '404':
+          description: Platform not found
+      security:
+      - OAuth2:
+        - user-token-by-authorization-code
+      summary: Deactivate Integration for Restaurant
+      tags:
+      - Reservations for Platforms
+webhooks:
+  reservation-serviceReservation error notification:
+    post:
+      summary: Error notification
+      operationId: reservationErrorNotification
+      description: These notifications are sent to the URL provided in the[`errorsWebhookUrl` field](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-errorswebhookurl).
+      tags:
+      - Reservations for Platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-serviceErrorWebhook'
+        required: true
+      responses:
+        '200':
+          description: Your server returns this code if it accepts the callback.
+  reservation-serviceReservation integration notification:
+    post:
+      summary: Integration notification
+      operationId: reservationIntegrationNotification
+      description: These notifications are sent to the URL provided in the[`integrationWebhookUrl` field](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-integrationwebhookurl).
+      tags:
+      - Reservations for Platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-serviceIntegrationWebhook'
+        required: true
+      responses:
+        '200':
+          description: Your server returns this code if it accepts the callback.
+  reservation-serviceReservation onboarding notification:
+    post:
+      summary: Onboarding notification
+      operationId: reservationOnboardingNotification
+      description: These notifications are sent to the URL provided in the[`onboardingWebhookUrl` field](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-onboardingwebhookurl).
+      tags:
+      - Reservations for Platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-serviceOnboardingWebhook'
+        required: true
+      responses:
+        '200':
+          description: Your server returns this code if it accepts the callback.
+  reservation-serviceReservation order notification:
+    post:
+      summary: Order notification
+      operationId: reservationOrderNotification
+      description: These notifications are sent to the URL provided in the[`orderWebhookUrl` field](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-orderwebhookurl).
+      tags:
+      - Reservations for Platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-serviceOrderUpdate'
+        required: true
+      responses:
+        '200':
+          description: Your server returns this code if it accepts the callback.
+  reservation-servicePOS reservation updated notification:
+    post:
+      summary: POS reservation updated notification
+      operationId: posReservationUpdatedNotification
+      description: These notifications are sent to the URL provided in the[`posReservationUpdateWebhookUrl` field](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-posreservationupdatewebhookurl).
+      tags:
+      - Reservations for Platforms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation-servicePosReservationUpdate'
+        required: true
+      responses:
+        '200':
+          description: Your server returns this code if it accepts the callback.
+components:
+  schemas:
+    reservation-serviceAccount:
+      properties:
+        accountNumber:
+          description: The unique identifier of the account (order).
+          example: A833754.74
+          type: string
+        accountObjectId:
+          description: The internal identifier of the table.
+          example: '25769805453'
+          type: string
+          deprecated: true
+        accountProfileCode:
+          description: The code of the [account (order) profile](https://api-docs.lsk.lightspeed.app/operation/operation-reservationordernotification#operation-reservationordernotification-body-application-json-account-accountprofilecode) associated with this order. <br> See the [order profiles](https://api-portal.lsk.lightspeed.app/guides/definitions/order-profiles) definition for more details.
+          example: zoneB
+          type: string
+        accountProfileId:
+          description: The unique identifier of the [account (order) profile](https://api-docs.lsk.lightspeed.app/operation/operation-reservationordernotification#operation-reservationordernotification-body-application-json-account-accountprofilecode) associated with this order.
+          example: '25769805764'
+          type: string
+        accountProfileName:
+          description: The name of the [account (order) profile](https://api-docs.lsk.lightspeed.app/operation/operation-reservationordernotification#operation-reservationordernotification-body-application-json-account-accountprofilecode) associated with this order.
+          example: Livraison Zone B
+          type: string
+        businessLocationId:
+          description: The unique identifier of the business location.
+          example: '9765040300495493'
+          type: string
+        closeDate:
+          description: The timestamp of when transaction was completed, in milliseconds.
+          example: 1694083785354
+          format: int64
+          nullable: true
+          type: integer
+        consumerRecord:
+          $ref: '#/components/schemas/reservation-serviceConsumerRecord'
+        coverCount:
+          description: The number of covers associated with the transaction.
+          example: 2
+          format: int64
+          type: integer
+        currencyCode:
+          description: The ISO-4217 3 letter currency code.
+          example: EUR
+          type: string
+        currentProductionPhase:
+          description: The active course. Starts with 0.
+          example: 0
+          format: int32
+          type: integer
+        discounts:
+          items:
+            $ref: '#/components/schemas/reservation-serviceDiscount'
+          type: array
+        externalReferences:
+          description: The unique identifiers of this transaction provided by 3rd parties or the K-Series backend.
+          items:
+            $ref: '#/components/schemas/reservation-serviceExternalReference'
+          type: array
+        gratuityAmount:
+          description: The tip amount.
+          example: 20
+          type: number
+        id:
+          description: Legacy account identifier created by the POS (for backwards compatibility).
+          example: '21474836499'
+          type: string
+          deprecated: true
+        latestExternalReferences:
+          items:
+            $ref: '#/components/schemas/reservation-serviceExternalReference'
+          type: array
+        name:
+          description: The name of the transaction or tab.
+          example: Floor 1, Table 2
+          type: string
+        offset:
+          description: The UTC Offset of the location, in minutes.
+          example: 240
+          format: int32
+          type: integer
+        orderMode:
+          description: 'Order mode of the transaction:
+
+            * DIRECT – Retail-like direct sale, no table associated
+
+            * TABLE – Table based order / sale
+
+            * DELIVERY – Retail-like delivery or take-away sale, no table associated
+
+            * LOCAL_ORDER – Sale generated by a local order system (e.g. drink dispenser)
+
+            * ONLINE – Sale generated by a remote order system (e.g. a web site)
+
+            * SYSTEM – Used for transfer operations between payment methods
+
+            * ON_HOLD – Direct Sale that is currently put on hold (parked), resumed at a later time
+
+            * CROSS_BL – Cross business location order
+
+            '
+          example: ONLINE
+          type: string
+          enum:
+          - DIRECT
+          - TABLE
+          - DELIVERY
+          - LOCAL_ORDER
+          - ONLINE
+          - SYSTEM
+          - OTHER
+          - ON_HOLD
+          - CROSS_BL
+          - BAR_TAB
+        openDate:
+          description: The timestamp of when transaction was started, in milliseconds.
+          example: 1694083785354
+          format: int64
+          type: integer
+        originAccountId:
+          description: Legacy reference identifier of origin account created by the POS (for backwards compatibility).
+          example: 21474836579
+          format: int64
+          nullable: true
+          type: integer
+        originAccountNumber:
+          description: A unique identifier of an account, used to identify sales transactions.
+          example: A1.5
+          nullable: true
+          type: string
+        paidAmount:
+          description: The amount paid.
+          example: 45
+          type: number
+        paymentLines:
+          items:
+            $ref: '#/components/schemas/reservation-servicePaymentLine'
+          type: array
+        preTaxAmount:
+          description: The amount before tax.
+          example: 201.78
+          type: number
+        receiptNumber:
+          description: The unique identifier of the final transaction.
+          example: R1.2
+          type: string
+        serviceCharge:
+          description: The sum of all surcharges applied to the transaction.
+          example: 34.2
+          type: number
+        staffId:
+          description: The unique identifier of staff member who created/started and owns the transaction.
+          example: '13'
+          type: string
+        staffName:
+          description: The name of staff member who created/started and owns the transaction.
+          example: Manager
+          type: string
+        tableName:
+          description: The name of the table.
+          example: Table 112
+          type: string
+          deprecated: true
+        tableNumber:
+          description: Integer number of the table.
+          example: 112
+          type: number
+          deprecated: true
+        tables:
+          description: List of table names (codes) associated with this order
+          example:
+          - '112'
+          - 112A
+          type: array
+          items:
+            type: string
+        taxAmount:
+          description: The total amount of tax.
+          example: 14.12
+          type: number
+        totalAmount:
+          description: The total amount of the receipt.
+          example: 30
+          type: number
+        totalDiscount:
+          description: The applied discount rate, as a percentage.
+          example: 0.9
+          type: number
+        transactionLines:
+          items:
+            $ref: '#/components/schemas/reservation-serviceTransactionLine'
+          type: array
+        type:
+          description: The sale line type.
+          example: SALE
+          type: string
+        updateDate:
+          description: The timestamp of when the complete update was finalized at the POS, in milliseconds.
+          example: 1694083819623
+          format: int64
+          type: integer
+      type: object
+    reservation-serviceIntegrationWebhook:
+      properties:
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        notificationType:
+          description: The type of notification.
+          enum:
+          - ACTIVATED
+          - DEACTIVATED
+          type: string
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+      required:
+      - notificationType
+      - platformCode
+      - businessLocationId
+      - platformRestaurantId
+      type: object
+    reservation-servicePaymentLine:
+      properties:
+        accountId:
+          description: Legacy account identifier created by the POS (supplied because older API provides it to 3rd parties).
+          example: '21474836499'
+          type: string
+        amount:
+          description: Amount given by the customer to settle the transaction.
+          example: 45
+          type: number
+        currencyCode:
+          description: An ISO-4217 3 letter currency code
+          example: GBP
+          type: string
+        date:
+          description: Timestamp in ms of the moment when the line was registered. by the user
+          example: 1694084890294
+          format: int64
+          type: integer
+        gratuityAmount:
+          description: Amount of tip given by the customer using the payment method.
+          example: 50
+          type: number
+        id:
+          description: Legacy line identifier created by the POS (supplied because older API provides it to 3rd parties).
+          example: 21474836506
+          format: int64
+          type: integer
+        paymentMethod:
+          description: Short code of the payment method the customer used to settle the transaction.
+          example: IKGIFT
+          type: string
+        paymentMethodDescription:
+          description: Name of the payment method used.
+          example: Geschenkkarte
+          type: string
+      type: object
+    reservation-serviceErrorCode:
+      description: A code that describes the reason for the error.
+      enum:
+      - PLATFORM_NOT_FOUND
+      - URL_MUST_START_WITH_HTTPS
+      - BEARER_AUTH_TTL_IS_EXPIRED
+      - BASIC_AUTH_FIELDS_CAN_NOT_BE_EMPTY
+      - BEARER_AUTH_FIELDS_CAN_NOT_BE_EMPTY
+      - API_KEY_AUTH_FIELDS_CAN_NOT_BE_EMPTY
+      - OAUTH_FIELDS_CAN_NOT_BE_EMPTY
+      - RESTAURANT_PROPERTIES_REQUIRED
+      - RESTAURANT_PROPERTIES_INVALID
+      - RESTAURANT_PROPERTIES_EXPIRED
+      - INTEGRATION_LOCATION_ID_MISMATCH
+      - PLATFORM_ALREADY_ACTIVATED
+      - CURRENCY_NOT_ACCEPTABLE
+      - PLATFORM_FIELDS_CAN_NOT_BE_EMPTY
+      - PLATFORM_CODE_TOO_MANY_SYMBOLS
+      - REQUESTED_TABLE_IS_UNAVAILABLE
+      - PLATFORM_RESTAURANT_NOT_FOUND
+      - PLATFORM_PROPERTIES_INVALID
+      - PLATFORM_PROPERTIES_DUPLICATION
+      - RESERVATION_FIELDS_CAN_NOT_BE_EMPTY
+      - RESERVATION_ID_TOO_MANY_SYMBOLS
+      - RESERVATION_PARTY_SIZE_ERROR
+      - RESERVATION_SEQUENCE_ID_ERROR
+      - RESERVATION_PROPERTIES_INVALID
+      - GUEST_URL_UNREACHABLE
+      - GUEST_PROPERTIES_INVALID
+      - GUEST_FIELDS_CAN_NOT_BE_EMPTY
+      - VOIDED_DEPOSIT_CAN_NOT_BE_FUNDED_AGAIN
+      - DEPOSIT_AMOUNT_CAN_NOT_BE_CHANGED
+      - DEPOSIT_UNACCEPTABLE_AMOUNT
+      - DEPOSIT_ID_MUST_BE_UNIQUE
+      - VOIDED_REFUND_CAN_NOT_BE_REFUNDED_AGAIN
+      - REFUND_AMOUNT_CAN_NOT_BE_CHANGED
+      - REFUND_ID_MUST_BE_UNIQUE
+      - REFUND_UNACCEPTABLE_AMOUNT
+      - CURRENCY_CAN_NOT_BE_CHANGED
+      - TOO_MANY_DEPOSITS
+      - TOO_MANY_REFUNDS
+      - TOO_MANY_INTEGRATIONS_WITH_PLATFORM
+      - INTERNAL_ERROR
+      - ACCOUNT_CREATION_ERROR
+      - CLIENT_REQUEST_ERROR
+      - INTEGRATION_ONBOARDING_PROPERTIES_INVALID
+      - INTEGRATION_ONBOARDING_NOTIFICATION_FAILED
+      example: REQUESTED_TABLE_IS_UNAVAILABLE
+      type: string
+    reservation-servicePlatformCourseSettingsDto:
+      properties:
+        allowCourseNumberUpdates:
+          type: boolean
+          example: true
+          default: false
+          description: If true, table statuses can be customized using a number format.
+        inServiceTableStatuses:
+          items:
+            $ref: '#/components/schemas/reservation-servicePlatformTableStatusDto'
+          type: array
+          description: List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API.
+      type: object
+    reservation-serviceBusinessLocationId:
+      description: The unique identifier of the business location.
+      example: 9765040300495493
+      format: int64
+      type: integer
+    reservation-servicePlatformReservation:
+      properties:
+        guest:
+          description: Guest information associated with the reservation.
+          properties:
+            email:
+              description: The guest's email address.
+              example: john.smith@email.com
+              format: email
+              type: string
+            firstName:
+              description: The guest's first name.
+              example: John
+              type: string
+            lastName:
+              description: The guest's last name.
+              example: Smith
+              type: string
+            phone:
+              description: The guest's phone number.
+              example: '+13453455555'
+              format: phone
+              type: string
+            platformGuestId:
+              description: The external platform's unique identifier for the guest.
+              example: ABC-123
+              pattern: '[a-zA-Z0-9_-]+'
+              type: string
+            walkIn:
+              default: false
+              description: When `true`, indicates this is a walk-in reservation.
+              example: true
+              type: boolean
+            foodAndDrinkNotes:
+              example: Only milk and cookies!
+              type: string
+              description: Any details about guest's food and drink preferences.
+            notes:
+              example: Put the ring in the champagne!
+              type: string
+              description: Other notes about the guest.
+            language:
+              example: en
+              type: string
+              description: Guest's language; use [two-symbol ISO-639](https://www.loc.gov/standards/iso639-2/php/code_list.php) for best results on POS.
+            allergens:
+              example:
+              - almonds
+              - egg
+              items:
+                type: string
+              type: array
+              uniqueItems: true
+              description: Any allergens linked to this guest. See [Allergens](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/allergens) table for a list of allergen names with available translations. Any other text will be displayed as provided in the request body.
+            dietaryRestrictions:
+              example:
+              - no alcohol
+              - vegan
+              items:
+                type: string
+              type: array
+              uniqueItems: true
+              description: Any dietary restrictions linked to this guest. See [Dietary Restrictions](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/dietary-restrictions) table for a list of restrictions with available translations. Any other text will be displayed as provided in the request body.
+          required:
+          - platformGuestId
+          - firstName
+          type: object
+        liability:
+          $ref: '#/components/schemas/reservation-serviceLiability'
+        notes:
+          example: More balloons!
+          type: string
+          description: Venue-entered notes specific to the reservation.
+        specialOffer:
+          example: Free dessert
+          type: string
+          description: Any special offer linked to the reservation.
+        tags:
+          example:
+          - romantic meal
+          - special occasion
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+          description: Tags linked to this reservation. See [Reservation Tags](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/reservation-tags) table for a list of tags with available translations. All others will be displayed as provided in the request body.
+        partySize:
+          description: The number of expected guests.
+          example: 2
+          format: int32
+          type: integer
+        sequenceId:
+          description: 'An optional sequence number assigned by the external platform. If provided, it will be used to determine the order of updates of a reservation. It is the responsibility of the external platform to provide a monotonically increasing sequence number.
+
+            If omitted, the utcUpdatedAt field will be used to determine the order of updates. That can be imprecise when dealing with events that happen in short timeframes in a distributed system.
+
+            The value SHOULD NOT be set to null or zero or any special value, but instead omitted from the JSON object entirely if it is not used.
+
+            '
+          example: 145789499819
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationStatus'
+        tableNumbers:
+          description: 'The list of table numbers associated with this reservation.
+
+            If no valid table is provided, POS order is not created.
+
+            '
+          example:
+          - '1'
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        utcScheduledAt:
+          description: The scheduled reservation time.
+          example: '2024-01-01T20:00:00'
+          format: date-time
+          type: string
+          x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+        utcUpdatedAt:
+          description: 'The timestamp of the most recent change to the reservation.
+
+            '
+          example: '2024-01-01T20:10:00'
+          format: date-time
+          type: string
+          x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+        guestRequest:
+          description: Notes added to the reservation by the guest.
+          example: I would need two baby chairs.
+          type: string
+        expectedDuration:
+          description: Expected duration of the meal. ISO-8601 format.
+          example: PT30M
+          type: string
+          format: duration
+          x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+      required:
+      - utcUpdatedAt
+      - utcScheduledAt
+      - partySize
+      - guest
+      - status
+      type: object
+    reservation-serviceTransactionLine:
+      properties:
+        accountId:
+          description: Legacy account identifier created by the POS (supplied because older API provides it to 3rd parties).
+          example: '502721627029505'
+          type: string
+        accountingGroupId:
+          description: The unique identifier of the product group assigned to the item.
+          example: '77309411368'
+          type: string
+        accountingGroupName:
+          description: Name of the product group assigned to the item.
+          example: Misc
+          type: string
+        activeTax:
+          $ref: '#/components/schemas/reservation-serviceTax'
+        amount:
+          description: The actual (final) amount the customer will be charged, ie. `regularAmount` with `modifiers` applied.
+          example: 0.45
+          type: number
+        amountLessTax:
+          description: Taxable amount not including any taxes.
+          example: 4.21
+          type: number
+        amountWithTax:
+          description: Final amount including taxes.
+          example: 4.5
+          type: number
+        categories:
+          description: A list of the reporting categories in which the sale is to be aggregated.
+          items:
+            $ref: '#/components/schemas/reservation-serviceCategory'
+          type: array
+        date:
+          description: Timestamp in ms of the moment when the line was registered. by the user
+          example: 1694083815402
+          format: int64
+          type: integer
+        discountedAmount:
+          description: The line discount amount applied to the line.
+          example: 0.05
+          type: number
+        grossUnitAmount:
+          description: Regular price for one unit of the line item.
+          example: 4.5
+          type: number
+        id:
+          description: Legacy line identifier created by the POS (supplied because older API provides it to 3rd parties).
+          example: '502721627029513'
+          type: string
+        itemDescription:
+          description: Name of the item sold.
+          example: Dom Pérignon
+          type: string
+        itemId:
+          description: The unique identifier of the item at the business location.
+          example: '77309411427'
+          type: string
+        itemSku:
+          description: SKU (stock keeping unit) of the item.
+          example: '6'
+          type: string
+        modifiers:
+          description: A production instruction entered for a line.
+          items:
+            $ref: '#/components/schemas/reservation-serviceModifier'
+          type: array
+        nameOverride:
+          description: Manually entered item name
+          example: Burger for our friend Ben
+          type: string
+        phase:
+          description: Course number assigned to the line.
+          example: 0
+          format: int32
+          type: integer
+        quantity:
+          description: Quantity
+          example: 6
+          type: number
+        tags:
+          description: Array of tags associated with the sales line.
+          example: Test tag 4
+          type: string
+        unitAmount:
+          description: Actual amount for one unit of the line item including all markup, markdowns & surcharges.
+          example: 0.9
+          type: number
+      type: object
+    reservation-serviceOnboardingWebhook:
+      properties:
+        businessInformation:
+          properties:
+            businessLocationId:
+              $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+            city:
+              description: The city of the company.
+              example: Genève
+              type: string
+            country:
+              description: The country code of the company.
+              example: CH
+              type: string
+            name:
+              description: The company name in Lightspeed Backoffice.
+              example: Le Gâteau
+              type: string
+            state:
+              description: The state of the company.
+              example: Canton de Genève
+              type: string
+            street1:
+              description: The primary street of the company.
+              example: Rue de la Servette 10
+              type: string
+            street2:
+              description: The secondary street of the company.
+              example: Suite 2
+              type: string
+            zip:
+              description: The zip code of the company.
+              example: '101201'
+              type: string
+          required:
+          - businessLocationId
+          - name
+          type: object
+        epochSecondsDeadlineUtc:
+          description: The epoch time in seconds until which the onboarding process remains active.
+          example: 1711628625
+          format: int64
+          type: integer
+        onboardingId:
+          $ref: '#/components/schemas/reservation-serviceOnboardingId'
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformRestaurantReference:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantReference'
+      required:
+      - platformCode
+      - platformRestaurantReference
+      - onboardingId
+      - epochSecondsDeadlineUtc
+      - businessInformation
+      type: object
+    reservation-serviceExternalConsumerRecord:
+      description: The external reservation system's unique identifier for the consumer.
+      properties:
+        key:
+          description: An identifier for the external reservation system.
+          example: open-table-api-client
+          type: string
+        reference:
+          example: OO.11.opentable-anonymous
+          type: string
+      type: object
+    reservation-serviceContactInfo:
+      properties:
+        city:
+          example: Paris
+          type: string
+        companyName:
+          example: Non
+          type: string
+        emailReceipts:
+          description: Whether or not email notifications are enabled.
+          example: false
+          type: boolean
+        firstName:
+          example: Alexandr
+          type: string
+        fullName:
+          description: Combines `firstName` and `lastName`.
+          example: Alexandr Pushkin
+          type: string
+        lastName:
+          example: Pushkin
+          type: string
+        taxIdentifier:
+          example: '23142342134'
+          type: string
+      type: object
+    reservation-serviceOrderUpdate:
+      properties:
+        account:
+          $ref: '#/components/schemas/reservation-serviceAccount'
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        notificationType:
+          enum:
+          - OPEN
+          - UPDATE
+          - CLOSE
+          - CANCEL
+          type: string
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+        sequenceId:
+          type: string
+        platformReservationId:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+      type: object
+    reservation-serviceOnboardingCode:
+      description: The machine code to interact with the external platform during the onboarding process.
+      enum:
+      - ACCEPTED
+      - DONE
+      - ONBOARDING_EXPIRED
+      - ONBOARDING_ID_NOT_VALID
+      - PLATFORM_CODE_NOT_VALID
+      - BUSINESS_LOCATION_NOT_VALID
+      - PLATFORM_RESTAURANT_NOT_VALID
+      - PLATFORM_RESTAURANT_NOT_FOUND
+      - UNEXPECTED_ERROR
+      example: DONE
+      type: string
+    reservation-servicePlatformWebhookResponseDto:
+      type: object
+      description: Updated webhook authorization details.
+      required:
+      - accepted
+      - currentAuthType
+      properties:
+        accepted:
+          description: Whether the webhook request was accepted.
+          example: true
+          type: boolean
+        currentAuthType:
+          description: The current authentication type.
+          enum:
+          - BASIC_AUTH
+          - BEARER_TOKEN
+          - API_KEYS
+          - OAUTH2
+          type: string
+    reservation-servicePlatformReservationId:
+      description: The external platform's unique identifier for the reservation.
+      example: Reservation-123
+      maxLength: 36
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-serviceDiscount:
+      properties:
+        code:
+          description: The discount code.
+          example: test_discount
+          type: string
+        description:
+          description: The name of the discount.
+          example: test discount description
+          type: string
+        id:
+          description: The unique identifier of the discount.
+          example: '197568495841'
+          type: string
+        rate:
+          description: The discount rate.
+          example: 0.9
+          type: number
+        taxFree:
+          description: Indicates if the discount is considered tax free.
+          example: false
+          type: boolean
+      type: object
+    reservation-serviceOnboardingCallbackResponse:
+      properties:
+        onboardingCode:
+          $ref: '#/components/schemas/reservation-serviceOnboardingCode'
+      required:
+      - onboardingCode
+      type: object
+    reservation-servicePlatformDisplayName:
+      description: The official platform name that will be displayed.
+      example: My Platform
+      type: string
+    reservation-serviceConsumer:
+      nullable: true
+      properties:
+        emailAddress:
+          example: napoleon@bonapart.fr
+          type: string
+        id:
+          example: '111466'
+          type: string
+      type: object
+    reservation-serviceConsumerRecord:
+      nullable: true
+      properties:
+        consumer:
+          $ref: '#/components/schemas/reservation-serviceConsumer'
+        consumerRecordUUID:
+          example: 8649450c-5c10-4e63-8461-12bbf5a51cbc
+          format: uuid
+          type: string
+        contactInformation:
+          $ref: '#/components/schemas/reservation-serviceContactInfo'
+        externalReferences:
+          description: The external reservation system's unique identifier for the consumer.
+          items:
+            $ref: '#/components/schemas/reservation-serviceExternalConsumerRecord'
+          type: array
+        id:
+          example: '36577'
+          type: string
+      type: object
+    reservation-servicePosReservationUpdate:
+      properties:
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+        platformReservationId:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        status:
+          $ref: '#/components/schemas/reservation-serviceStatus'
+        tables:
+          description: Name of tables associated with the reservation.
+          type: array
+          items:
+            type: string
+          example:
+          - 1A
+          - 2B
+        covers:
+          description: The number of covers associated with the reservation.
+          format: int32
+          type: integer
+      type: object
+    reservation-servicePlatformRestaurantReference:
+      description: The alias for a restaurant on an external platform, such as its unique identifier or local unique name.
+      example: Schnitzel_and_Kartoffel
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-servicePlatformCode:
+      description: The unique code assigned to the reservation platform.
+      example: MyPlatform
+      maxLength: 11
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-servicePlatformProfileResponse:
+      properties:
+        baseUrl:
+          description: The base URL of the external platform (optional).
+          example: https://my.platform/api/lsk
+          format: uri
+          type: string
+        depositSupported:
+          $ref: '#/components/schemas/reservation-servicePlatformDepositSupported'
+        displayName:
+          $ref: '#/components/schemas/reservation-servicePlatformDisplayName'
+        errorsWebhookUrl:
+          description: 'The URL where notifications for any issues will be sent. <br> Required for [`error` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Get Sample Error notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationErrorNotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/errors
+          type: string
+          format: uri
+        integrationWebhookUrl:
+          description: 'The URL where notifications for activation or deactivation of the customer''s integration will be sent. <br> Required for [`integration` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Integration notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationintegrationnotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/integrations
+          type: string
+          format: uri
+        notificationTypes:
+          description: The events that trigger a notification.
+          example:
+          - ORDER_CLOSED
+          items:
+            type: string
+            enum:
+            - ORDER_OPENED
+            - ORDER_UPDATED
+            - ORDER_CLOSED
+            - ONBOARDING_STARTED
+            - INTEGRATION_ACTIVATED
+            - INTEGRATION_DEACTIVATED
+            - POS_RESERVATION_UPDATED
+            - ERROR
+          type: array
+          uniqueItems: true
+        onboardingWebhookUrl:
+          description: 'The URL where notifications for the customer''s integration onboarding will be sent. <br> Required for [`onboarding` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Onboarding notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationonboardingnotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/onboarding
+          type: string
+          format: uri
+        orderWebhookUrl:
+          description: 'The URL where order notifications will be sent. <br> Required for [`order` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Order Notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationordernotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/orders
+          type: string
+          format: uri
+        posReservationUpdateWebhookUrl:
+          description: The URL where notifications about reservation changes on POS will be sent.
+          example: https://my.platform/api/lsk/webhook/reservation
+          type: string
+          format: uri
+        ownNotificationsOnly:
+          description: When `true`, notifications will only be sent for orders linked to the reservation platform.
+          example: true
+          type: boolean
+        webhookAuthType:
+          description: The type of authentication used by the webhook.
+          enum:
+          - BASIC_AUTH
+          - BEARER_TOKEN
+          - API_KEYS
+          - OAUTH2
+          - NONE
+          example: OAUTH2
+          type: string
+        allowCourseNumberUpdates:
+          type: boolean
+          example: true
+          default: false
+          description: If true, table statuses can be customized using a number format.
+        inServiceTableStatuses:
+          items:
+            $ref: '#/components/schemas/reservation-servicePlatformTableStatusDto'
+          type: array
+          description: List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API.
+        allowedPosStatuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/reservation-servicePlatformReservationStatus'
+          description: Reservation statuses allowed for setting on a POS. PARTIALLY_ARRIVED should be included only with ARRIVED, and PARTIALLY_SEATED only with SEATED. Requires posReservationUpdateWebhookUrl to be set.
+      required:
+      - displayName
+      - webhookAuthType
+      type: object
+    reservation-servicePlatformBearerTokenWebhook:
+      description: The bearer token that will be sent with the webhook notifications. See [Bearer Authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/).
+      properties:
+        token:
+          description: The bearer token.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+          format: password
+          type: string
+        ttl:
+          description: Token expiration time in UTC.
+          example: '2035-01-01T00:00:00'
+          format: date-time
+          type: string
+          x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+      required:
+      - token
+      type: object
+    reservation-serviceLiability:
+      description: The guest's obligation for the reservation.
+      properties:
+        currency:
+          description: ISO-4217
+          example: EUR
+          pattern: '[A-Z]{3}'
+          type: string
+        deposits:
+          description: List of all prepaid deposits made through the external platform.
+          items:
+            properties:
+              amount:
+                description: The amount of the deposit made through the external platform.
+                example: '100.00'
+                pattern: ^[0-9]+\.[0-9]{2}$
+                type: string
+              platformDepositId:
+                description: The external platform's unique identifier for the deposit.
+                example: '1'
+                pattern: '[a-zA-Z0-9_-]+'
+                type: string
+              utcCreatedAt:
+                description: Deposit creation time.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              utcVoidedAt:
+                description: Deposit void time, if applicable.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              voided:
+                description: Whether or not the deposit was voided.
+                example: false
+                type: boolean
+            required:
+            - amount
+            - utcCreatedAt
+            type: object
+          type: array
+          uniqueItems: true
+        refunds:
+          description: List of all deposits refunded to the guest.
+          items:
+            properties:
+              amount:
+                description: The amount which was refunded by the external platform.
+                example: '100.00'
+                pattern: ^[0-9]+\.[0-9]{2}$
+                type: string
+              platformRefundId:
+                description: The external platform's unique identifier for the refund.
+                example: '1'
+                pattern: '[a-zA-Z0-9_-]+'
+                type: string
+              utcCreatedAt:
+                description: Refund creation time.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              utcVoidedAt:
+                description: Refund void time, if applicable.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              voided:
+                description: Whether or not the refund was voided.
+                example: false
+                type: boolean
+            required:
+            - amount
+            - utcCreatedAt
+            type: object
+          type: array
+          uniqueItems: true
+      required:
+      - currency
+      - deposits
+      type: object
+    reservation-servicePlatformBasicAuthWebhook:
+      description: The basic authentication credentials that will be sent with the webhook notifications. See [Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).
+      properties:
+        password:
+          description: The basic auth password.
+          example: Example-Password
+          format: password
+          type: string
+        username:
+          description: The basic auth username.
+          example: LightspeedKSeries
+          type: string
+      required:
+      - username
+      - password
+      type: object
+    reservation-servicePlatformTableStatusDto:
+      properties:
+        statusLabel:
+          type: string
+          example: Appetizer
+          description: The unique text which will be displayed in the back-office for users.
+        statusValue:
+          type: string
+          example: appetizer
+          description: The unique code which will be used for outbound communication within table status mapping.
+        sequence:
+          format: int32
+          type: integer
+          example: 1
+          description: This number is used to resolve collisions between statuses in order of highest priority.
+      type: object
+      required:
+      - statusLabel
+      - statusValue
+      - sequence
+    reservation-servicePlatformRestaurantId:
+      description: The external platform's unique identifier for the restaurant.
+      example: Restaurant-123
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-serviceModifier:
+      description: A production instruction entered for a line.
+      properties:
+        name:
+          description: Line text.
+          example: Milch
+          type: string
+        quantity:
+          description: Line quantity.
+          example: 1
+          format: int64
+          type: integer
+      type: object
+    reservation-servicePlatformIntegrationDto:
+      properties:
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+      required:
+      - businessLocationId
+      - platformRestaurantId
+      type: object
+    reservation-servicePlatformProfile:
+      properties:
+        baseUrl:
+          description: The base URL of the external platform (optional).
+          example: https://my.platform/api/lsk
+          format: uri
+          type: string
+        depositSupported:
+          $ref: '#/components/schemas/reservation-servicePlatformDepositSupported'
+        displayName:
+          $ref: '#/components/schemas/reservation-servicePlatformDisplayName'
+        errorsWebhookUrl:
+          description: 'The URL where notifications for any issues will be sent. <br> Required for [`error` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Get Sample Error notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationErrorNotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/errors
+          type: string
+          format: uri
+        integrationWebhookUrl:
+          description: 'The URL where notifications for activation or deactivation of the customer''s integration will be sent. <br> Required for [`integration` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Integration notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationintegrationnotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/integrations
+          type: string
+          format: uri
+        notificationTypes:
+          description: The events that trigger a notification.
+          example:
+          - ORDER_CLOSED
+          items:
+            type: string
+            enum:
+            - ORDER_OPENED
+            - ORDER_UPDATED
+            - ORDER_CLOSED
+            - ONBOARDING_STARTED
+            - INTEGRATION_ACTIVATED
+            - INTEGRATION_DEACTIVATED
+            - POS_RESERVATION_UPDATED
+            - ERROR
+          type: array
+          uniqueItems: true
+        onboardingWebhookUrl:
+          description: 'The URL where notifications for the customer''s integration onboarding will be sent. <br> Required for [`onboarding` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Onboarding notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationonboardingnotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/onboarding
+          type: string
+          format: uri
+        orderWebhookUrl:
+          description: 'The URL where order notifications will be sent. <br> Required for [`order` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Order Notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationordernotification).
+
+            '
+          example: https://my.platform/api/lsk/webhook/orders
+          type: string
+          format: uri
+        posReservationUpdateWebhookUrl:
+          description: The URL where notifications about reservation changes on POS will be sent.
+          type: string
+          format: uri
+          example: https://my.platform/api/lsk/webhook/reservation
+        ownNotificationsOnly:
+          description: When `true`, notifications will only be sent for orders linked to the reservation platform.
+          example: true
+          type: boolean
+        webhookAuthDetails:
+          description: The authentication credentials to be sent with the webhook notifications.
+          properties:
+            apiKeys:
+              $ref: '#/components/schemas/reservation-servicePlatformAPIKeysWebhook'
+            basic:
+              $ref: '#/components/schemas/reservation-servicePlatformBasicAuthWebhook'
+            bearer:
+              $ref: '#/components/schemas/reservation-servicePlatformBearerTokenWebhook'
+            oauth2:
+              $ref: '#/components/schemas/reservation-servicePlatformOAuth2Webhook'
+          type: object
+        webhookAuthType:
+          description: The type of authentication used by the webhook.
+          enum:
+          - BASIC_AUTH
+          - BEARER_TOKEN
+          - API_KEYS
+          - OAUTH2
+          - NONE
+          example: OAUTH2
+          type: string
+        allowCourseNumberUpdates:
+          type: boolean
+          example: true
+          default: false
+          description: If true, table statuses can be customized using a number format.
+        inServiceTableStatuses:
+          items:
+            $ref: '#/components/schemas/reservation-servicePlatformTableStatusDto'
+          type: array
+          description: List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API.
+        allowedPosStatuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/reservation-servicePlatformReservationStatus'
+      required:
+      - displayName
+      - webhookAuthType
+      - webhookAuthDetails
+      type: object
+    reservation-serviceExternalReference:
+      description: The unique identifier of this transaction provided by 3rd parties or the K-Series backend.
+      properties:
+        prefix:
+          example: TASK
+          type: string
+        reference:
+          example: RN-197568495618-reservation_id_123213126
+          type: string
+      type: object
+    reservation-serviceTax:
+      properties:
+        code:
+          description: Code of the tax as defined in the configuration context.
+          example: TVA77
+          type: string
+        description:
+          description: Name of the tax as defined in the configuration context.
+          example: TVA 7.7%
+          type: string
+        rate:
+          description: Tax percentage (e.g. 19% => '1.19').
+          example: 1.07
+          format: double
+          type: number
+        taxIncluded:
+          description: Indicates whether the tax is VAT or Sales Tax.
+          example: true
+          type: boolean
+      type: object
+    reservation-serviceCategory:
+      description: A list of the reporting categories in which the sale is to be aggregated.
+      properties:
+        category:
+          description: The reporting category name.
+          example: default
+          type: string
+        value:
+          description: The reporting category value.
+          example: Misc
+          type: string
+      type: object
+    reservation-servicePlatformAPIKeysWebhook:
+      description: The API keys that will be sent with the webhook notifications. See [API Keys](https://swagger.io/docs/specification/authentication/api-keys/).
+      properties:
+        headers:
+          additionalProperties:
+            description: Key-value pairs of arbitrary static headers to send with the webhook request.
+            type: string
+          example:
+            X-API-ID: Example-x-api-id
+            X-API-SECRET: Example-x-api-secret
+          type: object
+        parameters:
+          additionalProperties:
+            description: Key-value pairs of arbitrary static query parameters to send with the webhook request.
+            type: string
+          example: {}
+          type: object
+      type: object
+    reservation-serviceStatus:
+      description: Extended Lightspeed reservation statuses.
+      enum:
+      - ON_HOLD
+      - SCHEDULED
+      - PARTIALLY_ARRIVED
+      - ARRIVED
+      - PARTIALLY_SEATED
+      - SEATED
+      - DEPARTED
+      - CANCELLED
+      - NO_SHOW
+      - ERROR
+      - PAID
+      example: SEATED
+      type: string
+    reservation-serviceOnboardingCallbackRequest:
+      properties:
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        onboardingCode:
+          $ref: '#/components/schemas/reservation-serviceOnboardingCode'
+        onboardingId:
+          $ref: '#/components/schemas/reservation-serviceOnboardingId'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+      required:
+      - onboardingId
+      - onboardingCode
+      - platformRestaurantId
+      - businessLocationId
+      type: object
+    reservation-servicePlatformReservationStatus:
+      description: External reservation statuses for platforms.
+      enum:
+      - ON_HOLD
+      - SCHEDULED
+      - PARTIALLY_ARRIVED
+      - ARRIVED
+      - PARTIALLY_SEATED
+      - SEATED
+      - DEPARTED
+      - CANCELLED
+      - NO_SHOW
+      - ERROR
+      example: SCHEDULED
+      type: string
+    reservation-servicePlatformBusinessLocation:
+      properties:
+        businessLocationId:
+          description: The unique identifier of the business location.
+          type: string
+        city:
+          description: The business location's city.
+          type: string
+        country:
+          description: The business location's country.
+          type: string
+        name:
+          description: The business location's name.
+          type: string
+        state:
+          description: The business location's state.
+          type: string
+        street1:
+          description: The first line of the business location's street address.
+          type: string
+        street2:
+          description: The second line of the business location's street address.
+          type: string
+        zip:
+          description: The business location's postal code.
+          type: string
+      required:
+      - businessLocationId
+      type: object
+    reservation-servicePlatformDepositSupported:
+      description: Whether or not the platform supports deposits.
+      example: true
+      type: boolean
+    reservation-serviceOnboardingId:
+      description: The unique identifier of the integration process that has started onboarding.
+      example: 84f16177-98c5-4010-a7ab-d00144d1dede
+      type: string
+    reservation-serviceErrorWebhook:
+      properties:
+        entityType:
+          $ref: '#/components/schemas/reservation-serviceEntityType'
+        errorCode:
+          $ref: '#/components/schemas/reservation-serviceErrorCode'
+        errorMessage:
+          description: Error description.
+          example: Incorrect properties
+          type: string
+        errorProperties:
+          description: The list of request properties that are incorrect.
+          items:
+            example: tableNumbers
+            type: string
+          type: array
+        httpCode:
+          description: The [code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) of http error (4xx, 5xx) response.
+          example: 400
+          format: int32
+          type: integer
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformReservationId:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+        traceId:
+          description: Unique identifier of the issue.
+          example: b43f8e3e-5ac9-464e-ab34-20b4e137115e
+          type: string
+      required:
+      - errorMessage
+      - traceId
+      - httpCode
+      - entityType
+      - errorCode
+      type: object
+    reservation-servicePlatformOAuth2Webhook:
+      description: The OAuth2 credentials that will be sent with the webhook notifications. See [OAuth 2.0](https://oauth.net/2/).
+      properties:
+        authorizationGrantType:
+          default: CLIENT_CREDENTIALS
+          description: The authorization grant type. See [OAuth2 Grant Types](https://oauth.net/2/grant-types/).
+          enum:
+          - CLIENT_CREDENTIALS
+          example: CLIENT_CREDENTIALS
+          type: string
+        clientAuthorizationMethod:
+          default: CLIENT_SECRET_BASIC
+          description: The client authorization method. See [OAuth2 Client Authentication](https://oauth.net/2/client-authentication/).
+          enum:
+          - CLIENT_SECRET_BASIC
+          - CLIENT_SECRET_JWT
+          - CLIENT_SECRET_POST
+          example: CLIENT_SECRET_BASIC
+          type: string
+        clientId:
+          description: The OAuth2 client ID.
+          example: LightspeedKSeries
+          type: string
+        clientName:
+          description: The OAuth2 client name.
+          example: LightspeedKSeries
+          type: string
+        clientSecret:
+          description: The OAuth2 client secret.
+          example: Example-Client-Secret
+          format: password
+          type: string
+        providerJwkSetUri:
+          description: The external platform URL for getting public keys to verify given access tokens on the K-Series side.
+          example: https://my.platform/public-keys
+          format: uri
+          type: string
+        providerTokenUri:
+          description: The external platform URL for getting access tokens by private credentials.
+          example: https://my.platform/emitter/token
+          format: uri
+          type: string
+        scopes:
+          description: The scopes being granted to the API client.
+          example:
+          - webhooks-api
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      required:
+      - clientId
+      - clientSecret
+      - providerTokenUri
+      type: object
+    reservation-serviceEntityType:
+      description: The type of entity with which the error occurred.
+      enum:
+      - business-location
+      - general
+      - platform-profile
+      - platform-restaurant
+      - platform-reservation
+      example: platform-reservation
+      type: string
+    reservation-servicePlatformReservationAcceptedDto:
+      required:
+      - accepted
+      - platformCode
+      - platformReservationId
+      - platformRestaurantId
+      type: object
+      properties:
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformRestaurantId:
+          description: The external platform's unique identifier for the restaurant.
+          example: Restaurant-123
+          pattern: '[a-zA-Z0-9_-]+'
+          type: string
+        platformReservationId:
+          description: The external platform's unique identifier for the reservation.
+          example: Reservation-123
+          maxLength: 36
+          pattern: '[a-zA-Z0-9_-]+'
+          type: string
+        accepted:
+          description: Whether the reservation request was accepted.
+          example: true
+          type: boolean
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

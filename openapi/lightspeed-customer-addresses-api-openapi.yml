@@ -1,0 +1,495 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Customer Addresses API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Customer Address operations
+  name: Customer Addresses
+paths:
+  /customers/{customer_id}/addresses:
+    get:
+      description: 'Returns a list of all addresses associated with the specified customer.
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: ListCustomerAddresses
+      parameters:
+      - description: The unique identifier of the customer.
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - address_line_1: 123 Main Street
+                  address_line_2: Suite 100
+                  city: Auckland
+                  country_code: NZ
+                  country_name: New Zealand
+                  created_at: '2025-01-12T10:00:00Z'
+                  customer_id: b8ca3a65-0183-11e4-fbb5-4f73f02a9d1c
+                  id: 123456789
+                  postcode: '1010'
+                  state: Auckland
+                  state_code: AUK
+                  suburb: Downtown
+                  type: BILLING
+                  updated_at: '2025-01-12T10:00:00Z'
+              schema:
+                $ref: '#/components/schemas/CustomerAddressCollection'
+          description: ''
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - insufficient permissions
+        '404':
+          description: Customer not found
+      summary: List all addresses for a customer
+      tags:
+      - Customer Addresses
+    post:
+      description: 'Creates a new address for the specified customer.
+
+
+        **Validation Rules:**
+
+        - `country_code`: Required, must be a valid ISO 3166-1 alpha-2 code (e.g., US, NZ, AU)
+
+        - `state_code`: Required for US and CA, must be valid for the country
+
+        - `postcode`: Required, must be valid format for the country
+
+        - `type`: Required, must be either BILLING or SHIPPING
+
+        - `address_line_1`: Required, maximum 50 characters
+
+        - `city`: Required, maximum 28 characters
+
+        - `state`: Maximum 35 characters
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: CreateCustomerAddress
+      parameters:
+      - description: The unique identifier of the customer.
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              address_line_1: 123 Main Street
+              address_line_2: Suite 100
+              city: Auckland
+              country_code: NZ
+              postcode: '1010'
+              state: Auckland
+              state_code: AUK
+              suburb: Downtown
+              type: BILLING
+            schema:
+              $ref: '#/components/schemas/CustomerAddressBase'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                data:
+                  address_line_1: 123 Main Street
+                  address_line_2: Suite 100
+                  city: Auckland
+                  country_code: NZ
+                  country_name: New Zealand
+                  created_at: '2025-01-12T10:00:00Z'
+                  customer_id: b8ca3a65-0183-11e4-fbb5-4f73f02a9d1c
+                  id: 123456789
+                  id_token: abc123token
+                  postcode: '1010'
+                  state: Auckland
+                  state_code: AUK
+                  suburb: Downtown
+                  type: BILLING
+                  updated_at: '2025-01-12T10:00:00Z'
+              schema:
+                $ref: '#/components/schemas/CustomerAddressCreateResponse'
+          description: Address created successfully
+        '400':
+          description: Bad Request - validation errors
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - insufficient permissions
+        '404':
+          description: Customer not found
+      summary: Create a new address for a customer
+      tags:
+      - Customer Addresses
+      x-codegen-request-body-name: body
+  /customers/{customer_id}/addresses/{address_id}:
+    delete:
+      description: 'Deletes an address for the specified customer.
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: DeleteCustomerAddress
+      parameters:
+      - description: The unique identifier of the customer.
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The unique identifier of the address.
+        in: path
+        name: address_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '204':
+          description: Address deleted successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - insufficient permissions or address is read-only
+        '404':
+          description: Customer or address not found
+      summary: Delete an address
+      tags:
+      - Customer Addresses
+    get:
+      description: 'Returns a single address by its ID for the specified customer.
+
+
+        🔒 Requires: `customers:read` scope'
+      operationId: GetCustomerAddress
+      parameters:
+      - description: The unique identifier of the customer.
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The unique identifier of the address.
+        in: path
+        name: address_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  address_line_1: 123 Main Street
+                  address_line_2: Suite 100
+                  city: Auckland
+                  country_code: NZ
+                  country_name: New Zealand
+                  created_at: '2025-01-12T10:00:00Z'
+                  customer_id: b8ca3a65-0183-11e4-fbb5-4f73f02a9d1c
+                  id: 123456789
+                  postcode: '1010'
+                  state: Auckland
+                  state_code: AUK
+                  suburb: Downtown
+                  type: BILLING
+                  updated_at: '2025-01-12T10:00:00Z'
+              schema:
+                $ref: '#/components/schemas/CustomerAddressResponse'
+          description: ''
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - insufficient permissions
+        '404':
+          description: Customer or address not found
+      summary: Get a single address
+      tags:
+      - Customer Addresses
+    put:
+      description: 'Updates an existing address for the specified customer.
+
+
+        **Validation Rules:**
+
+        - `country_code`: Required, must be a valid ISO 3166-1 alpha-2 code (e.g., US, NZ, AU)
+
+        - `state_code`: Required for US and CA, must be valid for the country
+
+        - `postcode`: Required, must be valid format for the country
+
+        - `type`: Required, must be either BILLING or SHIPPING
+
+        - `address_line_1`: Required, maximum 50 characters
+
+        - `city`: Required, maximum 28 characters
+
+        - `state`: Maximum 35 characters
+
+
+        🔒 Requires: `customers:write` scope'
+      operationId: UpdateCustomerAddress
+      parameters:
+      - description: The unique identifier of the customer.
+        in: path
+        name: customer_id
+        required: true
+        schema:
+          format: uuid
+          type: string
+      - description: The unique identifier of the address.
+        in: path
+        name: address_id
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            example:
+              address_line_1: 456 Updated Avenue
+              address_line_2: Floor 2
+              city: Wellington
+              country_code: NZ
+              postcode: '6011'
+              state: Wellington
+              state_code: WGN
+              suburb: Midtown
+              type: SHIPPING
+            schema:
+              $ref: '#/components/schemas/CustomerAddressBase'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  address_line_1: 456 Updated Avenue
+                  address_line_2: Floor 2
+                  city: Wellington
+                  country_code: NZ
+                  country_name: New Zealand
+                  created_at: '2025-01-12T10:00:00Z'
+                  customer_id: b8ca3a65-0183-11e4-fbb5-4f73f02a9d1c
+                  id: 123456789
+                  postcode: '6011'
+                  state: Wellington
+                  state_code: WGN
+                  suburb: Midtown
+                  type: SHIPPING
+                  updated_at: '2025-01-12T12:30:00Z'
+              schema:
+                $ref: '#/components/schemas/CustomerAddressResponse'
+          description: Address updated successfully
+        '400':
+          description: Bad Request - validation errors
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden - insufficient permissions or address is read-only
+        '404':
+          description: Customer or address not found
+      summary: Update an address
+      tags:
+      - Customer Addresses
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    CustomerAddressResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerAddress'
+      title: Customer Address Response
+      type: object
+    CustomerAddressCreateResponse:
+      properties:
+        data:
+          allOf:
+          - $ref: '#/components/schemas/CustomerAddress'
+          - properties:
+              id_token:
+                description: Token to be used when associating this address with a sale.
+                type: string
+            type: object
+      title: Customer Address Create Response
+      type: object
+    CustomerAddressCollection:
+      properties:
+        data:
+          description: An array of customer address objects.
+          items:
+            $ref: '#/components/schemas/CustomerAddress'
+          type: array
+      title: Customer Address Collection
+      type: object
+    CustomerAddress:
+      properties:
+        address_line_1:
+          description: Primary address line (street address, P.O. box, etc.).
+          maxLength: 50
+          type: string
+        address_line_2:
+          description: Secondary address line (apartment, suite, unit, building, floor, etc.).
+          maxLength: 50
+          type:
+          - string
+          - 'null'
+        city:
+          description: City or town name.
+          maxLength: 28
+          type: string
+        country_code:
+          description: ISO 3166-1 alpha-2 country code (e.g., US, NZ, AU).
+          type: string
+        country_name:
+          description: Full country name derived from the country code.
+          type: string
+        created_at:
+          description: Creation timestamp in UTC.
+          format: date-time
+          type: string
+        customer_id:
+          description: The unique identifier of the customer this address belongs to.
+          format: uuid
+          type: string
+        id:
+          description: Auto-generated address ID.
+          format: int64
+          type: integer
+        postcode:
+          description: Postal code or ZIP code.
+          type: string
+        state:
+          description: State, province, or region name.
+          maxLength: 35
+          type:
+          - string
+          - 'null'
+        state_code:
+          description: State or province code. Required for US and CA.
+          type:
+          - string
+          - 'null'
+        suburb:
+          description: Suburb or district.
+          type:
+          - string
+          - 'null'
+        type:
+          description: The type of address.
+          enum:
+          - BILLING
+          - SHIPPING
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          format: date-time
+          type: string
+      required:
+      - id
+      - customer_id
+      - address_line_1
+      - city
+      - postcode
+      - country_code
+      - type
+      - created_at
+      - updated_at
+      title: Customer Address
+      type: object
+    CustomerAddressBase:
+      properties:
+        address_line_1:
+          description: Primary address line (street address, P.O. box, etc.).
+          maxLength: 50
+          type: string
+        address_line_2:
+          description: Secondary address line (apartment, suite, unit, building, floor, etc.).
+          maxLength: 50
+          type:
+          - string
+          - 'null'
+        city:
+          description: City or town name.
+          maxLength: 28
+          type: string
+        country_code:
+          description: ISO 3166-1 alpha-2 country code (e.g., US, NZ, AU).
+          type: string
+        postcode:
+          description: Postal code or ZIP code.
+          type: string
+        state:
+          description: State, province, or region name.
+          maxLength: 35
+          type:
+          - string
+          - 'null'
+        state_code:
+          description: State or province code. Required for US and CA.
+          type:
+          - string
+          - 'null'
+        suburb:
+          description: Suburb or district.
+          type:
+          - string
+          - 'null'
+        type:
+          description: The type of address.
+          enum:
+          - BILLING
+          - SHIPPING
+          type: string
+      required:
+      - address_line_1
+      - city
+      - postcode
+      - country_code
+      - type
+      title: Customer Address Base
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

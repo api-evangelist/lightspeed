@@ -1,0 +1,158 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Shifts API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- name: Shifts
+paths:
+  /shifts:
+    get:
+      description: Returns a paginated list of shifts.
+      operationId: ListShifts
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - created_at: '2024-05-23T09:25:43.511Z'
+                  id: 00000000-0001-0001-0001-000000000004
+                  retailer_id: 00000000-0001-0001-0001-000000000001
+                  time_in: '2024-06-23T09:25:43.511Z'
+                  time_out: '2024-06-23T12:25:43.511Z'
+                  updated_at: '2024-05-23T09:25:43.511Z'
+                  updated_by: 08002782-0c90-11e6-e3ed-117ec127b1ca
+                  user_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
+                  version: 3378
+                - created_at: '2024-06-23T10:30:43.511Z'
+                  id: 00000000-0001-0001-0001-000000000005
+                  retailer_id: 00000000-0001-0001-0001-000000000002
+                  time_in: '2024-07-23T10:30:43.511Z'
+                  time_out: '2024-07-23T13:30:43.511Z'
+                  updated_at: '2024-06-23T10:30:43.511Z'
+                  updated_by: 08002782-0c90-11e6-e3ed-117ec127b1cb
+                  user_id: 08002782-0c90-11e6-e3ed-117ec127b1cb
+                  version: 3379
+                version:
+                  max: 3379
+                  min: 3378
+              schema:
+                $ref: '#/components/schemas/ShiftCollection'
+          description: ''
+      summary: List shifts
+      tags:
+      - Shifts
+components:
+  schemas:
+    Shift:
+      properties:
+        created_at:
+          description: Creation timestamp in UTC.
+          format: date-time
+          type: string
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        retailer_id:
+          description: The ID of the retailer where the shift was started.
+          format: uuid
+          type: string
+        time_in:
+          description: The time the shift started.
+          format: date-time
+          type: string
+        time_out:
+          description: The time the shift ended.
+          format: date-time
+          type: string
+        updated_at:
+          description: Updated at timestamp in UTC.
+          format: date-time
+          type: string
+        updated_by:
+          description: The ID of the user that updated the shift.
+          format: uuid
+          type: string
+        user_id:
+          description: The ID of the user who started the shift.
+          format: uuid
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    ShiftCollection:
+      properties:
+        data:
+          description: An array of Shifts wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Shift'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Shift Collection
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

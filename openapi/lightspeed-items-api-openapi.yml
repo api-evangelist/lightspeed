@@ -1,0 +1,660 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series Items API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: Items
+paths:
+  /items/v1/items/{id}:
+    get:
+      summary: Get Item by ID
+      operationId: items-apiGetItemById
+      description: Returns the details of a specific item.
+      tags:
+      - Items
+      parameters:
+      - in: path
+        schema:
+          $ref: '#/components/schemas/items-apiItemId'
+        name: id
+        required: true
+      - in: query
+        name: businessLocationId
+        schema:
+          $ref: '#/components/schemas/items-apiBusinessLocationId'
+        required: true
+      responses:
+        '200':
+          description: Item found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/items-apiItemDTO'
+        '404':
+          description: Item not found
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '404'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+      security:
+      - OAuth2:
+        - items
+    put:
+      summary: Update Item by ID
+      description: Modifies the values of an existing item.
+      operationId: items-apiPut
+      tags:
+      - Items
+      parameters:
+      - in: path
+        name: id
+        schema:
+          $ref: '#/components/schemas/items-apiItemId'
+        required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/items-apiUpdateItemDTO'
+        required: true
+      responses:
+        '200':
+          description: Item updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/items-apiItemDTO'
+        '400':
+          description: Constraint violation
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '400'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+      security:
+      - OAuth2:
+        - items
+  /items/v1/items:
+    get:
+      summary: Get All Items
+      operationId: items-apiGetItems
+      description: Returns the items for a specific business location. Supports searching by [`accountingGroupId`](#operation-getitems-accountinggroupid), [`name`](#operation-getitems-name), [`sku`](#operation-getitems-sku), or [`itemIds`](#operation-getitems-itemids).
+      tags:
+      - Items
+      parameters:
+      - in: query
+        name: businessLocationId
+        schema:
+          $ref: '#/components/schemas/items-apiBusinessLocationId'
+        required: true
+      - in: query
+        name: sku
+        schema:
+          $ref: '#/components/schemas/items-apiSku'
+        required: false
+      - in: query
+        name: name
+        schema:
+          $ref: '#/components/schemas/items-apiName'
+        required: false
+      - in: query
+        name: accountingGroupId
+        schema:
+          $ref: '#/components/schemas/items-apiAccountingGroupId'
+        required: false
+      - in: query
+        name: itemIds
+        description: Optional list of item IDs to retrieve. When provided, offset and amount are ignored; all matching items are returned.
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+          maxItems: 200
+      - in: query
+        name: offset
+        schema:
+          $ref: '#/components/schemas/items-apiOffset'
+        required: false
+      - in: query
+        name: amount
+        schema:
+          $ref: '#/components/schemas/items-apiAmount'
+        required: false
+      responses:
+        '200':
+          description: Item found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/items-apiItemDTO'
+        '400':
+          description: Constraint violation
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '400'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '404'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+      security:
+      - OAuth2:
+        - items
+    post:
+      summary: Create Item
+      operationId: items-apiCreateItem
+      description: Create a new item for a specific business location.
+      tags:
+      - Items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/items-apiCreateItemDTO'
+        required: true
+      responses:
+        '201':
+          description: Item created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/items-apiItemDTO'
+        '404':
+          description: Could not create item
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '404'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+      security:
+      - OAuth2:
+        - items
+components:
+  schemas:
+    items-apiSku:
+      example: UGG-BB-PUR-06
+      maxLength: 32
+      minLength: 1
+      description: A stock keeping unit.
+      type: string
+    items-apiOffset:
+      example: 10
+      default: 0
+      description: 'Offset allows you to retrieve a subset of records starting from a specified position in the dataset. Offset normally works with [`amount`](#operation-getitems-amount), which designates how many records to retrieve, starting from the offset position.
+
+        '
+      type: integer
+      format: int64
+    items-apiName:
+      example: Burger
+      maxLength: 180
+      minLength: 1
+      description: The name of the item.
+      type: string
+    items-apiItemId:
+      description: The unique identifier for the item.
+      type: integer
+      format: int64
+      example: 141948669132862
+    items-apiDefaultPrice:
+      example: 10
+      type: number
+      description: The default price of the item.
+    items-apiUpdateItemDTO:
+      required:
+      - name
+      - businessLocationId
+      - sku
+      - defaultPrice
+      - accountingGroupId
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/items-apiName'
+        businessLocationId:
+          $ref: '#/components/schemas/items-apiBusinessLocationId'
+        docketName:
+          $ref: '#/components/schemas/items-apiDocketName'
+        sku:
+          $ref: '#/components/schemas/items-apiSku'
+        active:
+          $ref: '#/components/schemas/items-apiActive'
+        barcode:
+          example: '10011101100'
+          maxLength: 64
+          type: string
+          description: The item barcode.
+        barcodes:
+          type: array
+          description: A list of barcodes associated with the item.
+          items:
+            type: string
+            maxLength: 64
+            minLength: 1
+            example: '10011101100'
+        accountingGroupId:
+          example: 462478248241
+          description: The unique identifier for the accounting group. Must be an existing `accountingGroupId`.
+          type: integer
+          format: int64
+        costPrice:
+          $ref: '#/components/schemas/items-apiCostPrice'
+        defaultPrice:
+          $ref: '#/components/schemas/items-apiDefaultPrice'
+        priceMode:
+          $ref: '#/components/schemas/items-apiPriceMode'
+    items-apiItemDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The unique identifier for the item.
+          example: 3012455645
+        name:
+          type: string
+          description: The name of the item.
+          example: Burger
+        docketName:
+          $ref: '#/components/schemas/items-apiDocketName'
+        sku:
+          $ref: '#/components/schemas/items-apiSku'
+        active:
+          $ref: '#/components/schemas/items-apiActive'
+        barcode:
+          type: string
+          description: The item barcode.
+          example: '00000001'
+        barcodes:
+          type: array
+          items:
+            type: string
+            example: '10011101100'
+          description: A list of barcodes associated with the item.
+        accountingGroup:
+          $ref: '#/components/schemas/items-apiAccountingGroupDTO'
+        statisticGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/items-apiStatisticGroupDTO'
+          description: List of statistic groups associated with the item.
+        costPrice:
+          $ref: '#/components/schemas/items-apiCostPrice'
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/items-apiPriceDTO'
+          description: List of prices associated with the item.
+        sharingType:
+          type: string
+          enum:
+          - GLOBAL_NO_BL
+          - GLOBAL
+          - LOCAL
+          - SHARED
+          description: How the item is shared.
+          example: SHARED
+        priceMode:
+          type: string
+          enum:
+          - AMOUNT
+          - PERCENT
+          - POSITIVE_OPEN_PRICE
+          - NEGATIVE_OPEN_PRICE
+          default: AMOUNT
+          description: The type of price for the item.
+          example: POSITIVE_OPEN_PRICE
+        inventorySource:
+          type: string
+          enum:
+          - PURCHASED
+          - PRODUCED
+          description: Source of inventory for the item.
+          example: PURCHASED
+        disabled:
+          type: boolean
+          description: Whether or not stock management is disabled for the item.
+          example: false
+        contentDimension:
+          description: How the item is measured for stock management.
+          type: string
+          enum:
+          - DIMENSION_LESS
+          - VOLUME
+          - MASS
+          example: MASS
+        contentUom:
+          type: string
+          description: The unit of measure of the item for stock management.
+          example: kg
+        contentValue:
+          type: number
+          example: 1
+          description: The measurement value.
+        itemType:
+          type: string
+          enum:
+          - ITEM
+          - SEQUENCE
+          - GROUP
+          - SUB_ITEM
+          description: Type of the item.
+          example: ITEM
+    items-apiCostPrice:
+      type: number
+      description: The cost price of the item.
+      example: 5.0
+    items-apiStatisticGroupDTO:
+      properties:
+        category:
+          type: string
+          description: The name of the statistic group category.
+          example: default
+        value:
+          type: string
+          description: The statistic group value.
+          example: Food
+      type: object
+    items-apiActive:
+      type: boolean
+      description: Indicates whether or not the item is archived from the menu.
+      example: true
+    items-apiCreateItemDTO:
+      required:
+      - name
+      - accountingGroupId
+      - defaultPrice
+      - businessLocationId
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/items-apiName'
+        businessLocationId:
+          $ref: '#/components/schemas/items-apiBusinessLocationId'
+        docketName:
+          $ref: '#/components/schemas/items-apiDocketName'
+        sku:
+          $ref: '#/components/schemas/items-apiSku'
+        active:
+          $ref: '#/components/schemas/items-apiActive'
+        barcode:
+          example: '10011101100'
+          maxLength: 64
+          type: string
+          description: The item barcode.
+        barcodes:
+          type: array
+          description: A list of barcodes associated with the item.
+          items:
+            type: string
+            maxLength: 64
+            minLength: 1
+            example: '10011101100'
+        accountingGroupId:
+          example: 462478248241
+          description: The unique identifier for the accounting group. Must be an existing `accountingGroupId`.
+          type: integer
+          format: int64
+        costPrice:
+          $ref: '#/components/schemas/items-apiCostPrice'
+        defaultPrice:
+          $ref: '#/components/schemas/items-apiDefaultPrice'
+        priceMode:
+          $ref: '#/components/schemas/items-apiPriceMode'
+    items-apiBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
+    items-apiPriceDTO:
+      properties:
+        amount:
+          type: number
+          example: 10.0
+          description: The item price.
+        name:
+          type: string
+          example: Tuesday Special
+          description: The name for this item price.
+      type: object
+    items-apiPriceMode:
+      description: The type of price for the item.
+      example: PERCENT
+      enum:
+      - AMOUNT
+      - PERCENT
+      - POSITIVE_OPEN_PRICE
+      - NEGATIVE_OPEN_PRICE
+      default: AMOUNT
+      type: string
+    items-apiDocketName:
+      example: The Burger
+      maxLength: 64
+      type: string
+      description: The name used in the docket for the item.
+    items-apiAmount:
+      description: The number of results to return with each request.
+      example: 10
+      default: 100
+      maximum: 1000
+      type: integer
+      format: int64
+    items-apiAccountingGroupDTO:
+      description: The accounting group associated with the item.
+      properties:
+        id:
+          format: int64
+          type: integer
+          description: The unique identifier for the accounting group.
+          example: 40570261078058
+        name:
+          type: string
+          description: The name of the accounting group.
+          example: Alcoholic beverages
+      type: object
+    items-apiAccountingGroupId:
+      example: 44874545485
+      description: The unique identifier for the accounting group.
+      type: integer
+      format: int64
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

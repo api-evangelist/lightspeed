@@ -1,0 +1,1004 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Price Books API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Price Book operations
+  name: Price Books
+paths:
+  /price_book_products:
+    get:
+      description: 'Returns a paginated list of price book products.
+
+
+        🔒 Requires: `products:read:price_books` scope'
+      operationId: ListPriceBookProducts
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - created_at: '2014-06-10T00:46:05+00:00'
+                  id: 327a1b25-4a47-9ba7-15cd-f65dfb3f06e2
+                  price: 0
+                  price_book_id: b1cc4593-f019-11e3-a0f5-b8ca3a64f8f4
+                  product_id: 9a84e9e1-f038-11e3-a0f5-b8ca3a64f8f4
+                  tax_id: 0242ac12-0002-11e9-e8c4-6594948eac5c
+                  updated_at: '2014-06-10T00:46:05+00:00'
+                  version: 74322454
+                - created_at: '2014-07-09T00:15:13+00:00'
+                  id: dc85058a-a683-11e4-ef46-e15361f7916a
+                  loyalty_value: 22
+                  max_units: 43.2
+                  min_units: 12.5
+                  price: 246.92
+                  price_book_id: dc85058a-a683-11e4-ef46-e1535cf1ebe5
+                  product_id: 188a87aa-06fe-11e4-a0f5-b8ca3a64f8f4
+                  tax_id: 0242ac12-0002-11e9-e8c4-6594948eac5c
+                  updated_at: '2016-04-13T22:27:29+00:00'
+                  version: 94533112
+                - created_at: '2014-11-14T02:11:38+00:00'
+                  id: dc85058a-a683-11e5-ef46-0fe437d43747
+                  price: 1200
+                  price_book_id: dc85058a-a683-11e4-ef46-e1535cf1ebe5
+                  product_id: b8ca3a65-0183-11e4-fbb5-6ba391393b6e
+                  tax_id: 0242ac12-0002-11e9-e8c4-6594948eac5c
+                  updated_at: '2015-06-11T02:47:49+00:00'
+                  version: 107001929
+              schema:
+                $ref: '#/components/schemas/PriceBookProductCollection'
+          description: ''
+      summary: List price book products
+      tags:
+      - Price Books
+  /price_books:
+    get:
+      description: 'Returns a paginated list of price books.
+
+
+        🔒 Requires: `products:read:price_books` `customers:read` `outlets:read` scopes'
+      operationId: ListPriceBooksV3
+      parameters:
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: Field used to sort the results.
+        in: query
+        name: order
+        schema:
+          type: string
+      - description: Sort results direction. ASC or DESC.
+        in: query
+        name: direction
+        schema:
+          type: string
+      - description: Include (true) or exclude (false) deleted price books. Default value is false.
+        in: query
+        name: deleted
+        schema:
+          type: boolean
+      - description: Filter the list and show only price books linked to the specified Customer Group.
+        in: query
+        name: customer_group_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                - customer_groups:
+                  - created_at: '2014-06-09T21:04:49+00:00'
+                    group_id: '1111111111'
+                    id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: All Customers
+                    updated_at: '2014-06-09T21:04:49+00:00'
+                    version: 29483
+                  id: b1cc4593-f019-11e3-a0f5-b8ca3a64f8f4
+                  name: General Price Book (All Products)
+                  outlets:
+                  - attributes: []
+                    currency: NZD
+                    currency_symbol: $
+                    default_tax_id: 00000000-0002-0002-0002-000000000003
+                    deleted_at: null
+                    display_prices: inclusive
+                    email: no-reply+fixture@vendhq.com
+                    id: 0242ac12-0002-11e9-e8c4-6594953122f6
+                    latitude: null
+                    longitude: null
+                    name: Selenium (Mixed)
+                    physical_address_1: 33 retailer st
+                    physical_address_2: ''
+                    physical_city: Auckland
+                    physical_country_id: NZ
+                    physical_postcode: '0100'
+                    physical_state: Auckland
+                    physical_suburb: City
+                    time_zone: Pacific/Auckland
+                    version: 150711
+                  restrict_to_platform_key: '1'
+                  restrict_to_platform_label: In Store
+                  type: BASE
+                  version: 368354
+                - customer_groups:
+                  - created_at: '2014-06-09T21:04:49+00:00'
+                    group_id: '1111111111'
+                    id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: All Customers
+                    updated_at: '2014-06-09T21:04:49+00:00'
+                    version: 29483
+                  id: dc85058a-a683-11e4-ef46-e2ecc5bda31a
+                  name: API test
+                  outlets:
+                  - attributes: []
+                    currency: NZD
+                    currency_symbol: $
+                    default_tax_id: 00000000-0002-0002-0002-000000000003
+                    deleted_at: null
+                    display_prices: inclusive
+                    email: no-reply+fixture@vendhq.com
+                    id: 0242ac12-0002-11e9-e8c4-6594953122f6
+                    latitude: null
+                    longitude: null
+                    name: Selenium (Mixed)
+                    physical_address_1: 33 retailer st
+                    physical_address_2: ''
+                    physical_city: Auckland
+                    physical_country_id: NZ
+                    physical_postcode: '0100'
+                    physical_state: Auckland
+                    physical_suburb: City
+                    time_zone: Pacific/Auckland
+                    version: 150711
+                  restrict_to_platform_key: '1'
+                  restrict_to_platform_label: In Store
+                  type: GENERAL
+                  version: 398146
+              schema:
+                $ref: '#/components/schemas/PriceBookCollection'
+          description: ''
+      summary: List price books
+      tags:
+      - Price Books
+    post:
+      description: 'Create a price book
+
+
+        🔒 Requires: `products:write:price_books` `customers:read` scopes'
+      operationId: CreatePriceBookV3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookCreateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookCreateResponse'
+          description: ''
+      summary: Create a single price book
+      tags:
+      - Price Books
+  /price_books/{id}:
+    get:
+      description: 'Returns a single price book with a requested ID
+
+
+        🔒 Requires: `products:read:price_books` `customers:read` `outlets:read` scopes'
+      operationId: GetPriceBookByIDV3
+      parameters:
+      - description: The price book id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  customer_groups:
+                  - created_at: '2014-06-09T21:04:49+00:00'
+                    group_id: '1111111111'
+                    id: b1ca8902-f019-11e3-a0f5-b8ca3a64f8f4
+                    name: All Customers
+                    updated_at: '2014-06-09T21:04:49+00:00'
+                    version: 29483
+                  id: b1cc4593-f019-11e3-a0f5-b8ca3a64f8f4
+                  name: General Price Book (All Products)
+                  outlets:
+                  - attributes: []
+                    currency: NZD
+                    currency_symbol: $
+                    default_tax_id: 00000000-0002-0002-0002-000000000003
+                    deleted_at: null
+                    display_prices: inclusive
+                    email: no-reply+fixture@vendhq.com
+                    id: 0242ac12-0002-11e9-e8c4-6594953122f6
+                    latitude: null
+                    longitude: null
+                    name: Selenium (Mixed)
+                    physical_address_1: 33 retailer st
+                    physical_address_2: ''
+                    physical_city: Auckland
+                    physical_country_id: NZ
+                    physical_postcode: '0100'
+                    physical_state: Auckland
+                    physical_suburb: City
+                    time_zone: Pacific/Auckland
+                    version: 150711
+                  restrict_to_platform_key: '1'
+                  restrict_to_platform_label: In Store
+                  type: BASE
+                  version: 368354
+              schema:
+                $ref: '#/components/schemas/PriceBookResponse'
+          description: ''
+      summary: Get a single price book
+      tags:
+      - Price Books
+    put:
+      description: 'Update a price book by ID
+
+
+        🔒 Requires: `products:write:price_books` `customers:read` scopes'
+      operationId: UpdatePriceBookV3
+      parameters:
+      - description: The price book id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookCreateResponse'
+          description: ''
+      summary: Update a single price book
+      tags:
+      - Price Books
+  /price_books/{price_book_id}/products:
+    delete:
+      description: 'Delete price book product entries.
+
+
+        > **Note**: You may not delete more than 100 price book products at a time.
+
+
+        > **Note**: The request body params can be used within request headers. Header key name is `data`
+
+
+        🔒 Requires: `products:write:price_books` scope'
+      operationId: DeletePriceBookProducts
+      parameters:
+      - description: The price book id
+        in: path
+        name: price_book_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookProductIdCollection'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookProductsUpdateResponse'
+          description: ''
+      summary: Delete some entries for a price book
+      tags:
+      - Price Books
+    get:
+      description: 'Returns a list of price book products for a given price book.
+
+
+        > **Note**: The returned retail price is the tax exclusive price of the product.
+
+
+        🔒 Requires: `products:read:price_books` scope'
+      operationId: GetPriceBookProductsForPriceBook
+      parameters:
+      - description: The price book id
+        in: path
+        name: price_book_id
+        required: true
+        schema:
+          type: string
+      - description: The product ids
+        in: query
+        name: product_ids
+        schema:
+          example: 06326976-9d65-11ed-fa40-1347e4b4ae6d,16326976-9d65-11ed-fa40-1347e4b4ae6d
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookProductCollection'
+          description: ''
+      summary: List price book products per price book
+      tags:
+      - Price Books
+    patch:
+      description: 'Update price book products.
+
+
+        > **Note**: When adding a product the retail price is the tax exclusive price of the product if your store is tax exclusive, and tax inclusive if your store is tax inclusive. The returned value is always tax exclusive.
+
+
+        > **Note**: The request body may not contain more than 100 price book products.
+
+
+        🔒 Requires: `products:write:price_books` `products:read` scopes'
+      operationId: UpdatePriceBookProducts
+      parameters:
+      - description: The price book id
+        in: path
+        name: price_book_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookProductCollection'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookProductsUpdateResponse'
+          description: ''
+      summary: Update the products in a price book
+      tags:
+      - Price Books
+    post:
+      description: 'Create price book products.
+
+
+        > **Note**: When adding a product the retail price is the tax exclusive price of the product if your store is tax exclusive, and tax inclusive if your store is tax inclusive.  The returned value is always tax exclusive.
+
+
+        > **Note**: The request body may not contain more than 100 price book products.
+
+
+        🔒 Requires: `products:write:price_books` `products:read` scopes'
+      operationId: AddPriceBookProducts
+      parameters:
+      - description: The price book id
+        in: path
+        name: price_book_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookProductCollection'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookProductsUpdateResponse'
+          description: ''
+      summary: Add the products to a price book
+      tags:
+      - Price Books
+    put:
+      description: 'Update price book products.
+
+
+        > **Note**: When adding a product the retail price is the tax exclusive price of the product if your store is tax exclusive, and tax inclusive if your store is tax inclusive. The returned value is always tax exclusive.
+
+
+        > **Note**: The request body may not contain more than 100 price book products.
+
+
+        🔒 Requires: `products:write:price_books` `products:read` scopes'
+      operationId: UpdatePriceBookProductsWithPutOp
+      parameters:
+      - description: The price book id
+        in: path
+        name: price_book_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceBookProductCollection'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceBookProductsUpdateResponse'
+          description: ''
+      summary: Update the products in a price book
+      tags:
+      - Price Books
+components:
+  schemas:
+    PriceBookCollection:
+      properties:
+        data:
+          description: An array of Price Book objects wrapped in a top level `data` object.
+          items:
+            $ref: '#/components/schemas/PriceBook'
+          type: array
+      title: Price Book Collection
+      type: object
+    Outlet:
+      properties:
+        attributes:
+          description: The outlet attributes such as `low_stock_warning`, `order_reference`, `order_reference_prefix`, `return_reference`, `return_reference_prefix`.
+          items:
+            $ref: '#/components/schemas/Attribute'
+          type: array
+        currency:
+          description: Currency name.
+          type: string
+        currency_symbol:
+          description: Currency symbol.
+          type: string
+        default_tax_id:
+          deprecated: true
+          description: Default tax id used for sales in this outlet. **deprecated**
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        display_prices:
+          description: Indicates whether prices in this outlet should be displayed as tax-inclusive.
+          enum:
+          - inclusive
+          - exclusive
+          type: string
+        email:
+          description: Specified email for the outlet.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        latitude:
+          description: Geographical latitude of the outlet.
+          type:
+          - string
+          - 'null'
+        longitude:
+          description: Geographical longitude of the outlet.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The outlet name.
+          type: string
+        phone:
+          description: Contact phone number for the outlet.
+          type:
+          - string
+          - 'null'
+        physical_address_1:
+          description: Physical address, line 1.
+          type:
+          - string
+          - 'null'
+        physical_address_2:
+          description: Physical address, line 2.
+          type:
+          - string
+          - 'null'
+        physical_city:
+          description: Physical address, city.
+          type:
+          - string
+          - 'null'
+        physical_country_id:
+          description: Physical address, country code.
+          type:
+          - string
+          - 'null'
+        physical_postcode:
+          description: Physical address, post code.
+          type:
+          - string
+          - 'null'
+        physical_state:
+          description: Physical address, state.
+          type:
+          - string
+          - 'null'
+        physical_suburb:
+          description: Physical address, suburb.
+          type:
+          - string
+          - 'null'
+        time_zone:
+          description: Outlet timezone. **read only**
+          type:
+          - string
+          - 'null'
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - id
+      - name
+      - default_tax_id
+      - currency
+      - display_prices
+      - time_zone
+      - currency_symbol
+      - attributes
+      - version
+      title: Outlet
+      type: object
+    Attribute:
+      properties:
+        key:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
+      required:
+      - key
+      - value
+      title: Attribute
+      type: object
+    PriceBookProductCollection:
+      properties:
+        data:
+          description: An array of Price Book objects wrapped in a top level `data` object.
+          items:
+            $ref: '#/components/schemas/PriceBookProduct'
+          type: array
+      required:
+      - data
+      title: Price Book Product Collection
+      type: object
+    PriceBookProduct:
+      properties:
+        adjustment:
+          description: The adjustment amount
+          format: double
+          type:
+          - number
+          - 'null'
+        adjustment_type:
+          description: The adjustment type
+          type: string
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        default_display_price:
+          description: The default display price
+          format: double
+          type: number
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        discount:
+          description: The discount amount
+          format: double
+          type:
+          - number
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        loyalty_value:
+          description: Price Book defined loyalty value.
+          format: double
+          type:
+          - number
+          - 'null'
+        max_units:
+          description: The maximum number of items for which this price will be used.
+          format: double
+          type:
+          - number
+          - 'null'
+        min_units:
+          description: The minimum number of items for which this price will be used.
+          format: double
+          type:
+          - number
+          - 'null'
+        price:
+          description: The Retail price of the product.
+          format: double
+          type: number
+        price_book_id:
+          description: The ID of the Price Book this product belongs to.
+          type: string
+        product_id:
+          description: The ID of the associated product.
+          type: string
+        retail_tax:
+          description: The retail tax
+          format: double
+          type: number
+        rounding:
+          description: The format for the rounding
+          type: string
+        tax_id:
+          description: The id for the tax rate
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          format: int64
+          type: integer
+      required:
+      - price
+      - product_id
+      - tax_id
+      title: Price Book Product
+      type: object
+      x-examples:
+        example-1:
+          adjustment: -1.7976931348623157e+308
+          adjustment_type: string
+          created_at: string
+          default_display_price: -1.7976931348623157e+308
+          deleted_at: string
+          discount: -1.7976931348623157e+308
+          id: string
+          loyalty_value: -1.7976931348623157e+308
+          max_units: -1.7976931348623157e+308
+          min_units: -1.7976931348623157e+308
+          price: -1.7976931348623157e+308
+          price_book_id: string
+          product_id: string
+          retail_tax: -1.7976931348623157e+308
+          rounding: string
+          tax_id: string
+          updated_at: string
+          version: 123
+    PriceBookProductIdCollection:
+      properties:
+        data:
+          description: An array of Price Book ids
+          properties:
+            price_book_product_ids:
+              description: An array of price book product ids to be deleted from the given Price Book.
+              items:
+                type: string
+              type: array
+          required:
+          - price_book_product_ids
+          type: object
+      title: Price Book Product ID Collection
+      type: object
+    PriceBookCreateRequest:
+      properties:
+        customer_group_ids:
+          items:
+            description: The ID of the customer group.
+            type: string
+          type: array
+        name:
+          description: Price Book name.
+          type: string
+        outlet_ids:
+          items:
+            description: The ID of an outlet for which the Price Book should be used.
+            type: string
+          type: array
+        restrict_to_platform:
+          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
+          type:
+          - string
+          - 'null'
+        valid_from:
+          description: The date when the Price Book becomes valid (active).
+          type:
+          - string
+          - 'null'
+        valid_to:
+          description: The date when the Price Book becomes invalid (inactive).
+          type:
+          - string
+          - 'null'
+      required:
+      - customer_group_ids
+      - outlet_ids
+      - name
+      title: Price Book Create Request
+      type: object
+    PriceBookCreateResponseData:
+      properties:
+        customer_groups:
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        outlets:
+          items:
+            $ref: '#/components/schemas/Outlet'
+          type:
+          - array
+          - 'null'
+        restrict_to_platform:
+          type: string
+        retailer_id:
+          type: string
+        type:
+          type: string
+        valid_from:
+          type:
+          - string
+          - 'null'
+        valid_to:
+          type:
+          - string
+          - 'null'
+      title: Price Book Create Response Data
+    PriceBook:
+      properties:
+        created_at:
+          description: Created timestamp in UTC.
+          type: string
+        customer_group_ids:
+          description: The IDs of the customer groups associated with this price book.
+          items:
+            format: uuid
+            type: string
+          type:
+          - array
+          - 'null'
+        customer_groups:
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+          type:
+          - array
+          - 'null'
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: Price Book name.
+          type: string
+        outlets:
+          items:
+            $ref: '#/components/schemas/Outlet'
+          type:
+          - array
+          - 'null'
+        restrict_to_platform_key:
+          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
+          type:
+          - string
+          - 'null'
+        restrict_to_platform_label:
+          description: One of `In Store`, `Ecommerce`, `All Platforms`.
+          type:
+          - string
+          - 'null'
+        type:
+          description: Type of price book
+          type: string
+        updated_at:
+          description: Updated timestamp in UTC.
+          type: string
+        valid_from:
+          description: The date when the Price Book becomes valid (active).
+          type:
+          - string
+          - 'null'
+        valid_to:
+          description: The date when the Price Book becomes invalid (inactive).
+          type:
+          - string
+          - 'null'
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - name
+      title: Price Book
+      type: object
+    CustomerGroup:
+      properties:
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        group_id:
+          description: The customer group identifier.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The customer group name.
+          type: string
+        retailer_id:
+          description: The retailer identifier
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - name
+      title: Customer Group
+      type: object
+      x-examples:
+        All customers:
+          created_at: '2023-04-16T12:44:54+00:00'
+          deleted_at: null
+          group_id: '1111111111'
+          id: 28020918-a068-aae4-11e9-cad0d053ea28
+          name: All Customers
+          retailer_id: 00000000-0001-0001-0001-000000000001
+          updated_at: '2023-04-16T12:44:54+00:00'
+          version: 150547
+    PriceBookUpdateRequest:
+      properties:
+        customer_group_ids:
+          items:
+            description: The ID of the customer group.
+            type: string
+          type: array
+        name:
+          description: Price Book name.
+          type: string
+        outlet_ids:
+          items:
+            description: The ID of an outlet for which the Price Book should be used.
+            type: string
+          type: array
+        restrict_to_platform:
+          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
+          type:
+          - string
+          - 'null'
+        valid_from:
+          description: The date when the Price Book becomes valid (active).
+          type:
+          - string
+          - 'null'
+        valid_to:
+          description: The date when the Price Book becomes invalid (inactive).
+          type:
+          - string
+          - 'null'
+      required:
+      - customer_group_ids
+      - name
+      - outlet_ids
+      title: Price Book Update Request
+      type: object
+    PriceBookResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/PriceBook'
+      title: Price Book Response
+      type: object
+    PriceBookProductsUpdateResponse:
+      properties:
+        data:
+          properties:
+            message:
+              description: Confirmation message that the request to add/update/delete PriceBookProducts was successful.
+              type: string
+          type: object
+      title: Price Book Products Update Response
+      type: object
+    PriceBookCreateResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/PriceBookCreateResponseData'
+      title: Price Book Create Response
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

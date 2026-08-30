@@ -1,0 +1,681 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series Rich Item API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: Rich Item
+paths:
+  /i/allergens:
+    get:
+      summary: Get allergens
+      operationId: teckelGetAllergens
+      description: Returns a list of all possible allergens that can be added to a rich item. See [Allergens Table](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/allergens) for more details.
+      tags:
+      - Rich Item
+      responses:
+        '200':
+          description: Allergens
+          content:
+            application/json:
+              schema:
+                description: A list of allergens.
+                items:
+                  description: Allergen
+                  properties:
+                    code:
+                      description: The allergen code.
+                      example: fish
+                      type: string
+                    translations:
+                      description: List of translations.
+                      example:
+                      - locale: en
+                        text: Fish
+                      - locale: fr
+                        text: Poisson
+                      items:
+                        properties:
+                          locale:
+                            description: Language locale (eg. 'en' or 'en_US').
+                            example: en
+                            nullable: false
+                            type: string
+                          text:
+                            description: Translation in the language of the locale.
+                            type: string
+                        type: object
+                      uniqueItems: true
+                      type: array
+                  type: object
+                type: array
+      security:
+      - OAuth2:
+        - orders-api
+  /i/locales/{businessId}:
+    get:
+      summary: Get locales
+      operationId: teckelGetLocales
+      description: Returns the locales of a business in ISO Code 2 or language_localization (eg. 'en' or 'en_US').
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      responses:
+        '200':
+          description: Locales
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/teckelLocalesDto'
+      security:
+      - OAuth2:
+        - orders-api
+    put:
+      summary: Update locales
+      operationId: teckelUpdateLocales
+      description: Sets business item languages. Supports language ISO code 2 or language_localization (eg. 'en' or 'en_US').
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/teckelLocalesDto'
+        required: true
+      responses:
+        '200':
+          description: OK
+      security:
+      - OAuth2:
+        - orders-api
+  /i/richItem/{businessId}:
+    get:
+      summary: Get rich items
+      operationId: teckelGetRichItems
+      description: Returns all of the rich item information for a specific business.
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      - $ref: '#/components/parameters/teckelPage'
+      - $ref: '#/components/parameters/teckelSize'
+      - $ref: '#/components/parameters/teckelSort'
+      responses:
+        '200':
+          description: Rich Items
+          content:
+            application/hal+json;charset=UTF-8:
+              schema:
+                properties:
+                  _embedded:
+                    properties:
+                      richItemDtoList:
+                        description: List of rich items
+                        items:
+                          allOf:
+                          - $ref: '#/components/schemas/teckelRichItemDto'
+                          - $ref: '#/components/schemas/teckelRichItemDtoDates'
+                          - $ref: '#/components/schemas/teckelRichItemDtoPictures'
+                          - $ref: '#/components/schemas/teckelRichItemDtoLinks'
+                          type: object
+                        type: array
+                    type: object
+                  _links:
+                    $ref: '#/components/schemas/teckelLinkSelfPage'
+      security:
+      - OAuth2:
+        - orders-api
+  /i/richItem/{businessId}/{sku}:
+    get:
+      summary: Get rich item by sku
+      operationId: teckelGetRichItem
+      description: Get a rich item from its sku and the business id.
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      - $ref: '#/components/parameters/teckelPathSKU'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/teckelRichItemDto'
+                - $ref: '#/components/schemas/teckelRichItemDtoDates'
+                - $ref: '#/components/schemas/teckelRichItemDtoPictures'
+                - $ref: '#/components/schemas/teckelRichItemDtoLinks'
+                type: object
+        '404':
+          description: Not Found
+      security:
+      - OAuth2:
+        - orders-api
+    patch:
+      summary: Update picture
+      operationId: teckelUpdateRichItemPicture
+      description: Partially updates the rich item to set the picture or rawPicture.
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      - $ref: '#/components/parameters/teckelPathSKU'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                businessId:
+                  description: The id of the business
+                  type: integer
+                  format: int64
+                  examples:
+                  - 454335871
+                sku:
+                  maxLength: 25
+                  description: A stock-keeping unit
+                  type: string
+                  examples:
+                  - UGG-BB-PUR-06
+                fileType:
+                  description: Image format (eg. 'jpeg' or 'png').
+                  type: string
+                  examples:
+                  - png
+                picture:
+                  description: 'The cropped picture: use this field only to update picture (PATCH method). When updating picture, this field is required.'
+                  type: string
+                  format: byte
+                  examples:
+                  - iVBORw0KGgoAAAANSUhEUgAAAIwAAACMAQMAAACUDtN9AAAAAXNSR0IB2cksfwAAAAlwSFlzAAAAJwAAACcBKgmRTwAAAANQTFRFAAAAp3o92gAAABlJREFUeJztwTEBAAAAwqD1T20JT6AAAOBrCmQAASsQRDsAAAAASUVORK5CYII=
+                rawPicture:
+                  description: 'The raw picture (before cropping): use this field only to update picture (PATCH method). When updating picture, this field is optional.'
+                  type: string
+                  format: byte
+                  examples:
+                  - iVBORw0KGgoAAAANSUhEUgAAAIwAAACMAQMAAACUDtN9AAAAAXNSR0IB2cksfwAAAAlwSFlzAAAAJwAAACcBKgmRTwAAAANQTFRFAAAAp3o92gAAABlJREFUeJztwTEBAAAAwqD1T20JT6AAAOBrCmQAASsQRDsAAAAASUVORK5CYII=
+              type: object
+              required:
+              - businessId
+              - sku
+        required: true
+      responses:
+        '200':
+          description: Patched
+          content:
+            application/hal+json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/teckelRichItemDto'
+                - $ref: '#/components/schemas/teckelRichItemDtoDates'
+                - $ref: '#/components/schemas/teckelRichItemDtoPictures'
+                type: object
+      security:
+      - OAuth2:
+        - orders-api
+    put:
+      summary: Create or update rich item
+      operationId: teckelCreateOrUpdateRichItem
+      description: Creates a new rich item or updates an existing rich item. To update the sku, set the new sku in the request body. The picture cannot be set using this method (use PATCH method).
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      - $ref: '#/components/parameters/teckelPathSKU'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                businessId:
+                  description: The id of the business
+                  type: integer
+                  format: int64
+                  examples:
+                  - 454335871
+                sku:
+                  maxLength: 25
+                  description: A stock-keeping unit
+                  type: string
+                  examples:
+                  - UGG-BB-PUR-06
+                allergenCodes:
+                  description: List of allergen codes
+                  items:
+                    type: string
+                  uniqueItems: true
+                  type: array
+                  examples:
+                  - - milk
+                    - cereals
+                descriptions:
+                  description: List of localized descriptions
+                  items:
+                    $ref: '#/components/schemas/teckelRichItemDescriptionDto'
+                  uniqueItems: true
+                  type: array
+                  examples:
+                  - - localeCode: en
+                      description: This is a test for a rich item
+                      displayName: Rich Item 1
+                    - localeCode: de
+                      description: Das ist ein Test
+                      displayName: Rich Item 1 DE
+              type: object
+              required:
+              - businessId
+              - sku
+        required: true
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/hal+json;charset=UTF-8:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/teckelRichItemDto'
+                - $ref: '#/components/schemas/teckelRichItemDtoDates'
+                - $ref: '#/components/schemas/teckelRichItemDtoPictures'
+                type: object
+      security:
+      - OAuth2:
+        - orders-api
+    delete:
+      summary: Delete rich item
+      operationId: teckelDeleteRichItem
+      description: Delete rich item
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      - $ref: '#/components/parameters/teckelPathSKU'
+      responses:
+        '204':
+          description: Item deleted
+      security:
+      - OAuth2:
+        - orders-api
+  /i/richItem/{businessId}/itemsBySkus:
+    post:
+      summary: Get rich items by SKUs
+      operationId: teckelGetRichItemBySKUs
+      description: Returns a list of rich items matching the SKUs provided in the request.
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              items:
+                example: UGG-BB-PUR-06
+                maxLength: 25
+                description: A stock-keeping unit
+                type: string
+              type: array
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json;charset=UTF-8:
+              schema:
+                properties:
+                  _embedded:
+                    properties:
+                      richItemDtoList:
+                        description: List of rich items
+                        items:
+                          allOf:
+                          - $ref: '#/components/schemas/teckelRichItemDto'
+                          - $ref: '#/components/schemas/teckelRichItemDtoDates'
+                          - $ref: '#/components/schemas/teckelRichItemDtoPictures'
+                          - $ref: '#/components/schemas/teckelRichItemDtoLinks'
+                          type: object
+                        type: array
+                    type: object
+                  _links:
+                    allOf:
+                    - $ref: '#/components/schemas/teckelLinkSelf'
+                    type: object
+      security:
+      - OAuth2:
+        - orders-api
+  /i/richItem/{businessId}/pictureSpec:
+    get:
+      summary: Get picture specifications
+      operationId: teckelGetRichItemPictureSpec
+      description: Get rich item picture specifications.
+      tags:
+      - Rich Item
+      parameters:
+      - $ref: '#/components/parameters/teckelPathBusinessId'
+      responses:
+        '200':
+          content:
+            application/hal+json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/teckelPictureSpecDto'
+          description: OK
+      security:
+      - OAuth2:
+        - orders-api
+components:
+  schemas:
+    teckelLinkSelfPage:
+      type: object
+      properties:
+        self:
+          properties:
+            href:
+              example: https://api.trial.lsk.lightspeed.app/i/i/richItem/8262?page=0&size=100&sort=
+              type: string
+              description: The URL of the page of results.
+          type: object
+    teckelLink:
+      properties:
+        deprecation:
+          type: string
+        href:
+          type: string
+        hreflang:
+          type: string
+        name:
+          type: string
+        profile:
+          type: string
+        templated:
+          type: boolean
+        title:
+          type: string
+        type:
+          type: string
+      type: object
+    teckelLinkSelf:
+      type: object
+      properties:
+        self:
+          properties:
+            href:
+              example: https://api.trial.lsk.lightspeed.app/i/richItem/8262/UGG-BB-PUR-06
+              type: string
+              description: The URL of the item.
+          type: object
+    teckelLinks:
+      additionalProperties:
+        $ref: '#/components/schemas/teckelLink'
+      type: object
+    teckelLinkItems:
+      type: object
+      properties:
+        items:
+          properties:
+            href:
+              example: https://api.trial.lsk.lightspeed.app/i/richItem/8262/
+              type: string
+              description: The URL for all items.
+          type: object
+    teckelBusinessId:
+      example: 454335871
+      description: The unique identifier for the business.
+      type: integer
+      format: int64
+    teckelRichItemDtoPictures:
+      properties:
+        pictureUrl:
+          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7.png
+          description: The URL of the picture.
+          type: string
+        previewPictureUrl:
+          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7.png
+          description: The URL of the preview picture.
+          type: string
+        rawPictureUrl:
+          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7_raw.png
+          description: The URL of the raw picture.
+          type: string
+      type: object
+    teckelRichItemDtoDates:
+      properties:
+        creationDate:
+          description: The creation date of the item.
+          example: '2021-11-03T13:50:47Z'
+          type: string
+          format: date-time
+        lastUpdateDate:
+          description: The last update date of the item.
+          example: '2021-11-11T16:29:56Z'
+          type: string
+          format: date-time
+      type: object
+    teckelRichItemDto:
+      properties:
+        businessId:
+          $ref: '#/components/schemas/teckelBusinessId'
+        sku:
+          $ref: '#/components/schemas/teckelSKU'
+        descriptions:
+          description: List of localized descriptions
+          example:
+          - localeCode: de
+            description: Das ist ein Test
+            displayName: Rich Item 1 DE
+          - localeCode: en
+            description: This is a test for a rich item
+            displayName: Rich Item 1
+          items:
+            $ref: '#/components/schemas/teckelRichItemDescriptionDto'
+          uniqueItems: true
+          type: array
+        allergenCodes:
+          description: List of allergen codes.
+          example:
+          - milk
+          - cereals
+          items:
+            type: string
+          uniqueItems: true
+          type: array
+      type: object
+    teckelRichItemDescriptionDto:
+      description: Stores an item description with its locale code.
+      example:
+        localeCode: fr
+        description: Ceci est un café. L'apostrophe.
+        displayName: Super expresso
+      properties:
+        localeCode:
+          description: The language code (ISO 639) of the description.
+          minLength: 2
+          maxLength: 7
+          nullable: false
+          type: string
+        description:
+          description: The item description in the language of the locale.
+          maxLength: 4000
+          type: string
+        displayName:
+          description: The display name of the item in the language of the locale.
+          type: string
+      required:
+      - localeCode
+      type: object
+    teckelSKU:
+      example: UGG-BB-PUR-06
+      maxLength: 25
+      description: The SKU of the item.
+      type: string
+    teckelPictureSpecDto:
+      description: Contains picture requirements.
+      properties:
+        _links:
+          $ref: '#/components/schemas/teckelLinks'
+        minHeight:
+          description: The minimum image height.
+          format: int32
+          type: integer
+        minWidth:
+          description: The minimum image width.
+          format: int32
+          type: integer
+        requiredAspectRatio:
+          description: The image aspect ratio (width divided by length). If not set, there is no aspect ratio check.
+          format: float
+          type: number
+      type: object
+    teckelRichItemDtoLinks:
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/teckelLinkSelf'
+          - $ref: '#/components/schemas/teckelLinkItems'
+      type: object
+    teckelLocalesDto:
+      description: A list of locales.
+      example:
+      - en
+      - es
+      - de
+      - fr
+      items:
+        type: string
+      type: array
+  parameters:
+    teckelPathBusinessId:
+      in: path
+      name: businessId
+      required: true
+      schema:
+        $ref: '#/components/schemas/teckelBusinessId'
+    teckelPathSKU:
+      in: path
+      name: sku
+      required: true
+      schema:
+        $ref: '#/components/schemas/teckelSKU'
+    teckelPage:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        example: 10
+        description: Starting page of results, when paginating.
+        default: 0
+    teckelSort:
+      in: query
+      name: sort
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          example: sku
+          description: Field used to determine order of results.
+    teckelSize:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        example: 100
+        description: Number of results to return, when paginating.
+        default: 1000
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

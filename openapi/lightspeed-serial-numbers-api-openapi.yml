@@ -1,0 +1,248 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Serial Numbers API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Serial number related operations
+  name: Serial Numbers
+paths:
+  /serialnumbers:
+    get:
+      description: 'Returns a paginated list of serial numbers.
+
+
+        🔒 Requires: `serial_numbers:read` scope'
+      operationId: get-serialnumbers
+      parameters:
+      - description: A product ID. This filters the serial numbers to only include ones on this product.
+        in: query
+        name: product_id
+        schema:
+          format: uuid
+          type: string
+      - description: An outlet ID. This filters the serial numbers to only include ones on this outlet.
+        in: query
+        name: outlet_id
+        schema:
+          format: uuid
+          type: string
+      - description: A sale ID. This filters the serial numbers to only include ones that were sold in the specified sale.
+        in: query
+        name: sale_id
+        schema:
+          format: uuid
+          type: string
+      - description: A line item ID. This filters the serial numbers to only include ones sold in the specified line item.
+        in: query
+        name: line_item_id
+        schema:
+          format: uuid
+          type: string
+      - description: The lower limit for the version numbers to be included in the response.
+        in: query
+        name: after
+        schema:
+          format: int64
+          type: integer
+      - description: The upper limit for the version numbers to be included in the response.
+        in: query
+        name: before
+        schema:
+          format: int64
+          type: integer
+      - description: The maximum number of items to be returned in the response.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialNumberCollection'
+          description: A paginated list of serial numbers.
+      summary: List serial numbers
+      tags:
+      - Serial Numbers
+    post:
+      description: 'Creates a serial number.
+
+
+        🔒 Requires: `serial_numbers:write` scope'
+      operationId: create-serialnumber
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerialNumberRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialNumberResponse'
+          description: The serial number
+      summary: Create a serial number
+      tags:
+      - Serial Numbers
+  /serialnumbers/{serialnumber_id}:
+    delete:
+      description: 'Deletes a serial number.
+
+
+        🔒 Requires: `serial_numbers:write` scope'
+      operationId: delete-serialnumber
+      parameters:
+      - description: The serial number id
+        in: path
+        name: serialnumber_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      summary: Delete a serial number
+      tags:
+      - Serial Numbers
+    get:
+      description: 'Returns a single serial number.
+
+
+        🔒 Requires: `serial_numbers:read` scope'
+      operationId: get-serialnumber
+      parameters:
+      - description: The serial number id
+        in: path
+        name: serialnumber_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerialNumberResponse'
+          description: The serial number
+      summary: Get a single serial number
+      tags:
+      - Serial Numbers
+components:
+  schemas:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    SerialNumber:
+      properties:
+        code:
+          description: The actual serial number value.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        line_item_id:
+          description: The ID of the sale line item where this serial number was sold, or null.
+          format: uuid
+          type:
+          - string
+          - 'null'
+        outlet_id:
+          description: The ID of the outlet where the serial number is located.
+          format: uuid
+          type: string
+        product_id:
+          description: The ID of the product associated with the serial number.
+          format: uuid
+          type: string
+        sale_id:
+          description: The ID of the sale where this serial number was sold, or null.
+          format: uuid
+          type:
+          - string
+          - 'null'
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: SerialNumber
+      type: object
+    SerialNumberResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SerialNumber'
+      title: Serial Number Response
+      type: object
+    SerialNumberRequest:
+      properties:
+        code:
+          description: The actual serial number value.
+          type: string
+        outlet_id:
+          description: The ID of the outlet where the serial number is located.
+          format: uuid
+          type: string
+        product_id:
+          description: The ID of the product associated with the serial number.
+          format: uuid
+          type: string
+      required:
+      - code
+      - outlet_id
+      - product_id
+      title: Request to create a sale
+      type: object
+    SerialNumberCollection:
+      properties:
+        data:
+          description: An array of Serial Numbers wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/SerialNumber'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Serial Number Collection
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

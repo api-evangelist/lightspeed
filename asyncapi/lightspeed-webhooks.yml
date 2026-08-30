@@ -1,0 +1,103 @@
+name: Lightspeed Commerce Webhook / Event Surface
+generated: '2026-08-27'
+method: derived
+source: openapi/lightspeed-k-series-openapi.json (webhooks block), openapi/lightspeed-x-series-openapi.json
+  (WebhookType enum + /webhooks operations)
+asyncapi_published: false
+note: 'Lightspeed publishes no AsyncAPI document. It does publish a real, machine-readable webhook surface
+  in two places: the K-Series OpenAPI 3.1 `webhooks` block (11 typed inbound callbacks with full payload
+  schemas) and the X-Series WebhookType enum (7 event types, subscribable through the /webhooks CRUD operations).
+  This artifact captures both verbatim from the specs; nothing here is authored. A fetch of the X-Series
+  webhooks guide page returned HTTP 429 from the ReadMe docs host and was not retried, so prose detail
+  from that page is absent.'
+products:
+- product: X-Series
+  api: lightspeed:retail-x-series
+  subscription_model: CRUD via /webhooks (POST creates, GET lists, PUT updates, DELETE removes); one URL
+    + type per subscription; `active` toggles delivery
+  subscription_operations:
+  - post-webhooks
+  - get-webhooks
+  - get-webhooks-id
+  - put-webhooks-id
+  - delete-webhooks-webhookId
+  required_scope: webhooks
+  content_type: application/x-www-form-urlencoded on the subscription POST (per the request-format guide)
+  events:
+  - type: sale.update
+    description: A sale changed.
+  - type: product.update
+    description: A product changed.
+  - type: customer.update
+    description: A customer changed.
+  - type: inventory.update
+    description: An inventory level changed.
+  - type: register_closure.create
+    description: A register was closed.
+  - type: consignment.send
+    description: A consignment was sent.
+  - type: consignment.receive
+    description: A consignment was received.
+  note: Seven event types only — update-shaped, not create/delete-shaped, for the core entities. There
+    is no sale.create or product.delete event.
+- product: K-Series
+  api: lightspeed:restaurant-k-series
+  subscription_model: CRUD via /o/wh/1/webhook (apeCreateWebhookOo, apeUpdateWebhookOo, apeDeleteWebhookEndpoint,
+    apeGetWebhookOo) and staff-api webhook operations
+  delivery_headers:
+  - X-Lightspeed-Idempotency-Key (required; subscribers deduplicate on it)
+  - Content-Type (application/json only)
+  events:
+  - event: apeOrder notification
+    method: POST
+    operationId: onlineOrderNotification
+    summary: Order Notification
+  - event: apePayment notification
+    method: POST
+    operationId: onlinePaymentNotification
+    summary: Payment Notification
+  - event: apeItem availability notification
+    method: POST
+    operationId: salesRestrictionUpdatedNotification
+    summary: Item Availability Notification
+  - event: apeOnline Ordering API Readiness notification
+    method: POST
+    operationId: onlineOrderingReadinessUpdatedNotification
+    summary: Online Ordering API Readiness Notification
+  - event: pms-integration{subscriber-host}/charge
+    method: POST
+    operationId: transactionDetails
+    summary: Transaction Details
+  - event: reservation-serviceReservation error notification
+    method: POST
+    operationId: reservationErrorNotification
+    summary: Error notification
+  - event: reservation-serviceReservation integration notification
+    method: POST
+    operationId: reservationIntegrationNotification
+    summary: Integration notification
+  - event: reservation-serviceReservation onboarding notification
+    method: POST
+    operationId: reservationOnboardingNotification
+    summary: Onboarding notification
+  - event: reservation-serviceReservation order notification
+    method: POST
+    operationId: reservationOrderNotification
+    summary: Order notification
+  - event: reservation-servicePOS reservation updated notification
+    method: POST
+    operationId: posReservationUpdatedNotification
+    summary: POS reservation updated notification
+  - event: staff-apiShift notification
+    method: POST
+    operationId: shiftNotification
+    summary: Shift notification
+  note: Declared in the OpenAPI 3.1 `webhooks` object, so each callback carries a full request-body schema
+    — the closest thing Lightspeed ships to an event contract.
+gaps:
+- No AsyncAPI document for any product line.
+- No published event catalog, retry policy or delivery-guarantee statement for X-Series webhooks.
+- No webhook signature/verification scheme documented on either product line; K-Series ships an idempotency
+  key but no HMAC signature.
+- eCom C-Series documents webhooks in prose (https://developers.lightspeedhq.com/ecom/tutorials/webhooks/)
+  but publishes no machine-readable event list; not captured here.

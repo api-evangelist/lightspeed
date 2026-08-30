@@ -1,0 +1,348 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Lightspeed Restaurant K Series Tax Breakdown API
+  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
+
+    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+
+    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
+
+    '
+  x-logo:
+    altText: Lightspeed Commerce
+    url: static/lightspeed@2x.png
+servers:
+- url: https://api.trial.lsk.lightspeed.app
+  description: Demo URL
+  x-bump-branch-name: demo
+- url: https://api.lsk.lightspeed.app
+  description: Production URL
+  x-bump-branch-name: prod
+tags:
+- name: Tax Breakdown
+paths:
+  /tp/v1/business-locations/{businessLocationId}/tax-breakdown:
+    post:
+      summary: Post proposed order
+      description: Returns the tax breakdown of a proposed order
+      operationId: tax-preview-apiTaxBreakdown
+      parameters:
+      - in: path
+        name: businessLocationId
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+          example: 45454565682155
+          description: the id of the businessLocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                accountProfileCode:
+                  description: A valid account profile code as setup for this business location.
+                  type: string
+                items:
+                  description: The items contained in this order
+                  items:
+                    properties:
+                      sku:
+                        maxLength: 25
+                        description: A stock-keeping unit
+                        type: string
+                      quantity:
+                        description: Quantity of item to be ordered
+                        type: number
+                        format: double
+                      subItems:
+                        description: subitems applied to this item
+                        items:
+                          properties:
+                            sku:
+                              maxLength: 25
+                              description: A stock-keeping unit
+                              type: string
+                            quantity:
+                              description: Quantity of sub-item to be added to the order item
+                              type: number
+                              format: double
+                          type: object
+                          required:
+                          - sku
+                        type: array
+                    type: object
+                    required:
+                    - sku
+                  type: array
+              type: object
+        required: true
+      tags:
+      - Tax Breakdown
+      responses:
+        '200':
+          description: Tax Breakdown
+          content:
+            application/json:
+              schema:
+                properties:
+                  transactions:
+                    items:
+                      properties:
+                        sku:
+                          example: UGG-BB-PUR-06
+                          maxLength: 25
+                          description: A stock-keeping unit
+                          type: string
+                        quantity:
+                          description: Quantity of the item on this transaction line
+                          type: number
+                        unitPrice:
+                          description: Cost of item
+                          type: number
+                        netAmount:
+                          description: Cost of transaction line before taxes are applied
+                          type: number
+                        grossAmount:
+                          description: Cost of transaction with all taxes applied
+                          type: number
+                        taxAmount:
+                          description: Cost of all taxes to be applied to this transaction line
+                          type: number
+                      type: object
+                    type: array
+                  taxLines:
+                    items:
+                      properties:
+                        description:
+                          description: Description of the tax to print on the receipt
+                          type: string
+                        taxRate:
+                          description: Tax rate as configured, a decimal number encoded in a string, "1.20" means 20% tax
+                          type: string
+                        taxCode:
+                          description: Tax code as configured
+                          type: string
+                        taxName:
+                          description: Tax name as configured
+                          type: string
+                        netAmount:
+                          description: Cost of transaction line before taxes are applied
+                          type: number
+                        grossAmount:
+                          description: Cost of transaction with all taxes applied
+                          type: number
+                        taxAmount:
+                          description: Cost of all taxes to be applied to this transaction line
+                          type: number
+                        taxIncluded:
+                          type: boolean
+                      type: object
+                    type: array
+                  totalNetAmountInCents:
+                    description: Total cost of order before taxes are applied
+                    type: integer
+                    format: int64
+                  totalGrossAmountInCents:
+                    description: Total cost of order after all taxes are applied
+                    type: integer
+                    format: int64
+                  totalTaxAmountInCents:
+                    description: Cost of all taxes due on the order
+                    type: integer
+                    format: int64
+                  amountDue:
+                    description: Total cost of order in big decimal format
+                    type: number
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '400'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+        '403':
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '403'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '404'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                properties:
+                  status:
+                    enum:
+                    - '503'
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+                  message:
+                    type: string
+                  apiSubExceptions:
+                    items:
+                      properties:
+                        field:
+                          type: string
+                        rejectedValue:
+                          type: string
+                        message:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+      security:
+      - OAuth2:
+        - orders-api
+components:
+  securitySchemes:
+    OAuth2:
+      description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+
+        See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview) for more details on how to authenticate.
+
+        '
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth/authorize
+          tokenUrl: /oauth/token
+          scopes:
+            orders-api: 'Read business information, floors, menus, discounts, and production instructions.
+
+              Read and write orders and payments. Read [Rich Item](https://api-docs.lsk.lightspeed.app/prod/group/endpoint-rich-item) data.'
+            financial-api: Read financial data
+            reservation-***: Platform reservations scope. The `***` will be replaced by the [platform-code](https://api-docs.lsk.lightspeed.app/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-platform-code) of the reservation platform.
+            items: Read and write items
+            propertymanagement: Read and write Property Management System configurations.
+            id-cards: Create and manage ID card batches and cards.
+            staff-api: Read shift information, read and write user information.
+            reservations-api: 'Configure *legacy* reservation integrations.
+
+              **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
+
+              More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-tagGroups:
+- name: Rich Item API
+  tags:
+  - Rich Item
+  - Migration
+- name: Tax Preview API
+  tags:
+  - Tax Breakdown
+- name: Staff Api
+  tags:
+  - Staff
+  - Internal Staff
+- name: Reservation API
+  tags:
+  - Reservations for Platforms
+- name: PMS API
+  tags:
+  - PMS
+- name: Items API
+  tags:
+  - Items
+  - ItemsV2
+  - Menus
+  - Buttons
+  - Production Instructions
+  - Inventory
+  - Combos
+  - Groups
+  - MenusV2
+  - Accounting Group
+  - IntegrationMenu
+  - Price Lists
+  - Products
+  - ItemAppearance
+  - Modifiers
+  - ModifierGroups
+  - Allergens
+  - Locales
+  - RichItem
+- name: id-cards-api API
+  tags:
+  - ID Cards
+- name: Financial API
+  tags:
+  - Financial
+  - FinancialV2
+- name: Online Ordering API
+  tags:
+  - Order and Pay
+  - 'Order and Pay: Webhook'

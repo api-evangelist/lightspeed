@@ -1,0 +1,763 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Fulfillments API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Fulfillment operations
+  name: Fulfillments
+paths:
+  /fulfillments:
+    get:
+      description: Retrieves a paginated list of fulfillment summary items with optional filtering
+      operationId: getFulfillmentSummary
+      parameters:
+      - description: Filter by outlet IDs (can be specified multiple times)
+        example:
+        - e058ea02-c565-405f-be27-cefaeeca1f92
+        - aea44f85-b729-448b-bcd4-bd2b8757396f
+        explode: true
+        in: query
+        name: outlet_id
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Filter by sale IDs (can be specified multiple times)
+        example:
+        - 81b37e5f-aa50-4fe3-95d3-a3cec73a7e2c
+        - 81d2fc44-e4d4-4180-8f1e-b36de2acf438
+        explode: true
+        in: query
+        name: sale_id
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Filter by fulfillment types (can be specified multiple times)
+        example:
+        - PICKUP
+        - DISPATCH
+        explode: true
+        in: query
+        name: fulfillment_type
+        schema:
+          items:
+            enum:
+            - PICKUP
+            - DISPATCH
+            - SERVICE
+            type: string
+          type: array
+      - description: Filter by fulfillment states (can be specified multiple times)
+        example:
+        - OPEN
+        - STARTED
+        explode: true
+        in: query
+        name: fulfillment_state
+        schema:
+          items:
+            enum:
+            - OPEN
+            - STARTED
+            - PICKED
+            - PACKED
+            - FULFILLED
+            type: string
+          type: array
+      - description: Page number for pagination (1-based)
+        example: 1
+        in: query
+        name: page_number
+        schema:
+          default: 1
+          minimum: 1
+          type: integer
+      - description: Number of items per page
+        example: 20
+        in: query
+        name: page_size
+        schema:
+          default: 10
+          maximum: 100
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FulfillmentSummaryResponse'
+          description: Successful response with fulfillment summary data
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      security:
+      - bearerAuth: []
+      summary: Get Fulfillments Summary
+      tags:
+      - Fulfillments
+  /fulfillments/fulfill:
+    post:
+      description: 'Completes all fulfillments for a given sale. This is an idempotent action.
+
+
+        🔒 Requires: `sales:write` scope'
+      operationId: postFulfillSale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FulfillSaleRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FulfillSaleResponse'
+          description: Sale fulfilled successfully.
+        '400':
+          description: Bad Request - The request body is malformed.
+        '401':
+          description: Unauthorized - Authentication information is missing or invalid.
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      security:
+      - bearerAuth: []
+      summary: Fulfill a Sale
+      tags:
+      - Fulfillments
+  /fulfillments/{fulfillment_id}/fulfill:
+    post:
+      description: 'Fulfills line items for a given sale. This is an idempotent action.
+
+
+        Each line item may optionally include a `source_breakdown`, which specifies how a fulfillment quantity should be sourced.
+
+        When provided, all three fields are required and must sum to the parent quantity.
+
+
+        🔒 Requires: `sales:write` scope'
+      operationId: postFulfillLineItems
+      parameters:
+      - description: The unique identifier of the fulfillment
+        in: path
+        name: fulfillment_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FulfillLineItemsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FulfillLineItemsResponse'
+          description: Sale line item fulfilled successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      security:
+      - bearerAuth: []
+      summary: Fulfill line items within a sale
+      tags:
+      - Fulfillments
+  /fulfillments/{fulfillment_id}/history:
+    get:
+      description: 'Retrieves the history ledger for a single fulfillment, showing all state-change events
+
+        (e.g. created, picked, packed, fulfilled, voided, returned) for each line item.
+
+
+        Results are ordered oldest-first and support cursor-based pagination.
+
+        When no more pages exist, the `next_cursor` field will be empty.
+
+
+        🔒 Requires: `fulfillments:read` scope'
+      operationId: getFulfillmentHistory
+      parameters:
+      - description: The unique identifier of the fulfillment
+        in: path
+        name: fulfillment_id
+        required: true
+        schema:
+          type: string
+      - description: Maximum number of history entries to return per page. When omitted or set to 0, all entries are returned.
+        example: 100
+        in: query
+        name: limit
+        schema:
+          maximum: 1000
+          minimum: 0
+          type: integer
+      - description: Opaque pagination cursor returned from a previous request. Pass this value to retrieve the next page of results.
+        in: query
+        name: cursor
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FulfillmentHistoryResponse'
+          description: Successful response with fulfillment history entries
+        '400':
+          description: Bad Request — invalid cursor or limit parameter
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found — fulfillment does not exist or feature is not enabled
+      summary: Get Fulfillment History
+      tags:
+      - Fulfillments
+  /fulfillments/{fulfillment_id}/pack:
+    post:
+      description: 'Sets pack quantity for line items for a given sale. This is an idempotent action.
+
+
+        Each line item may optionally include a `source_breakdown`, which specifies how a packing quantity should be sourced.
+
+        When provided, both fields are required and must sum to the parent quantity.
+
+        Source breakdown is not allowed when the quantity is negative (unpacking).
+
+
+        🔒 Requires: `sales:write` scope'
+      operationId: postPackLineItems
+      parameters:
+      - description: The unique identifier of the fulfillment
+        in: path
+        name: fulfillment_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackLineItemsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackLineItemsResponse'
+          description: Sale line item packed successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      security:
+      - bearerAuth: []
+      summary: Partial Pack line items within a sale
+      tags:
+      - Fulfillments
+  /fulfillments/{fulfillment_id}/pick:
+    post:
+      description: 'Sets pick quantity for line items for a given sale. This is an idempotent action.
+
+
+        🔒 Requires: `sales:write` scope'
+      operationId: postPickLineItems
+      parameters:
+      - description: The unique identifier of the fulfillment
+        in: path
+        name: fulfillment_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PickLineItemsRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PickLineItemsResponse'
+          description: Sale line item picked successfully.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '409':
+          description: Conflict
+      security:
+      - bearerAuth: []
+      summary: Partial Pick line items within a sale
+      tags:
+      - Fulfillments
+components:
+  schemas:
+    PickLineItemsRequest:
+      properties:
+        line_items:
+          description: The line items to be picked
+          items:
+            $ref: '#/components/schemas/PickLineItemRequest'
+          type: array
+        version:
+          description: The current version number of the fulfillment.
+          example: 5
+          format: int32
+          type: integer
+      required:
+      - version
+      - line_items
+      type: object
+    FulfillLineItemsRequest:
+      properties:
+        line_items:
+          description: The line items to be fulfilled
+          items:
+            $ref: '#/components/schemas/FulfillmentLineItemRequest'
+          type: array
+        version:
+          description: The current version number of the fulfillment.
+          example: 5
+          format: int32
+          type: integer
+      required:
+      - version
+      - line_items
+      type: object
+    PackLineItemsResponse:
+      properties:
+        data:
+          properties:
+            id:
+              description: The unique identifier of the fulfillment.
+              example: '7428951063847291856'
+              type: string
+            version:
+              description: The new version number of the fulfillment after the update.
+              example: 3
+              format: int32
+              type: integer
+          type: object
+      type: object
+    FulfillmentResponse:
+      properties:
+        id:
+          description: The unique identifier of the fulfillment.
+          example: '1950523126384443392'
+          type: string
+        version:
+          description: The new version number of the fulfillment after the update.
+          example: 2
+          format: int32
+          type: integer
+      type: object
+    FulfillmentHistoryResponse:
+      description: Paginated response containing fulfillment history entries
+      properties:
+        data:
+          description: List of history entries ordered oldest-first
+          items:
+            $ref: '#/components/schemas/FulfillmentHistoryEntry'
+          type: array
+        next_cursor:
+          description: Opaque cursor for fetching the next page. Empty when no more pages exist.
+          type: string
+      required:
+      - data
+      type: object
+    FulfillmentHistoryEntry:
+      description: A single state-change event in the fulfillment history ledger
+      properties:
+        created_at:
+          description: Timestamp when the event was recorded
+          example: '2025-01-15T10:30:00Z'
+          format: date-time
+          type: string
+        event_type:
+          description: The type of state-change event
+          enum:
+          - CREATED
+          - QUANTITY_UPDATED
+          - REMOVED
+          - PICKED
+          - PACKED
+          - FULFILLED
+          - VOIDED
+          - UNVOIDED
+          - RETURNED
+          - RETURN_VOIDED
+          - SPLIT
+          type: string
+        fulfilled_delta:
+          description: Change in fulfilled quantity for this line item
+          example: '0'
+          type: string
+        packed_quantity_delta:
+          description: Change in packed quantity for this line item
+          example: '0'
+          type: string
+        picked_quantity_delta:
+          description: Change in picked quantity for this line item
+          example: '0'
+          type: string
+        product_id:
+          description: The ID of the product associated with the line item
+          example: e058ea02-c565-405f-be27-cefaeeca1f92
+          format: uuid
+          type: string
+        quantity_delta:
+          description: Change in total quantity for this line item
+          example: '5'
+          type: string
+        sale_line_item_id:
+          description: The ID of the sale line item this event relates to
+          example: 81b37e5f-aa50-4fe3-95d3-a3cec73a7e2c
+          format: uuid
+          type: string
+        source_sale_id:
+          description: The ID of the source sale (present for RETURNED and SPLIT events)
+          example: 81d2fc44-e4d4-4180-8f1e-b36de2acf438
+          format: uuid
+          type: string
+      required:
+      - sale_line_item_id
+      - product_id
+      - event_type
+      - quantity_delta
+      - picked_quantity_delta
+      - packed_quantity_delta
+      - fulfilled_delta
+      - created_at
+      type: object
+    FulfillmentLineItemRequest:
+      properties:
+        quantity:
+          description: The quantity to be fulfilled
+          example: 1
+          format: double
+          type: number
+        sale_line_item_id:
+          description: The unique identifier of the sale line item to be fulfilled.
+          example: f3a8d2c1-9b7e-4f56-8a12-3e4d5c6b7a89
+          format: uuid
+          type: string
+        source_breakdown:
+          $ref: '#/components/schemas/FulfillLineItemSourceBreakdown'
+      required:
+      - sale_line_item_id
+      - quantity
+      type: object
+    FulfillSaleResponse:
+      properties:
+        data:
+          description: A list of the updated fulfillments.
+          items:
+            $ref: '#/components/schemas/FulfillmentResponse'
+          type: array
+      type: object
+    FulfillLineItemsResponse:
+      properties:
+        data:
+          properties:
+            id:
+              description: The unique identifier of the fulfillment.
+              example: '7428951063847291856'
+              type: string
+            version:
+              description: The new version number of the fulfillment after the update.
+              example: 3
+              format: int32
+              type: integer
+          type: object
+      type: object
+    FulfillSaleRequest:
+      properties:
+        sale_id:
+          description: The unique identifier of the sale to be fulfilled.
+          example: 075bbd4b-302a-a27c-11f0-6d3a98056287
+          format: uuid
+          type: string
+      required:
+      - sale_id
+      type: object
+    PackLineItemRequest:
+      properties:
+        quantity:
+          description: The quantity to be packed
+          example: 1
+          format: double
+          type: number
+        sale_line_item_id:
+          description: The unique identifier of the sale line item to be packed.
+          example: f3a8d2c1-9b7e-4f56-8a12-3e4d5c6b7a89
+          format: uuid
+          type: string
+        source_breakdown:
+          $ref: '#/components/schemas/PackLineItemSourceBreakdown'
+      required:
+      - sale_line_item_id
+      - quantity
+      type: object
+    PackLineItemsRequest:
+      properties:
+        line_items:
+          description: The line items to be packed
+          items:
+            $ref: '#/components/schemas/PackLineItemRequest'
+          type: array
+        version:
+          description: The current version number of the fulfillment.
+          example: 5
+          format: int32
+          type: integer
+      required:
+      - version
+      - line_items
+      type: object
+    FulfillmentSummaryItem:
+      properties:
+        created_at:
+          description: Timestamp when the item was created
+          example: '2024-01-15T10:30:00Z'
+          format: date-time
+          type: string
+        id:
+          description: Unique identifier for the fulfillment summary item
+          example: '1947700198720344064'
+          type: string
+        line_items:
+          items:
+            $ref: '#/components/schemas/FulfillmentSummaryLineItem'
+          type: array
+        note:
+          description: Combined notes with newline separators
+          example: 'Customer requested specific pickup time
+
+            Handle with care'
+          type: string
+        outlet_id:
+          description: Identifier of the outlet
+          example: e058ea02-c565-405f-be27-cefaeeca1f92
+          type: string
+        sale_id:
+          description: Identifier of the sale
+          example: 81b37e5f-aa50-4fe3-95d3-a3cec73a7e2c
+          type: string
+        shipping_address_id:
+          description: ID of the shipping address associated with this fulfillment. Only present for DISPATCH type fulfillments.
+          example: '12345678901234567'
+          type:
+          - string
+          - 'null'
+        state:
+          description: Current state of the fulfillment
+          enum:
+          - OPEN
+          - STARTED
+          - PICKED
+          - PACKED
+          - FULFILLED
+          example: OPEN
+          type: string
+        type:
+          description: Type of fulfillment
+          enum:
+          - PICKUP
+          - DISPATCH
+          - SERVICE
+          example: PICKUP
+          type: string
+        updated_at:
+          description: Timestamp when the item was last updated
+          example: '2024-01-15T14:20:00Z'
+          format: date-time
+          type: string
+        user_ids:
+          description: List of user IDs associated with this fulfillment
+          example:
+          - cca2eff2-9d4a-403b-a045-af953b6572b0
+          items:
+            type: string
+          type: array
+        version:
+          description: Version number for optimistic locking
+          example: 1
+          format: int32
+          type: integer
+      required:
+      - id
+      - outlet_id
+      - sale_id
+      - type
+      - state
+      - user_ids
+      - note
+      - created_at
+      - updated_at
+      - version
+      - line_items
+      type: object
+    PickLineItemsResponse:
+      properties:
+        data:
+          properties:
+            id:
+              description: The unique identifier of the fulfillment.
+              example: '7428951063847291856'
+              type: string
+            version:
+              description: The new version number of the fulfillment after the update.
+              example: 3
+              format: int32
+              type: integer
+          type: object
+      type: object
+    FulfillmentSummaryResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/FulfillmentSummaryItem'
+          type: array
+      required:
+      - data
+      type: object
+    FulfillmentSummaryLineItem:
+      properties:
+        fulfilled_quantity:
+          description: Quantity that has been fulfilled (decimal as string)
+          example: '0.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        packed_quantity:
+          description: Quantity that has been packed (decimal as string)
+          example: '0.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        picked_quantity:
+          description: Quantity that has been picked (decimal as string)
+          example: '0.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        product_id:
+          description: Identifier of the product
+          example: e9d7d1b3-0561-45f5-9e40-c7bfa81db394
+          type: string
+        quantity:
+          description: Total quantity (decimal as string)
+          example: '5.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        sale_line_item_id:
+          description: Identifier of the sale line item
+          example: 460e1119-2f41-42a3-bd61-3f9639e2e265
+          type: string
+      required:
+      - sale_line_item_id
+      - product_id
+      - quantity
+      - picked_quantity
+      - packed_quantity
+      - fulfilled_quantity
+      type: object
+    FulfillLineItemSourceBreakdown:
+      description: Specifies how a fulfillment quantity should be sourced. When provided, all three fields are required and must sum to the parent quantity.
+      properties:
+        quantity_from_not_started:
+          description: Quantity to source from the not-started state.
+          format: double
+          type: number
+        quantity_from_packed:
+          description: Quantity to source from the packed state.
+          format: double
+          type: number
+        quantity_from_picked:
+          description: Quantity to source from the picked state.
+          format: double
+          type: number
+      required:
+      - quantity_from_picked
+      - quantity_from_packed
+      - quantity_from_not_started
+      type: object
+    PickLineItemRequest:
+      properties:
+        quantity:
+          description: The quantity to be picked
+          example: 1
+          format: double
+          type: number
+        sale_line_item_id:
+          description: The unique identifier of the sale line item to be picked.
+          example: f3a8d2c1-9b7e-4f56-8a12-3e4d5c6b7a89
+          format: uuid
+          type: string
+      required:
+      - sale_line_item_id
+      - quantity
+      type: object
+    PackLineItemSourceBreakdown:
+      description: Specifies how a packing quantity should be sourced. When provided, both fields are required and must sum to the parent quantity. Source breakdown is not allowed when the parent quantity is negative (unpacking).
+      properties:
+        quantity_from_not_started:
+          description: Quantity to source from the not-started state.
+          format: double
+          type: number
+        quantity_from_picked:
+          description: Quantity to source from the picked state.
+          format: double
+          type: number
+      required:
+      - quantity_from_picked
+      - quantity_from_not_started
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones

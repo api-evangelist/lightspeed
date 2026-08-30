@@ -1,0 +1,268 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: x-series.api@lightspeedhq.com
+    name: Lightspeed Developer Relations
+    url: https://developers.retail.lightspeed.app
+  description: Lightspeed Retail (X-Series) API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://developers.lightspeedhq.com/terms
+  title: 2026-07 Product Categories API
+  version: 2026-07
+servers:
+- url: https://{domain_prefix}.retail.lightspeed.app/api/2026-07
+  variables:
+    domain_prefix:
+      default: example
+      description: Domain prefix of the store to be operated on
+security:
+- bearerAuth: []
+tags:
+- description: Product Categories operations
+  name: Product Categories
+paths:
+  /product_categories:
+    get:
+      description: '🔒 Requires: `products:read` scope'
+      operationId: ListProductCategories
+      parameters:
+      - description: If parent is an id, it filters the list of categories that belongs to the given category. If parent is "none", it filters  categories for root categories only.
+        in: query
+        name: parent
+        schema:
+          type: string
+      - description: 'Defaults to "family" * `family` - Include all categories in the hierarchy. * `children` - Include only direct children.
+
+          '
+        in: query
+        name: include
+        schema:
+          enum:
+          - family
+          - children
+          type: string
+      - description: The total number of categories to return. Default is 1000.
+        in: query
+        name: page_size
+        schema:
+          type: integer
+      - description: The category id to get the next set of paginated results.
+        in: query
+        name: after
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      categories:
+                        description: The list of product categories, sorted by the full category path alphabetically ascending. In other words, by sorting category path, it will be sorted per category level in alphabetical order.
+                        items:
+                          $ref: '#/components/schemas/ProductCategory'
+                        type: array
+                    type: object
+                  page_info:
+                    properties:
+                      has_next:
+                        description: True if there are more pages available in the next page.
+                        type: boolean
+                      last_seen:
+                        description: If there are more results, this is the value to use as "after" to retrieve the next set of results.
+                        type: string
+                    type: object
+                type: object
+          description: ''
+      summary: List product categories
+      tags:
+      - Product Categories
+  /product_categories/bulk:
+    delete:
+      description: 'Delete a list of categories.
+
+        If the category is a parent or root, the descendent categories also get deleted.
+
+        Products associated to the deleted category are assigned to the parent, or if the deleted category is a root, the products are unassigned.
+
+
+        🔒 Requires: `products:write` scope
+
+        '
+      operationId: DeleteProductCategories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                category_ids:
+                  items:
+                    type: string
+                  type: array
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    properties:
+                      categories:
+                        description: The list of categories deleted.
+                        items:
+                          properties:
+                            ids:
+                              description: The id of the category deleted, and the subsequent descendent categories deleted.
+                              items:
+                                format: uuid
+                                type: string
+                              type: array
+                            job_id:
+                              description: The id of the asynchronous job to move products to an either the parent category or unassign the product from the category.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                type: object
+          description: ''
+      summary: Delete a list of product categories
+      tags:
+      - Product Categories
+    post:
+      description: '🔒 Requires: `products:write` scope'
+      operationId: CreateUpdateProductCategories
+      requestBody:
+        content:
+          application/json:
+            examples:
+              Add new category under existing category:
+                value:
+                  categories:
+                  - name: Dog Food
+                    parent_category_id: 2cd5ff83-8a76-498a-9fe9-f28c9e24bcff
+              Adding a new category hierarchy:
+                value:
+                  categories:
+                  - name: Pet
+                    payload_id: arbitrary_root_id
+                  - name: Dog
+                    payload_parent_category_id: arbitrary_root_id
+                  - name: Cat
+                    payload_id: arbitrary_cat_id
+                    payload_parent_category_id: arbitrary_root_id
+                  - name: Cat Food
+                    payload_parent_category_id: arbitrary_cat_id
+              Update category:
+                value:
+                  categories:
+                  - id: 2cd5ff83-8a76-498a-9fe9-f28c9e24bcff
+                    name: Animal / Pet
+            schema:
+              properties:
+                categories:
+                  items:
+                    properties:
+                      id:
+                        description: The category id to be updated.
+                        format: uuid
+                        type: string
+                      name:
+                        description: The category name to be updated, or added for new category.
+                        type: string
+                      parent_category_id:
+                        description: Existing category that the new category will be a child of.
+                        format: uuid
+                        type: string
+                      payload_id:
+                        description: A temporary id to identify the category that don't exist yet. This can be used by other categories within this payload to refer to this category.
+                        type: string
+                      payload_parent_category_id:
+                        description: The temporary id referring to the parent category which is also to be created in the same payload.
+                        type: string
+                    type: object
+                  type: array
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      description: The categories created or updated
+                      properties:
+                        id:
+                          description: The category id. If updated, its existing, if created, it is the issued id.
+                          format: uuid
+                          type: string
+                        name:
+                          description: The saved category name.
+                          type: string
+                        parent_category_id:
+                          description: The parent category id, if the category is not a root. If the new category in the request was referencing pseudo parent, this refers to the created parent's real id.
+                          format: uuid
+                          type: string
+                        payload_id:
+                          description: A reference back to the pseudo id given for this category in the request.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+          description: ''
+      summary: Create and update a product category hierarchy
+      tags:
+      - Product Categories
+components:
+  schemas:
+    ProductCategory:
+      properties:
+        category_path:
+          items:
+            $ref: '#/components/schemas/ProductCategoryPath'
+          type: array
+        id:
+          description: The category id
+          format: uuid
+          type: string
+        leaf_category:
+          description: True if the category does not have any more children (i.e. leaf).
+          type: boolean
+        name:
+          description: The name of the category
+          type: string
+        parent_category_id:
+          description: The parent category id, or null if its root category.
+          format: uuid
+          type: string
+        root_category_id:
+          description: The category id of the root of the category tree. If category is a root, this will be itself.
+          format: uuid
+          type: string
+      type: object
+    ProductCategoryPath:
+      properties:
+        id:
+          description: Object id of the Product Type in the path.
+          type: string
+        name:
+          description: The Product Type name.
+          type: string
+      required:
+      - id
+      - name
+      title: Product Category Path
+      type: object
+  securitySchemes:
+    bearerAuth:
+      description: Bearer Token for API authentication.
+      scheme: bearer
+      type: http
+externalDocs:
+  description: List of tz database time zones
+  url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
