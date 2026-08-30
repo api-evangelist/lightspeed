@@ -35,6 +35,7 @@ specificationVersion: '0.23'
 tags:
 - Commerce
 - Point-of-Sale
+- POS
 - Retail
 - Restaurant
 - Inventory
@@ -63,7 +64,7 @@ apis:
   baseURL: https://api.lightspeedapp.com
   tags:
   - Retail
-  - Point-of-Sale
+  - POS
   - Inventory
   - Sales
   tags_raw:
@@ -148,7 +149,7 @@ apis:
   baseURL: https://api.kounta.com
   tags:
   - Restaurant
-  - Point-of-Sale
+  - POS
   - Order
   - Inventory
   - Hospitality
@@ -174,7 +175,7 @@ apis:
   - Reservations
   - Tee Sheet
   - Booking
-  - Point-of-Sale
+  - POS
   tags_raw:
   - Golf
   - Reservations
@@ -678,6 +679,8 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
+  - Item
+  tags_raw:
   - Items
   properties:
   - type: OpenAPI
@@ -740,6 +743,8 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
+  - Order And Pay
+  tags_raw:
   - Order and Pay
   properties:
   - type: OpenAPI
@@ -1131,6 +1136,8 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
@@ -1734,6 +1741,8 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -1795,6 +1804,8 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
