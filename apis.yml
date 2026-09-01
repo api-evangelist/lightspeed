@@ -35,7 +35,6 @@ specificationVersion: '0.23'
 tags:
 - Commerce
 - Point-of-Sale
-- POS
 - Retail
 - Restaurant
 - Inventory
@@ -64,7 +63,7 @@ apis:
   baseURL: https://api.lightspeedapp.com
   tags:
   - Retail
-  - POS
+  - Point-of-Sale
   - Inventory
   - Sales
   tags_raw:
@@ -149,7 +148,7 @@ apis:
   baseURL: https://api.kounta.com
   tags:
   - Restaurant
-  - POS
+  - Point-of-Sale
   - Order
   - Inventory
   - Hospitality
@@ -175,7 +174,7 @@ apis:
   - Reservations
   - Tee Sheet
   - Booking
-  - POS
+  - Point-of-Sale
   tags_raw:
   - Golf
   - Reservations
@@ -743,7 +742,7 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
-  - Order And Pay
+  - Order and Pay
   tags_raw:
   - Order and Pay
   properties:
