@@ -96,3 +96,21 @@ gaps:
 - Neither server exposes Lightspeed business objects as tools. An agent cannot call "create a sale" or
   "list products" as an MCP tool; it can only read the contract, or hand-build a HAR request for execute-request
   on X-Series.
+tools_count: 5
+tools:
+- name: list-endpoints
+  description: ''
+- name: get-endpoint
+  description: ''
+- name: search-endpoints
+  description: ''
+- name: execute-request
+  description: ''
+- name: get-server-variables
+  description: ''
+tools_source: live tools/list via initialize handshake, 2026-09-11 (signals/audit_mcp_authorship.py --probe)
+authorship: platform
+authorship_note: 'PLATFORM-AUTHORED: this tool shape is shared with at least one other provider in the
+  catalog, so it is a platform default appearing under this provider''s domain rather than an interface
+  this provider designed. Shared shape: (''execute_request'', ''get_endpoint'', ''get_server_variables'',
+  ''list_*'', ''search_*'')'
