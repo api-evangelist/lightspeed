@@ -30,7 +30,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/lightspeed.png
 url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/apis.yml
 created: 2026-06-13
-modified: '2026-08-27'
+modified: '2026-09-16'
 specificationVersion: '0.23'
 tags:
 - Commerce
@@ -56,9 +56,8 @@ tags_raw:
 apis:
 - aid: lightspeed:retail-r-series
   name: Lightspeed Retail R-Series API
-  description: >-
-    REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory, customers,
-    products, and reporting data for retail point-of-sale systems.
+  description: REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory,
+    customers, products, and reporting data for retail point-of-sale systems.
   humanURL: https://developers.lightspeedhq.com/retail/
   baseURL: https://api.lightspeedapp.com
   tags:
@@ -84,9 +83,9 @@ apis:
     url: https://developers.lightspeedhq.com/retail/introduction/changelog/
 - aid: lightspeed:ecom-c-series
   name: Lightspeed eCom API
-  description: >-
-    REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products, orders,
-    customers, shipments, payments, and inventory management. Requires Advanced or Professional subscription.
+  description: REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products,
+    orders, customers, shipments, payments, and inventory management. Requires Advanced or Professional
+    subscription.
   humanURL: https://developers.lightspeedhq.com/ecom/
   baseURL: https://api.shoplightspeed.com
   tags:
@@ -109,16 +108,15 @@ apis:
   - type: Authentication
     url: https://developers.lightspeedhq.com/ecom/introduction/authentication/
   - type: Postman
-    url: >-
-      https://developers.lightspeedhq.com/ecom/introduction/images/Lightspeed_eCom.postman_collection.json
+    url: https://developers.lightspeedhq.com/ecom/introduction/images/Lightspeed_eCom.postman_collection.json
   - type: ChangeLog
     url: https://developers.lightspeedhq.com/ecom/introduction/releasenotes/
 - aid: lightspeed:ecom-e-series
   name: Lightspeed eCom E-Series (Ecwid) API
-  description: >-
-    REST API for Lightspeed eCom E-Series, the Ecwid storefront platform Lightspeed acquired in 2021 and
-    now sells as eCom E-Series. Provides store profile, product catalog, categories, orders, customers,
-    discount coupons, shipping and payment application endpoints for building storefront apps and integrations.
+  description: REST API for Lightspeed eCom E-Series, the Ecwid storefront platform Lightspeed acquired
+    in 2021 and now sells as eCom E-Series. Provides store profile, product catalog, categories, orders,
+    customers, discount coupons, shipping and payment application endpoints for building storefront apps
+    and integrations.
   humanURL: https://api-docs.ecwid.com/
   baseURL: https://app.ecwid.com/api/v3
   tags:
@@ -140,10 +138,9 @@ apis:
     url: https://api-docs.ecwid.com/reference/get-store-profile
 - aid: lightspeed:restaurant-o-series
   name: Lightspeed Restaurant O-Series (Kounta) API
-  description: >-
-    REST API for Lightspeed Restaurant O-Series, the Kounta hospitality point-of-sale platform Lightspeed
-    acquired in 2019 and sells as O-Series. Exposes sites, registers, products, categories, orders, customers,
-    staff and webhook endpoints for hospitality integrations.
+  description: REST API for Lightspeed Restaurant O-Series, the Kounta hospitality point-of-sale platform
+    Lightspeed acquired in 2019 and sells as O-Series. Exposes sites, registers, products, categories,
+    orders, customers, staff and webhook endpoints for hospitality integrations.
   humanURL: https://apidoc.kounta.com/
   baseURL: https://api.kounta.com
   tags:
@@ -163,10 +160,9 @@ apis:
     url: https://apidoc.kounta.com/
 - aid: lightspeed:golf-g-series
   name: Lightspeed Golf (Chronogolf) Partner API
-  description: >-
-    Partner REST API for Lightspeed Golf, the Chronogolf tee-sheet and golf course management platform
-    Lightspeed acquired in 2019. Covers organizations, courses, tee times, green fees, reservations and
-    customers for golf booking partners, published as Postman-hosted partner documentation.
+  description: Partner REST API for Lightspeed Golf, the Chronogolf tee-sheet and golf course management
+    platform Lightspeed acquired in 2019. Covers organizations, courses, tee times, green fees, reservations
+    and customers for golf booking partners, published as Postman-hosted partner documentation.
   humanURL: https://partner-api.docs.chronogolf.com/
   baseURL: https://partner-api.chronogolf.com
   tags:
@@ -426,8 +422,7 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-financial-api
   name: Lightspeed Commerce Financial API
-  description: >-
-    V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
+  description: 'V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
 
 
     For the newer V2 versions of these endpoints see FinancialV2
@@ -449,7 +444,7 @@ apis:
     if the action impacts past reports. Can query transactions by original business date
 
     - **Backoffice modifications** (payment method change and canceling): Modifications appear on the
-    original transaction date
+    original transaction date'
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -479,8 +474,7 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-financialv2-api
   name: Lightspeed Commerce Financial V2 API
-  description: >-
-    V2 endpoints (`/f/v2/...`) for retrieving sales and financial data.
+  description: 'V2 endpoints (`/f/v2/...`) for retrieving sales and financial data.
 
 
     ### Endpoint Mapping
@@ -524,7 +518,7 @@ apis:
 
     If you need to query transactions by their original business date (e.g. for historical reporting or
     reconciliation); The V1 endpoints may be more suitable until backwards compatibility is added to V2
-    for this aspect.
+    for this aspect.'
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -706,9 +700,8 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-loyalty-adjustments-beta-api
   name: Lightspeed Commerce Loyalty Adjustments [BETA] API
-  description: >-
-    The Loyalty Adjustments [BETA] API from Lightspeed Commerce — 1 operation(s) for loyalty adjustments
-    [beta].
+  description: The Loyalty Adjustments [BETA] API from Lightspeed Commerce — 1 operation(s) for loyalty
+    adjustments [beta].
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -770,8 +763,8 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-order-and-pay-webhook-api
   name: 'Lightspeed Commerce Order and Pay: Webhook API'
-  description: >-
-    The Order and Pay: Webhook API from Lightspeed Commerce — 4 operation(s) for order and pay: webhook.
+  description: 'The Order and Pay: Webhook API from Lightspeed Commerce — 4 operation(s) for order and
+    pay: webhook.'
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1313,9 +1306,8 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-reservations-for-platforms-api
   name: Lightspeed Commerce Reservations for Platforms API
-  description: >-
-    The Reservations for Platforms API from Lightspeed Commerce — 11 operation(s) for reservations for
-    platforms.
+  description: The Reservations for Platforms API from Lightspeed Commerce — 11 operation(s) for reservations
+    for platforms.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1555,8 +1547,7 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-staff-api
   name: Lightspeed Commerce Staff API
-  description: >-
-    Staff API. Authorisation Code grant type is required for this API with permission ROLE_CONFIG_USERS.
+  description: Staff API. Authorisation Code grant type is required for this API with permission ROLE_CONFIG_USERS.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1768,8 +1759,7 @@ apis:
     url: https://api-docs.lsk.lightspeed.app/changes
 - aid: lightspeed:lightspeed-variant-attributes-api
   name: Lightspeed Commerce Variant Attributes API
-  description: >-
-    The Variant Attributes API from Lightspeed Commerce — 2 operation(s) for variant attributes.
+  description: The Variant Attributes API from Lightspeed Commerce — 2 operation(s) for variant attributes.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1952,9 +1942,9 @@ common:
 - type: AgentSkill
   url: skills/_index.yml
 - type: OpenAPI
-  url: openapi/lightspeed-x-series-openapi.json
+  url: openapi/_original/lightspeed-x-series-openapi.json
 - type: OpenAPI
-  url: openapi/lightspeed-k-series-openapi.json
+  url: openapi/_original/lightspeed-k-series-openapi.json
 - type: JSONLD
   url: json-ld/lightspeed.json
 - type: APIReference
