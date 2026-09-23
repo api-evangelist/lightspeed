@@ -1,0 +1,65 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Lightspeed Restaurant K-Series
+  version: 1.0.0
+extends: ../openapi/lightspeed-k-series-openapi.json
+x-provenance:
+  generated: '2026-08-27'
+  method: generated
+  source: >-
+    Derived from repo artifacts against the harvested K-Series contract. Adds cross-references and the
+    runtime semantics that live outside the spec. The original spec is never mutated.
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      profile: https://apis.io/provider/lightspeed/
+      artifacts:
+        conventions: conventions/lightspeed-conventions.yml
+        scopes: scopes/lightspeed-scopes.yml
+        errors: errors/lightspeed-problem-types.yml
+        lifecycle: lifecycle/lightspeed-lifecycle.yml
+        webhooks: asyncapi/lightspeed-webhooks.yml
+        mcp: mcp/lightspeed-mcp.yml
+        sandbox: sandbox/lightspeed-sandbox.yml
+- target: $.info
+  update:
+    x-mcp-server:
+      endpoint: https://api-docs.lsk.lightspeed.app/mcp
+      auth: none
+      mode: remote
+      verified: probed
+      probed: '2026-08-27'
+      tools: [search, get_pages, list_pages, list_changes, get_change]
+      note: A documentation-plane MCP server. No K-Series business operation is exposed as a tool.
+- target: $.info
+  update:
+    x-sandbox:
+      demo_base_url: https://api.trial.lsk.lightspeed.app
+      production_base_url: https://api.lsk.lightspeed.app
+      note: Both hosts are declared in the contract's own servers[] block.
+- target: $.info
+  update:
+    x-idempotency:
+      request_header: Idempotency-Key
+      applies_to: payments-processing-service payment requests
+      webhook_delivery_header: X-Lightspeed-Idempotency-Key
+      note: >-
+        Lightspeed sends X-Lightspeed-Idempotency-Key on outbound webhooks; deduplication is explicitly
+        the subscriber's responsibility.
+- target: $.info
+  update:
+    x-scope-gap:
+      undeclared_scope: user-token-by-authorization-code
+      note: >-
+        Used in the security[] block of the Reservations for Platforms operations but absent from the
+        OAuth2 authorizationCode scopes map, so it cannot be discovered from the scope reference.
+- target: $.info
+  update:
+    x-deprecation:
+      sunset_header: false
+      deprecation_header: false
+      deprecated_flags_in_spec: 35
+      note: >-
+        35 `deprecated: true` occurrences in a 91-operation contract, with no runtime deprecation
+        signal. Deprecation is visible only by reading the spec or the changelog.

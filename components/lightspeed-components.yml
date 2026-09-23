@@ -1,0 +1,63 @@
+name: Lightspeed Commerce Embedded Components
+generated: '2026-08-27'
+method: searched
+source: >-
+  registry.npmjs.org (@lightspeed scope), https://github.com/lightspeed/helios,
+  https://github.com/LightspeedHQ/crane-example-themes
+description: >-
+  Client-side and embeddable surfaces Lightspeed publishes for partners building inside the Lightspeed
+  admin or on top of Lightspeed commerce. Distinct from SDKs: these render UI, they do not wrap the REST
+  APIs.
+families:
+- family: Payments
+  components:
+  - name: '@lightspeed/online-payments-sdk'
+    registry: npm
+    version: 1.7.3
+    published: '2026-08-25'
+    description: Client library for processing online payments with Lightspeed Payments.
+    official: true
+- family: Design system
+  components:
+  - name: '@lightspeed/design-system-react'
+    registry: npm
+    version: 46.1.0
+    published: '2025-07-30'
+    repository: https://github.com/lightspeed/helios
+    description: >-
+      Helios — Lightspeed's React design system. Embedded apps that live inside the Lightspeed admin use
+      it to match the host UI. At major version 46 it is the most iterated public Lightspeed frontend
+      package.
+    official: true
+- family: Embedded app plumbing
+  components:
+  - name: '@lightspeed/react-retail-eject-link'
+    registry: npm
+    version: 1.0.13
+    published: '2025-04-17'
+    description: React Link component that lets an app running in an embedded Retail iframe open a link outside the frame.
+    official: true
+- family: Storefront / headless
+  components:
+  - name: '@lightspeed/ecom-headless'
+    registry: npm
+    version: 1.1.4
+    published: '2026-05-21'
+    description: Headless JavaScript client for the Ecwid (eCom E-Series) public API.
+    official: true
+  - name: '@ecwid/sdk'
+    registry: npm
+    version: 0.8.0
+    published: '2023-11-09'
+    repository: https://github.com/Ecwid/ecwid-js-sdk
+    description: Lightweight JavaScript SDK for interacting with the Ecwid storefront API without the Ecwid widget.
+    official: true
+- family: Themes
+  components:
+  - name: Crane themes
+    repository: https://github.com/LightspeedHQ/crane-example-themes
+    description: Reference Crane theme implementations (Vue 3 + TypeScript) for Lightspeed storefronts.
+    official: true
+    loader: '@lightspeed/crane'
+gaps:
+- No hosted/prebuilt checkout, dashboard or reporting embed is published for the Retail or Restaurant product lines.

@@ -169,9 +169,7 @@ paths:
         **Note**: Only the link is deleted, the customers are not.
 
 
-        🔒 Requires: `customers:write` scope
-
-        '
+        🔒 Requires: `customers:write` scope'
       operationId: DeleteCustomersFromCustomerGroup
       parameters:
       - description: The customer group id
@@ -281,24 +279,22 @@ paths:
       - Customer Groups
 components:
   schemas:
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+    CustomerGroupResponse:
       properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
+        data:
+          $ref: '#/components/schemas/CustomerGroup'
+      title: Customer Group Response
+      type: object
+    CustomerGroupCollection:
+      properties:
+        data:
+          description: An array of customer group objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Customer Group Collection
       type: object
     Customer:
       properties:
@@ -563,16 +559,24 @@ components:
           retailer_id: 00000000-0001-0001-0001-000000000001
           updated_at: '2023-04-16T12:44:54+00:00'
           version: 150547
-    CustomerGroupCollection:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
-        data:
-          description: An array of customer group objects wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/CustomerGroup'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      title: Customer Group Collection
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
       type: object
     CustomerCollection:
       properties:
@@ -584,12 +588,6 @@ components:
         version:
           $ref: '#/components/schemas/Version'
       title: Customer Collection
-      type: object
-    CustomerGroupResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/CustomerGroup'
-      title: Customer Group Response
       type: object
   securitySchemes:
     bearerAuth:

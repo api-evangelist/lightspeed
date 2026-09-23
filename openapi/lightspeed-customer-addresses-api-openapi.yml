@@ -331,33 +331,6 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    CustomerAddressResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/CustomerAddress'
-      title: Customer Address Response
-      type: object
-    CustomerAddressCreateResponse:
-      properties:
-        data:
-          allOf:
-          - $ref: '#/components/schemas/CustomerAddress'
-          - properties:
-              id_token:
-                description: Token to be used when associating this address with a sale.
-                type: string
-            type: object
-      title: Customer Address Create Response
-      type: object
-    CustomerAddressCollection:
-      properties:
-        data:
-          description: An array of customer address objects.
-          items:
-            $ref: '#/components/schemas/CustomerAddress'
-          type: array
-      title: Customer Address Collection
-      type: object
     CustomerAddress:
       properties:
         address_line_1:
@@ -484,6 +457,33 @@ components:
       - country_code
       - type
       title: Customer Address Base
+      type: object
+    CustomerAddressCreateResponse:
+      properties:
+        data:
+          allOf:
+          - $ref: '#/components/schemas/CustomerAddress'
+          - properties:
+              id_token:
+                description: Token to be used when associating this address with a sale.
+                type: string
+            type: object
+      title: Customer Address Create Response
+      type: object
+    CustomerAddressResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomerAddress'
+      title: Customer Address Response
+      type: object
+    CustomerAddressCollection:
+      properties:
+        data:
+          description: An array of customer address objects.
+          items:
+            $ref: '#/components/schemas/CustomerAddress'
+          type: array
+      title: Customer Address Collection
       type: object
   securitySchemes:
     bearerAuth:

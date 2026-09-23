@@ -161,23 +161,6 @@ paths:
       - Packing Slips
 components:
   schemas:
-    PartialPackingSlipRequest:
-      description: Request body describing the subset of line items and quantities to render on a partial packing slip
-      properties:
-        lang:
-          description: BCP 47 language tag used to localize the static template strings on the packing slip. Defaults to `en-US` when omitted or unrecognized.
-          example: en-US
-          type: string
-        packed_line_items:
-          description: The sale line items and quantities to include on the partial packing slip. Must contain at least one item.
-          items:
-            $ref: '#/components/schemas/PackedLineItem'
-          minItems: 1
-          type: array
-      required:
-      - packed_line_items
-      title: Partial Packing Slip Request
-      type: object
     PackedLineItem:
       description: A single sale line item and the quantity to include on the partial packing slip
       properties:
@@ -195,6 +178,23 @@ components:
       - sale_line_item_id
       - quantity
       title: Packed Line Item
+      type: object
+    PartialPackingSlipRequest:
+      description: Request body describing the subset of line items and quantities to render on a partial packing slip
+      properties:
+        lang:
+          description: BCP 47 language tag used to localize the static template strings on the packing slip. Defaults to `en-US` when omitted or unrecognized.
+          example: en-US
+          type: string
+        packed_line_items:
+          description: The sale line items and quantities to include on the partial packing slip. Must contain at least one item.
+          items:
+            $ref: '#/components/schemas/PackedLineItem'
+          minItems: 1
+          type: array
+      required:
+      - packed_line_items
+      title: Partial Packing Slip Request
       type: object
   securitySchemes:
     bearerAuth:

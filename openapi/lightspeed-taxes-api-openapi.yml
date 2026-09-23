@@ -168,31 +168,41 @@ paths:
       - Taxes
 components:
   schemas:
-    RateRule:
-      description: 'Rule that applies to a rate.
-
-        E.g.: Tax rate that applies for clothing and footwear costing $90 or more.'
+    CreateTaxRequest:
       properties:
-        tax_code:
-          description: Label assigned to a product which indicates the tax obligation.
-          enum:
-          - vend_clothing_footwear
-          example: vend_clothing_footwear
-          type: string
-        type:
-          description: Type of rule to apply.
-          enum:
-          - threshold
-          example: threshold
-          type: string
-        value:
-          description: An optional value that can be used for the rule.
-          example: 90
+        clothing_footwear_exemption:
+          description: Whether the tax is exempt for clothing and footwear. This is applicable for tax exclusive retailers only.
+          type: boolean
+        clothing_footwear_threshold_value:
+          description: The threshold value for clothing and footwear exemption. This is applicable for tax exclusive retailers only.
+          format: double
           type: number
+        name:
+          description: The Tax name.
+          type: string
+        rate:
+          description: The Tax rate percentage.
+          example: 0.1
+          format: double
+          type: number
+        tax_over_threshold:
+          description: Whether the tax applies over the threshold. This is applicable for tax exclusive retailers only.
+          type: boolean
       required:
-      - tax_code
-      - type
-      title: Rate Rule
+      - name
+      - rate
+      title: CreateTaxRequest
+      type: object
+    TaxCollection:
+      properties:
+        data:
+          description: An array of tax objects.
+          items:
+            $ref: '#/components/schemas/Tax'
+          type: array
+      required:
+      - data
+      title: Tax Collection
       type: object
     TaxRate:
       properties:
@@ -222,16 +232,31 @@ components:
       - rate
       title: Tax rate
       type: object
-    TaxCollection:
+    RateRule:
+      description: 'Rule that applies to a rate.
+
+        E.g.: Tax rate that applies for clothing and footwear costing $90 or more.'
       properties:
-        data:
-          description: An array of tax objects.
-          items:
-            $ref: '#/components/schemas/Tax'
-          type: array
+        tax_code:
+          description: Label assigned to a product which indicates the tax obligation.
+          enum:
+          - vend_clothing_footwear
+          example: vend_clothing_footwear
+          type: string
+        type:
+          description: Type of rule to apply.
+          enum:
+          - threshold
+          example: threshold
+          type: string
+        value:
+          description: An optional value that can be used for the rule.
+          example: 90
+          type: number
       required:
-      - data
-      title: Tax Collection
+      - tax_code
+      - type
+      title: Rate Rule
       type: object
     Tax:
       properties:
@@ -268,31 +293,6 @@ components:
       - is_default
       - version
       title: Tax
-      type: object
-    CreateTaxRequest:
-      properties:
-        clothing_footwear_exemption:
-          description: Whether the tax is exempt for clothing and footwear. This is applicable for tax exclusive retailers only.
-          type: boolean
-        clothing_footwear_threshold_value:
-          description: The threshold value for clothing and footwear exemption. This is applicable for tax exclusive retailers only.
-          format: double
-          type: number
-        name:
-          description: The Tax name.
-          type: string
-        rate:
-          description: The Tax rate percentage.
-          example: 0.1
-          format: double
-          type: number
-        tax_over_threshold:
-          description: Whether the tax applies over the threshold. This is applicable for tax exclusive retailers only.
-          type: boolean
-      required:
-      - name
-      - rate
-      title: CreateTaxRequest
       type: object
     TaxResponse:
       description: A response for a single tax GET request.

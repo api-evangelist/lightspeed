@@ -1,0 +1,28 @@
+name: Lightspeed Commerce Agent Skills
+generated: '2026-08-27'
+method: generated
+source: >-
+  openapi/lightspeed-x-series-openapi.json, openapi/lightspeed-k-series-openapi.json and the repo's
+  conventions/, scopes/, errors/, asyncapi/ and sandbox/ artifacts. Every operationId referenced in
+  every skill was verified against the published specs; none is invented.
+note: >-
+  Lightspeed publishes no AGENTS.md and no provider-authored skills. These are generated packaged
+  operating instructions for the four flows an integrator most often builds, grounded in real
+  operationIds and in the runtime semantics Lightspeed documents outside the spec.
+skills:
+- file: skills/lightspeed-sync-external-sale.md
+  name: lightspeed-sync-external-sale
+  api: lightspeed:retail-x-series
+  summary: Push an external sale into X-Series without duplicating it, and know what reversal is actually available.
+- file: skills/lightspeed-gift-card-transaction.md
+  name: lightspeed-gift-card-transaction
+  api: lightspeed:retail-x-series
+  summary: Issue, redeem, reload and reverse gift cards using the mandatory client_id idempotency key.
+- file: skills/lightspeed-webhook-subscription.md
+  name: lightspeed-webhook-subscription
+  api: lightspeed:retail-x-series
+  summary: Subscribe to the seven X-Series event types and backfill gaps with the version cursor.
+- file: skills/lightspeed-restaurant-online-order.md
+  name: lightspeed-restaurant-online-order
+  api: lightspeed:restaurant-k-series
+  summary: Readiness check, menu load, order placement and idempotency-keyed payment on K-Series.

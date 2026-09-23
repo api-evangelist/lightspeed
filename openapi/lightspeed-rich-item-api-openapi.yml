@@ -4,11 +4,9 @@ info:
   title: Lightspeed Restaurant K Series Rich Item API
   description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
 
-    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
 
-    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
-
-    '
+    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
@@ -26,7 +24,7 @@ paths:
     get:
       summary: Get allergens
       operationId: teckelGetAllergens
-      description: Returns a list of all possible allergens that can be added to a rich item. See [Allergens Table](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/allergens) for more details.
+      description: Returns a list of all possible allergens that can be added to a rich item. See Allergens Table for more details.
       tags:
       - Rich Item
       responses:
@@ -303,7 +301,6 @@ paths:
     delete:
       summary: Delete rich item
       operationId: teckelDeleteRichItem
-      description: Delete rich item
       tags:
       - Rich Item
       parameters:
@@ -383,16 +380,6 @@ paths:
         - orders-api
 components:
   schemas:
-    teckelLinkSelfPage:
-      type: object
-      properties:
-        self:
-          properties:
-            href:
-              example: https://api.trial.lsk.lightspeed.app/i/i/richItem/8262?page=0&size=100&sort=
-              type: string
-              description: The URL of the page of results.
-          type: object
     teckelLink:
       properties:
         deprecation:
@@ -412,6 +399,13 @@ components:
         type:
           type: string
       type: object
+    teckelRichItemDtoLinks:
+      properties:
+        _links:
+          allOf:
+          - $ref: '#/components/schemas/teckelLinkSelf'
+          - $ref: '#/components/schemas/teckelLinkItems'
+      type: object
     teckelLinkSelf:
       type: object
       properties:
@@ -422,40 +416,6 @@ components:
               type: string
               description: The URL of the item.
           type: object
-    teckelLinks:
-      additionalProperties:
-        $ref: '#/components/schemas/teckelLink'
-      type: object
-    teckelLinkItems:
-      type: object
-      properties:
-        items:
-          properties:
-            href:
-              example: https://api.trial.lsk.lightspeed.app/i/richItem/8262/
-              type: string
-              description: The URL for all items.
-          type: object
-    teckelBusinessId:
-      example: 454335871
-      description: The unique identifier for the business.
-      type: integer
-      format: int64
-    teckelRichItemDtoPictures:
-      properties:
-        pictureUrl:
-          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7.png
-          description: The URL of the picture.
-          type: string
-        previewPictureUrl:
-          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7.png
-          description: The URL of the preview picture.
-          type: string
-        rawPictureUrl:
-          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7_raw.png
-          description: The URL of the raw picture.
-          type: string
-      type: object
     teckelRichItemDtoDates:
       properties:
         creationDate:
@@ -498,6 +458,59 @@ components:
           uniqueItems: true
           type: array
       type: object
+    teckelRichItemDtoPictures:
+      properties:
+        pictureUrl:
+          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7.png
+          description: The URL of the picture.
+          type: string
+        previewPictureUrl:
+          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7.png
+          description: The URL of the preview picture.
+          type: string
+        rawPictureUrl:
+          example: http://s3-eu-west-1.amazonaws.com/com.ikentoo.trial.rich-content-store/25372_029b5ad1-08f7-4e1f-9087-3ca91ad818f7_raw.png
+          description: The URL of the raw picture.
+          type: string
+      type: object
+    teckelPictureSpecDto:
+      description: Contains picture requirements.
+      properties:
+        _links:
+          $ref: '#/components/schemas/teckelLinks'
+        minHeight:
+          description: The minimum image height.
+          format: int32
+          type: integer
+        minWidth:
+          description: The minimum image width.
+          format: int32
+          type: integer
+        requiredAspectRatio:
+          description: The image aspect ratio (width divided by length). If not set, there is no aspect ratio check.
+          format: float
+          type: number
+      type: object
+    teckelLocalesDto:
+      description: A list of locales.
+      example:
+      - en
+      - es
+      - de
+      - fr
+      items:
+        type: string
+      type: array
+    teckelLinkItems:
+      type: object
+      properties:
+        items:
+          properties:
+            href:
+              example: https://api.trial.lsk.lightspeed.app/i/richItem/8262/
+              type: string
+              description: The URL for all items.
+          type: object
     teckelRichItemDescriptionDto:
       description: Stores an item description with its locale code.
       example:
@@ -521,68 +534,31 @@ components:
       required:
       - localeCode
       type: object
+    teckelBusinessId:
+      example: 454335871
+      description: The unique identifier for the business.
+      type: integer
+      format: int64
     teckelSKU:
       example: UGG-BB-PUR-06
       maxLength: 25
       description: The SKU of the item.
       type: string
-    teckelPictureSpecDto:
-      description: Contains picture requirements.
-      properties:
-        _links:
-          $ref: '#/components/schemas/teckelLinks'
-        minHeight:
-          description: The minimum image height.
-          format: int32
-          type: integer
-        minWidth:
-          description: The minimum image width.
-          format: int32
-          type: integer
-        requiredAspectRatio:
-          description: The image aspect ratio (width divided by length). If not set, there is no aspect ratio check.
-          format: float
-          type: number
+    teckelLinks:
+      additionalProperties:
+        $ref: '#/components/schemas/teckelLink'
       type: object
-    teckelRichItemDtoLinks:
-      properties:
-        _links:
-          allOf:
-          - $ref: '#/components/schemas/teckelLinkSelf'
-          - $ref: '#/components/schemas/teckelLinkItems'
+    teckelLinkSelfPage:
       type: object
-    teckelLocalesDto:
-      description: A list of locales.
-      example:
-      - en
-      - es
-      - de
-      - fr
-      items:
-        type: string
-      type: array
+      properties:
+        self:
+          properties:
+            href:
+              example: https://api.trial.lsk.lightspeed.app/i/i/richItem/8262?page=0&size=100&sort=
+              type: string
+              description: The URL of the page of results.
+          type: object
   parameters:
-    teckelPathBusinessId:
-      in: path
-      name: businessId
-      required: true
-      schema:
-        $ref: '#/components/schemas/teckelBusinessId'
-    teckelPathSKU:
-      in: path
-      name: sku
-      required: true
-      schema:
-        $ref: '#/components/schemas/teckelSKU'
-    teckelPage:
-      in: query
-      name: page
-      required: false
-      schema:
-        type: integer
-        example: 10
-        description: Starting page of results, when paginating.
-        default: 0
     teckelSort:
       in: query
       name: sort
@@ -593,6 +569,21 @@ components:
           type: string
           example: sku
           description: Field used to determine order of results.
+    teckelPage:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        example: 10
+        description: Starting page of results, when paginating.
+        default: 0
+    teckelPathSKU:
+      in: path
+      name: sku
+      required: true
+      schema:
+        $ref: '#/components/schemas/teckelSKU'
     teckelSize:
       in: query
       name: size
@@ -602,6 +593,12 @@ components:
         example: 100
         description: Number of results to return, when paginating.
         default: 1000
+    teckelPathBusinessId:
+      in: path
+      name: businessId
+      required: true
+      schema:
+        $ref: '#/components/schemas/teckelBusinessId'
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

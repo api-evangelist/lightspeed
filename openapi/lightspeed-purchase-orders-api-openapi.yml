@@ -153,6 +153,87 @@ paths:
       - Purchase Orders
 components:
   schemas:
+    PurchaseOrderDeliveryCollectionResponse:
+      example:
+        data:
+        - cost_price_total: '25.00'
+          created_at: '2026-04-01T12:00:00Z'
+          due_at: null
+          id: 550e8403-e29b-41d4-a716-446655440000
+          invoice_date: null
+          notes: null
+          outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          purchase_order_id: 550e8400-e29b-41d4-a716-446655440000
+          received_at: null
+          received_quantity_total: '0'
+          status: DRAFT
+          supplier_invoice: null
+          updated_at: '2026-04-01T12:00:00Z'
+          user_id: null
+          version: 3
+        version:
+          max: 3
+          min: 3
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDelivery'
+          type: array
+        version:
+          $ref: '#/components/schemas/PurchaseOrderVersion'
+      required:
+      - data
+      - version
+      title: Purchase Order Delivery Collection Response
+      type: object
+    PurchaseOrderLineItemCollectionResponse:
+      example:
+        data:
+        - allocations:
+          - outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+            quantity: '10'
+          cost_price: '2.50'
+          created_at: '2026-04-01T12:00:00Z'
+          id: 550e8401-e29b-41d4-a716-446655440000
+          product_id: 550e8402-e29b-41d4-a716-446655440000
+          purchase_order_id: 550e8400-e29b-41d4-a716-446655440000
+          quantity: '10'
+          updated_at: '2026-04-01T12:00:00Z'
+          version: 7
+        version:
+          max: 7
+          min: 7
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderLineItem'
+          type: array
+        version:
+          $ref: '#/components/schemas/PurchaseOrderVersion'
+      required:
+      - data
+      - version
+      title: Purchase Order Line Item Collection Response
+      type: object
+    PurchaseOrderVersion:
+      properties:
+        max:
+          description: Highest version number in the payload.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number in the payload.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - min
+      - max
+      title: Purchase Order Version
+      type: object
     PurchaseOrderLineItem:
       properties:
         allocations:
@@ -195,142 +276,6 @@ components:
       - created_at
       - updated_at
       title: Purchase Order Line Item
-      type: object
-    PurchaseOrderCost:
-      properties:
-        amount:
-          description: Cost amount represented as a decimal string.
-          type: string
-        created_at:
-          format: date-time
-          type: string
-        id:
-          type: string
-        purchase_order_delivery_id:
-          type:
-          - string
-          - 'null'
-        type:
-          type: string
-        updated_at:
-          format: date-time
-          type: string
-      required:
-      - id
-      - purchase_order_delivery_id
-      - type
-      - amount
-      - created_at
-      - updated_at
-      title: Purchase Order Cost
-      type: object
-    PurchaseOrderResponse:
-      example:
-        data:
-          allocation_outlet_ids:
-          - 6ba7b810-9dad-41d1-80b4-00c04fd430c8
-          cost_price_total: '25.00'
-          created_at: '2026-04-01T12:00:00Z'
-          delivery_outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
-          due_at: '2026-04-15T10:00:00Z'
-          id: 550e8400-e29b-41d4-a716-446655440000
-          notes: Restock front outlet
-          order_number: PO-1001
-          quantity_total: '10'
-          status: OPEN
-          supplier_id: 6ba7b811-9dad-41d1-80b4-00c04fd430c8
-          supplier_invoice: null
-          updated_at: '2026-04-01T12:00:00Z'
-          user_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
-          version: 42
-      properties:
-        data:
-          $ref: '#/components/schemas/PurchaseOrder'
-      required:
-      - data
-      title: Purchase Order Response
-      type: object
-    PurchaseOrderDeliveryLineItemAllocation:
-      properties:
-        expected_quantity:
-          type: string
-        outlet_id:
-          type: string
-        received_quantity:
-          type: string
-      required:
-      - outlet_id
-      - expected_quantity
-      - received_quantity
-      title: Purchase Order Delivery Line Item Allocation
-      type: object
-    PurchaseOrderVersion:
-      properties:
-        max:
-          description: Highest version number in the payload.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number in the payload.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - min
-      - max
-      title: Purchase Order Version
-      type: object
-    PurchaseOrderLineItemComponent:
-      properties:
-        bom_quantity:
-          type: string
-        component_product_id:
-          type: string
-        cost_price:
-          type:
-          - string
-          - 'null'
-      required:
-      - component_product_id
-      - bom_quantity
-      - cost_price
-      title: Purchase Order Line Item Component
-      type: object
-    PurchaseOrderDeliveryCollectionResponse:
-      example:
-        data:
-        - cost_price_total: '25.00'
-          created_at: '2026-04-01T12:00:00Z'
-          due_at: null
-          id: 550e8403-e29b-41d4-a716-446655440000
-          invoice_date: null
-          notes: null
-          outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
-          purchase_order_id: 550e8400-e29b-41d4-a716-446655440000
-          received_at: null
-          received_quantity_total: '0'
-          status: DRAFT
-          supplier_invoice: null
-          updated_at: '2026-04-01T12:00:00Z'
-          user_id: null
-          version: 3
-        version:
-          max: 3
-          min: 3
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/PurchaseOrderDelivery'
-          type: array
-        version:
-          $ref: '#/components/schemas/PurchaseOrderVersion'
-      required:
-      - data
-      - version
-      title: Purchase Order Delivery Collection Response
       type: object
     PurchaseOrderCollectionResponse:
       example:
@@ -397,65 +342,33 @@ components:
       - version
       title: Purchase Order Delivery Line Item Collection Response
       type: object
-    PurchaseOrderLineItemAllocation:
+    PurchaseOrderCost:
       properties:
-        outlet_id:
+        amount:
+          description: Cost amount represented as a decimal string.
           type: string
-        quantity:
-          type: string
-      required:
-      - outlet_id
-      - quantity
-      title: Purchase Order Line Item Allocation
-      type: object
-    PurchaseOrderDeliveryLineItem:
-      properties:
-        allocations:
-          items:
-            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemAllocation'
-          type: array
-        components:
-          items:
-            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemComponent'
-          type: array
-        cost_price:
-          type:
-          - string
-          - 'null'
         created_at:
           format: date-time
           type: string
-        expected_quantity:
-          type: string
         id:
           type: string
-        product_id:
-          type: string
         purchase_order_delivery_id:
-          type: string
-        purchase_order_line_item_id:
-          type: string
-        received_quantity:
+          type:
+          - string
+          - 'null'
+        type:
           type: string
         updated_at:
           format: date-time
           type: string
-        version:
-          format: int64
-          type: integer
       required:
       - id
-      - version
       - purchase_order_delivery_id
-      - purchase_order_line_item_id
-      - product_id
-      - expected_quantity
-      - received_quantity
-      - cost_price
-      - allocations
+      - type
+      - amount
       - created_at
       - updated_at
-      title: Purchase Order Delivery Line Item
+      title: Purchase Order Cost
       type: object
     PurchaseOrder:
       properties:
@@ -537,6 +450,46 @@ components:
       - updated_at
       title: Purchase Order
       type: object
+    PurchaseOrderDeliveryLineItemAllocation:
+      properties:
+        expected_quantity:
+          type: string
+        outlet_id:
+          type: string
+        received_quantity:
+          type: string
+      required:
+      - outlet_id
+      - expected_quantity
+      - received_quantity
+      title: Purchase Order Delivery Line Item Allocation
+      type: object
+    PurchaseOrderResponse:
+      example:
+        data:
+          allocation_outlet_ids:
+          - 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          cost_price_total: '25.00'
+          created_at: '2026-04-01T12:00:00Z'
+          delivery_outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
+          due_at: '2026-04-15T10:00:00Z'
+          id: 550e8400-e29b-41d4-a716-446655440000
+          notes: Restock front outlet
+          order_number: PO-1001
+          quantity_total: '10'
+          status: OPEN
+          supplier_id: 6ba7b811-9dad-41d1-80b4-00c04fd430c8
+          supplier_invoice: null
+          updated_at: '2026-04-01T12:00:00Z'
+          user_id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+          version: 42
+      properties:
+        data:
+          $ref: '#/components/schemas/PurchaseOrder'
+      required:
+      - data
+      title: Purchase Order Response
+      type: object
     PurchaseOrderDeliveryLineItemComponent:
       properties:
         bom_quantity:
@@ -552,6 +505,45 @@ components:
       - bom_quantity
       - cost_price
       title: Purchase Order Delivery Line Item Component
+      type: object
+    PurchaseOrderDiscount:
+      properties:
+        amount:
+          description: Discount amount represented as a decimal string.
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        purchase_order_delivery_id:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - purchase_order_delivery_id
+      - type
+      - amount
+      - created_at
+      - updated_at
+      title: Purchase Order Discount
+      type: object
+    PurchaseOrderLineItemAllocation:
+      properties:
+        outlet_id:
+          type: string
+        quantity:
+          type: string
+      required:
+      - outlet_id
+      - quantity
+      title: Purchase Order Line Item Allocation
       type: object
     PurchaseOrderDelivery:
       properties:
@@ -631,72 +623,72 @@ components:
       - updated_at
       title: Purchase Order Delivery
       type: object
-    PurchaseOrderDiscount:
+    PurchaseOrderLineItemComponent:
       properties:
-        amount:
-          description: Discount amount represented as a decimal string.
+        bom_quantity:
           type: string
-        created_at:
-          format: date-time
+        component_product_id:
           type: string
-        id:
-          type: string
-        purchase_order_delivery_id:
+        cost_price:
           type:
           - string
           - 'null'
-        type:
+      required:
+      - component_product_id
+      - bom_quantity
+      - cost_price
+      title: Purchase Order Line Item Component
+      type: object
+    PurchaseOrderDeliveryLineItem:
+      properties:
+        allocations:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemAllocation'
+          type: array
+        components:
+          items:
+            $ref: '#/components/schemas/PurchaseOrderDeliveryLineItemComponent'
+          type: array
+        cost_price:
+          type:
+          - string
+          - 'null'
+        created_at:
+          format: date-time
+          type: string
+        expected_quantity:
+          type: string
+        id:
+          type: string
+        product_id:
+          type: string
+        purchase_order_delivery_id:
+          type: string
+        purchase_order_line_item_id:
+          type: string
+        received_quantity:
           type: string
         updated_at:
           format: date-time
           type: string
+        version:
+          format: int64
+          type: integer
       required:
       - id
+      - version
       - purchase_order_delivery_id
-      - type
-      - amount
+      - purchase_order_line_item_id
+      - product_id
+      - expected_quantity
+      - received_quantity
+      - cost_price
+      - allocations
       - created_at
       - updated_at
-      title: Purchase Order Discount
-      type: object
-    PurchaseOrderLineItemCollectionResponse:
-      example:
-        data:
-        - allocations:
-          - outlet_id: 6ba7b810-9dad-41d1-80b4-00c04fd430c8
-            quantity: '10'
-          cost_price: '2.50'
-          created_at: '2026-04-01T12:00:00Z'
-          id: 550e8401-e29b-41d4-a716-446655440000
-          product_id: 550e8402-e29b-41d4-a716-446655440000
-          purchase_order_id: 550e8400-e29b-41d4-a716-446655440000
-          quantity: '10'
-          updated_at: '2026-04-01T12:00:00Z'
-          version: 7
-        version:
-          max: 7
-          min: 7
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/PurchaseOrderLineItem'
-          type: array
-        version:
-          $ref: '#/components/schemas/PurchaseOrderVersion'
-      required:
-      - data
-      - version
-      title: Purchase Order Line Item Collection Response
+      title: Purchase Order Delivery Line Item
       type: object
   parameters:
-    PurchaseOrderAfter:
-      description: The lower limit for the version numbers to be included in the response.
-      in: query
-      name: after
-      schema:
-        format: int64
-        minimum: 0
-        type: integer
     PurchaseOrderBefore:
       description: The upper limit for the version numbers to be included in the response.
       in: query
@@ -721,6 +713,14 @@ components:
       required: true
       schema:
         type: string
+    PurchaseOrderAfter:
+      description: The lower limit for the version numbers to be included in the response.
+      in: query
+      name: after
+      schema:
+        format: int64
+        minimum: 0
+        type: integer
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

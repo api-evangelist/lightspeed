@@ -1,0 +1,179 @@
+name: Lightspeed Commerce API Error Catalog
+generated: '2026-08-27'
+method: derived
+source: openapi/lightspeed-x-series-openapi.json, openapi/lightspeed-k-series-openapi.json; enriched from
+  https://x-series-api.lightspeedhq.com/docs/rate_limiting.md and https://developers.lightspeedhq.com/ecom/introduction/errors/
+format: vendor-json
+rfc9457: false
+note: Neither published spec uses application/problem+json and neither declares an RFC 9457 problem type.
+  X-Series returns a two-field envelope {"error","message"}; K-Series returns per-operation vendor shapes.
+  Status codes below are counted from the specs themselves, so this catalog is the contract's own inventory,
+  not a docs summary.
+envelopes:
+- product: X-Series
+  shape: '{"error": "<short title>", "message": "<detail>"}'
+  example: '{"error": "Too Many Requests", "message": "Rate limiting enforced"}'
+  source: https://x-series-api.lightspeedhq.com/docs/rate_limiting
+- product: K-Series
+  shape: per-operation JSON objects; no single documented envelope
+  source: openapi/lightspeed-k-series-openapi.json
+- product: eCom C-Series
+  shape: documented separately
+  source: https://developers.lightspeedhq.com/ecom/introduction/errors/
+problem_types:
+- product: X-Series
+  status: 400
+  title: Bad Request
+  operations_declaring_it: 19
+  spec_descriptions:
+  - Bad Request
+  - Bad Request - The request body is malformed.
+  - Bad Request - validation errors
+  - Bad Request — invalid cursor or limit parameter
+  - 'Bad Request — one of the following:'
+  - Bad Request — the fulfillment ID is missing, non-numeric, or not a positive integer
+  remediation: Validate the request body and query parameters against the spec before retrying; the same
+    payload will fail again.
+- product: X-Series
+  status: 401
+  title: Unauthorized
+  operations_declaring_it: 29
+  spec_descriptions:
+  - Unauthorized
+  - Unauthorized - Authentication information is missing or invalid.
+  remediation: Token is missing, malformed or expired. Refresh the access token (X-Series tokens live
+    86400s) and retry once.
+- product: X-Series
+  status: 403
+  title: Forbidden
+  operations_declaring_it: 24
+  spec_descriptions:
+  - Forbidden
+  - Forbidden - insufficient permissions
+  - Forbidden - insufficient permissions or address is read-only
+  - Forbidden — missing `services:read` scope
+  - Forbidden — missing `services:write` scope
+  - Forbidden — missing `services:write` scope, or attempting to delete a system default status
+  remediation: The token is valid but lacks the required OAuth scope. Compare the operation's documented
+    scope against the scope list returned with the token and re-authorize if needed.
+- product: X-Series
+  status: 404
+  title: Not Found
+  operations_declaring_it: 39
+  spec_descriptions:
+  - A 404 is returned if the gift card transaction is not found.
+  - ButtonLayout not found
+  - Customer not found
+  - Customer or address not found
+  - Error response. Attribute not found.
+  - Gift card was not found.
+  remediation: The resource id does not exist, or it exists in a different retailer/business location
+    than the token is bound to. Do not retry.
+- product: X-Series
+  status: 406
+  title: Not Acceptable
+  operations_declaring_it: 2
+  spec_descriptions:
+  - Not Acceptable — the fulfillment has no items to render
+  remediation: The requested representation cannot be produced for this resource in its current state.
+- product: X-Series
+  status: 409
+  title: Conflict
+  operations_declaring_it: 12
+  spec_descriptions:
+  - A webhook with this type and URL already exists.
+  - Conflict
+  - Conflict - A tax with the given name already exists.
+  - Conflict — a status with this name already exists
+  - Conflict — a status with this name or display order already exists
+  - Conflict — status is still assigned to one or more service orders
+  remediation: The resource already exists or is in a state that forbids the transition. Read the current
+    state before deciding whether to retry.
+- product: X-Series
+  status: 422
+  title: Unprocessable Entity
+  operations_declaring_it: 10
+  spec_descriptions:
+  - Error response. Failed to process variant attribute.
+  - Gift card does not have sufficient balance.
+  - Gift card has already been created and activated.
+  - The response if the update can't be processed.
+  - There is insufficient balance for this customer to honour the transaction.
+  - Unprocessable Entity
+  remediation: The request was well formed but semantically rejected (for example, insufficient store-credit
+    balance). Do not retry unchanged.
+- product: K-Series
+  status: 400
+  title: Bad Request
+  operations_declaring_it: 42
+  spec_descriptions:
+  - Bad Request
+  - Bad Request - Invalid request parameters or format.
+  - Bad Request.
+  - Bad request. Invalid input parameters.
+  - Constraint violation
+  - Non relevant request
+  remediation: Validate the request body and query parameters against the spec before retrying; the same
+    payload will fail again.
+- product: K-Series
+  status: 401
+  title: Unauthorized
+  operations_declaring_it: 4
+  spec_descriptions:
+  - Authentication failed.
+  remediation: Token is missing, malformed or expired. Refresh the access token (X-Series tokens live
+    86400s) and retry once.
+- product: K-Series
+  status: 403
+  title: Forbidden
+  operations_declaring_it: 17
+  spec_descriptions:
+  - Access Denied.
+  - Access token not relevant for the businessLocation, use authorization-code
+  - Forbidden
+  - Scope 'reservation-{platform-code}' not found in the token
+  remediation: The token is valid but lacks the required OAuth scope. Compare the operation's documented
+    scope against the scope list returned with the token and re-authorize if needed.
+- product: K-Series
+  status: 404
+  title: Not Found
+  operations_declaring_it: 27
+  spec_descriptions:
+  - Could not create item
+  - Integration not found
+  - Invalid input business location id
+  - Item not found
+  - No business locations found
+  - Not Found
+  remediation: The resource id does not exist, or it exists in a different retailer/business location
+    than the token is bound to. Do not retry.
+- product: K-Series
+  status: 409
+  title: Conflict
+  operations_declaring_it: 3
+  spec_descriptions:
+  - Conflict
+  - Conflict. A webhook with the specified details already exists.
+  remediation: The resource already exists or is in a state that forbids the transition. Read the current
+    state before deciding whether to retry.
+- product: K-Series
+  status: 500
+  title: Internal Server Error
+  operations_declaring_it: 7
+  spec_descriptions:
+  - Internal Server Error - An error occurred on the server.
+  - Internal Server Error.
+  remediation: Server-side failure. Safe to retry only for operations that carry an idempotency identifier;
+    otherwise verify state first.
+- product: K-Series
+  status: 503
+  title: Service Unavailable
+  operations_declaring_it: 3
+  spec_descriptions:
+  - Service Unavailable
+  remediation: Service temporarily unavailable. Back off and retry with jitter.
+coverage:
+  x_series_operations: 201
+  k_series_operations: 91
+  note: Counts are of operation-level 4xx/5xx response declarations, so one operation can contribute to
+    several rows.

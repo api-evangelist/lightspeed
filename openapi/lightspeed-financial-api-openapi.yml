@@ -4,11 +4,9 @@ info:
   title: Lightspeed Restaurant K Series Financial API
   description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
 
-    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
 
-    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
-
-    '
+    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
@@ -21,28 +19,7 @@ servers:
   x-bump-branch-name: prod
 tags:
 - name: Financial
-  description: 'V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
-
-
-    For the newer V2 versions of these endpoints see FinancialV2
-
-
-    ### V1 behaviour
-
-
-    - **Sorting**: No guaranteed sorting order; internal transformations may alter order unpredictably
-
-    - **Transitory Accounts / Unsettled Sales**: Returns closed transactions only
-
-    - **Pagination**: `pageSize` max of 1000. Uses HATEOAS `_links` with `self` and `nextPage` URLs
-
-    - **Daily endpoints** (`getDailyFinancials`): No pagination, no hard cap on results. May have slower response times for larger data sets
-
-    - **Backoffice transactions**: Historical dating supported. Transactions will be dated to a past date if the action impacts past reports. Can query transactions by original business date
-
-    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the original transaction date
-
-    '
+  description: V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
 paths:
   /f/data/businesses:
     get:
@@ -363,7 +340,7 @@ paths:
     get:
       summary: Get Receipt by External Reference
       operationId: financial-apiGetReceiptByExternalReference
-      description: Returns a single receipt matching the external reference supplied in the request. See [`externalReferences`](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences) for examples.
+      description: Returns a single receipt matching the external reference supplied in the request. See `externalReferences` for examples.
       parameters:
       - $ref: '#/components/parameters/financial-apiBusinessLocationId'
       - $ref: '#/components/parameters/financial-apiExternalReferenceId'
@@ -396,9 +373,7 @@ paths:
 
         - **If neither `date` nor `from`/`to` are provided it defaults to today''s date**.
 
-        - The date range between `from` and `to` cannot exceed 365 days (1 year).
-
-        '
+        - The date range between `from` and `to` cannot exceed 365 days (1 year).'
       parameters:
       - $ref: '#/components/parameters/financial-apiBusinessLocationId'
       - name: date
@@ -545,96 +520,6 @@ paths:
         - financial-api
 components:
   schemas:
-    financial-apiResourcesTaxRate:
-      type: object
-      properties:
-        _embedded:
-          type: object
-          properties:
-            taxRateList:
-              type: array
-              items:
-                $ref: '#/components/schemas/financial-apiTaxRate'
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
-                  example: https://api.ikentoo.com/f/finance/141948669132802/tax-rates
-    financial-apiTaxRate:
-      type: object
-      properties:
-        code:
-          type: string
-          example: VAT20
-          description: System code for the tax rate.
-        description:
-          type: string
-          example: VAT 20%
-          description: Name of the tax rate.
-        rate:
-          type: number
-          example: 1.2
-          description: Multiplier for the tax rate.
-        taxIncluded:
-          type: boolean
-          description: Whether or not the tax is included.
-        accountingReference:
-          type: string
-    financial-apiFinancialDto:
-      properties:
-        businessName:
-          type: string
-          description: Name of the business
-          example: My Business
-        nextStartOfDayAsIso8601:
-          type: string
-          description: Start of next business day, in the merchant's local time.
-          example: '2023-07-28T05:30:00-05:00'
-        businessLocationId:
-          type: number
-          description: The unique identifier for the business location.
-          example: 123456789
-        sales:
-          items:
-            $ref: '#/components/schemas/financial-apiSaleDto'
-          type: array
-        dataComplete:
-          type: boolean
-          example: false
-        _links:
-          properties:
-            self:
-              properties:
-                href:
-                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments
-                  type: string
-                templated:
-                  example: true
-                  type: boolean
-              type: object
-            nextPage:
-              properties:
-                href:
-                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments&nextPageToken=A65315.18
-                  description: The URL for the next set of results.
-                  type: string
-                templated:
-                  example: true
-                  type: boolean
-              type: object
-          type: object
-    financial-apiServiceChargeType:
-      type: string
-      description: The type of service charge applied to the sale line.
-      example: APPORTIONED
-      enum:
-      - UNTAXED
-      - APPORTIONED
-      - NO_SERVICE_CHARGE
     financial-apiSaleDto:
       properties:
         accountReference:
@@ -1124,25 +1009,106 @@ components:
           description: The void reason, if applicable.
           example: Unhappy Client
       type: object
+    financial-apiFinancialDto:
+      properties:
+        businessName:
+          type: string
+          description: Name of the business
+          example: My Business
+        nextStartOfDayAsIso8601:
+          type: string
+          description: Start of next business day, in the merchant's local time.
+          example: '2023-07-28T05:30:00-05:00'
+        businessLocationId:
+          type: number
+          description: The unique identifier for the business location.
+          example: 123456789
+        sales:
+          items:
+            $ref: '#/components/schemas/financial-apiSaleDto'
+          type: array
+        dataComplete:
+          type: boolean
+          example: false
+        _links:
+          properties:
+            self:
+              properties:
+                href:
+                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments
+                  type: string
+                templated:
+                  example: true
+                  type: boolean
+              type: object
+            nextPage:
+              properties:
+                href:
+                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments&nextPageToken=A65315.18
+                  description: The URL for the next set of results.
+                  type: string
+                templated:
+                  example: true
+                  type: boolean
+              type: object
+          type: object
+    financial-apiTaxRate:
+      type: object
+      properties:
+        code:
+          type: string
+          example: VAT20
+          description: System code for the tax rate.
+        description:
+          type: string
+          example: VAT 20%
+          description: Name of the tax rate.
+        rate:
+          type: number
+          example: 1.2
+          description: Multiplier for the tax rate.
+        taxIncluded:
+          type: boolean
+          description: Whether or not the tax is included.
+        accountingReference:
+          type: string
+    financial-apiResourcesTaxRate:
+      type: object
+      properties:
+        _embedded:
+          type: object
+          properties:
+            taxRateList:
+              type: array
+              items:
+                $ref: '#/components/schemas/financial-apiTaxRate'
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+                  example: https://api.ikentoo.com/f/finance/141948669132802/tax-rates
+    financial-apiServiceChargeType:
+      type: string
+      description: The type of service charge applied to the sale line.
+      example: APPORTIONED
+      enum:
+      - UNTAXED
+      - APPORTIONED
+      - NO_SERVICE_CHARGE
   parameters:
-    financial-apiExternalReferenceId:
+    financial-apiDateParameter:
       schema:
+        example: '2021-10-28'
         type: string
-        example: TASK:OO-{businessLocationId}-{unique-reference-code}
-      name: externalReferenceId
-      description: The external reference of the receipt. See [externalReferences](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences).
+        format: date
+      name: date
+      description: The date in YYYY-MM-DD format.
       in: query
-      required: true
-    financial-apiBusinessLocationId:
-      in: path
-      name: businessLocationId
-      required: true
-      schema:
-        format: int64
-        type: integer
-        minimum: 1
-      example: 45454565682155
-      description: The unique identifier for the business location.
+      required: false
     financial-apiGroupByParameter:
       schema:
         type: string
@@ -1164,15 +1130,24 @@ components:
       name: flattened
       in: query
       required: false
-    financial-apiDateParameter:
+    financial-apiExternalReferenceId:
       schema:
-        example: '2021-10-28'
         type: string
-        format: date
-      name: date
-      description: The date in YYYY-MM-DD format.
+        example: TASK:OO-{businessLocationId}-{unique-reference-code}
+      name: externalReferenceId
+      description: The external reference of the receipt. See [externalReferences](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences).
       in: query
-      required: false
+      required: true
+    financial-apiBusinessLocationId:
+      in: path
+      name: businessLocationId
+      required: true
+      schema:
+        format: int64
+        type: integer
+        minimum: 1
+      example: 45454565682155
+      description: The unique identifier for the business location.
     financial-apiIncludeParameter:
       schema:
         type: string

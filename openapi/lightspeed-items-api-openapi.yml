@@ -4,11 +4,9 @@ info:
   title: Lightspeed Restaurant K Series Items API
   description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
 
-    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
 
-    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
-
-    '
+    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
@@ -136,7 +134,7 @@ paths:
     get:
       summary: Get All Items
       operationId: items-apiGetItems
-      description: Returns the items for a specific business location. Supports searching by [`accountingGroupId`](#operation-getitems-accountinggroupid), [`name`](#operation-getitems-name), [`sku`](#operation-getitems-sku), or [`itemIds`](#operation-getitems-itemids).
+      description: Returns the items for a specific business location. Supports searching by `accountingGroupId`, `name`, `sku`, or `itemIds`.
       tags:
       - Items
       parameters:
@@ -301,6 +299,26 @@ components:
       minLength: 1
       description: A stock keeping unit.
       type: string
+    items-apiBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
+    items-apiDefaultPrice:
+      example: 10
+      type: number
+      description: The default price of the item.
+    items-apiPriceDTO:
+      properties:
+        amount:
+          type: number
+          example: 10.0
+          description: The item price.
+        name:
+          type: string
+          example: Tuesday Special
+          description: The name for this item price.
+      type: object
     items-apiOffset:
       example: 10
       default: 0
@@ -309,21 +327,6 @@ components:
         '
       type: integer
       format: int64
-    items-apiName:
-      example: Burger
-      maxLength: 180
-      minLength: 1
-      description: The name of the item.
-      type: string
-    items-apiItemId:
-      description: The unique identifier for the item.
-      type: integer
-      format: int64
-      example: 141948669132862
-    items-apiDefaultPrice:
-      example: 10
-      type: number
-      description: The default price of the item.
     items-apiUpdateItemDTO:
       required:
       - name
@@ -464,10 +467,30 @@ components:
           - SUB_ITEM
           description: Type of the item.
           example: ITEM
-    items-apiCostPrice:
-      type: number
-      description: The cost price of the item.
-      example: 5.0
+    items-apiName:
+      example: Burger
+      maxLength: 180
+      minLength: 1
+      description: The name of the item.
+      type: string
+    items-apiAccountingGroupDTO:
+      description: The accounting group associated with the item.
+      properties:
+        id:
+          format: int64
+          type: integer
+          description: The unique identifier for the accounting group.
+          example: 40570261078058
+        name:
+          type: string
+          description: The name of the accounting group.
+          example: Alcoholic beverages
+      type: object
+    items-apiAccountingGroupId:
+      example: 44874545485
+      description: The unique identifier for the accounting group.
+      type: integer
+      format: int64
     items-apiStatisticGroupDTO:
       properties:
         category:
@@ -479,6 +502,13 @@ components:
           description: The statistic group value.
           example: Food
       type: object
+    items-apiAmount:
+      description: The number of results to return with each request.
+      example: 10
+      default: 100
+      maximum: 1000
+      type: integer
+      format: int64
     items-apiActive:
       type: boolean
       description: Indicates whether or not the item is archived from the menu.
@@ -525,22 +555,15 @@ components:
           $ref: '#/components/schemas/items-apiDefaultPrice'
         priceMode:
           $ref: '#/components/schemas/items-apiPriceMode'
-    items-apiBusinessLocationId:
-      description: The unique identifier for the business location.
-      type: integer
-      format: int64
-      example: 45454565682155
-    items-apiPriceDTO:
-      properties:
-        amount:
-          type: number
-          example: 10.0
-          description: The item price.
-        name:
-          type: string
-          example: Tuesday Special
-          description: The name for this item price.
-      type: object
+    items-apiCostPrice:
+      type: number
+      description: The cost price of the item.
+      example: 5.0
+    items-apiDocketName:
+      example: The Burger
+      maxLength: 64
+      type: string
+      description: The name used in the docket for the item.
     items-apiPriceMode:
       description: The type of price for the item.
       example: PERCENT
@@ -551,36 +574,11 @@ components:
       - NEGATIVE_OPEN_PRICE
       default: AMOUNT
       type: string
-    items-apiDocketName:
-      example: The Burger
-      maxLength: 64
-      type: string
-      description: The name used in the docket for the item.
-    items-apiAmount:
-      description: The number of results to return with each request.
-      example: 10
-      default: 100
-      maximum: 1000
+    items-apiItemId:
+      description: The unique identifier for the item.
       type: integer
       format: int64
-    items-apiAccountingGroupDTO:
-      description: The accounting group associated with the item.
-      properties:
-        id:
-          format: int64
-          type: integer
-          description: The unique identifier for the accounting group.
-          example: 40570261078058
-        name:
-          type: string
-          description: The name of the accounting group.
-          example: Alcoholic beverages
-      type: object
-    items-apiAccountingGroupId:
-      example: 44874545485
-      description: The unique identifier for the accounting group.
-      type: integer
-      format: int64
+      example: 141948669132862
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

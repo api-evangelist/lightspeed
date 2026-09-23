@@ -1,0 +1,47 @@
+generated: '2026-08-27'
+method: probed
+source: live GET probes of /.well-known/* on every apis.yml baseURL host, OpenAPI servers[] host and docs host
+note: >-
+  Every probed path returned 404 (or, on api-portal.lsk.lightspeed.app, a 403 from the edge for the
+  whole /.well-known/ prefix). Lightspeed publishes no security.txt, no api-catalog, no
+  openid-configuration, no oauth-authorization-server metadata and no ai-plugin.json on any of its
+  hosts. No WellKnown or SecurityTxt pointer is emitted in apis.yml because nothing was served -- this
+  file is the record of an absence, not of a surface. Note that the OAuth authorization and token
+  endpoints ARE documented in prose (X-Series: https://secure.retail.lightspeed.app/connect and
+  https://{domain_prefix}.retail.lightspeed.app/api/1.0/token; K-Series: /oauth/authorize and
+  /oauth/token) -- they are simply not advertised through RFC 8414 metadata.
+hosts:
+- host: www.lightspeedhq.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: x-series-api.lightspeedhq.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: developers.lightspeedhq.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: api.shoplightspeed.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+- host: api-portal.lsk.lightspeed.app
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 403

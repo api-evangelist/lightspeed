@@ -90,9 +90,7 @@ paths:
         Products associated to the deleted category are assigned to the parent, or if the deleted category is a root, the products are unassigned.
 
 
-        🔒 Requires: `products:write` scope
-
-        '
+        🔒 Requires: `products:write` scope'
       operationId: DeleteProductCategories
       requestBody:
         content:

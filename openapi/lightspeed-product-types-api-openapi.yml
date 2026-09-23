@@ -26,7 +26,7 @@ paths:
   /product_types:
     get:
       deprecated: true
-      description: '**DEPRECATED**  We recommend using the product_categories endpoint instead.
+      description: '**DEPRECATED** We recommend using the product_categories endpoint instead.
 
 
         Returns a paginated list of product types.
@@ -118,25 +118,6 @@ paths:
       - Product Types
 components:
   schemas:
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
-      properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
-      type: object
     ProductType:
       properties:
         category_path:
@@ -200,6 +181,25 @@ components:
       - data
       - version
       title: Product Type Collection
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
       type: object
   securitySchemes:
     bearerAuth:

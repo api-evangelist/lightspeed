@@ -190,39 +190,6 @@ paths:
       - Tags
 components:
   schemas:
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
-      properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
-      type: object
-    TagCollection:
-      properties:
-        data:
-          description: An array of Tag objects.
-          items:
-            $ref: '#/components/schemas/Tag'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Tag Collection
-      type: object
     Tag:
       properties:
         deleted_at:
@@ -251,11 +218,44 @@ components:
       - name
       title: CreateTagRequest
       type: object
+    TagCollection:
+      properties:
+        data:
+          description: An array of Tag objects.
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Tag Collection
+      type: object
     TagResponse:
       properties:
         data:
           $ref: '#/components/schemas/Tag'
       title: Tag Response
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
       type: object
   securitySchemes:
     bearerAuth:

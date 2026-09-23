@@ -1,4 +1,4 @@
-generated: '2026-07-11'
+generated: '2026-08-27'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
@@ -11,11 +11,14 @@ hosts:
 - host: x-series-api.lightspeedhq.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Sep 21 01:41:30 2026 GMT
+  cert_expires: Nov 19 03:43:05 2026 GMT
   hsts: true
   hsts_max_age: 31536000
-- host: api.lightspeedhq.com
-  https: false
+- host: developers.lightspeedhq.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 30 14:22:13 2026 GMT
+  hsts: false
 domains:
 - domain: lightspeedhq.com
   dnssec: false

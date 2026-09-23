@@ -179,30 +179,16 @@ paths:
       - Variant Attributes
 components:
   schemas:
-    VariantAttributeCreateResponse:
+    VariantAttributeUpdateResponse:
       properties:
         data:
           properties:
-            created_at:
-              description: Timestamp in UTC.
-              type: string
             id:
               type: string
             name:
               type: string
-            updated_at:
-              description: Timestamp in UTC.
-              type: string
           type: object
-      title: VariantAttributeCreateResponse
-      type: object
-    VariantAttributesListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/VariantAttributeResponse'
-          type: array
-      title: VariantAttributesListResponse
+      title: VariantAttributeUpdateResponse
       type: object
     VariantAttributeResponse:
       properties:
@@ -239,16 +225,30 @@ components:
       - name
       title: VariantAttributeCreateUpdateBody
       type: object
-    VariantAttributeUpdateResponse:
+    VariantAttributesListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/VariantAttributeResponse'
+          type: array
+      title: VariantAttributesListResponse
+      type: object
+    VariantAttributeCreateResponse:
       properties:
         data:
           properties:
+            created_at:
+              description: Timestamp in UTC.
+              type: string
             id:
               type: string
             name:
               type: string
+            updated_at:
+              description: Timestamp in UTC.
+              type: string
           type: object
-      title: VariantAttributeUpdateResponse
+      title: VariantAttributeCreateResponse
       type: object
   securitySchemes:
     bearerAuth:

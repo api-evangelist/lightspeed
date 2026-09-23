@@ -1,0 +1,238 @@
+name: Lightspeed Commerce API Conventions
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://x-series-api.lightspeedhq.com/docs/authorization.md,
+  https://x-series-api.lightspeedhq.com/docs/pagination.md,
+  https://x-series-api.lightspeedhq.com/docs/request_format.md,
+  https://x-series-api.lightspeedhq.com/docs/rate_limiting.md,
+  https://x-series-api.lightspeedhq.com/docs/versioning-strategy.md,
+  https://x-series-api.lightspeedhq.com/docs/gift_cards.md,
+  https://x-series-api.lightspeedhq.com/docs/data_security.md,
+  https://developers.lightspeedhq.com/retail/introduction/ratelimits/,
+  openapi/lightspeed-x-series-openapi.json, openapi/lightspeed-k-series-openapi.json
+scope: >-
+  Lightspeed does not run one API — it runs a portfolio of separately-built product APIs inherited from
+  five acquisitions. Conventions differ per product line, so every block below is qualified by product.
+  Treat "Lightspeed" as a vendor, not as an API.
+
+auth_style:
+  x_series:
+    scheme: OAuth 2.0 authorization code, Bearer token; personal tokens as an alternative
+    header: 'Authorization: Bearer <token>'
+    authorize: https://secure.retail.lightspeed.app/connect
+    token: https://{domain_prefix}.retail.lightspeed.app/api/1.0/token
+    access_token_ttl_seconds: 86400
+    refresh: rotating refresh token — each refresh returns a NEW refresh token and revokes the old access token
+    personal_tokens: available only to retailers on the Plus plan; same Bearer header
+    docs: https://x-series-api.lightspeedhq.com/docs/authorization
+  k_series:
+    scheme: OAuth 2.0 authorization code with named scopes
+    authorizationUrl: /oauth/authorize
+    tokenUrl: /oauth/token
+    docs: https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview
+  r_series:
+    scheme: OAuth 2.0 authorization code with employee:* scopes
+    docs: https://developers.lightspeedhq.com/retail/authentication/authentication-overview/
+  c_series:
+    scheme: API key + secret (HTTP Basic), per cluster
+    docs: https://developers.lightspeedhq.com/ecom/introduction/authentication/
+
+idempotency:
+  supported: true
+  grade: partial
+  mechanisms:
+  - product: X-Series
+    style: client-supplied identifier in the request BODY, not a header
+    field: client_id
+    applies_to:
+      - Gift card transactions (reload and redeem) — client_id is REQUIRED
+      - Store credit transactions (CreateStoreCreditTransaction)
+    semantics: >-
+      "When Lightspeed Retail (X-Series) receives a Gift Card transaction, it checks the client_id to
+      see if it has already been applied. If a second transaction is posted with the same client_id and
+      transaction details, it will not be applied, and that previous transaction will be returned in its
+      place." Retries are therefore safe.
+    docs: https://x-series-api.lightspeedhq.com/docs/gift_cards#idempotency
+    retention: not published
+  - product: X-Series
+    style: optional client-supplied echo field
+    field: request_id
+    applies_to: [Sale creation]
+    semantics: Optional client-supplied idempotency ID, echoed back in the response (spec description).
+  - product: X-Series
+    style: naturally idempotent operations
+    applies_to:
+      - postFulfillSale — spec says "Completes all fulfillments for a given sale. This is an idempotent action."
+      - postPickSale / pack endpoints — described in-spec as idempotent actions
+  - product: K-Series
+    style: HTTP header
+    header: Idempotency-Key
+    required: true
+    applies_to: [payments-processing-service payment requests]
+    semantics: A unique key for each payment request (components.parameters, K-Series spec).
+  - product: K-Series
+    style: HTTP header on OUTBOUND webhook delivery
+    header: X-Lightspeed-Idempotency-Key
+    required: true
+    applies_to: [webhook subscribers]
+    semantics: >-
+      "Subscribers should utilize the Idempotency Key to ensure duplicates are handled appropriately on
+      their end." — Lightspeed pushes the key; deduplication is the subscriber's job.
+  gaps:
+  - No portfolio-wide idempotency key. There is no Idempotency-Key header on X-Series at all.
+  - No published key retention window on any product line.
+  - eCom C-Series, eCom E-Series, O-Series and Golf publish no idempotency mechanism.
+
+reversibility:
+  grade: documented
+  note: >-
+    Reversal operations exist and are named in the contract, but NO product line publishes a window
+    inside which a reversal is valid. Nothing below asserts a time limit, because Lightspeed does not
+    state one. Grade is `documented` (reversal path present) rather than `verified` (path + stated
+    window) for exactly that reason.
+  surfaces:
+  - product: X-Series
+    write_operation: CreateSale
+    reversal: initReturnSale
+    reversal_operationId: initReturnSale
+    path: POST /sales/{sale_id}/actions/return
+    semantics: >-
+      Initializes a return for an existing CLOSED sale and returns a newly created SAVED return sale;
+      refund payments are added afterwards to finalize.
+    window: not stated
+    docs: https://x-series-api.lightspeedhq.com/docs/sales_returns
+  - product: X-Series
+    write_operation: CreateGiftCardTransaction (type REDEEMING)
+    reversal: ReverseGiftCardTransaction
+    reversal_operationId: ReverseGiftCardTransaction
+    path: DELETE /gift_cards/transactions/{transaction_id}
+    semantics: >-
+      Adds a compensating transaction with status "REVERSING". ONLY transactions of type "REDEEMING"
+      can be reversed — a reload cannot be undone through this path.
+    window: not stated
+  - product: X-Series
+    write_operation: CreateGiftCard
+    reversal: VoidGiftCard / VoidGiftCardById / VoidGiftCardByNumber
+    path: DELETE /gift_cards/{number}
+    semantics: Balance is set to zero and status becomes "VOIDED".
+    window: not stated
+  - product: X-Series
+    write_operation: Store credit HOLD
+    reversal: ReverseStoreCreditHold
+    path: POST /store_credits/{customerId}/hold/reverse
+    semantics: Creates a transaction reverting a HOLD operation.
+    window: not stated
+  - product: K-Series
+    write_operation: Webhook subscription create
+    reversal: apeDeleteWebhookEndpoint / staff-apiDeleteWebhook
+    semantics: Hard delete of the subscription; no restore path.
+    window: not applicable
+  not_reversible:
+  - >-
+    Inventory adjustments, consignment/stock-order state transitions and product deletes have no named
+    reversal operation in either spec. An agent must treat them as one-way.
+
+dry_run_mode:
+  supported: false
+  note: No product line documents a dry-run, preview or simulate mode on any write operation.
+
+pagination:
+  x_series:
+    style: version cursor (monotonically increasing global integer), not offset and not opaque token
+    request_param: after
+    first_page: omit `after`, or send after=0
+    response_fields: [data, version.min, version.max]
+    next_page: re-request with after=<version.max from the previous page>
+    termination: repeat until an empty `data` collection is returned
+    sort: ascending by version; not configurable
+    docs: https://x-series-api.lightspeedhq.com/docs/pagination
+    note: >-
+      The cursor is the resource `version` attribute, which increments on every change to a resource
+      globally. This makes the same endpoint usable as a change feed — re-poll from a stored max
+      version to get everything modified since.
+  r_series:
+    style: offset/limit
+    docs: https://developers.lightspeedhq.com/retail/introduction/pagination/
+  k_series:
+    docs: https://api-portal.lsk.lightspeed.app/guides/best-practices/pagination
+
+request_format:
+  x_series:
+    default: JSON; set both Content-Type and Accept to application/json
+    exceptions:
+    - POST /api/webhooks uses application/x-www-form-urlencoded
+    - Product image upload uses multipart/form-data
+    - OAuth token requests use application/x-www-form-urlencoded
+    docs: https://x-series-api.lightspeedhq.com/docs/request_format
+
+versioning:
+  x_series:
+    scheme: date-based, YYYY-MM, in the URL path (e.g. GET /api/2026-01/products)
+    previous_scheme: semantic (v0.9, v2.0, v2.1, v3.0) — retired
+    release_cadence: quarterly (every 3 months)
+    support_window: minimum 12 months per version
+    eol_behavior: >-
+      A request to an end-of-life version is silently served by the OLDEST currently supported version.
+      This prevents hard breakage but means an unmaintained integration can start receiving different
+      behaviour without an error.
+    beta: the next scheduled release is published in Beta before its official launch
+    current_version_harvested: '2026-07'
+    docs: https://x-series-api.lightspeedhq.com/docs/versioning-strategy
+  k_series:
+    docs: https://api-portal.lsk.lightspeed.app/quick-start/versioning
+
+error_envelope:
+  x_series:
+    shape: '{"error": "<short title>", "message": "<detail>"}'
+    problem_json: false
+    rfc9457: false
+  k_series:
+    problem_json: false
+    rfc9457: false
+  detail: errors/lightspeed-problem-types.yml
+
+rate_limit_signaling:
+  x_series:
+    headers: [X-RateLimit-Limit, X-RateLimit-Remaining]
+    token_endpoint_headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+    retry_after: 'Retry-After, in RFC1123 HTTP-date format (not seconds)'
+    exhausted_status: 429
+  r_series:
+    headers: [X-LS-Api-Bucket-Level, X-LS-Api-Burst-Level, X-LS-Api-Drip-Rate, X-LS-Api-Request-Cost]
+    retry_after: 'Retry-After, in seconds'
+    exhausted_status: 429
+  detail: rate-limits/lightspeed-rate-limits.yml
+
+field_expansion:
+  r_series:
+    style: relations — load related entities inline via a `load_relations` query parameter
+    docs: https://developers.lightspeedhq.com/retail/introduction/relations/
+  x_series: not documented
+
+request_id_tracing:
+  supported: partial
+  note: >-
+    X-Series echoes a client-supplied `request_id` on sale creation, but no product line documents a
+    server-generated correlation/trace header on every response.
+
+user_agent:
+  x_series:
+    required: true
+    docs: https://x-series-api.lightspeedhq.com/docs/user_agent
+
+data_handling:
+  x_series:
+    credit_card_redaction: >-
+      The server silently redacts anything it detects as credit-card data on named Customer and Sale
+      fields (names, company, note, postal/physical address lines, city, postcode, state, suburb,
+      custom_field 1-4) and still returns 200 OK. No error is raised, so a client can write a value and
+      read back a different one.
+    docs: https://x-series-api.lightspeedhq.com/docs/data_security
+
+cross_links:
+  errors: errors/lightspeed-problem-types.yml
+  lifecycle: lifecycle/lightspeed-lifecycle.yml
+  authentication: authentication/lightspeed-authentication.yml
+  scopes: scopes/lightspeed-scopes.yml
+  rate_limits: rate-limits/lightspeed-rate-limits.yml

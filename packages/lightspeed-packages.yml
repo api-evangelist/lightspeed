@@ -1,0 +1,128 @@
+generated: '2026-08-27'
+method: searched
+source: >-
+  registry.npmjs.org, rubygems.org, pypi.org, packagist.org searches plus the Lightspeed developer
+  portals. Versions and dates read from each registry's metadata endpoint on 2026-08-27.
+note: >-
+  Lightspeed publishes no first-party REST client library for its four flagship APIs (Retail X-Series,
+  Retail R-Series, eCom C-Series, Restaurant K-Series). The @lightspeed npm scope is real and
+  first-party, but it carries payments, storefront-headless, CLI and design-system packages rather
+  than API clients. The most-used Retail SDKs on npm and Packagist are community-maintained and one of
+  them says "unofficial" in its own description. This is the single largest developer-experience gap
+  in the profile.
+packages:
+- name: '@lightspeed/online-payments-sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@lightspeed/online-payments-sdk
+  language: JavaScript
+  official: true
+  version: 1.7.3
+  published: '2026-08-25'
+  covers: Lightspeed Payments (online payments drop-in / components)
+  note: >-
+    First-party, on the company-controlled @lightspeed npm scope, and the most actively maintained
+    Lightspeed package in any registry. Wraps the payments surface, not the Retail/Restaurant REST APIs.
+- name: '@lightspeed/ecom-headless'
+  registry: npm
+  url: https://www.npmjs.com/package/@lightspeed/ecom-headless
+  language: JavaScript
+  official: true
+  version: 1.1.4
+  published: '2026-05-21'
+  covers: Lightspeed eCom E-Series (Ecwid) public API
+  note: >-
+    Description reads "Headless JS client for Ecwid public API" — the closest thing Lightspeed ships to
+    a first-party API client, and it targets the E-Series (Ecwid) product only.
+- name: '@lightspeed/crane'
+  registry: npm
+  url: https://www.npmjs.com/package/@lightspeed/crane
+  language: JavaScript
+  official: true
+  version: 3.6.1
+  published: '2026-07-24'
+  covers: Crane CLI for building and deploying Lightspeed embedded apps/themes
+  note: The CLI binary; documented separately in cli/lightspeed-cli.yml.
+- name: '@lightspeed/design-system-react'
+  registry: npm
+  url: https://www.npmjs.com/package/@lightspeed/design-system-react
+  language: JavaScript
+  official: true
+  version: 46.1.0
+  published: '2025-07-30'
+  repository: https://github.com/lightspeed/helios
+  covers: Lightspeed Helios design system (React components for embedded apps)
+- name: '@lightspeed/react-retail-eject-link'
+  registry: npm
+  url: https://www.npmjs.com/package/@lightspeed/react-retail-eject-link
+  language: JavaScript
+  official: true
+  version: 1.0.13
+  published: '2025-04-17'
+  covers: React link component for breaking an embedded Retail iframe app out to a new window
+- name: '@ecwid/sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@ecwid/sdk
+  language: JavaScript
+  official: true
+  version: 0.8.0
+  published: '2023-11-09'
+  repository: https://github.com/Ecwid/ecwid-js-sdk
+  covers: Lightspeed eCom E-Series (Ecwid) storefront/API JavaScript SDK
+  note: >-
+    Published by the Ecwid GitHub organization, which Lightspeed acquired in 2021 and sells as eCom
+    E-Series. Last release 2023-11-09 — nearly three years stale as of this pass.
+- name: lightspeed_restaurant
+  registry: rubygems
+  url: https://rubygems.org/gems/lightspeed_restaurant
+  language: Ruby
+  official: true
+  version: 3.5.0
+  published: '2024-12-10'
+  repository: https://github.com/chronogolf/lightspeed_restaurant
+  covers: Lightspeed Restaurant (K-Series) API
+  note: >-
+    Published from the Chronogolf GitHub organization — Chronogolf is the Lightspeed Golf business
+    Lightspeed acquired in 2019, so this is an internal Lightspeed team's gem rather than a community
+    one. Not linked from any Lightspeed developer portal.
+- name: lightspeed-retail-sdk
+  registry: npm
+  url: https://www.npmjs.com/package/lightspeed-retail-sdk
+  language: JavaScript
+  official: false
+  version: 3.5.0
+  published: '2026-01-18'
+  repository: https://github.com/darrylmorley/lightspeed-retail-sdk
+  covers: Lightspeed Retail R-Series API
+  note: Self-described "unofficial". The most current community Retail client on npm.
+- name: anytech/lightspeed-x-series-api
+  registry: packagist
+  url: https://packagist.org/packages/anytech/lightspeed-x-series-api
+  language: PHP
+  official: false
+  version: null
+  published: null
+  repository: https://github.com/anytech/lightspeed-x-series-api
+  covers: Lightspeed Retail X-Series API (OAuth client)
+  note: >-
+    Community package. Version/date not recorded — Packagist search returns no version field and the
+    per-package metadata endpoint was not probed in this pass; an honest gap rather than a guess.
+- name: seoshop/seoshop-php
+  registry: packagist
+  url: https://packagist.org/packages/seoshop/seoshop-php
+  language: PHP
+  official: false
+  version: null
+  published: null
+  repository: https://github.com/SEOshop/API-PHP-Client
+  covers: Lightspeed eCom C-Series API (SEOshop was the pre-acquisition name of eCom C-Series)
+  note: Version/date not recorded — same gap as above.
+- name: lightspeed-api
+  registry: pypi
+  url: https://pypi.org/project/lightspeed-api/
+  language: Python
+  official: false
+  version: '0.5'
+  published: '2022-12-02'
+  repository: https://github.com/beckf/lightspeed_api
+  covers: Lightspeed Retail R-Series API
+  note: Last release 2022-12-02 — abandoned relative to the R-Series API it wraps.

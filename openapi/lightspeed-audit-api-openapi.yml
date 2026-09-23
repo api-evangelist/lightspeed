@@ -31,25 +31,25 @@ paths:
         **Note**: Not every single change in the system is audited. Currently the audited entities include:
 
 
-        | Object     | Action                    | Notes |
+        | Object | Action | Notes |
 
         |------------|---------------------------|-------|
 
-        | customer   | form create/update/delete |       |
+        | customer | form create/update/delete | |
 
-        | customer   | api create/update/delete  |       |
+        | customer | api create/update/delete | |
 
-        | customer   | csv import                |       |
+        | customer | csv import | |
 
-        | register   | form create/update/delete |       |
+        | register | form create/update/delete | |
 
-        | outlet     | form create/update/delete |       |
+        | outlet | form create/update/delete | |
 
-        | csv import | init                      | Tracks CSV import requests and includes data about the import type (customer, product) and the CSV file line count. |
+        | csv import | init | Tracks CSV import requests and includes data about the import type (customer, product) and the CSV file line count. |
 
-        | product*   | create/update/delete      | All actions on products. |
+        | product* | create/update/delete | All actions on products. |
 
-        | security   | terms_accepted, signin, signout, change_email, change_password, reset_password_confirm, user_switching_succes, user_switching_denied, new_personal_token, update_personal_token, delete_personal_tokenss, issue_oauth_token ||
+        | security | terms_accepted, signin, signout, change_email, change_password, reset_password_confirm, user_switching_succes, user_switching_denied, new_personal_token, update_personal_token, delete_personal_tokenss, issue_oauth_token ||
 
         | vend_consignment | insert/update | Receiving, creating and editing purchase orders as well as inventory counts. |
 

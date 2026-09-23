@@ -25,7 +25,88 @@ tags:
 paths:
   /search:
     get:
-      description: "This endpoint allows integrators to search all of the most commonly used resources, **sales**, **products** and **customers**. Each type allowing search by a number of different parameters.\n### Supported resource types and attributes\n- **Sales**\n  - date_from\n  - date_to\n  - time_from\n  - time_to\n  - timezone\n  - status\n  - state\n  - attributes\n  - invoice_number\n  - customer_id\n  - user_id\n  - outlet_id\n  - register_id\n  - payment_type_id\n  - product_id\n  - sale_total\n  - customer_name\n- **Products**\n  - sku **_(values must be lowercased)_**\n  - supplier_id\n  - brand_id\n  - tag_id\n  - product_type_id\n  - variant_parent_id\n- **Customers**\n  - customer_code\n  - first_name\n  - last_name\n  - company_name\n  - mobile\n  - phone\n  - email\n### Sorting and pagination\nUnlike other endpoints, search results from this endpoint can be sorted by any of the attributes above. Because of that, the default [pagination](https://x-series-api.lightspeedhq.com/docs/pagination#api-20) mechanism is not appropriate for this endpoint. Instead, this endpoint uses `offset` and `page_size` attributes to handle search results spanning multiple pages.\n\n\U0001F512 Requires one of the following:\n- `sales:read` scope when searching for sales\n- `products:read` scope when searching for products\n- `customers:read` scope when searching for customers\n"
+      description: 'This endpoint allows integrators to search all of the most commonly used resources, **sales**, **products** and **customers**. Each type allowing search by a number of different parameters.
+
+        ### Supported resource types and attributes
+
+        - **Sales**
+
+        - date_from
+
+        - date_to
+
+        - time_from
+
+        - time_to
+
+        - timezone
+
+        - status
+
+        - state
+
+        - attributes
+
+        - invoice_number
+
+        - customer_id
+
+        - user_id
+
+        - outlet_id
+
+        - register_id
+
+        - payment_type_id
+
+        - product_id
+
+        - sale_total
+
+        - customer_name
+
+        - **Products**
+
+        - sku **_(values must be lowercased)_**
+
+        - supplier_id
+
+        - brand_id
+
+        - tag_id
+
+        - product_type_id
+
+        - variant_parent_id
+
+        - **Customers**
+
+        - customer_code
+
+        - first_name
+
+        - last_name
+
+        - company_name
+
+        - mobile
+
+        - phone
+
+        - email
+
+        ### Sorting and pagination
+
+        Unlike other endpoints, search results from this endpoint can be sorted by any of the attributes above. Because of that, the default pagination mechanism is not appropriate for this endpoint. Instead, this endpoint uses `offset` and `page_size` attributes to handle search results spanning multiple pages.
+
+
+        🔒 Requires one of the following:
+
+        - `sales:read` scope when searching for sales
+
+        - `products:read` scope when searching for products
+
+        - `customers:read` scope when searching for customers'
       operationId: Search
       parameters:
       - description: The entity type to search for.

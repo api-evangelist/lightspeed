@@ -1,0 +1,36 @@
+name: Lightspeed Crane CLI
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://www.npmjs.com/package/@lightspeed/crane (registry.npmjs.org metadata, 2026-08-27) and
+  https://github.com/LightspeedHQ/crane-example-themes
+official: true
+package: '@lightspeed/crane'
+registry: npm
+version: 3.6.1
+published: '2026-07-24'
+install:
+- npm install -g @lightspeed/crane
+- npx @lightspeed/crane
+description: >-
+  Crane is Lightspeed's first-party command line interface for creating, building and deploying
+  Lightspeed apps and themes. Its scope is the embedded-app / storefront-theme developer surface, not
+  the REST APIs — there is no Lightspeed CLI that calls the Retail, Restaurant or eCom APIs.
+scope:
+- Scaffolding a new Lightspeed app or theme project
+- Building a project for distribution
+- Deploying a built project to Lightspeed
+reference_implementation:
+  repo: https://github.com/LightspeedHQ/crane-example-themes
+  description: Reference implementations of Crane themes with Vue 3, TypeScript, and production-ready patterns.
+  note: >-
+    One of only two public repositories in the LightspeedHQ GitHub organization, which is itself a
+    signal about how much of Lightspeed's developer surface is open.
+commands:
+  captured: false
+  note: >-
+    The command/flag surface is not published on any Lightspeed developer portal and the npm page was
+    not scraped for a full command tree in this pass. Recorded as a gap rather than guessed.
+gaps:
+- No CLI for the Retail X-Series, Retail R-Series, eCom C-Series or Restaurant K-Series REST APIs.
+- No published command reference for Crane itself outside the package README.

@@ -4,11 +4,9 @@ info:
   title: Lightspeed Restaurant K Series PMS Integration API
   description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
 
-    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
 
-    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
-
-    '
+    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
@@ -27,7 +25,27 @@ webhooks:
     post:
       summary: Transaction Details
       operationId: transactionDetails
-      description: "What subscriber endpoint implementation will receive when a transaction is made.\nSubscriber path need to end with `/charge`.\nSubscriber implementation should follow the payload backward compatibility rules below:\n  - What considered as backward **compatible**:\n    - Addition of new fields, enums, headers, or parameters.\n    - Transition from optional to required fields. Which means Lightspeed will consistently send the parameter/field from now on.\n  - What considered as backward **incompatible**:\n    - Alteration of schema structure, such as switching from a map to an array.\n    - Removal of field/enum/header\n    - Changes in data types, such as converting from string to integer.\n    - Changes of property name\n"
+      description: 'What subscriber endpoint implementation will receive when a transaction is made.
+
+        Subscriber path need to end with `/charge`.
+
+        Subscriber implementation should follow the payload backward compatibility rules below:
+
+        - What considered as backward **compatible**:
+
+        - Addition of new fields, enums, headers, or parameters.
+
+        - Transition from optional to required fields. Which means Lightspeed will consistently send the parameter/field from now on.
+
+        - What considered as backward **incompatible**:
+
+        - Alteration of schema structure, such as switching from a map to an array.
+
+        - Removal of field/enum/header
+
+        - Changes in data types, such as converting from string to integer.
+
+        - Changes of property name'
       parameters:
       - in: header
         name: Accept
@@ -86,6 +104,131 @@ webhooks:
       - PMS Integration
 components:
   schemas:
+    pms-integrationPmsServiceChargeWebhookDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The amount of the service charge.
+          example: 1.0
+        type:
+          type: string
+          enum:
+          - UNTAXED
+          - APPORTIONED
+          description: The type of the service charge.
+          example: UNTAXED
+    pms-integrationSalesWebhookDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the transaction
+        openDate:
+          type: string
+          format: date-time
+          description: The date and time when the transaction was opened in UTC
+          example: '2021-01-01T00:00:00Z'
+        closeDate:
+          type: string
+          format: date-time
+          description: The date and time when the transaction was closed in UTC
+          example: '2021-01-01T00:00:00Z'
+        covers:
+          type: number
+          description: The number of covers (guests) in this transaction.
+          example: 2
+        ownerId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who owns this transaction
+          example: 12345
+        ownerName:
+          type: string
+          description: The name of the POS user (staff) who owns this transaction
+          example: John Doe
+        deviceId:
+          type: integer
+          format: int64
+          description: The ID of the device on which the transaction was started
+          example: 12345
+        businessExternalReference:
+          type: string
+          description: Client name
+          example: quickbooks-123
+        apiKey:
+          type: string
+          description: API Key.
+          example: quickbooks-key-345
+        receiptId:
+          type: string
+          description: Receipt ID
+          example: R51.3
+        fiscId:
+          type: string
+          description: 'Unique identifier for the transaction, can be used this for any identification purposes.
+
+            '
+          example: A1234.5
+        uuid:
+          type: string
+          description: 'A b64 encoded uuid which also act as unique identifier for the transaction,
+
+            also can be used for any identification purposes.
+
+            '
+          example: xfe9ldKWSfW8VrAYUcnvGA==
+        initialAccountId:
+          type: string
+          description: 'Initial Account ID, if any.
+
+            This is used to correlate the transaction with the initial account, such on REFUND or VOID.
+
+            '
+          example: A1234.1
+        identifier:
+          deprecated: true
+          type: string
+          description: Refer to the non null value of either the fiscId or uuid as fallback.
+          example: A1234.5
+        revenueCenterId:
+          type: integer
+          format: int64
+          description: Revenue Center (POS Configuration) ID
+          example: 94489280528
+        revenueCenterName:
+          type: string
+          description: Revenue Center (POS Configuration) Name
+          example: Fixed POS
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/pms-integrationPmsTransactionWebhookDto'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/pms-integrationPmsPaymentWebhookDto'
+        serviceCharge:
+          $ref: '#/components/schemas/pms-integrationPmsServiceChargeWebhookDto'
+    pms-integrationErrorWebhookDto:
+      type: object
+      description: 'The error response body content should follow this schema.
+
+        If the response body content does not follow this schema, only the status code will be sent.
+
+        All other property beside customerErrorMessage will be ignored.
+
+        '
+      properties:
+        customerErrorMessage:
+          type: string
+          maxLength: 50
+          example: Network failure
+          description: 'The error message that will be sent and printed at the POS.
+
+            Length should not exceed 50 characters to avoid truncation.
+
+            '
     pms-integrationPmsTaxLineWebhookDto:
       type: object
       properties:
@@ -109,25 +252,6 @@ components:
           type: boolean
           description: Whether the tax is included in the price (VAT).
           example: true
-    pms-integrationErrorWebhookDto:
-      type: object
-      description: 'The error response body content should follow this schema.
-
-        If the response body content does not follow this schema, only the status code will be sent.
-
-        All other property beside customerErrorMessage will be ignored.
-
-        '
-      properties:
-        customerErrorMessage:
-          type: string
-          maxLength: 50
-          example: Network failure
-          description: 'The error message that will be sent and printed at the POS.
-
-            Length should not exceed 50 characters to avoid truncation.
-
-            '
     pms-integrationPmsTransactionWebhookDto:
       type: object
       properties:
@@ -245,112 +369,6 @@ components:
           type: string
           description: The reservation ID of the payment.
           example: '001'
-    pms-integrationSalesWebhookDto:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the transaction
-        openDate:
-          type: string
-          format: date-time
-          description: The date and time when the transaction was opened in UTC
-          example: '2021-01-01T00:00:00Z'
-        closeDate:
-          type: string
-          format: date-time
-          description: The date and time when the transaction was closed in UTC
-          example: '2021-01-01T00:00:00Z'
-        covers:
-          type: number
-          description: The number of covers (guests) in this transaction.
-          example: 2
-        ownerId:
-          type: integer
-          format: int64
-          description: The ID of the POS user (staff) who owns this transaction
-          example: 12345
-        ownerName:
-          type: string
-          description: The name of the POS user (staff) who owns this transaction
-          example: John Doe
-        deviceId:
-          type: integer
-          format: int64
-          description: The ID of the device on which the transaction was started
-          example: 12345
-        businessExternalReference:
-          type: string
-          description: Client name
-          example: quickbooks-123
-        apiKey:
-          type: string
-          description: API Key.
-          example: quickbooks-key-345
-        receiptId:
-          type: string
-          description: Receipt ID
-          example: R51.3
-        fiscId:
-          type: string
-          description: 'Unique identifier for the transaction, can be used this for any identification purposes.
-
-            '
-          example: A1234.5
-        uuid:
-          type: string
-          description: 'A b64 encoded uuid which also act as unique identifier for the transaction,
-
-            also can be used for any identification purposes.
-
-            '
-          example: xfe9ldKWSfW8VrAYUcnvGA==
-        initialAccountId:
-          type: string
-          description: 'Initial Account ID, if any.
-
-            This is used to correlate the transaction with the initial account, such on REFUND or VOID.
-
-            '
-          example: A1234.1
-        identifier:
-          deprecated: true
-          type: string
-          description: Refer to the non null value of either the fiscId or uuid as fallback.
-          example: A1234.5
-        revenueCenterId:
-          type: integer
-          format: int64
-          description: Revenue Center (POS Configuration) ID
-          example: 94489280528
-        revenueCenterName:
-          type: string
-          description: Revenue Center (POS Configuration) Name
-          example: Fixed POS
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/pms-integrationPmsTransactionWebhookDto'
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/pms-integrationPmsPaymentWebhookDto'
-        serviceCharge:
-          $ref: '#/components/schemas/pms-integrationPmsServiceChargeWebhookDto'
-    pms-integrationPmsServiceChargeWebhookDto:
-      type: object
-      properties:
-        amount:
-          type: number
-          description: The amount of the service charge.
-          example: 1.0
-        type:
-          type: string
-          enum:
-          - UNTAXED
-          - APPORTIONED
-          description: The type of the service charge.
-          example: UNTAXED
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

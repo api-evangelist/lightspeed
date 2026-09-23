@@ -335,22 +335,6 @@ paths:
       - Fulfillments
 components:
   schemas:
-    PickLineItemsRequest:
-      properties:
-        line_items:
-          description: The line items to be picked
-          items:
-            $ref: '#/components/schemas/PickLineItemRequest'
-          type: array
-        version:
-          description: The current version number of the fulfillment.
-          example: 5
-          format: int32
-          type: integer
-      required:
-      - version
-      - line_items
-      type: object
     FulfillLineItemsRequest:
       properties:
         line_items:
@@ -367,20 +351,14 @@ components:
       - version
       - line_items
       type: object
-    PackLineItemsResponse:
+    FulfillmentSummaryResponse:
       properties:
         data:
-          properties:
-            id:
-              description: The unique identifier of the fulfillment.
-              example: '7428951063847291856'
-              type: string
-            version:
-              description: The new version number of the fulfillment after the update.
-              example: 3
-              format: int32
-              type: integer
-          type: object
+          items:
+            $ref: '#/components/schemas/FulfillmentSummaryItem'
+          type: array
+      required:
+      - data
       type: object
     FulfillmentResponse:
       properties:
@@ -394,83 +372,23 @@ components:
           format: int32
           type: integer
       type: object
-    FulfillmentHistoryResponse:
-      description: Paginated response containing fulfillment history entries
+    PackLineItemRequest:
       properties:
-        data:
-          description: List of history entries ordered oldest-first
-          items:
-            $ref: '#/components/schemas/FulfillmentHistoryEntry'
-          type: array
-        next_cursor:
-          description: Opaque cursor for fetching the next page. Empty when no more pages exist.
-          type: string
-      required:
-      - data
-      type: object
-    FulfillmentHistoryEntry:
-      description: A single state-change event in the fulfillment history ledger
-      properties:
-        created_at:
-          description: Timestamp when the event was recorded
-          example: '2025-01-15T10:30:00Z'
-          format: date-time
-          type: string
-        event_type:
-          description: The type of state-change event
-          enum:
-          - CREATED
-          - QUANTITY_UPDATED
-          - REMOVED
-          - PICKED
-          - PACKED
-          - FULFILLED
-          - VOIDED
-          - UNVOIDED
-          - RETURNED
-          - RETURN_VOIDED
-          - SPLIT
-          type: string
-        fulfilled_delta:
-          description: Change in fulfilled quantity for this line item
-          example: '0'
-          type: string
-        packed_quantity_delta:
-          description: Change in packed quantity for this line item
-          example: '0'
-          type: string
-        picked_quantity_delta:
-          description: Change in picked quantity for this line item
-          example: '0'
-          type: string
-        product_id:
-          description: The ID of the product associated with the line item
-          example: e058ea02-c565-405f-be27-cefaeeca1f92
-          format: uuid
-          type: string
-        quantity_delta:
-          description: Change in total quantity for this line item
-          example: '5'
-          type: string
+        quantity:
+          description: The quantity to be packed
+          example: 1
+          format: double
+          type: number
         sale_line_item_id:
-          description: The ID of the sale line item this event relates to
-          example: 81b37e5f-aa50-4fe3-95d3-a3cec73a7e2c
+          description: The unique identifier of the sale line item to be packed.
+          example: f3a8d2c1-9b7e-4f56-8a12-3e4d5c6b7a89
           format: uuid
           type: string
-        source_sale_id:
-          description: The ID of the source sale (present for RETURNED and SPLIT events)
-          example: 81d2fc44-e4d4-4180-8f1e-b36de2acf438
-          format: uuid
-          type: string
+        source_breakdown:
+          $ref: '#/components/schemas/PackLineItemSourceBreakdown'
       required:
       - sale_line_item_id
-      - product_id
-      - event_type
-      - quantity_delta
-      - picked_quantity_delta
-      - packed_quantity_delta
-      - fulfilled_delta
-      - created_at
+      - quantity
       type: object
     FulfillmentLineItemRequest:
       properties:
@@ -490,13 +408,50 @@ components:
       - sale_line_item_id
       - quantity
       type: object
-    FulfillSaleResponse:
+    PackLineItemsRequest:
+      properties:
+        line_items:
+          description: The line items to be packed
+          items:
+            $ref: '#/components/schemas/PackLineItemRequest'
+          type: array
+        version:
+          description: The current version number of the fulfillment.
+          example: 5
+          format: int32
+          type: integer
+      required:
+      - version
+      - line_items
+      type: object
+    PackLineItemSourceBreakdown:
+      description: Specifies how a packing quantity should be sourced. When provided, both fields are required and must sum to the parent quantity. Source breakdown is not allowed when the parent quantity is negative (unpacking).
+      properties:
+        quantity_from_not_started:
+          description: Quantity to source from the not-started state.
+          format: double
+          type: number
+        quantity_from_picked:
+          description: Quantity to source from the picked state.
+          format: double
+          type: number
+      required:
+      - quantity_from_picked
+      - quantity_from_not_started
+      type: object
+    FulfillmentHistoryResponse:
+      description: Paginated response containing fulfillment history entries
       properties:
         data:
-          description: A list of the updated fulfillments.
+          description: List of history entries ordered oldest-first
           items:
-            $ref: '#/components/schemas/FulfillmentResponse'
+            $ref: '#/components/schemas/FulfillmentHistoryEntry'
           type: array
+        next_cursor:
+          description: Opaque cursor for fetching the next page. Empty when no more pages exist.
+          type: string
+      required:
+      - data
       type: object
     FulfillLineItemsResponse:
       properties:
@@ -523,30 +478,101 @@ components:
       required:
       - sale_id
       type: object
-    PackLineItemRequest:
+    FulfillLineItemSourceBreakdown:
+      description: Specifies how a fulfillment quantity should be sourced. When provided, all three fields are required and must sum to the parent quantity.
+      properties:
+        quantity_from_not_started:
+          description: Quantity to source from the not-started state.
+          format: double
+          type: number
+        quantity_from_packed:
+          description: Quantity to source from the packed state.
+          format: double
+          type: number
+        quantity_from_picked:
+          description: Quantity to source from the picked state.
+          format: double
+          type: number
+      required:
+      - quantity_from_picked
+      - quantity_from_packed
+      - quantity_from_not_started
+      type: object
+    FulfillmentSummaryLineItem:
+      properties:
+        fulfilled_quantity:
+          description: Quantity that has been fulfilled (decimal as string)
+          example: '0.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        packed_quantity:
+          description: Quantity that has been packed (decimal as string)
+          example: '0.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        picked_quantity:
+          description: Quantity that has been picked (decimal as string)
+          example: '0.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        product_id:
+          description: Identifier of the product
+          example: e9d7d1b3-0561-45f5-9e40-c7bfa81db394
+          type: string
+        quantity:
+          description: Total quantity (decimal as string)
+          example: '5.00'
+          pattern: ^-?\d+(\.\d+)?$
+          type: string
+        sale_line_item_id:
+          description: Identifier of the sale line item
+          example: 460e1119-2f41-42a3-bd61-3f9639e2e265
+          type: string
+      required:
+      - sale_line_item_id
+      - product_id
+      - quantity
+      - picked_quantity
+      - packed_quantity
+      - fulfilled_quantity
+      type: object
+    PickLineItemRequest:
       properties:
         quantity:
-          description: The quantity to be packed
+          description: The quantity to be picked
           example: 1
           format: double
           type: number
         sale_line_item_id:
-          description: The unique identifier of the sale line item to be packed.
+          description: The unique identifier of the sale line item to be picked.
           example: f3a8d2c1-9b7e-4f56-8a12-3e4d5c6b7a89
           format: uuid
           type: string
-        source_breakdown:
-          $ref: '#/components/schemas/PackLineItemSourceBreakdown'
       required:
       - sale_line_item_id
       - quantity
       type: object
-    PackLineItemsRequest:
+    PackLineItemsResponse:
+      properties:
+        data:
+          properties:
+            id:
+              description: The unique identifier of the fulfillment.
+              example: '7428951063847291856'
+              type: string
+            version:
+              description: The new version number of the fulfillment after the update.
+              example: 3
+              format: int32
+              type: integer
+          type: object
+      type: object
+    PickLineItemsRequest:
       properties:
         line_items:
-          description: The line items to be packed
+          description: The line items to be picked
           items:
-            $ref: '#/components/schemas/PackLineItemRequest'
+            $ref: '#/components/schemas/PickLineItemRequest'
           type: array
         version:
           description: The current version number of the fulfillment.
@@ -556,6 +582,14 @@ components:
       required:
       - version
       - line_items
+      type: object
+    FulfillSaleResponse:
+      properties:
+        data:
+          description: A list of the updated fulfillments.
+          items:
+            $ref: '#/components/schemas/FulfillmentResponse'
+          type: array
       type: object
     FulfillmentSummaryItem:
       properties:
@@ -640,6 +674,70 @@ components:
       - version
       - line_items
       type: object
+    FulfillmentHistoryEntry:
+      description: A single state-change event in the fulfillment history ledger
+      properties:
+        created_at:
+          description: Timestamp when the event was recorded
+          example: '2025-01-15T10:30:00Z'
+          format: date-time
+          type: string
+        event_type:
+          description: The type of state-change event
+          enum:
+          - CREATED
+          - QUANTITY_UPDATED
+          - REMOVED
+          - PICKED
+          - PACKED
+          - FULFILLED
+          - VOIDED
+          - UNVOIDED
+          - RETURNED
+          - RETURN_VOIDED
+          - SPLIT
+          type: string
+        fulfilled_delta:
+          description: Change in fulfilled quantity for this line item
+          example: '0'
+          type: string
+        packed_quantity_delta:
+          description: Change in packed quantity for this line item
+          example: '0'
+          type: string
+        picked_quantity_delta:
+          description: Change in picked quantity for this line item
+          example: '0'
+          type: string
+        product_id:
+          description: The ID of the product associated with the line item
+          example: e058ea02-c565-405f-be27-cefaeeca1f92
+          format: uuid
+          type: string
+        quantity_delta:
+          description: Change in total quantity for this line item
+          example: '5'
+          type: string
+        sale_line_item_id:
+          description: The ID of the sale line item this event relates to
+          example: 81b37e5f-aa50-4fe3-95d3-a3cec73a7e2c
+          format: uuid
+          type: string
+        source_sale_id:
+          description: The ID of the source sale (present for RETURNED and SPLIT events)
+          example: 81d2fc44-e4d4-4180-8f1e-b36de2acf438
+          format: uuid
+          type: string
+      required:
+      - sale_line_item_id
+      - product_id
+      - event_type
+      - quantity_delta
+      - picked_quantity_delta
+      - packed_quantity_delta
+      - fulfilled_delta
+      - created_at
+      type: object
     PickLineItemsResponse:
       properties:
         data:
@@ -654,104 +752,6 @@ components:
               format: int32
               type: integer
           type: object
-      type: object
-    FulfillmentSummaryResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/FulfillmentSummaryItem'
-          type: array
-      required:
-      - data
-      type: object
-    FulfillmentSummaryLineItem:
-      properties:
-        fulfilled_quantity:
-          description: Quantity that has been fulfilled (decimal as string)
-          example: '0.00'
-          pattern: ^-?\d+(\.\d+)?$
-          type: string
-        packed_quantity:
-          description: Quantity that has been packed (decimal as string)
-          example: '0.00'
-          pattern: ^-?\d+(\.\d+)?$
-          type: string
-        picked_quantity:
-          description: Quantity that has been picked (decimal as string)
-          example: '0.00'
-          pattern: ^-?\d+(\.\d+)?$
-          type: string
-        product_id:
-          description: Identifier of the product
-          example: e9d7d1b3-0561-45f5-9e40-c7bfa81db394
-          type: string
-        quantity:
-          description: Total quantity (decimal as string)
-          example: '5.00'
-          pattern: ^-?\d+(\.\d+)?$
-          type: string
-        sale_line_item_id:
-          description: Identifier of the sale line item
-          example: 460e1119-2f41-42a3-bd61-3f9639e2e265
-          type: string
-      required:
-      - sale_line_item_id
-      - product_id
-      - quantity
-      - picked_quantity
-      - packed_quantity
-      - fulfilled_quantity
-      type: object
-    FulfillLineItemSourceBreakdown:
-      description: Specifies how a fulfillment quantity should be sourced. When provided, all three fields are required and must sum to the parent quantity.
-      properties:
-        quantity_from_not_started:
-          description: Quantity to source from the not-started state.
-          format: double
-          type: number
-        quantity_from_packed:
-          description: Quantity to source from the packed state.
-          format: double
-          type: number
-        quantity_from_picked:
-          description: Quantity to source from the picked state.
-          format: double
-          type: number
-      required:
-      - quantity_from_picked
-      - quantity_from_packed
-      - quantity_from_not_started
-      type: object
-    PickLineItemRequest:
-      properties:
-        quantity:
-          description: The quantity to be picked
-          example: 1
-          format: double
-          type: number
-        sale_line_item_id:
-          description: The unique identifier of the sale line item to be picked.
-          example: f3a8d2c1-9b7e-4f56-8a12-3e4d5c6b7a89
-          format: uuid
-          type: string
-      required:
-      - sale_line_item_id
-      - quantity
-      type: object
-    PackLineItemSourceBreakdown:
-      description: Specifies how a packing quantity should be sourced. When provided, both fields are required and must sum to the parent quantity. Source breakdown is not allowed when the parent quantity is negative (unpacking).
-      properties:
-        quantity_from_not_started:
-          description: Quantity to source from the not-started state.
-          format: double
-          type: number
-        quantity_from_picked:
-          description: Quantity to source from the picked state.
-          format: double
-          type: number
-      required:
-      - quantity_from_picked
-      - quantity_from_not_started
       type: object
   securitySchemes:
     bearerAuth:

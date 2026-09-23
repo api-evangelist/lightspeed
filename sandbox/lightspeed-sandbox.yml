@@ -1,0 +1,60 @@
+name: Lightspeed Commerce Sandbox and Test Environments
+generated: '2026-08-27'
+method: searched
+source: >-
+  openapi/lightspeed-k-series-openapi.json (servers[]), https://x-series-api.lightspeedhq.com/docs/authorization.md,
+  https://partner-api.docs.chronogolf.com/
+summary: >-
+  Lightspeed has no single sandbox. Each product line handles testing differently, and two of the four
+  flagship APIs have no published test environment at all. Nothing in this file is invented — every
+  value below is published by Lightspeed on its own surface.
+environments:
+- product: Restaurant K-Series
+  type: hosted demo environment
+  base_url: https://api.trial.lsk.lightspeed.app
+  production_base_url: https://api.lsk.lightspeed.app
+  source: openapi/lightspeed-k-series-openapi.json servers[] ("Demo URL" / "Production URL")
+  note: >-
+    The demo host is declared in the contract itself, so an agent can discover it without reading a
+    docs page. This is the strongest sandbox signal in the portfolio.
+- product: Retail X-Series
+  type: unapproved-application allowance (no separate sandbox host)
+  mechanism: >-
+    A newly created developer application is marked "Not Approved", which does not block it — it caps
+    the app at 30 connected Lightspeed Retail (X-Series) stores. Lightspeed's own guidance is that this
+    "should be more than enough for private apps or testing/staging environments"; approval is required
+    only for production-ready public applications.
+  developer_registration: https://developers.retail.lightspeed.app/register
+  applications: https://developers.retail.lightspeed.app/applications
+  source: https://x-series-api.lightspeedhq.com/docs/authorization
+  note: >-
+    There is no test-mode key prefix, no test host and no separate test data. Testing happens against a
+    real retailer account under a connection cap.
+- product: Golf (Chronogolf)
+  type: staging environment
+  base_url: https://partner-staging.chronogolf.com
+  production_base_url: https://partner-api.chronogolf.com
+  token_endpoint_staging: https://partner-staging.chronogolf.com/oauth/token
+  source: https://partner-api.docs.chronogolf.com/
+- product: Retail R-Series
+  type: none published
+  note: No sandbox, demo host or test account is documented on https://developers.lightspeedhq.com/retail/.
+- product: eCom C-Series
+  type: none published
+  note: >-
+    No sandbox is documented. API access itself requires an Advanced or Professional subscription, so
+    there is no free path to exercise the API.
+test_data:
+  test_cards: none published
+  test_bank_accounts: none published
+  test_clocks: none published
+  fixtures_or_triggers: none published
+  note: >-
+    No product line publishes test card numbers, magic identifiers, fixture generators or time
+    simulation. For a company whose core business includes card payments, the absence of a published
+    test-card set is the most consequential gap in this artifact.
+key_prefixes:
+  test_vs_live: not applicable
+  note: >-
+    Lightspeed uses OAuth bearer tokens rather than prefixed API keys, so there is no visible
+    test-vs-live discriminator on a credential.

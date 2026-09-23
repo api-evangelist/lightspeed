@@ -842,6 +842,214 @@ paths:
       - Service Orders
 components:
   schemas:
+    Role:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Role name.
+          type: string
+        system_role_id:
+          description: A system role id of the Role. Will be either '100', '200', or '300'.
+          type: string
+      title: Role
+      type: object
+    UserImages:
+      description: On object containing URLs for different sizes of the user’s avatar.
+      properties:
+        original:
+          type: string
+        sl:
+          type: string
+        sm:
+          type: string
+        ss:
+          type: string
+        st:
+          type: string
+        standard:
+          type: string
+        thumb:
+          type: string
+      title: User Image
+      type:
+      - object
+      - 'null'
+    ServiceItems:
+      properties:
+        item_details:
+          $ref: '#/components/schemas/ItemDetails'
+        location:
+          type: string
+      title: ServiceItems
+      type: object
+    LineItemTaxComponent:
+      properties:
+        rate_id:
+          description: Tax rate ID.
+          type: string
+        total_tax:
+          description: Tax total.
+          format: double
+          type: number
+      required:
+      - rate_id
+      - total_tax
+      title: Line Item Tax Component
+      type: object
+    ServiceOrderRequest:
+      description: Request payload for creating a service order
+      example:
+        assigned_user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
+        customer_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
+        item:
+          description: Red mountain bike requiring brake service
+          initial_condition: Brakes not functioning properly
+          item_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
+          item_name: Mountain Bike
+          serial_number: MB2025-001
+        location: Service Bay 2
+        notes:
+        - body: Customer requested bike before the weekend
+          created_at: '2026-01-27T10:00:00Z'
+          is_visible_to_customer: true
+        - body: 'Internal note: Check brake fluid levels'
+        outlet_id: 348fff91-8c43-4599-812b-13636760895a
+        register_id: b1e198a9-f019-11e3-a0f5-b8ca3a64f8f4
+        status: NEW
+      properties:
+        assigned_user_id:
+          description: The user assigned to work on the service order
+          format: uuid
+          type: string
+        customer_id:
+          description: The customer associated with the service
+          format: uuid
+          type: string
+        extra_fields:
+          deprecated: true
+          description: Deprecated. Additional custom fields for the service order
+          properties:
+            location:
+              deprecated: true
+              description: 'Deprecated: Use top-level location field instead. Location where the service will be performed'
+              type: string
+            note:
+              deprecated: true
+              description: 'Deprecated: Use top-level Notes field instead. Additional note for the service order'
+              type: string
+          type: object
+        item:
+          description: Service item and its details
+          properties:
+            description:
+              description: Item description
+              type: string
+            initial_condition:
+              description: Item's initial condition
+              type: string
+            item_id:
+              description: ID of an already existing item
+              format: uuid
+              type: string
+            item_name:
+              description: Item name
+              type: string
+            serial_number:
+              description: Item serial number
+              type: string
+          type: object
+        job_status_id:
+          description: The ID of a custom service status to assign to this order. When provided, overrides the `status` field.
+          type:
+          - string
+          - 'null'
+        location:
+          description: Location where the service will be performed
+          type: string
+        notes:
+          description: Notes associated with the service order
+          items:
+            properties:
+              body:
+                description: The body of the note
+                type: string
+              created_at:
+                description: The date and time when the note was created (possible to pre-date the note)
+                format: date-time
+                type: string
+              is_visible_to_customer:
+                default: false
+                description: Whether the note is visible to customer (printed on the service receipt or not)
+                type: boolean
+            type: object
+          type: array
+        outlet_id:
+          description: The outlet of the service order
+          format: uuid
+          type: string
+        register_id:
+          description: The register of the service order
+          format: uuid
+          type: string
+        status:
+          default: NEW
+          description: The status of the service order
+          type: string
+      required:
+      - outlet_id
+      - register_id
+      - customer_id
+      type: object
+    ServiceStatusDetails:
+      description: Details of a custom service status assigned to a service order.
+      properties:
+        created_at:
+          description: The date and time the status was created.
+          format: date-time
+          type: string
+        display_name:
+          description: Human-readable name of the status.
+          type: string
+        display_order:
+          description: The order in which this status appears in the UI. Null if not set.
+          type:
+          - integer
+          - 'null'
+        id:
+          description: The unique ID of the status.
+          type: string
+        retailer_id:
+          description: The retailer this status belongs to.
+          type: string
+        status_key:
+          description: The underlying key mapping this status to a system status (e.g. NEW, IN_PROGRESS).
+          type: string
+        system_default:
+          description: Whether this is a system-managed default status.
+          type: boolean
+        updated_at:
+          description: The date and time the status was last updated.
+          format: date-time
+          type: string
+      type:
+      - object
+      - 'null'
+    PromotionDescription:
+      description: Basic description for a Promotion.
+      properties:
+        description:
+          description: A short description for the promotion.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The name of the promotion.
+          type: string
+      title: PromotionDescription
+      type: object
     DetailedService:
       properties:
         notes:
@@ -859,6 +1067,48 @@ components:
       type: object
       x-stoplight:
         id: 2fu3rgyr0q1gp
+    ServiceNote:
+      properties:
+        body:
+          type: string
+        createdAt:
+          type: string
+        id:
+          type: string
+        is_visible_to_customer:
+          description: Whether the note should be printed in the service receipt or not
+          type: boolean
+        location:
+          deprecated: true
+          description: 'Deprecated: Use top-level location field on ServiceOrder instead. Location where the service will be performed'
+          type: string
+        serviceId:
+          type: string
+        serviceStatus:
+          deprecated: true
+          type: number
+        user:
+          $ref: '#/components/schemas/User'
+        userId:
+          type: string
+      title: ServiceNote
+      type: object
+      x-stoplight:
+        id: 2fu3rgyr0q1gp
+    ItemDetails:
+      properties:
+        description:
+          type: string
+        initial_condition:
+          type: string
+        item_id:
+          type: string
+        item_name:
+          type: string
+        serial_number:
+          type: string
+      title: ItemDetails
+      type: object
     DailyAgenda:
       properties:
         date:
@@ -1174,256 +1424,6 @@ components:
       - version
       title: User
       type: object
-    LineItemTaxComponent:
-      properties:
-        rate_id:
-          description: Tax rate ID.
-          type: string
-        total_tax:
-          description: Tax total.
-          format: double
-          type: number
-      required:
-      - rate_id
-      - total_tax
-      title: Line Item Tax Component
-      type: object
-    ServiceItems:
-      properties:
-        item_details:
-          $ref: '#/components/schemas/ItemDetails'
-        location:
-          type: string
-      title: ServiceItems
-      type: object
-    ServiceNote:
-      properties:
-        body:
-          type: string
-        createdAt:
-          type: string
-        id:
-          type: string
-        is_visible_to_customer:
-          description: Whether the note should be printed in the service receipt or not
-          type: boolean
-        location:
-          deprecated: true
-          description: 'Deprecated: Use top-level location field on ServiceOrder instead. Location where the service will be performed'
-          type: string
-        serviceId:
-          type: string
-        serviceStatus:
-          deprecated: true
-          type: number
-        user:
-          $ref: '#/components/schemas/User'
-        userId:
-          type: string
-      title: ServiceNote
-      type: object
-      x-stoplight:
-        id: 2fu3rgyr0q1gp
-    ServiceOrderRequest:
-      description: Request payload for creating a service order
-      example:
-        assigned_user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
-        customer_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
-        item:
-          description: Red mountain bike requiring brake service
-          initial_condition: Brakes not functioning properly
-          item_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
-          item_name: Mountain Bike
-          serial_number: MB2025-001
-        location: Service Bay 2
-        notes:
-        - body: Customer requested bike before the weekend
-          created_at: '2026-01-27T10:00:00Z'
-          is_visible_to_customer: true
-        - body: 'Internal note: Check brake fluid levels'
-        outlet_id: 348fff91-8c43-4599-812b-13636760895a
-        register_id: b1e198a9-f019-11e3-a0f5-b8ca3a64f8f4
-        status: NEW
-      properties:
-        assigned_user_id:
-          description: The user assigned to work on the service order
-          format: uuid
-          type: string
-        customer_id:
-          description: The customer associated with the service
-          format: uuid
-          type: string
-        extra_fields:
-          deprecated: true
-          description: Deprecated. Additional custom fields for the service order
-          properties:
-            location:
-              deprecated: true
-              description: 'Deprecated: Use top-level location field instead. Location where the service will be performed'
-              type: string
-            note:
-              deprecated: true
-              description: 'Deprecated: Use top-level Notes field instead. Additional note for the service order'
-              type: string
-          type: object
-        item:
-          description: Service item and its details
-          properties:
-            description:
-              description: Item description
-              type: string
-            initial_condition:
-              description: Item's initial condition
-              type: string
-            item_id:
-              description: ID of an already existing item
-              format: uuid
-              type: string
-            item_name:
-              description: Item name
-              type: string
-            serial_number:
-              description: Item serial number
-              type: string
-          type: object
-        job_status_id:
-          description: The ID of a custom service status to assign to this order. When provided, overrides the `status` field.
-          type:
-          - string
-          - 'null'
-        location:
-          description: Location where the service will be performed
-          type: string
-        notes:
-          description: Notes associated with the service order
-          items:
-            properties:
-              body:
-                description: The body of the note
-                type: string
-              created_at:
-                description: The date and time when the note was created (possible to pre-date the note)
-                format: date-time
-                type: string
-              is_visible_to_customer:
-                default: false
-                description: Whether the note is visible to customer (printed on the service receipt or not)
-                type: boolean
-            type: object
-          type: array
-        outlet_id:
-          description: The outlet of the service order
-          format: uuid
-          type: string
-        register_id:
-          description: The register of the service order
-          format: uuid
-          type: string
-        status:
-          default: NEW
-          description: The status of the service order
-          type: string
-      required:
-      - outlet_id
-      - register_id
-      - customer_id
-      type: object
-    Role:
-      properties:
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The Role name.
-          type: string
-        system_role_id:
-          description: A system role id of the Role. Will be either '100', '200', or '300'.
-          type: string
-      title: Role
-      type: object
-    PromotionDescription:
-      description: Basic description for a Promotion.
-      properties:
-        description:
-          description: A short description for the promotion.
-          type: string
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The name of the promotion.
-          type: string
-      title: PromotionDescription
-      type: object
-    ServiceStatusDetails:
-      description: Details of a custom service status assigned to a service order.
-      properties:
-        created_at:
-          description: The date and time the status was created.
-          format: date-time
-          type: string
-        display_name:
-          description: Human-readable name of the status.
-          type: string
-        display_order:
-          description: The order in which this status appears in the UI. Null if not set.
-          type:
-          - integer
-          - 'null'
-        id:
-          description: The unique ID of the status.
-          type: string
-        retailer_id:
-          description: The retailer this status belongs to.
-          type: string
-        status_key:
-          description: The underlying key mapping this status to a system status (e.g. NEW, IN_PROGRESS).
-          type: string
-        system_default:
-          description: Whether this is a system-managed default status.
-          type: boolean
-        updated_at:
-          description: The date and time the status was last updated.
-          format: date-time
-          type: string
-      type:
-      - object
-      - 'null'
-    ItemDetails:
-      properties:
-        description:
-          type: string
-        initial_condition:
-          type: string
-        item_id:
-          type: string
-        item_name:
-          type: string
-        serial_number:
-          type: string
-      title: ItemDetails
-      type: object
-    UserImages:
-      description: On object containing URLs for different sizes of the user’s avatar.
-      properties:
-        original:
-          type: string
-        sl:
-          type: string
-        sm:
-          type: string
-        ss:
-          type: string
-        st:
-          type: string
-        standard:
-          type: string
-        thumb:
-          type: string
-      title: User Image
-      type:
-      - object
-      - 'null'
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

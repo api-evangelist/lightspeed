@@ -1,0 +1,115 @@
+name: Lightspeed Commerce Standards Conformance
+generated: '2026-08-27'
+method: derived
+source: >-
+  openapi/lightspeed-x-series-openapi.json, openapi/lightspeed-k-series-openapi.json,
+  https://x-series-api.lightspeedhq.com/docs/authorization.md,
+  https://x-series-api.lightspeedhq.com/docs/pagination.md,
+  https://www.lightspeedhq.com/security/
+standards:
+- id: openapi
+  conforms: true
+  evidence: >-
+    Two real published OpenAPI documents — X-Series 3.0.1 (135 paths / 201 operations / 372 schemas,
+    served inside the ReadMe reference page data) and K-Series 3.1.0 (74 paths / 91 operations /
+    11 webhooks / 1290 schemas, served at https://api-docs.lsk.lightspeed.app/source.json).
+- id: oauth2
+  conforms: true
+  evidence: >-
+    X-Series implements RFC 6749 authorization code grant (docs cite RFC 6749 explicitly); K-Series
+    declares an oauth2 securityScheme with authorizationCode flow and 8 named scopes; R-Series
+    documents authorization code grant with 30 employee:* scopes.
+- id: oidc
+  conforms: false
+  evidence: No openid-configuration document on any host (all probes 404); no OIDC scopes or id_token in either spec.
+- id: rfc8414
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-authorization-server returned 404 on every host. Authorization and token
+    endpoints are documented in prose only.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    No application/problem+json media type and no `type`/`title`/`detail`/`instance` problem shape in
+    either spec. X-Series uses a vendor {"error","message"} envelope.
+- id: rfc9116
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on www.lightspeedhq.com, x-series-api.lightspeedhq.com, developers.lightspeedhq.com and api.shoplightspeed.com.
+- id: rfc8594
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation response header declared in either published spec; deprecation is
+    announced only via changelog and the spec's own deprecated flags.
+- id: idempotency
+  conforms: partial
+  evidence: >-
+    K-Series requires an Idempotency-Key header on payments-processing-service requests and sends
+    X-Lightspeed-Idempotency-Key on outbound webhooks. X-Series uses body-level client_id / request_id
+    identifiers on gift-card, store-credit and sale operations rather than the IETF Idempotency-Key
+    header. See conventions/lightspeed-conventions.yml.
+- id: pagination
+  conforms: true
+  evidence: >-
+    X-Series publishes a documented cursor scheme built on a monotonic `version` attribute with an
+    `after` parameter and explicit termination semantics; R-Series documents offset/limit; K-Series
+    publishes a pagination best-practices guide.
+- id: json-api
+  conforms: false
+  evidence: >-
+    Responses are plain JSON collections with a data array and a version min/max object, not JSON:API
+    documents.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface and no OData query options in either spec.
+- id: scim
+  conforms: false
+  evidence: >-
+    User and staff management endpoints exist on both X-Series (Users) and K-Series (staff-api) but use
+    vendor schemas; no urn:ietf:params:scim:schemas:* URN appears in either spec.
+- id: fapi
+  conforms: false
+  evidence: Not a financial-grade API surface; no FAPI profile claimed or implemented.
+- id: psd2
+  conforms: false
+  evidence: Lightspeed Payments is a merchant acquiring/processing surface, not an account-information or payment-initiation API.
+domain_standards:
+- id: pci-dss
+  conforms: true
+  evidence: >-
+    Lightspeed publishes PCI DSS Attestations of Compliance per product line (E-Series AoC, U-Series
+    AoC named on https://www.lightspeedhq.com/security/) and states it does not store, process or
+    transmit cardholder data itself. This is the governing standard for the payments half of the
+    portfolio and is a program attestation rather than a contract signature.
+- id: iso-4217
+  conforms: true
+  evidence: >-
+    Currency fields in the X-Series spec are described as ISO 4217 codes (6 occurrences) and the
+    K-Series spec references ISO 4217 for currency. Retail/hospitality's baseline money standard.
+- id: iso-8601
+  conforms: true
+  evidence: >-
+    K-Series names ISO 8601 / ISO-8601 in 49 field descriptions (including an
+    orderCollectionTimeAsIso8601 property name); X-Series documents ISO-8601 date-times in the gift
+    card guide.
+- id: iana-tz
+  conforms: true
+  evidence: >-
+    The X-Series spec's externalDocs points at the tz database time zone list
+    (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) and timezone fields reference it.
+- id: gs1-gtin
+  conforms: partial
+  evidence: >-
+    Barcode fields are present in both specs (X-Series 2, K-Series 12) and X-Series product fields
+    reference EAN/UPC, but no GS1 GTIN identifier scheme, GS1 Digital Link or GDSN surface is declared.
+    Retail's actual domain standard is present only as an untyped barcode string.
+  gap: >-
+    A GS1-typed product identifier (GTIN-8/12/13/14 with a declared format) would let a retail
+    integrator match catalogue across systems with no bespoke mapping. Today it cannot.
+- id: emv
+  conforms: partial
+  evidence: EMV is referenced in X-Series payment fields (4 occurrences); no EMV-level contract is published.
+no_applicable_standard:
+- >-
+  Retail and hospitality point-of-sale has no widely-adopted machine-readable API standard equivalent
+  to FHIR, FDX or CAMARA. GS1 governs product identification but not POS APIs. Lightspeed is therefore
+  not penalised for the absence of a domain API standard — none exists for its market.

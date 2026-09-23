@@ -1,0 +1,88 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Lightspeed Retail X-Series
+  version: 1.0.0
+extends: ../openapi/lightspeed-x-series-openapi.json
+x-provenance:
+  generated: '2026-08-27'
+  method: generated
+  source: >-
+    Derived from repo artifacts (conventions/, scopes/, errors/, lifecycle/, rate-limits/, mcp/) against
+    the harvested X-Series contract. Adds only cross-references and runtime semantics Lightspeed
+    documents elsewhere but does not put in the spec. The original spec is never mutated.
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      profile: https://apis.io/provider/lightspeed/
+      artifacts:
+        conventions: conventions/lightspeed-conventions.yml
+        scopes: scopes/lightspeed-scopes.yml
+        errors: errors/lightspeed-problem-types.yml
+        lifecycle: lifecycle/lightspeed-lifecycle.yml
+        rate_limits: rate-limits/lightspeed-rate-limits.yml
+        webhooks: asyncapi/lightspeed-webhooks.yml
+        mcp: mcp/lightspeed-mcp.yml
+- target: $.info
+  update:
+    x-authentication:
+      model: OAuth 2.0 authorization code (RFC 6749); Plus-plan personal tokens as an alternative
+      authorizationUrl: https://secure.retail.lightspeed.app/connect
+      tokenUrl: https://{domain_prefix}.retail.lightspeed.app/api/1.0/token
+      access_token_ttl_seconds: 86400
+      refresh_token_rotation: true
+      note: >-
+        The spec declares only a generic http/bearer scheme. This is the flow that actually issues that
+        bearer token, per https://x-series-api.lightspeedhq.com/docs/authorization.
+- target: $.info
+  update:
+    x-rate-limit:
+      formula: 300 * <number of registers> + 50
+      window_seconds: 300
+      buckets:
+      - per retailer per application
+      - per retailer for all users
+      headers: [X-RateLimit-Limit, X-RateLimit-Remaining]
+      retry_after: Retry-After as an RFC1123 HTTP-date, not seconds
+      exhausted_status: 429
+      docs: https://x-series-api.lightspeedhq.com/docs/rate_limiting
+- target: $.info
+  update:
+    x-pagination:
+      style: version cursor
+      parameter: after
+      response_fields: [data, version.min, version.max]
+      termination: repeat until data is empty
+      docs: https://x-series-api.lightspeedhq.com/docs/pagination
+- target: $.info
+  update:
+    x-versioning:
+      scheme: date-based YYYY-MM in the path
+      cadence_months: 3
+      support_window_months: 12
+      eol_behavior: >-
+        Requests to an end-of-life version are silently served by the oldest supported version; there is
+        no error and no Sunset header.
+      docs: https://x-series-api.lightspeedhq.com/docs/versioning-strategy
+- target: $.info
+  update:
+    x-reversibility:
+      grade: documented
+      reversal_operations:
+      - operationId: initReturnSale
+        reverses: CreateSale
+        window: not stated by the provider
+      - operationId: ReverseGiftCardTransaction
+        reverses: gift card REDEEMING transactions only
+        window: not stated by the provider
+      - operationId: ReverseStoreCreditHold
+        reverses: store credit HOLD
+        window: not stated by the provider
+      note: No Lightspeed documentation states a time window for any reversal.
+- target: $.info
+  update:
+    x-data-handling:
+      credit_card_redaction: >-
+        The server silently redacts detected card data on named Customer and Sale fields and still
+        returns 200 OK, so a written value can differ from the value read back.
+        See https://x-series-api.lightspeedhq.com/docs/data_security.

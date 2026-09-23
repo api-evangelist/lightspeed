@@ -345,7 +345,7 @@ paths:
         ## Idempotency
 
 
-        Please populate the client_id field with a unique transaction identifier, to ensure that the transaction is safe from double-submit problems. See [the tutorial](/docs/gift_cards#idempotency) for more information.
+        Please populate the client_id field with a unique transaction identifier, to ensure that the transaction is safe from double-submit problems. See the tutorial for more information.
 
 
         🔒 Requires: `gift_cards:write:redeem` scope'
@@ -465,6 +465,18 @@ paths:
       - Gift Cards
 components:
   schemas:
+    GiftCardCollection:
+      description: A paginated list of gift cards.
+      properties:
+        data:
+          description: An array of Gift Cards.
+          items:
+            $ref: '#/components/schemas/GiftCard'
+          type: array
+      required:
+      - data
+      title: Gift Card Collection
+      type: object
     GiftCardTransactionSingleton:
       description: A single gift card transaction response.
       properties:
@@ -513,17 +525,55 @@ components:
       - type
       title: Gift Card Transaction Parameters
       type: object
-    GiftCardCollection:
-      description: A paginated list of gift cards.
+    GiftCard:
+      description: A gift card with monetary values represented as strings for precision.
       properties:
-        data:
-          description: An array of Gift Cards.
+        balance:
+          description: The balance of the gift card, represented as a string for precision.
+          type: string
+        created_at:
+          description: The creation timestamp in UTC.
+          type: string
+        expires_at:
+          description: The expiry timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        gift_card_transactions:
+          description: An array of Gift Card Transactions.
           items:
-            $ref: '#/components/schemas/GiftCard'
+            $ref: '#/components/schemas/GiftCardTransaction'
           type: array
-      required:
-      - data
-      title: Gift Card Collection
+        id:
+          description: Auto-generated object ID.
+          type: string
+        number:
+          description: The gift card number.
+          type: string
+        sale_id:
+          description: The ID of the sale associated with the gift card creation, if it was created through a register sale. Null if the gift card was created directly via the API.
+          type:
+          - string
+          - 'null'
+        sale_source:
+          description: The source system where the gift card was created (e.g. x-series, e-series).
+          type: string
+        status:
+          description: The gift card status.
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - REDEEMED
+          - VOIDED
+          - EXPIRED
+          type: string
+        total_redeemed:
+          description: The amount redeemed with this gift card, represented as a string for precision.
+          type: string
+        total_sold:
+          description: The amount loaded onto this gift card during activation or reloading, represented as a string for precision.
+          type: string
+      title: Gift Card
       type: object
     GiftCardActivationParams:
       description: The parameters for creating and activating a new gift card.
@@ -591,56 +641,6 @@ components:
           description: The user id associated with the transaction.
           type: string
       title: Gift Card Transaction
-      type: object
-    GiftCard:
-      description: A gift card with monetary values represented as strings for precision.
-      properties:
-        balance:
-          description: The balance of the gift card, represented as a string for precision.
-          type: string
-        created_at:
-          description: The creation timestamp in UTC.
-          type: string
-        expires_at:
-          description: The expiry timestamp in UTC.
-          type:
-          - string
-          - 'null'
-        gift_card_transactions:
-          description: An array of Gift Card Transactions.
-          items:
-            $ref: '#/components/schemas/GiftCardTransaction'
-          type: array
-        id:
-          description: Auto-generated object ID.
-          type: string
-        number:
-          description: The gift card number.
-          type: string
-        sale_id:
-          description: The ID of the sale associated with the gift card creation, if it was created through a register sale. Null if the gift card was created directly via the API.
-          type:
-          - string
-          - 'null'
-        sale_source:
-          description: The source system where the gift card was created (e.g. x-series, e-series).
-          type: string
-        status:
-          description: The gift card status.
-          enum:
-          - ACTIVE
-          - INACTIVE
-          - REDEEMED
-          - VOIDED
-          - EXPIRED
-          type: string
-        total_redeemed:
-          description: The amount redeemed with this gift card, represented as a string for precision.
-          type: string
-        total_sold:
-          description: The amount loaded onto this gift card during activation or reloading, represented as a string for precision.
-          type: string
-      title: Gift Card
       type: object
   securitySchemes:
     bearerAuth:

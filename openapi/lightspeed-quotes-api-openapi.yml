@@ -80,6 +80,123 @@ paths:
       - Quotes
 components:
   schemas:
+    QuotesCollection:
+      properties:
+        HasNext:
+          type: boolean
+        Quotes:
+          items:
+            $ref: '#/components/schemas/Quote'
+          type:
+          - array
+          - 'null'
+        TotalCount:
+          type: integer
+      type: object
+      x-examples:
+        example-1:
+          HasNext: false
+          Quotes:
+          - created_at: '2022-10-18T10:50:32.11075Z'
+            customer_id: 0242ac11-0002-11ea-eb21-8ab06c5364f5
+            deleted_at: null
+            expired_at: '2022-11-17T10:50:32.110752Z'
+            grand_total: 20
+            id: '1582323235375263744'
+            loyalty: 0.1
+            note: ''
+            outlet_id: 0242ac12-0002-11e9-e8c4-659494e196e3
+            products:
+            - discount: 20
+              id: '1582323235375263745'
+              note: ''
+              price: 17.3913
+              product_id: 0242ac12-0002-11e9-e8c4-659494e33153
+              product_tax_components:
+              - id: '1582323235375263748'
+                quote_product_id: '1582323235375263747'
+                rate_id: 06b96260-3efa-11ed-a218-0242ac110002
+                total_tax: 2.6087
+              quantity: 1
+              quote_id: '1582323235375263744'
+              salesperson_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
+              sequence: 0
+              tax: 2.6087
+              tax_id: 00000000-0002-0002-0002-000000000003
+            register_id: 0242ac12-0002-11e9-e8c4-659494e17cee
+            retailer_id: 00000000-0001-0001-0001-000000000001
+            sales_ids: null
+            short_code: '1'
+            status: CREATED
+            total_price: 34.78261
+            total_tax: 5.21739
+            updated_at: '2022-10-18T10:50:32.255336Z'
+            user_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
+          TotalCount: 1
+    QuoteProduct:
+      properties:
+        discount:
+          type: number
+        id:
+          type: string
+        note:
+          type: string
+        price:
+          type: number
+        product_id:
+          type: string
+        product_tax_components:
+          items:
+            $ref: '#/components/schemas/QuotesProductsTaxComponents'
+          type: array
+        quantity:
+          type: integer
+        quote_id:
+          type: string
+        salesperson_id:
+          type: string
+        sequence:
+          type: integer
+        tax:
+          type: number
+        tax_id:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          discount: 20
+          id: '1582323235375263747'
+          note: ''
+          price: 17.3913
+          product_id: 0242ac12-0002-11e9-e8c4-659494e33153
+          product_tax_components:
+          - id: '1582323235375263748'
+            quote_product_id: '1582323235375263747'
+            rate_id: 06b96260-3efa-11ed-a218-0242ac110002
+            total_tax: 2.6087
+          quantity: 1
+          quote_id: '1582323235375263744'
+          salesperson_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
+          sequence: 1
+          tax: 2.6087
+          tax_id: 00000000-0002-0002-0002-000000000003
+    QuotesProductsTaxComponents:
+      properties:
+        id:
+          type: string
+        quote_product_id:
+          type: string
+        rate_id:
+          type: string
+        total_tax:
+          type: number
+      type: object
+      x-examples:
+        example-1:
+          id: '1582323235375263746'
+          quote_product_id: '1582323235375263745'
+          rate_id: 06b96260-3efa-11ed-a218-0242ac110002
+          total_tax: 2.6087
     Quote:
       properties:
         created_at:
@@ -158,123 +275,6 @@ components:
           total_tax: 5.21739
           updated_at: '2022-10-18T10:50:32.255336Z'
           user_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
-    QuoteProduct:
-      properties:
-        discount:
-          type: number
-        id:
-          type: string
-        note:
-          type: string
-        price:
-          type: number
-        product_id:
-          type: string
-        product_tax_components:
-          items:
-            $ref: '#/components/schemas/QuotesProductsTaxComponents'
-          type: array
-        quantity:
-          type: integer
-        quote_id:
-          type: string
-        salesperson_id:
-          type: string
-        sequence:
-          type: integer
-        tax:
-          type: number
-        tax_id:
-          type: string
-      type: object
-      x-examples:
-        example-1:
-          discount: 20
-          id: '1582323235375263747'
-          note: ''
-          price: 17.3913
-          product_id: 0242ac12-0002-11e9-e8c4-659494e33153
-          product_tax_components:
-          - id: '1582323235375263748'
-            quote_product_id: '1582323235375263747'
-            rate_id: 06b96260-3efa-11ed-a218-0242ac110002
-            total_tax: 2.6087
-          quantity: 1
-          quote_id: '1582323235375263744'
-          salesperson_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
-          sequence: 1
-          tax: 2.6087
-          tax_id: 00000000-0002-0002-0002-000000000003
-    QuotesCollection:
-      properties:
-        HasNext:
-          type: boolean
-        Quotes:
-          items:
-            $ref: '#/components/schemas/Quote'
-          type:
-          - array
-          - 'null'
-        TotalCount:
-          type: integer
-      type: object
-      x-examples:
-        example-1:
-          HasNext: false
-          Quotes:
-          - created_at: '2022-10-18T10:50:32.11075Z'
-            customer_id: 0242ac11-0002-11ea-eb21-8ab06c5364f5
-            deleted_at: null
-            expired_at: '2022-11-17T10:50:32.110752Z'
-            grand_total: 20
-            id: '1582323235375263744'
-            loyalty: 0.1
-            note: ''
-            outlet_id: 0242ac12-0002-11e9-e8c4-659494e196e3
-            products:
-            - discount: 20
-              id: '1582323235375263745'
-              note: ''
-              price: 17.3913
-              product_id: 0242ac12-0002-11e9-e8c4-659494e33153
-              product_tax_components:
-              - id: '1582323235375263748'
-                quote_product_id: '1582323235375263747'
-                rate_id: 06b96260-3efa-11ed-a218-0242ac110002
-                total_tax: 2.6087
-              quantity: 1
-              quote_id: '1582323235375263744'
-              salesperson_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
-              sequence: 0
-              tax: 2.6087
-              tax_id: 00000000-0002-0002-0002-000000000003
-            register_id: 0242ac12-0002-11e9-e8c4-659494e17cee
-            retailer_id: 00000000-0001-0001-0001-000000000001
-            sales_ids: null
-            short_code: '1'
-            status: CREATED
-            total_price: 34.78261
-            total_tax: 5.21739
-            updated_at: '2022-10-18T10:50:32.255336Z'
-            user_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
-          TotalCount: 1
-    QuotesProductsTaxComponents:
-      properties:
-        id:
-          type: string
-        quote_product_id:
-          type: string
-        rate_id:
-          type: string
-        total_tax:
-          type: number
-      type: object
-      x-examples:
-        example-1:
-          id: '1582323235375263746'
-          quote_product_id: '1582323235375263745'
-          rate_id: 06b96260-3efa-11ed-a218-0242ac110002
-          total_tax: 2.6087
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

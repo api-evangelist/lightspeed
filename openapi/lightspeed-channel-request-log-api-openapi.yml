@@ -259,6 +259,22 @@ paths:
       - Channel Request Log
 components:
   schemas:
+    RequestCollectionResponse:
+      description: A collection of request log records wrapped in the top-level data object.
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/RequestLog'
+          type: array
+      title: Request Logs response
+      type: object
+    RequestSingleResponse:
+      description: A single request log record wrapped in the top-level data object.
+      properties:
+        data:
+          $ref: '#/components/schemas/RequestLog'
+      title: Request Log response
+      type: object
     RequestLog:
       description: An object representing a single request and response made to a channel.
       properties:
@@ -302,22 +318,6 @@ components:
       - request_method
       - response
       title: Request Log
-      type: object
-    RequestSingleResponse:
-      description: A single request log record wrapped in the top-level data object.
-      properties:
-        data:
-          $ref: '#/components/schemas/RequestLog'
-      title: Request Log response
-      type: object
-    ChannelCollectionResponse:
-      description: A collection of channel records wrapped in a top-level data object.
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/Channel'
-          type: array
-      title: Channels response
       type: object
     Channel:
       description: An object representing a single channel.
@@ -368,14 +368,14 @@ components:
       - store_url
       title: Channel
       type: object
-    RequestCollectionResponse:
-      description: A collection of request log records wrapped in the top-level data object.
+    ChannelCollectionResponse:
+      description: A collection of channel records wrapped in a top-level data object.
       properties:
         data:
           items:
-            $ref: '#/components/schemas/RequestLog'
+            $ref: '#/components/schemas/Channel'
           type: array
-      title: Request Logs response
+      title: Channels response
       type: object
   securitySchemes:
     bearerAuth:

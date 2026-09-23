@@ -267,7 +267,33 @@ paths:
       - Store Credits
   /store_credits/{customerId}/transactions:
     post:
-      description: "Creates a new store credit transaction. The type determines what sort of transaction it is.\n\n* \"REDEMPTION\" - Use this type when you want to redeem a certain amount from the store credit balance. The amount MUST be negative. If you want to add an amount to the balance use the \"ISSUE\" type.\n\U0001F512 Requires: `store_credits:write:redeem`\n* \"ISSUE\" - Use this type when you issue store credit to a customer.\n\U0001F512 Requires: `store_credits:write:issue`\n* \"REVERSE\" - Use this type when voiding an earlier ISSUE or REDEMPTION transaction.\n\U0001F512 Requires: `store_credits:write:redeem`\n\nIf the customer account does not have enough credit to honour a REDEMPTION transaction a 422 HTTP status code will be returned.\n\n## Idempotency\n\n  Please populate the client_id field with a unique transaction identifier, to ensure that the transaction is safe from double-submit problems.\n  When creating an REVERSE operation, client_id must be equal to client_id of a reversed operation.\n  See [the tutorial](/docs/store_credit#idempotency) for more information."
+      description: 'Creates a new store credit transaction. The type determines what sort of transaction it is.
+
+
+        * "REDEMPTION" - Use this type when you want to redeem a certain amount from the store credit balance. The amount MUST be negative. If you want to add an amount to the balance use the "ISSUE" type.
+
+        🔒 Requires: `store_credits:write:redeem`
+
+        * "ISSUE" - Use this type when you issue store credit to a customer.
+
+        🔒 Requires: `store_credits:write:issue`
+
+        * "REVERSE" - Use this type when voiding an earlier ISSUE or REDEMPTION transaction.
+
+        🔒 Requires: `store_credits:write:redeem`
+
+
+        If the customer account does not have enough credit to honour a REDEMPTION transaction a 422 HTTP status code will be returned.
+
+
+        ## Idempotency
+
+
+        Please populate the client_id field with a unique transaction identifier, to ensure that the transaction is safe from double-submit problems.
+
+        When creating an REVERSE operation, client_id must be equal to client_id of a reversed operation.
+
+        See the tutorial for more information.'
       operationId: CreateStoreCreditTransaction
       parameters:
       - description: The customer id to apply the store transaction to.
@@ -308,51 +334,6 @@ paths:
       - Store Credits
 components:
   schemas:
-    StoreCreditTransaction:
-      description: A store credit operation
-      properties:
-        amount:
-          description: The amount of the transaction
-          format: double
-          type: number
-        client_id:
-          description: 'An operation idempotency identifier.
-
-            The client must provide this and normally it should be the transaction id from the client system.
-
-            An operation and it''s reverse operation must have the same client_id
-
-            '
-          type: string
-        created_at:
-          description: The date time the transaction was created.
-          example: '2026-01-02T15:04:05Z'
-          format: date-time
-          pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})$
-          type: string
-        id:
-          description: transaction unique identifier (base64 encoded)
-          type: string
-        notes:
-          description: The notes associated with the transaction.
-          type: string
-        sale_id:
-          description: The sale id the transaction is associated with. This should be null for transactions initiated outside of Lightspeed Retail. If it is a sale id, it will be in UUID format.
-          format: uuid
-          type: string
-        type:
-          description: The type of the transaction
-          enum:
-          - ISSUE
-          - REDEMPTION
-          - REVERSE
-          type: string
-        user_id:
-          description: The user id of the person who performed the transaction (during a sale or a manual issue)
-          format: uuid
-          type: string
-      title: Store Credit Transaction for Customer
-      type: object
     StoreCreditBalancesBulkResponse:
       description: The fields returned by the store_credit /store_credits/balances-bulk
       properties:
@@ -364,38 +345,6 @@ components:
       required:
       - data
       title: Store Credit Bulk Response
-      type: object
-    StoreCreditTransactionParams:
-      description: The store credit transaction parameters for a customer transaction.
-      properties:
-        amount:
-          description: The amount of the transaction.
-          format: double
-          type: number
-        client_id:
-          description: 'The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.
-
-            '
-          type: string
-        notes:
-          description: The notes associated with the transaction.
-          type: string
-        type:
-          description: The type of the transaction
-          enum:
-          - ISSUE
-          - REDEMPTION
-          - REVERSE
-          type: string
-        user_id:
-          description: The user id of the person who handled the transaction.
-          format: uuid
-          type: string
-      required:
-      - amount
-      - client_id
-      - type
-      title: Store Credit Transaction Parameters for Customer
       type: object
     StoreCreditCustomerBalance:
       description: The store credit balance and statistics for the customer
@@ -417,23 +366,33 @@ components:
           type: number
       title: Store Credit Customer Balance
       type: object
-    StoreCreditReport:
-      description: The store credit report for a retailer.
+    StoreCreditBulkResponse:
+      description: Store credit customer list with balance and transactions
       properties:
-        outstanding_balance:
-          description: The outstanding balance.
-          format: double
-          type: number
-        total_value_issued:
-          description: The total credit issued.
-          format: double
-          type: number
-        total_value_redeemed:
-          description: The total value redeemed.
-          format: double
-          type: number
-      title: Store Credit Report
+        data:
+          description: An array of Store Credit Customers
+          items:
+            $ref: '#/components/schemas/StoreCreditCustomer'
+          type: array
+      required:
+      - data
+      title: Store Credit Bulk Response
       type: object
+      x-examples:
+        example-1:
+          data:
+          - balance: 10
+            customer_id: 160c0c4b-9966-4dc1-a916-8407eb10d74e
+            store_credit_transactions:
+            - amount: 10
+              client_id: string
+              created_at: string
+              notes: string
+              sale_id: 7e9bee0e-09d3-495f-848b-5926aa2ded33
+              type: ISSUE
+              user_id: a169451c-8525-4352-b8ca-070dd449a1a5
+            total_credit_issued: 10
+            total_credit_redeemed: 10
     StoreCreditCustomer:
       description: The store credit information for a customer.
       properties:
@@ -486,33 +445,100 @@ components:
             user_id: a169451c-8525-4352-b8ca-070dd449a1a5
           total_credit_issued: 10
           total_credit_redeemed: 0
-    StoreCreditBulkResponse:
-      description: Store credit customer list with balance and transactions
+    StoreCreditReport:
+      description: The store credit report for a retailer.
       properties:
-        data:
-          description: An array of Store Credit Customers
-          items:
-            $ref: '#/components/schemas/StoreCreditCustomer'
-          type: array
-      required:
-      - data
-      title: Store Credit Bulk Response
+        outstanding_balance:
+          description: The outstanding balance.
+          format: double
+          type: number
+        total_value_issued:
+          description: The total credit issued.
+          format: double
+          type: number
+        total_value_redeemed:
+          description: The total value redeemed.
+          format: double
+          type: number
+      title: Store Credit Report
       type: object
-      x-examples:
-        example-1:
-          data:
-          - balance: 10
-            customer_id: 160c0c4b-9966-4dc1-a916-8407eb10d74e
-            store_credit_transactions:
-            - amount: 10
-              client_id: string
-              created_at: string
-              notes: string
-              sale_id: 7e9bee0e-09d3-495f-848b-5926aa2ded33
-              type: ISSUE
-              user_id: a169451c-8525-4352-b8ca-070dd449a1a5
-            total_credit_issued: 10
-            total_credit_redeemed: 10
+    StoreCreditTransaction:
+      description: A store credit operation
+      properties:
+        amount:
+          description: The amount of the transaction
+          format: double
+          type: number
+        client_id:
+          description: 'An operation idempotency identifier.
+
+            The client must provide this and normally it should be the transaction id from the client system.
+
+            An operation and it''s reverse operation must have the same client_id
+
+            '
+          type: string
+        created_at:
+          description: The date time the transaction was created.
+          example: '2026-01-02T15:04:05Z'
+          format: date-time
+          pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})$
+          type: string
+        id:
+          description: transaction unique identifier (base64 encoded)
+          type: string
+        notes:
+          description: The notes associated with the transaction.
+          type: string
+        sale_id:
+          description: The sale id the transaction is associated with. This should be null for transactions initiated outside of Lightspeed Retail. If it is a sale id, it will be in UUID format.
+          format: uuid
+          type: string
+        type:
+          description: The type of the transaction
+          enum:
+          - ISSUE
+          - REDEMPTION
+          - REVERSE
+          type: string
+        user_id:
+          description: The user id of the person who performed the transaction (during a sale or a manual issue)
+          format: uuid
+          type: string
+      title: Store Credit Transaction for Customer
+      type: object
+    StoreCreditTransactionParams:
+      description: The store credit transaction parameters for a customer transaction.
+      properties:
+        amount:
+          description: The amount of the transaction.
+          format: double
+          type: number
+        client_id:
+          description: 'The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.
+
+            '
+          type: string
+        notes:
+          description: The notes associated with the transaction.
+          type: string
+        type:
+          description: The type of the transaction
+          enum:
+          - ISSUE
+          - REDEMPTION
+          - REVERSE
+          type: string
+        user_id:
+          description: The user id of the person who handled the transaction.
+          format: uuid
+          type: string
+      required:
+      - amount
+      - client_id
+      - type
+      title: Store Credit Transaction Parameters for Customer
+      type: object
     StoreCreditCreateHoldParams:
       properties:
         amount:

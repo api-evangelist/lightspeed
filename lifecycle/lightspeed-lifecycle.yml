@@ -1,0 +1,87 @@
+name: Lightspeed Commerce API Lifecycle
+generated: '2026-08-27'
+method: searched
+source: >-
+  https://x-series-api.lightspeedhq.com/docs/versioning-strategy.md,
+  https://x-series-api.lightspeedhq.com/changelog, https://api-portal.lsk.lightspeed.app/quick-start/versioning,
+  https://api-docs.lsk.lightspeed.app/changes, https://status.lightspeedhq.com/,
+  openapi/lightspeed-x-series-openapi.json, openapi/lightspeed-k-series-openapi.json
+
+versioning:
+  x_series:
+    scheme: date-based YYYY-MM in the URL path
+    example: GET /api/2026-01/products
+    previous_scheme: semantic versions v0.9 / v2.0 / v2.1 / v3.0, now retired
+    cadence: a new version every 3 months (quarterly)
+    support_window_months: 12
+    beta: the next scheduled release is published in Beta ahead of its launch date
+    current_published_version: '2026-07'
+    docs: https://x-series-api.lightspeedhq.com/docs/versioning-strategy
+  k_series:
+    docs: https://api-portal.lsk.lightspeed.app/quick-start/versioning
+    spec_version: 1.0.0
+  r_series:
+    scheme: path version (API/V3)
+    docs: https://developers.lightspeedhq.com/retail/tutorials/updatetov3/
+
+deprecation_policy:
+  published: true
+  url: https://x-series-api.lightspeedhq.com/docs/versioning-strategy
+  summary: >-
+    Every X-Series date version is supported for a minimum of 12 months from release, with a new version
+    every quarter, so at any moment roughly four versions are live. Deprecations of individual endpoints
+    are announced as dated changelog entries.
+  end_of_life_behavior: >-
+    A request to an end-of-life version is NOT rejected. It is silently served by the oldest currently
+    supported version. Lightspeed states this prevents immediate breakage; the practical effect is that
+    an unmaintained integration can begin receiving different behaviour with no error signal, so a
+    client cannot detect EOL from the response.
+  headers:
+    rfc8594_sunset: false
+    deprecation_header: false
+    note: >-
+      Neither the X-Series nor the K-Series spec declares a Sunset or Deprecation response header. There
+      is no runtime deprecation signal on any Lightspeed API — deprecation is communicated only through
+      the changelog and the spec's `deprecated: true` flag.
+  deprecated_in_contract:
+    x_series:
+      count: 12
+      example_operation: ListProductTypes
+    k_series:
+      count: 35
+      example_operation: apeGetMenuById
+    note: >-
+      Counts are of `deprecated: true` occurrences in each published spec (covering operations,
+      parameters and properties). The K-Series count is notably high for a 91-operation API.
+  recent_deprecation_announcements:
+  - title: 2026-04 Deprecation of Sale Fulfillment Endpoints
+    url: https://x-series-api.lightspeedhq.com/changelog/2026-05-deprecate-sale-fulfillment-endpoints
+  - title: Reservations API to be deprecated in favour of Reservations for Platforms
+    product: K-Series
+    source: openapi/lightspeed-k-series-openapi.json (reservations-api scope description)
+
+status_page:
+  url: https://status.lightspeedhq.com/
+  http_status: 200
+  probed: '2026-08-27'
+  scope: company-wide (all Lightspeed products), not per-API
+
+sla:
+  published: false
+  note: No public SLA or uptime commitment was found on any Lightspeed developer surface.
+
+changelogs:
+- product: X-Series
+  url: https://x-series-api.lightspeedhq.com/changelog
+  machine_readable: true
+  note: Every entry is also served as markdown by appending .md, and the full index is in llms.txt.
+- product: K-Series
+  url: https://api-docs.lsk.lightspeed.app/changes
+  machine_readable: true
+  note: >-
+    Bump.sh-generated structural diffs of the OpenAPI itself — it reports which operation, body and
+    property changed, not just prose. RSS subscription offered. Last update Aug 27, 2026.
+- product: R-Series
+  url: https://developers.lightspeedhq.com/retail/introduction/changelog/
+- product: eCom C-Series
+  url: https://developers.lightspeedhq.com/ecom/introduction/releasenotes/

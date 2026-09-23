@@ -283,7 +283,44 @@ paths:
       tags:
       - Consignment Products
     put:
-      description: "Updates the specific product within the consignment.\n\n**Notes**:\n\n- If the type is SUPPLIER then:\n  * If status is OPEN or SENT, the count value will be updated\n  * If status is DISPATCHED, the received quantity will be updated\n  * If status is OPEN, SENT or DISPATCHED, the cost can be updated\n  * Cannot update a product in RECEIVED or CANCELLED status\n  * Any updates to the received quantity field on a product in a `SENT` consignment, will set the consignment status to `DISPATCHED`\n- If the type is OUTLET then:\n  * If the status is OPEN and there is a cost the cost will be updated.\n  * If the status is SENT or DISPATCHED and received is not null the received quantity will be updated.\n  * If the status is OPEN or SENT and count is not null then the count quantity will be updated.\n- If the type is RETURN and the status is OPEN or SENT and count is not null then the count quantity will be updated.\n- If the type is STOCKTAKE and the status is STATUS\\_STOCKTAKE\\_IN\\_PROGRESS or STATUS\\_STOCKTAKE\\_IN\\_PROCESS\\_PROCESSED and received is not null then the received quantity will be updated.\n\n\U0001F512 Requires: One of the following scopes:\n- `consignments:write:stock_order` scope for `SUPPLIER` and `RETURN` consignments\n- `consignments:write:stock_transfer` scope for `OUTLET` consignments\n- `consignments:write:inventory_count` scope for `STOCKTAKE` consignments"
+      description: 'Updates the specific product within the consignment.
+
+
+        **Notes**:
+
+
+        - If the type is SUPPLIER then:
+
+        * If status is OPEN or SENT, the count value will be updated
+
+        * If status is DISPATCHED, the received quantity will be updated
+
+        * If status is OPEN, SENT or DISPATCHED, the cost can be updated
+
+        * Cannot update a product in RECEIVED or CANCELLED status
+
+        * Any updates to the received quantity field on a product in a `SENT` consignment, will set the consignment status to `DISPATCHED`
+
+        - If the type is OUTLET then:
+
+        * If the status is OPEN and there is a cost the cost will be updated.
+
+        * If the status is SENT or DISPATCHED and received is not null the received quantity will be updated.
+
+        * If the status is OPEN or SENT and count is not null then the count quantity will be updated.
+
+        - If the type is RETURN and the status is OPEN or SENT and count is not null then the count quantity will be updated.
+
+        - If the type is STOCKTAKE and the status is STATUS\_STOCKTAKE\_IN\_PROGRESS or STATUS\_STOCKTAKE\_IN\_PROCESS\_PROCESSED and received is not null then the received quantity will be updated.
+
+
+        🔒 Requires: One of the following scopes:
+
+        - `consignments:write:stock_order` scope for `SUPPLIER` and `RETURN` consignments
+
+        - `consignments:write:stock_transfer` scope for `OUTLET` consignments
+
+        - `consignments:write:inventory_count` scope for `STOCKTAKE` consignments'
       operationId: UpdateProductInConsignment
       parameters:
       - description: The consignment id to be updated.
@@ -317,14 +354,6 @@ paths:
       - Consignment Products
 components:
   schemas:
-    ConsignmentProductResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/ConsignmentProductCollection'
-      required:
-      - data
-      title: Consignment Product Response
-      type: object
     InventoryCountItem:
       properties:
         cost:
@@ -373,14 +402,6 @@ components:
       - version
       title: Inventory Count Item
       type: object
-    InventoryCountItemResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/InventoryCountItem'
-      required:
-      - data
-      title: Inventory Count Item Response
-      type: object
     ConsignmentProductCollection:
       properties:
         data:
@@ -390,6 +411,14 @@ components:
           type: array
       title: Consignment Product Collection
       type: object
+    ConsignmentProductResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ConsignmentProductCollection'
+      required:
+      - data
+      title: Consignment Product Response
+      type: object
     ConsignmentProductRequest:
       properties:
         data:
@@ -397,6 +426,14 @@ components:
       required:
       - data
       title: Consignment Product Request
+      type: object
+    InventoryCountItemResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/InventoryCountItem'
+      required:
+      - data
+      title: Inventory Count Item Response
       type: object
     ConsignmentProduct:
       properties:

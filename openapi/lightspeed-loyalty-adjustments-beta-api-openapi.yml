@@ -59,6 +59,8 @@ paths:
       summary: Perform a Loyalty Adjustment bulk operation
       tags:
       - Loyalty Adjustments [BETA]
+      operationId: postLoyaltyAdjustmentsBulk
+      x-operation-id-source: derived
 components:
   schemas:
     LoyaltyAdjustmentCreateBody:

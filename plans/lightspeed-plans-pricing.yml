@@ -1,82 +1,114 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+provider: Lightspeed Commerce
+providerId: lightspeed
 name: Lightspeed Commerce Plans and Pricing
-description: Pricing plans for Lightspeed Commerce retail and restaurant POS platforms with API access details
-url: https://www.lightspeedhq.com/pricing/
-created: 2026-06-13
-modified: 2026-06-13
-
-retail:
-  description: Lightspeed Retail (X-Series and R-Series) pricing plans
-  plans:
-    - name: Basic
-      price: 89
-      billing: monthly (billed annually)
-      currency: USD
-      features:
-        - 1 register
-        - Inventory management
-        - Sales reporting
-        - API access included
-        - 24/7 support
-    - name: Core
-      price: 149
-      billing: monthly (billed annually)
-      currency: USD
-      features:
-        - Multiple registers
-        - Advanced inventory
-        - Ecommerce integration
-        - API access included
-        - Loyalty program
-        - Purchase orders
-    - name: Plus
-      price: 289
-      billing: monthly (billed annually)
-      currency: USD
-      features:
-        - Unlimited registers
-        - Advanced reporting and analytics
-        - Custom user roles
-        - API access included
-        - Multi-location support
-        - Dedicated account manager
-
-restaurant:
-  description: Lightspeed Restaurant (K-Series) pricing plans
-  plans:
-    - name: Starter
-      price: 69
-      billing: monthly (billed annually)
-      currency: USD
-      features:
-        - 1 terminal
-        - Basic POS features
-        - Menu management
-        - API access as add-on only
-    - name: Essential
-      price: 189
-      billing: monthly (billed annually)
-      currency: USD
-      features:
-        - Multiple terminals
-        - Online ordering
-        - Raw API access included
-        - Integrations marketplace
-        - Advanced reporting
-    - name: Premium
-      price: 399
-      billing: monthly (billed annually)
-      currency: USD
-      features:
-        - Unlimited terminals
-        - All Essential features
-        - Raw API access included
-        - Priority support
-        - Custom integrations
-        - Enterprise features
-
+description: >-
+  Lightspeed sells software subscriptions per product line, and API access is a property of the tier
+  rather than a separately priced product. Retail (X-Series / R-Series) includes API access on every
+  tier; Restaurant (K-Series) gates raw API access to Essential and above; eCom C-Series requires an
+  Advanced or Professional subscription before the API is usable at all. There is no metered API
+  pricing and no developer-only plan.
+created: '2026-06-13'
+modified: '2026-08-27'
+generated: '2026-08-27'
+method: searched
+source: https://www.lightspeedhq.com/pricing/
+sources:
+- https://www.lightspeedhq.com/pricing/
+- https://www.lightspeedhq.com/pos/retail/pricing/
+plan_count: 6
+plans:
+- id: retail-basic
+  name: Retail Basic
+  product: Retail (X-Series / R-Series)
+  price: 89
+  currency: USD
+  billing: monthly, billed annually
+  api_access: included
+  features:
+  - 1 register
+  - Inventory management
+  - Sales reporting
+  - API access included
+  - 24/7 support
+- id: retail-core
+  name: Retail Core
+  product: Retail (X-Series / R-Series)
+  price: 149
+  currency: USD
+  billing: monthly, billed annually
+  api_access: included
+  features:
+  - Multiple registers
+  - Advanced inventory
+  - Ecommerce integration
+  - API access included
+  - Loyalty program
+  - Purchase orders
+- id: retail-plus
+  name: Retail Plus
+  product: Retail (X-Series / R-Series)
+  price: 289
+  currency: USD
+  billing: monthly, billed annually
+  api_access: included
+  features:
+  - Unlimited registers
+  - Advanced reporting and analytics
+  - Custom user roles
+  - API access included
+  - Multi-location support
+  - Dedicated account manager
+  note: >-
+    X-Series personal tokens — the non-OAuth authentication path — are available only on Plus. A
+    developer building a headless script for a single retailer is therefore gated on the top tier.
+- id: restaurant-starter
+  name: Restaurant Starter
+  product: Restaurant (K-Series)
+  price: 69
+  currency: USD
+  billing: monthly, billed annually
+  api_access: add-on only
+  features:
+  - 1 terminal
+  - Basic POS features
+  - Menu management
+  - API access as a paid add-on
+- id: restaurant-essential
+  name: Restaurant Essential
+  product: Restaurant (K-Series)
+  price: 189
+  currency: USD
+  billing: monthly, billed annually
+  api_access: included
+  features:
+  - Multiple terminals
+  - Online ordering
+  - Raw API access included
+  - Integrations marketplace
+  - Advanced reporting
+- id: restaurant-premium
+  name: Restaurant Premium
+  product: Restaurant (K-Series)
+  price: 399
+  currency: USD
+  billing: monthly, billed annually
+  api_access: included
+  features:
+  - Unlimited terminals
+  - All Essential features
+  - Raw API access included
+  - Priority support
+  - Custom integrations
+  - Enterprise features
+api_access_by_product:
+  retail_x_series: Included on all Retail plans; register count drives the rate limit, not the price.
+  retail_r_series: Included with a Retail subscription.
+  ecom_c_series: Requires an Advanced or Professional subscription tier.
+  restaurant_k_series: Add-on on Starter; included on Essential and Premium.
 notes:
-  - All plans require Lightspeed Payments integration
-  - Hardware costs are separate from software subscriptions
-  - Payment processing fees apply in addition to plan costs
-  - API access is standard on all Retail tiers
-  - Restaurant API access requires Essential tier or higher (or add-on for Starter)
+- All plans require Lightspeed Payments integration.
+- Hardware is a separate one-time cost and is not included in subscription pricing.
+- Payment processing fees apply in addition to the plan cost.
+- No free tier, no trial-only API access and no self-serve developer plan is published.

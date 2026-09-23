@@ -201,42 +201,19 @@ paths:
       - Brands
 components:
   schemas:
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
-      properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
-      type: object
-    BrandResponse:
+    BrandCollection:
       properties:
         data:
-          $ref: '#/components/schemas/Brand'
-      title: Brand Response
-      type: object
-    BrandBase:
-      properties:
-        description:
-          description: The brand description.
-          type: string
-        name:
-          description: The Brand name.
-          type: string
+          description: An array of Brand objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Brand'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
       required:
-      - name
-      title: Brand
+      - data
+      - version
+      title: Brand Collection
       type: object
     Brand:
       properties:
@@ -265,19 +242,42 @@ components:
       - id
       title: Brand
       type: object
-    BrandCollection:
+    BrandResponse:
       properties:
         data:
-          description: An array of Brand objects wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Brand'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
+          $ref: '#/components/schemas/Brand'
+      title: Brand Response
+      type: object
+    BrandBase:
+      properties:
+        description:
+          description: The brand description.
+          type: string
+        name:
+          description: The Brand name.
+          type: string
       required:
-      - data
-      - version
-      title: Brand Collection
+      - name
+      title: Brand
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
       type: object
   securitySchemes:
     bearerAuth:

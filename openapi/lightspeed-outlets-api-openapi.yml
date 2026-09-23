@@ -168,30 +168,18 @@ paths:
       - Outlets
 components:
   schemas:
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+    Attribute:
       properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
+        key:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
       required:
-      - max
-      - min
-      type: object
-    OutletResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Outlet'
-      title: Outlet Response
+      - key
+      - value
+      title: Attribute
       type: object
     Outlet:
       properties:
@@ -301,18 +289,30 @@ components:
       - version
       title: Outlet
       type: object
-    Attribute:
+    OutletResponse:
       properties:
-        key:
-          description: The key for the attribute.
-          type: string
-        value:
-          description: The value for the attribute.
-          type: string
+        data:
+          $ref: '#/components/schemas/Outlet'
+      title: Outlet Response
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
       required:
-      - key
-      - value
-      title: Attribute
+      - max
+      - min
       type: object
     OutletCollection:
       properties:

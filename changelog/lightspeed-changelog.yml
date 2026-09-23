@@ -1,0 +1,80 @@
+name: Lightspeed Commerce API Changelog
+generated: '2026-08-27'
+method: searched
+source: https://x-series-api.lightspeedhq.com/llms.txt (Changelog section) and https://api-docs.lsk.lightspeed.app/changes
+scheme: date-based API versions (YYYY-MM); changelog entries are titled with the version they land in
+current_version:
+  x_series: '2026-07'
+  k_series: 1.0.0 (continuously updated; last structural change 2026-08-20)
+feeds:
+- product: K-Series
+  type: rss
+  url: https://api-docs.lsk.lightspeed.app/changes
+  note: Bump.sh publishes an RSS subscription and machine-generated structural diffs of the OpenAPI.
+entries:
+- version: '2026-07'
+  title: Voiding of other parked returns
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-07-void-other-parked-returns
+  product: X-Series
+  breaking: unknown
+- version: '2026-07'
+  title: Prevent mixing of referenced and unreferenced returns
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-07-prevent-mixing-of-referenced-and-unreferenced-returns
+  product: X-Series
+  breaking: likely
+  note: A new validation rule on an existing endpoint; previously-accepted payloads may now be rejected.
+- version: '2026-07'
+  title: Strict Postal Code Validation (40 Countries)
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-07-extended-postal-code-validation
+  product: X-Series
+  breaking: likely
+  note: Tightened input validation across 40 countries; addresses that used to save may now 400.
+- version: '2026-05'
+  title: New Sales Search Filters and Sorting
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-05-new-sales-search-filters
+  product: X-Series
+  breaking: false
+- version: '2026-04'
+  title: Purchase Order Read API
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-04-purchase-order-read-api
+  product: X-Series
+  breaking: false
+- version: '2026-04'
+  title: Inventory Levels Reorder Method
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-05-inventory-levels-reorder-method
+  product: X-Series
+  breaking: false
+- version: '2026-04'
+  title: Deprecation of Sale Fulfillment Endpoints
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-05-deprecate-sale-fulfillment-endpoints
+  product: X-Series
+  breaking: true
+  note: The only explicit endpoint deprecation announced in the recent window.
+- version: '2026-04'
+  title: Reorder Points Support
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-05-reorder-points-2026-04
+  product: X-Series
+  breaking: false
+- version: '2026-01'
+  title: Adjustment APIs
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-05-adjustment-apis-2026-01
+  product: X-Series
+  breaking: false
+- version: '2026-01'
+  title: Return Sale Endpoint Method Update
+  url: https://x-series-api.lightspeedhq.com/changelog/2026-06-return-sale-post-date-versioned-apis
+  product: X-Series
+  breaking: true
+  note: HTTP method change on the return-sale endpoint for date-versioned APIs.
+- date: '2026-08-20'
+  title: 'K-Series structural change #13f18639'
+  product: K-Series
+  url: https://api-docs.lsk.lightspeed.app/changes
+  breaking: unknown
+  note: >-
+    Modified POST /o/op/1/order/local — application/json body, collectionCode and
+    orderCollectionTimeAsIso8601 properties modified. Recorded as a machine-generated diff, not prose.
+note: >-
+  Recent window only. Titles and URLs are taken verbatim from the provider's own changelog index; the
+  breaking/additions classification is our reading of the title and is marked `unknown` where the title
+  does not say. Lightspeed does not itself label entries breaking or non-breaking.

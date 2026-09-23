@@ -4,11 +4,9 @@ info:
   title: Lightspeed Restaurant K Series ID Cards API
   description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
 
-    Detailed developer guides can be found in the [Lightspeed Restaurant API Portal](https://api-portal.lsk.lightspeed.app/).
+    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
 
-    These services are in continuous development and subject to change. Please find our versioning policy [here](https://api-portal.lsk.lightspeed.app/quick-start/versioning).
-
-    '
+    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
@@ -83,6 +81,17 @@ paths:
       - ID Cards
 components:
   schemas:
+    id-cards-apiCreateIdCardBatchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the ID card batch.
+          example: Sample Batch Name
+          pattern: .*\S.*
+          maxLength: 255
+      required:
+      - name
     id-cards-apiCreateIdCardsRequest:
       type: object
       properties:
@@ -95,29 +104,22 @@ components:
           maximum: 100
       required:
       - cardCount
-    id-cards-apiCreateIdCardsResponse:
+    id-cards-apiIdCardBatch:
       type: object
       properties:
         batchId:
           type: integer
           format: int64
-          description: The unique identifier for the batch the cards were added to.
+          description: The unique identifier for the ID card batch.
           example: 12345
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/id-cards-apiCardReference'
-    id-cards-apiCreateIdCardBatchRequest:
-      type: object
-      properties:
         name:
           type: string
           description: The name of the ID card batch.
-          example: Sample Batch Name
-          pattern: .*\S.*
-          maxLength: 255
-      required:
-      - name
+        businessLocationId:
+          type: integer
+          format: int64
+          description: The unique identifier for the business location this batch belongs to.
+          example: 67890
     id-cards-apiCardReference:
       type: object
       properties:
@@ -140,22 +142,18 @@ components:
           type: string
           description: The URL for the QR code associated with the ID card.
           example: https://example.com/id-cards/98765/qr-code
-    id-cards-apiIdCardBatch:
+    id-cards-apiCreateIdCardsResponse:
       type: object
       properties:
         batchId:
           type: integer
           format: int64
-          description: The unique identifier for the ID card batch.
+          description: The unique identifier for the batch the cards were added to.
           example: 12345
-        name:
-          type: string
-          description: The name of the ID card batch.
-        businessLocationId:
-          type: integer
-          format: int64
-          description: The unique identifier for the business location this batch belongs to.
-          example: 67890
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/id-cards-apiCardReference'
   parameters:
     id-cards-apiBusinessLocationId:
       name: businessLocationId

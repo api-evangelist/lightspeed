@@ -42,6 +42,16 @@ paths:
       - Retailers
 components:
   schemas:
+    RetailerCurrency:
+      properties:
+        code:
+          description: 3-letter Currency Code for this Retailer.
+          type: string
+        symbol:
+          description: Currency Symbol for this Retailer.
+          type: string
+      title: Retailer Currency
+      type: object
     Retailer:
       description: A Retailer record.
       properties:
@@ -163,16 +173,6 @@ components:
         data:
           $ref: '#/components/schemas/Retailer'
       title: Retailer response
-      type: object
-    RetailerCurrency:
-      properties:
-        code:
-          description: 3-letter Currency Code for this Retailer.
-          type: string
-        symbol:
-          description: Currency Symbol for this Retailer.
-          type: string
-      title: Retailer Currency
       type: object
   securitySchemes:
     bearerAuth:

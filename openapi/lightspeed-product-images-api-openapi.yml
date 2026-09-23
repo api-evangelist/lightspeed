@@ -105,6 +105,16 @@ components:
           $ref: '#/components/schemas/Image'
       title: Image Response
       type: object
+    ImagePosition:
+      properties:
+        position:
+          description: New position for the image.
+          format: double
+          type: number
+      required:
+      - position
+      title: Image Position
+      type: object
     Image:
       properties:
         id:
@@ -127,16 +137,6 @@ components:
           format: int64
           type: integer
       title: Image
-      type: object
-    ImagePosition:
-      properties:
-        position:
-          description: New position for the image.
-          format: double
-          type: number
-      required:
-      - position
-      title: Image Position
       type: object
   securitySchemes:
     bearerAuth:
