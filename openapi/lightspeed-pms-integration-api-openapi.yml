@@ -104,20 +104,29 @@ webhooks:
       - PMS Integration
 components:
   schemas:
-    pms-integrationPmsServiceChargeWebhookDto:
+    pms-integrationPmsTaxLineWebhookDto:
       type: object
       properties:
-        amount:
-          type: number
-          description: The amount of the service charge.
-          example: 1.0
-        type:
+        taxId:
           type: string
-          enum:
-          - UNTAXED
-          - APPORTIONED
-          description: The type of the service charge.
-          example: UNTAXED
+          description: The tax identifier.
+          example: '12345'
+        taxName:
+          type: string
+          description: The name of the tax.
+          example: VAT 10%
+        taxAmount:
+          type: number
+          description: The amount of the tax.
+          example: 1.0
+        taxRate:
+          type: number
+          description: The rate of the tax.
+          example: 1.1
+        taxIncluded:
+          type: boolean
+          description: Whether the tax is included in the price (VAT).
+          example: true
     pms-integrationSalesWebhookDto:
       type: object
       properties:
@@ -229,29 +238,43 @@ components:
             Length should not exceed 50 characters to avoid truncation.
 
             '
-    pms-integrationPmsTaxLineWebhookDto:
+    pms-integrationPmsPaymentWebhookDto:
       type: object
       properties:
-        taxId:
+        paymentDate:
           type: string
-          description: The tax identifier.
-          example: '12345'
-        taxName:
+          format: date-time
+          description: The date and time when the payment was made in UTC
+          example: '2021-01-01T00:00:00Z'
+        staffId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who processed this payment
+          example: 6
+        staffName:
           type: string
-          description: The name of the tax.
-          example: VAT 10%
-        taxAmount:
+          description: The name of the POS user (staff) who processed this payment
+          example: John Doe
+        gratuity:
           type: number
-          description: The amount of the tax.
+          description: The amount of the gratuity (tips).
           example: 1.0
-        taxRate:
+        amount:
           type: number
-          description: The rate of the tax.
-          example: 1.1
-        taxIncluded:
-          type: boolean
-          description: Whether the tax is included in the price (VAT).
-          example: true
+          description: The total amount of the received payment.
+          example: 66.0
+        methodName:
+          type: string
+          description: The name of the payment method.
+          example: MEWS
+        methodCode:
+          type: string
+          description: The code of the payment method.
+          example: IKPMS
+        reservationId:
+          type: string
+          description: The reservation ID of the payment.
+          example: '001'
     pms-integrationPmsTransactionWebhookDto:
       type: object
       properties:
@@ -332,43 +355,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/pms-integrationPmsTaxLineWebhookDto'
-    pms-integrationPmsPaymentWebhookDto:
+    pms-integrationPmsServiceChargeWebhookDto:
       type: object
       properties:
-        paymentDate:
-          type: string
-          format: date-time
-          description: The date and time when the payment was made in UTC
-          example: '2021-01-01T00:00:00Z'
-        staffId:
-          type: integer
-          format: int64
-          description: The ID of the POS user (staff) who processed this payment
-          example: 6
-        staffName:
-          type: string
-          description: The name of the POS user (staff) who processed this payment
-          example: John Doe
-        gratuity:
-          type: number
-          description: The amount of the gratuity (tips).
-          example: 1.0
         amount:
           type: number
-          description: The total amount of the received payment.
-          example: 66.0
-        methodName:
+          description: The amount of the service charge.
+          example: 1.0
+        type:
           type: string
-          description: The name of the payment method.
-          example: MEWS
-        methodCode:
-          type: string
-          description: The code of the payment method.
-          example: IKPMS
-        reservationId:
-          type: string
-          description: The reservation ID of the payment.
-          example: '001'
+          enum:
+          - UNTAXED
+          - APPORTIONED
+          description: The type of the service charge.
+          example: UNTAXED
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

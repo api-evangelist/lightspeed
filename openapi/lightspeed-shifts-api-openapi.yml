@@ -118,6 +118,17 @@ components:
           format: int64
           type: integer
       type: object
+    ShiftCollection:
+      properties:
+        data:
+          description: An array of Shifts wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Shift'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Shift Collection
+      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -136,17 +147,6 @@ components:
       required:
       - max
       - min
-      type: object
-    ShiftCollection:
-      properties:
-        data:
-          description: An array of Shifts wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Shift'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      title: Shift Collection
       type: object
   securitySchemes:
     bearerAuth:

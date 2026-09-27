@@ -270,66 +270,6 @@ paths:
         - propertymanagement
 components:
   schemas:
-    pms-apiErrorResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        message:
-          type: string
-        apiSubExceptions:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-              rejectedValue:
-                type: object
-              message:
-                type: string
-    pms-apiProviderFeatures:
-      type: array
-      uniqueItems: true
-      description: The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.
-      items:
-        $ref: '#/components/schemas/pms-apiProviderFeature'
-    pms-apiProviderId:
-      description: The unique identifier for the provider.
-      type: integer
-      format: int64
-      example: 3012455645
-    pms-apiBusinessLocationId:
-      description: The unique identifier for the business location.
-      type: integer
-      format: int64
-      example: 45454565682155
-    pms-apiRevenueCenterId:
-      example: 343243933
-      description: The unique identifier for the revenue center.
-      type: integer
-      format: int64
-    pms-apiProviderApiKey:
-      description: The API key for the PMS provider.
-      type: string
-      minLength: 1
-      maxLength: 255
-      example: fake-secret
-    pms-apiProviderEndpoint:
-      description: The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.
-      type: string
-      minLength: 1
-      maxLength: 255
-      example: http://integration.com/pms/endpoint
-    pms-apiProviderName:
-      description: The name of the PMS provider.
-      type: string
-      minLength: 1
-      maxLength: 255
-      example: My PMS Provider
     pms-apiProviderFeature:
       type: string
       enum:
@@ -340,10 +280,6 @@ components:
       - SERVICE_CHARGE
       - ENRICHED_PAYLOAD
       example: MIRRORING
-    pms-apiRevenueCenterName:
-      example: Bar
-      description: The name of the revenue center.
-      type: string
     pms-apiGetProvider:
       properties:
         id:
@@ -374,6 +310,70 @@ components:
           type: array
           uniqueItems: true
       type: object
+    pms-apiProviderName:
+      description: The name of the PMS provider.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: My PMS Provider
+    pms-apiProviderApiKey:
+      description: The API key for the PMS provider.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: fake-secret
+    pms-apiProviderFeatures:
+      type: array
+      uniqueItems: true
+      description: The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.
+      items:
+        $ref: '#/components/schemas/pms-apiProviderFeature'
+    pms-apiProviderEndpoint:
+      description: The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: http://integration.com/pms/endpoint
+    pms-apiErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        apiSubExceptions:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              rejectedValue:
+                type: object
+              message:
+                type: string
+    pms-apiRevenueCenterId:
+      example: 343243933
+      description: The unique identifier for the revenue center.
+      type: integer
+      format: int64
+    pms-apiRevenueCenterName:
+      example: Bar
+      description: The name of the revenue center.
+      type: string
+    pms-apiProviderId:
+      description: The unique identifier for the provider.
+      type: integer
+      format: int64
+      example: 3012455645
+    pms-apiBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

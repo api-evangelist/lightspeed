@@ -99,12 +99,6 @@ paths:
       - Product Images
 components:
   schemas:
-    ImageResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Image'
-      title: Image Response
-      type: object
     ImagePosition:
       properties:
         position:
@@ -137,6 +131,12 @@ components:
           format: int64
           type: integer
       title: Image
+      type: object
+    ImageResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Image'
+      title: Image Response
       type: object
   securitySchemes:
     bearerAuth:

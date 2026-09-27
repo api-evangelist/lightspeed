@@ -351,12 +351,6 @@ components:
             type: object
           type: array
       type: object
-    ConsignmentResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Consignment'
-      title: Consignment Response
-      type: object
     ConsignmentRequest:
       properties:
         data:
@@ -364,6 +358,17 @@ components:
       required:
       - data
       title: Consignment Request
+      type: object
+    ConsignmentCollection:
+      properties:
+        data:
+          description: An array of Consignment objects.
+          items:
+            $ref: '#/components/schemas/Consignment'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Consignment Collection
       type: object
     Consignment:
       properties:
@@ -513,16 +518,11 @@ components:
       - max
       - min
       type: object
-    ConsignmentCollection:
+    ConsignmentResponse:
       properties:
         data:
-          description: An array of Consignment objects.
-          items:
-            $ref: '#/components/schemas/Consignment'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      title: Consignment Collection
+          $ref: '#/components/schemas/Consignment'
+      title: Consignment Response
       type: object
   securitySchemes:
     bearerAuth:

@@ -354,6 +354,31 @@ paths:
       - Consignment Products
 components:
   schemas:
+    ConsignmentProductCollection:
+      properties:
+        data:
+          description: An array of consignment products.
+          items:
+            $ref: '#/components/schemas/ConsignmentProduct'
+          type: array
+      title: Consignment Product Collection
+      type: object
+    InventoryCountItemResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/InventoryCountItem'
+      required:
+      - data
+      title: Inventory Count Item Response
+      type: object
+    ConsignmentProductRequest:
+      properties:
+        data:
+          $ref: '#/components/schemas/ConsignmentProduct'
+      required:
+      - data
+      title: Consignment Product Request
+      type: object
     InventoryCountItem:
       properties:
         cost:
@@ -401,39 +426,6 @@ components:
       - updated_at
       - version
       title: Inventory Count Item
-      type: object
-    ConsignmentProductCollection:
-      properties:
-        data:
-          description: An array of consignment products.
-          items:
-            $ref: '#/components/schemas/ConsignmentProduct'
-          type: array
-      title: Consignment Product Collection
-      type: object
-    ConsignmentProductResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/ConsignmentProductCollection'
-      required:
-      - data
-      title: Consignment Product Response
-      type: object
-    ConsignmentProductRequest:
-      properties:
-        data:
-          $ref: '#/components/schemas/ConsignmentProduct'
-      required:
-      - data
-      title: Consignment Product Request
-      type: object
-    InventoryCountItemResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/InventoryCountItem'
-      required:
-      - data
-      title: Inventory Count Item Response
       type: object
     ConsignmentProduct:
       properties:
@@ -483,6 +475,14 @@ components:
       required:
       - product_id
       title: Consignment Product
+      type: object
+    ConsignmentProductResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ConsignmentProductCollection'
+      required:
+      - data
+      title: Consignment Product Response
       type: object
   securitySchemes:
     bearerAuth:

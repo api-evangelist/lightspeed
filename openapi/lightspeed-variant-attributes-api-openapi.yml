@@ -179,17 +179,6 @@ paths:
       - Variant Attributes
 components:
   schemas:
-    VariantAttributeUpdateResponse:
-      properties:
-        data:
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-          type: object
-      title: VariantAttributeUpdateResponse
-      type: object
     VariantAttributeResponse:
       properties:
         deleted_at:
@@ -207,31 +196,16 @@ components:
           type: string
       title: VariantAttributeResponse
       type: object
-    VariantAttributeDeleteResponse:
+    VariantAttributeUpdateResponse:
       properties:
         data:
           properties:
             id:
               type: string
+            name:
+              type: string
           type: object
-      title: VariantAttributeDeleteResponse
-      type: object
-    VariantAttributeCreateUpdateBody:
-      properties:
-        name:
-          example: Size
-          type: string
-      required:
-      - name
-      title: VariantAttributeCreateUpdateBody
-      type: object
-    VariantAttributesListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/VariantAttributeResponse'
-          type: array
-      title: VariantAttributesListResponse
+      title: VariantAttributeUpdateResponse
       type: object
     VariantAttributeCreateResponse:
       properties:
@@ -249,6 +223,32 @@ components:
               type: string
           type: object
       title: VariantAttributeCreateResponse
+      type: object
+    VariantAttributeCreateUpdateBody:
+      properties:
+        name:
+          example: Size
+          type: string
+      required:
+      - name
+      title: VariantAttributeCreateUpdateBody
+      type: object
+    VariantAttributeDeleteResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+          type: object
+      title: VariantAttributeDeleteResponse
+      type: object
+    VariantAttributesListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/VariantAttributeResponse'
+          type: array
+      title: VariantAttributesListResponse
       type: object
   securitySchemes:
     bearerAuth:

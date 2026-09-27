@@ -42,15 +42,12 @@ paths:
       - Retailers
 components:
   schemas:
-    RetailerCurrency:
+    RetailerResponse:
+      description: A Retailer record wrapped in the top-level data object.
       properties:
-        code:
-          description: 3-letter Currency Code for this Retailer.
-          type: string
-        symbol:
-          description: Currency Symbol for this Retailer.
-          type: string
-      title: Retailer Currency
+        data:
+          $ref: '#/components/schemas/Retailer'
+      title: Retailer response
       type: object
     Retailer:
       description: A Retailer record.
@@ -167,12 +164,15 @@ components:
           type: string
       title: Retailer
       type: object
-    RetailerResponse:
-      description: A Retailer record wrapped in the top-level data object.
+    RetailerCurrency:
       properties:
-        data:
-          $ref: '#/components/schemas/Retailer'
-      title: Retailer response
+        code:
+          description: 3-letter Currency Code for this Retailer.
+          type: string
+        symbol:
+          description: Currency Symbol for this Retailer.
+          type: string
+      title: Retailer Currency
       type: object
   securitySchemes:
     bearerAuth:

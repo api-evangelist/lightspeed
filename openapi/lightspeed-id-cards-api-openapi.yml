@@ -104,22 +104,6 @@ components:
           maximum: 100
       required:
       - cardCount
-    id-cards-apiIdCardBatch:
-      type: object
-      properties:
-        batchId:
-          type: integer
-          format: int64
-          description: The unique identifier for the ID card batch.
-          example: 12345
-        name:
-          type: string
-          description: The name of the ID card batch.
-        businessLocationId:
-          type: integer
-          format: int64
-          description: The unique identifier for the business location this batch belongs to.
-          example: 67890
     id-cards-apiCardReference:
       type: object
       properties:
@@ -142,6 +126,22 @@ components:
           type: string
           description: The URL for the QR code associated with the ID card.
           example: https://example.com/id-cards/98765/qr-code
+    id-cards-apiIdCardBatch:
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+          description: The unique identifier for the ID card batch.
+          example: 12345
+        name:
+          type: string
+          description: The name of the ID card batch.
+        businessLocationId:
+          type: integer
+          format: int64
+          description: The unique identifier for the business location this batch belongs to.
+          example: 67890
     id-cards-apiCreateIdCardsResponse:
       type: object
       properties:

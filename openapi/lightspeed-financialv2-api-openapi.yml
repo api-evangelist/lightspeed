@@ -316,6 +316,26 @@ paths:
         - financial-api
 components:
   schemas:
+    financial-apiAccountingGroup:
+      type: object
+      properties:
+        accountingGroupId:
+          type: integer
+          format: int64
+          description: The unique identifier for the item's accounting group.
+          example: 141948669132845
+        name:
+          type: string
+          description: The name of the accounting group.
+          example: Food
+        statisticGroup:
+          type: string
+          description: The accounting group's statistic group.
+          example: Food
+        code:
+          type: string
+          description: The code assigned to the accounting group.
+          example: '123'
     financial-apiAbortedOrderLineItemDto:
       type: object
       properties:
@@ -339,6 +359,123 @@ components:
           type: string
           description: The unit price of the item removed from the order.
           example: '8.33'
+    financial-apiServiceChargeType:
+      type: string
+      description: The type of service charge applied to the sale line.
+      example: APPORTIONED
+      enum:
+      - UNTAXED
+      - APPORTIONED
+      - NO_SERVICE_CHARGE
+    financial-apiSalesDailyExportDto:
+      type: object
+      properties:
+        sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial-apiSale'
+          description: Array of sale objects.
+          nullable: false
+        nextStartOfDayAsIso8601:
+          type: string
+          format: date-time
+          description: Start of next business day, in the merchant's local time.
+          example: '2023-07-28T05:30:00-05:00'
+        dataComplete:
+          type: boolean
+          description: Whether or not the data is complete for the requested day.
+          example: false
+    financial-apiDateType:
+      type: string
+      example: CREATED
+      description: The date used when querying and sorting results.
+      enum:
+      - CREATED
+      - MODIFIED
+      default: MODIFIED
+    financial-apiTaxLine:
+      type: object
+      properties:
+        taxId:
+          type: string
+          description: The unique identifier for the tax rate.
+          example: '41910290874374'
+        taxCode:
+          type: string
+          description: The system code for the tax rate.
+          example: VAT20
+        taxRate:
+          type: string
+          description: The tax rate, as a multiplier.
+          example: '1.2'
+        taxAmount:
+          type: string
+          description: The tax total.
+          example: '1.666667'
+        taxIncluded:
+          type: boolean
+          description: Whether or not the business is tax inclusive.
+          example: true
+    financial-apiCategory:
+      type: object
+      properties:
+        category:
+          type: string
+          description: The line item's category.
+          example: default
+        value:
+          type: string
+          description: The category value.
+          example: Food
+    financial-apiSortDirection:
+      type: string
+      example: ASC
+      default: ASC
+      description: The direction to sort the results.
+      enum:
+      - ASC
+      - DESC
+    financial-apiErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        requestId:
+          type: string
+      required:
+      - timestamp
+      - path
+      - status
+      - error
+      - requestId
+    financial-apiAccountLink:
+      type: object
+      properties:
+        initialAccountId:
+          type: string
+          description: 'The `accountFiscId` of the initial transaction associated with the current account, if applicable. For example, in the case of a refund.
+
+
+            This will match the `accountFiscId` of the sale if there is no associated account.'
+          example: A65315.13
+        previousAccountId:
+          type: string
+          description: 'The `accountFiscId` of the previous transaction associated with the current account, if applicable. For example, in the case of a refund.
+
+
+            This may be different from `initialAccountId` if there is more than one associated account.
+
+
+            It will not be displayed if there is no associated account.'
+          example: A65315.15
     financial-apiLSPayment:
       type: object
       properties:
@@ -378,88 +515,102 @@ components:
           $ref: '#/components/schemas/financial-apiCurrencyAmount'
         surcharge:
           $ref: '#/components/schemas/financial-apiCurrencyAmount'
-    financial-apiAccountingGroup:
+    financial-apiConsumer:
       type: object
       properties:
-        accountingGroupId:
+        id:
+          type: string
+          description: The UUID of the customer associated with the payment, if applicable.
+          example: ec021fb0-4c12-425e-b30f-320ab720448b
+        customerId:
           type: integer
           format: int64
-          description: The unique identifier for the item's accounting group.
-          example: 141948669132845
-        name:
+          description: The unique identifier for the customer.
+          example: 120913
+        title:
           type: string
-          description: The name of the accounting group.
-          example: Food
-        statisticGroup:
+          description: The title or honorific of the customer.
+          example: Mr
+        firstName:
           type: string
-          description: The accounting group's statistic group.
-          example: Food
-        code:
+          description: The first name of the customer.
+          example: John
+        lastName:
           type: string
-          description: The code assigned to the accounting group.
-          example: '123'
-    financial-apiSortDirection:
-      type: string
-      example: ASC
-      default: ASC
-      description: The direction to sort the results.
-      enum:
-      - ASC
-      - DESC
-    financial-apiDateType:
-      type: string
-      example: CREATED
-      description: The date used when querying and sorting results.
-      enum:
-      - CREATED
-      - MODIFIED
-      default: MODIFIED
-    financial-apiCategory:
+          description: The last name of the customer.
+          example: Doe
+        phoneNumber1:
+          type: string
+          description: The primary phone number of the customer.
+          example: 555-555-5555
+        phoneNumber2:
+          type: string
+          description: An alternative phone number for the customer.
+          example: 555-555-5556
+        companyName:
+          type: string
+          description: The name of the company associated with the customer, if applicable.
+          example: Company Name
+        addressLine1:
+          type: string
+          description: The primary address line for the customer's address.
+          example: 123 Street st.
+        addressLine2:
+          type: string
+          description: The secondary address line for the customer's address, such as apartment or suite number.
+          example: Unit 123
+        zipCode:
+          type: string
+          description: The postal code for the customer's address.
+          example: '12345'
+        city:
+          type: string
+          description: The city of the customer's address.
+          example: Some City
+        state:
+          type: string
+          description: The state or region of the customer's address.
+          example: Some State
+        email:
+          type: string
+          description: The email address of the customer.
+          example: example@example.com
+        taxIdentifier:
+          type: string
+          description: The tax identifier of the customer.
+          example: '123456789'
+        fiscalCode:
+          type: string
+          description: The fiscal code of the customer.
+          example: '123456789'
+        destinationCode:
+          type: string
+          description: The destination code of the customer.
+          example: '123456789'
+    financial-apiLSPaymentsDto:
       type: object
       properties:
-        category:
-          type: string
-          description: The line item's category.
-          example: default
-        value:
-          type: string
-          description: The category value.
-          example: Food
-    financial-apiSalesExportDto:
-      type: object
-      properties:
-        sales:
+        payments:
           type: array
           items:
-            $ref: '#/components/schemas/financial-apiSale'
-          description: Array of sale objects.
+            $ref: '#/components/schemas/financial-apiLSPayment'
+          description: List of requested payments.
           nullable: false
-        nextPageToken:
-          type: string
-          description: Token to use to get the next page of results, if applicable.
-    financial-apiTaxLine:
-      type: object
-      properties:
-        taxId:
-          type: string
-          description: The unique identifier for the tax rate.
-          example: '41910290874374'
-        taxCode:
-          type: string
-          description: The system code for the tax rate.
-          example: VAT20
-        taxRate:
-          type: string
-          description: The tax rate, as a multiplier.
-          example: '1.2'
-        taxAmount:
-          type: string
-          description: The tax total.
-          example: '1.666667'
-        taxIncluded:
-          type: boolean
-          description: Whether or not the business is tax inclusive.
-          example: true
+        pageSize:
+          type: integer
+          format: int32
+          description: Size of the returned collection.
+          example: 100
+        offset:
+          type: integer
+          format: int32
+          description: Offset of the first item returned in the collection.
+          example: 0
+        nextOffset:
+          type: integer
+          format: int32
+          description: Next offset to get next page of data based off current pageSize and offset, if available.
+          example: 100
     financial-apiPayment:
       type: object
       properties:
@@ -550,30 +701,6 @@ components:
           type: string
           description: The cash rounding adjustment applied to the payment, in countries where cash payments are legally rounded (for example Belgium, where cash totals are rounded to the nearest 5 cents). It is the difference between the rounded amount actually paid (netAmountWithTax) and the amount payable before rounding. The value is negative when the amount was rounded down, positive when it was rounded up and "0.00" when no rounding was applied. The value is precise up to two decimal places
           example: '-0.02'
-    financial-apiLSPaymentsDto:
-      type: object
-      properties:
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial-apiLSPayment'
-          description: List of requested payments.
-          nullable: false
-        pageSize:
-          type: integer
-          format: int32
-          description: Size of the returned collection.
-          example: 100
-        offset:
-          type: integer
-          format: int32
-          description: Offset of the first item returned in the collection.
-          example: 0
-        nextOffset:
-          type: integer
-          format: int32
-          description: Next offset to get next page of data based off current pageSize and offset, if available.
-          example: 100
     financial-apiSale:
       type: object
       properties:
@@ -682,127 +809,28 @@ components:
           type: string
           description: The void reason, if applicable.
           example: Unhappy Client
-    financial-apiLSPaymentStatus:
-      type: string
-      description: The statuses for a Lightspeed Payments transaction.
-      enum:
-      - CAPTURED
-      - DISPUTED
-      - PARTIALLY_REFUNDED
-      - REFUNDED
-    financial-apiConsumer:
+    financial-apiAbortedOrderDto:
       type: object
+      description: Represents an unpaid, non-committed order that has been fully aborted.
       properties:
-        id:
+        staffName:
           type: string
-          description: The UUID of the customer associated with the payment, if applicable.
-          example: ec021fb0-4c12-425e-b30f-320ab720448b
-        customerId:
-          type: integer
-          format: int64
-          description: The unique identifier for the customer.
-          example: 120913
-        title:
-          type: string
-          description: The title or honorific of the customer.
-          example: Mr
-        firstName:
-          type: string
-          description: The first name of the customer.
-          example: John
-        lastName:
-          type: string
-          description: The last name of the customer.
-          example: Doe
-        phoneNumber1:
-          type: string
-          description: The primary phone number of the customer.
-          example: 555-555-5555
-        phoneNumber2:
-          type: string
-          description: An alternative phone number for the customer.
-          example: 555-555-5556
-        companyName:
-          type: string
-          description: The name of the company associated with the customer, if applicable.
-          example: Company Name
-        addressLine1:
-          type: string
-          description: The primary address line for the customer's address.
-          example: 123 Street st.
-        addressLine2:
-          type: string
-          description: The secondary address line for the customer's address, such as apartment or suite number.
-          example: Unit 123
-        zipCode:
-          type: string
-          description: The postal code for the customer's address.
-          example: '12345'
-        city:
-          type: string
-          description: The city of the customer's address.
-          example: Some City
-        state:
-          type: string
-          description: The state or region of the customer's address.
-          example: Some State
-        email:
-          type: string
-          description: The email address of the customer.
-          example: example@example.com
-        taxIdentifier:
-          type: string
-          description: The tax identifier of the customer.
-          example: '123456789'
-        fiscalCode:
-          type: string
-          description: The fiscal code of the customer.
-          example: '123456789'
-        destinationCode:
-          type: string
-          description: The destination code of the customer.
-          example: '123456789'
-    financial-apiErrorResponse:
-      type: object
-      properties:
-        timestamp:
+          description: The name of the staff member who aborted the order.
+          example: Employee 1
+        timeOfAbortedOrder:
           type: string
           format: date-time
-        path:
+          description: The timestamp when the order was aborted and all line items fully cleared.
+          example: '2023-03-14T19:58:48.224Z'
+        totalAmountAborted:
           type: string
-        status:
-          type: integer
-          format: int32
-        error:
-          type: string
-        requestId:
-          type: string
-      required:
-      - timestamp
-      - path
-      - status
-      - error
-      - requestId
-    financial-apiAccountLink:
-      type: object
-      properties:
-        initialAccountId:
-          type: string
-          description: 'The `accountFiscId` of the initial transaction associated with the current account, if applicable. For example, in the case of a refund.
-
-
-            This will match the `accountFiscId` of the sale if there is no associated account.'
-          example: A65315.13
-        previousAccountId:
-          type: string
-          description: 'The `accountFiscId` of the previous transaction associated with the current account, if applicable. For example, in the case of a refund.
-
-
-            This may be different from `initialAccountId` if there is more than one associated account.
-
-
-            It will not be displayed if there is no associated account.'
-          example: A65315.15
+          description: The total value of the aborted order.
+          example: '33.32'
+        abortedLineItems:
+          type: array
+          description: A list of all line items that were removed from the aborted order.
+          items:
+            $ref: '#/components/schemas/financial-apiAbortedOrderLineItemDto'
     financial-apiCurrencyAmount:
       type: object
       properties:
@@ -814,14 +842,26 @@ components:
           type: string
           description: The currency code.
           example: CAD
-    financial-apiServiceChargeType:
+    financial-apiLSPaymentStatus:
       type: string
-      description: The type of service charge applied to the sale line.
-      example: APPORTIONED
+      description: The statuses for a Lightspeed Payments transaction.
       enum:
-      - UNTAXED
-      - APPORTIONED
-      - NO_SERVICE_CHARGE
+      - CAPTURED
+      - DISPUTED
+      - PARTIALLY_REFUNDED
+      - REFUNDED
+    financial-apiSalesExportDto:
+      type: object
+      properties:
+        sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial-apiSale'
+          description: Array of sale objects.
+          nullable: false
+        nextPageToken:
+          type: string
+          description: Token to use to get the next page of results, if applicable.
     financial-apiLine:
       type: object
       properties:
@@ -994,46 +1034,6 @@ components:
           type: string
           description: The code of the account profile used.
           example: AAP
-    financial-apiAbortedOrderDto:
-      type: object
-      description: Represents an unpaid, non-committed order that has been fully aborted.
-      properties:
-        staffName:
-          type: string
-          description: The name of the staff member who aborted the order.
-          example: Employee 1
-        timeOfAbortedOrder:
-          type: string
-          format: date-time
-          description: The timestamp when the order was aborted and all line items fully cleared.
-          example: '2023-03-14T19:58:48.224Z'
-        totalAmountAborted:
-          type: string
-          description: The total value of the aborted order.
-          example: '33.32'
-        abortedLineItems:
-          type: array
-          description: A list of all line items that were removed from the aborted order.
-          items:
-            $ref: '#/components/schemas/financial-apiAbortedOrderLineItemDto'
-    financial-apiSalesDailyExportDto:
-      type: object
-      properties:
-        sales:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial-apiSale'
-          description: Array of sale objects.
-          nullable: false
-        nextStartOfDayAsIso8601:
-          type: string
-          format: date-time
-          description: Start of next business day, in the merchant's local time.
-          example: '2023-07-28T05:30:00-05:00'
-        dataComplete:
-          type: boolean
-          description: Whether or not the data is complete for the requested day.
-          example: false
   parameters:
     financial-apiNextPageToken:
       in: query
@@ -1042,6 +1042,25 @@ components:
         type: string
         default: ''
       description: A token that indicates the starting point of the next set of records when paginating through results.
+    financial-apiBusinessLocationId:
+      in: path
+      name: businessLocationId
+      required: true
+      schema:
+        format: int64
+        type: integer
+        minimum: 1
+      example: 45454565682155
+      description: The unique identifier for the business location.
+    financial-apiPageSize:
+      in: query
+      name: pageSize
+      schema:
+        type: integer
+        format: int32
+        default: 50
+        maximum: 100
+      description: Number of entries to return.
     financial-apiIncludeParameter:
       schema:
         type: string
@@ -1053,25 +1072,6 @@ components:
       name: include
       in: query
       required: false
-    financial-apiPageSize:
-      in: query
-      name: pageSize
-      schema:
-        type: integer
-        format: int32
-        default: 50
-        maximum: 100
-      description: Number of entries to return.
-    financial-apiBusinessLocationId:
-      in: path
-      name: businessLocationId
-      required: true
-      schema:
-        format: int64
-        type: integer
-        minimum: 1
-      example: 45454565682155
-      description: The unique identifier for the business location.
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

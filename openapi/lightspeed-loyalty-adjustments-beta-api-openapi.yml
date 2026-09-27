@@ -63,6 +63,32 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    LoyaltyAdjustmentResponse:
+      description: Response for the loyalty balance adjustment request
+      properties:
+        applied:
+          description: adjustments that were successful
+          items:
+            properties:
+              balance:
+                description: updated customer balance
+                type: number
+              customer_id:
+                type: string
+            type: object
+          type: array
+        errors:
+          description: adjustments that failed
+          items:
+            properties:
+              customer_id:
+                type: string
+              error:
+                description: update error
+                type: string
+            type: object
+          type: array
+      type: object
     LoyaltyAdjustmentCreateBody:
       description: Request body to perform loyalty balance adjustment
       properties:
@@ -91,32 +117,6 @@ components:
             Must be an uuidv4'
           format: uuid
           type: string
-      type: object
-    LoyaltyAdjustmentResponse:
-      description: Response for the loyalty balance adjustment request
-      properties:
-        applied:
-          description: adjustments that were successful
-          items:
-            properties:
-              balance:
-                description: updated customer balance
-                type: number
-              customer_id:
-                type: string
-            type: object
-          type: array
-        errors:
-          description: adjustments that failed
-          items:
-            properties:
-              customer_id:
-                type: string
-              error:
-                description: update error
-                type: string
-            type: object
-          type: array
       type: object
   securitySchemes:
     bearerAuth:

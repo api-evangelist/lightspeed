@@ -181,6 +181,12 @@ components:
       - value
       title: Attribute
       type: object
+    OutletResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Outlet'
+      title: Outlet Response
+      type: object
     Outlet:
       properties:
         attributes:
@@ -288,12 +294,6 @@ components:
       - attributes
       - version
       title: Outlet
-      type: object
-    OutletResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Outlet'
-      title: Outlet Response
       type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.

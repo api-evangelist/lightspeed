@@ -427,6 +427,31 @@ paths:
         - orders-api
 components:
   schemas:
+    apeWebhookEndpointBusinessLocationDto:
+      type: object
+      properties:
+        businessLocationId:
+          type: integer
+          format: int64
+          description: The unique identifier for the business location.
+          example: 45454565682155
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when this association was created.
+          example: 2023-11-07T19:15:05.043+0000
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when this association was last updated.
+          example: 2023-11-07T19:15:05.043+0000
+        warnings:
+          description: A list of warnings that occurred during the request, but which did not prevent a successful response.  For instance, if the Business Location does not have the required POS app version to support item availability.
+          type: array
+          items:
+            $ref: '#/components/schemas/apeCurrentWarning'
+      required:
+      - businessLocationId
     apeWebhookEndpoint:
       required:
       - endpointId
@@ -473,31 +498,13 @@ components:
             $ref: '#/components/schemas/apeEventResource'
           type: array
       type: object
-    apeWebhookEndpointBusinessLocationDto:
+    apeCurrentWarning:
       type: object
       properties:
-        businessLocationId:
-          type: integer
-          format: int64
-          description: The unique identifier for the business location.
-          example: 45454565682155
-        createdAt:
+        information:
           type: string
-          format: date-time
-          description: Timestamp when this association was created.
-          example: 2023-11-07T19:15:05.043+0000
-        updatedAt:
+        type:
           type: string
-          format: date-time
-          description: Timestamp when this association was last updated.
-          example: 2023-11-07T19:15:05.043+0000
-        warnings:
-          description: A list of warnings that occurred during the request, but which did not prevent a successful response.  For instance, if the Business Location does not have the required POS app version to support item availability.
-          type: array
-          items:
-            $ref: '#/components/schemas/apeCurrentWarning'
-      required:
-      - businessLocationId
     apeEventResource:
       description: Event to listen to by resource
       example:
@@ -537,13 +544,6 @@ components:
       type: integer
       format: int64
       example: 45454565682155
-    apeCurrentWarning:
-      type: object
-      properties:
-        information:
-          type: string
-        type:
-          type: string
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

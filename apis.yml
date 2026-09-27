@@ -42,6 +42,7 @@ tags:
 - Payments
 - E-Commerce
 - Omnichannel
+- Canada
 tags_raw:
 - Commerce
 - Point of Sale
@@ -53,6 +54,7 @@ tags_raw:
 - Payments
 - E-Commerce
 - Omnichannel
+- Canada
 apis:
 - aid: lightspeed:retail-r-series
   name: Lightspeed Retail R-Series API
@@ -448,6 +450,8 @@ apis:
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
+  - Finance
+  tags_raw:
   - Financial
   properties:
   - type: OpenAPI

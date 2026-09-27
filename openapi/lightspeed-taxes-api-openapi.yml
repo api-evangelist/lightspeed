@@ -168,70 +168,6 @@ paths:
       - Taxes
 components:
   schemas:
-    CreateTaxRequest:
-      properties:
-        clothing_footwear_exemption:
-          description: Whether the tax is exempt for clothing and footwear. This is applicable for tax exclusive retailers only.
-          type: boolean
-        clothing_footwear_threshold_value:
-          description: The threshold value for clothing and footwear exemption. This is applicable for tax exclusive retailers only.
-          format: double
-          type: number
-        name:
-          description: The Tax name.
-          type: string
-        rate:
-          description: The Tax rate percentage.
-          example: 0.1
-          format: double
-          type: number
-        tax_over_threshold:
-          description: Whether the tax applies over the threshold. This is applicable for tax exclusive retailers only.
-          type: boolean
-      required:
-      - name
-      - rate
-      title: CreateTaxRequest
-      type: object
-    TaxCollection:
-      properties:
-        data:
-          description: An array of tax objects.
-          items:
-            $ref: '#/components/schemas/Tax'
-          type: array
-      required:
-      - data
-      title: Tax Collection
-      type: object
-    TaxRate:
-      properties:
-        display_name:
-          description: The name of the tax rate used for display.
-          type: string
-        id:
-          description: Auto-generated object ID.
-          format: uuid
-          type: string
-        name:
-          description: The name of the tax rate.
-          type: string
-        rate:
-          description: Tax rate value. `0.1 = 10%`.
-          format: double
-          type: number
-        rules:
-          description: Rules that apply to the rate for tax exclusive outlets.
-          items:
-            $ref: '#/components/schemas/RateRule'
-          type: array
-      required:
-      - display_name
-      - id
-      - name
-      - rate
-      title: Tax rate
-      type: object
     RateRule:
       description: 'Rule that applies to a rate.
 
@@ -293,6 +229,70 @@ components:
       - is_default
       - version
       title: Tax
+      type: object
+    CreateTaxRequest:
+      properties:
+        clothing_footwear_exemption:
+          description: Whether the tax is exempt for clothing and footwear. This is applicable for tax exclusive retailers only.
+          type: boolean
+        clothing_footwear_threshold_value:
+          description: The threshold value for clothing and footwear exemption. This is applicable for tax exclusive retailers only.
+          format: double
+          type: number
+        name:
+          description: The Tax name.
+          type: string
+        rate:
+          description: The Tax rate percentage.
+          example: 0.1
+          format: double
+          type: number
+        tax_over_threshold:
+          description: Whether the tax applies over the threshold. This is applicable for tax exclusive retailers only.
+          type: boolean
+      required:
+      - name
+      - rate
+      title: CreateTaxRequest
+      type: object
+    TaxRate:
+      properties:
+        display_name:
+          description: The name of the tax rate used for display.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        name:
+          description: The name of the tax rate.
+          type: string
+        rate:
+          description: Tax rate value. `0.1 = 10%`.
+          format: double
+          type: number
+        rules:
+          description: Rules that apply to the rate for tax exclusive outlets.
+          items:
+            $ref: '#/components/schemas/RateRule'
+          type: array
+      required:
+      - display_name
+      - id
+      - name
+      - rate
+      title: Tax rate
+      type: object
+    TaxCollection:
+      properties:
+        data:
+          description: An array of tax objects.
+          items:
+            $ref: '#/components/schemas/Tax'
+          type: array
+      required:
+      - data
+      title: Tax Collection
       type: object
     TaxResponse:
       description: A response for a single tax GET request.

@@ -438,19 +438,6 @@ paths:
       - Users
 components:
   schemas:
-    Role:
-      properties:
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The Role name.
-          type: string
-        system_role_id:
-          description: A system role id of the Role. Will be either '100', '200', or '300'.
-          type: string
-      title: Role
-      type: object
     UserImages:
       description: On object containing URLs for different sizes of the user’s avatar.
       properties:
@@ -472,68 +459,6 @@ components:
       type:
       - object
       - 'null'
-    UserSaleTotalCollection:
-      properties:
-        cost:
-          description: The cost total of sales for the user.
-          format: double
-          type: number
-        date_from:
-          description: From timestamp in UTC.
-          type: string
-        date_to:
-          description: To timestamp in UTC.
-          type: string
-        discounts:
-          description: The discounts total of sales for the user.
-          format: double
-          type: number
-        label:
-          description: The label for what the total represents.
-          type: string
-        loyalty:
-          description: The loyalty total of sales for the user.
-          format: double
-          type: number
-        revenue:
-          description: The revenue total of sales for the user.
-          format: double
-          type: number
-        sale_count:
-          description: The total number of sales for the user.
-          format: integer
-          type: number
-        tax:
-          description: The tax total of sales for the user.
-          format: double
-          type: number
-        total:
-          description: The total sales for the user.
-          format: double
-          type: number
-      title: User Sale Total Collection
-      type: object
-    UserCollection:
-      properties:
-        data:
-          description: An array of users.
-          items:
-            $ref: '#/components/schemas/User'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: User Collection
-      type: object
-    UserResponse:
-      description: A response for a single user GET request.
-      properties:
-        data:
-          $ref: '#/components/schemas/User'
-      title: User Response
-      type: object
     UserSaleTotalResponse:
       properties:
         data:
@@ -542,32 +467,26 @@ components:
           type: array
       title: User Sale Total Response
       type: object
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+    UserResponse:
+      description: A response for a single user GET request.
       properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
+        data:
+          $ref: '#/components/schemas/User'
+      title: User Response
       type: object
-    GetUsersByIdsRequest:
-      description: An array of user IDs to retrieve.
-      items:
-        format: uuid
-        type: string
-      title: GetUsersByIdsRequest
-      type: array
+    Role:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Role name.
+          type: string
+        system_role_id:
+          description: A system role id of the Role. Will be either '100', '200', or '300'.
+          type: string
+      title: Role
+      type: object
     User:
       properties:
         account_type:
@@ -708,6 +627,87 @@ components:
       - username
       - version
       title: User
+      type: object
+    UserCollection:
+      properties:
+        data:
+          description: An array of users.
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: User Collection
+      type: object
+    GetUsersByIdsRequest:
+      description: An array of user IDs to retrieve.
+      items:
+        format: uuid
+        type: string
+      title: GetUsersByIdsRequest
+      type: array
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
+    UserSaleTotalCollection:
+      properties:
+        cost:
+          description: The cost total of sales for the user.
+          format: double
+          type: number
+        date_from:
+          description: From timestamp in UTC.
+          type: string
+        date_to:
+          description: To timestamp in UTC.
+          type: string
+        discounts:
+          description: The discounts total of sales for the user.
+          format: double
+          type: number
+        label:
+          description: The label for what the total represents.
+          type: string
+        loyalty:
+          description: The loyalty total of sales for the user.
+          format: double
+          type: number
+        revenue:
+          description: The revenue total of sales for the user.
+          format: double
+          type: number
+        sale_count:
+          description: The total number of sales for the user.
+          format: integer
+          type: number
+        tax:
+          description: The tax total of sales for the user.
+          format: double
+          type: number
+        total:
+          description: The total sales for the user.
+          format: double
+          type: number
+      title: User Sale Total Collection
       type: object
   securitySchemes:
     bearerAuth:

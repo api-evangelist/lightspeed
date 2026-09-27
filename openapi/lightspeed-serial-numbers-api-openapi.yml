@@ -168,6 +168,12 @@ components:
       - product_id
       title: Request to create a sale
       type: object
+    SerialNumberResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SerialNumber'
+      title: Serial Number Response
+      type: object
     SerialNumberCollection:
       properties:
         data:
@@ -231,12 +237,6 @@ components:
       required:
       - max
       - min
-      type: object
-    SerialNumberResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/SerialNumber'
-      title: Serial Number Response
       type: object
   securitySchemes:
     bearerAuth:

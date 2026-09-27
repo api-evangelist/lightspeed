@@ -293,83 +293,48 @@ paths:
         - items
 components:
   schemas:
-    items-apiSku:
-      example: UGG-BB-PUR-06
-      maxLength: 32
-      minLength: 1
-      description: A stock keeping unit.
+    items-apiCostPrice:
+      type: number
+      description: The cost price of the item.
+      example: 5.0
+    items-apiAccountingGroupId:
+      example: 44874545485
+      description: The unique identifier for the accounting group.
+      type: integer
+      format: int64
+    items-apiAmount:
+      description: The number of results to return with each request.
+      example: 10
+      default: 100
+      maximum: 1000
+      type: integer
+      format: int64
+    items-apiPriceMode:
+      description: The type of price for the item.
+      example: PERCENT
+      enum:
+      - AMOUNT
+      - PERCENT
+      - POSITIVE_OPEN_PRICE
+      - NEGATIVE_OPEN_PRICE
+      default: AMOUNT
       type: string
+    items-apiName:
+      example: Burger
+      maxLength: 180
+      minLength: 1
+      description: The name of the item.
+      type: string
+    items-apiDocketName:
+      example: The Burger
+      maxLength: 64
+      type: string
+      description: The name used in the docket for the item.
     items-apiBusinessLocationId:
       description: The unique identifier for the business location.
       type: integer
       format: int64
       example: 45454565682155
-    items-apiDefaultPrice:
-      example: 10
-      type: number
-      description: The default price of the item.
-    items-apiPriceDTO:
-      properties:
-        amount:
-          type: number
-          example: 10.0
-          description: The item price.
-        name:
-          type: string
-          example: Tuesday Special
-          description: The name for this item price.
-      type: object
-    items-apiOffset:
-      example: 10
-      default: 0
-      description: 'Offset allows you to retrieve a subset of records starting from a specified position in the dataset. Offset normally works with [`amount`](#operation-getitems-amount), which designates how many records to retrieve, starting from the offset position.
-
-        '
-      type: integer
-      format: int64
-    items-apiUpdateItemDTO:
-      required:
-      - name
-      - businessLocationId
-      - sku
-      - defaultPrice
-      - accountingGroupId
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/items-apiName'
-        businessLocationId:
-          $ref: '#/components/schemas/items-apiBusinessLocationId'
-        docketName:
-          $ref: '#/components/schemas/items-apiDocketName'
-        sku:
-          $ref: '#/components/schemas/items-apiSku'
-        active:
-          $ref: '#/components/schemas/items-apiActive'
-        barcode:
-          example: '10011101100'
-          maxLength: 64
-          type: string
-          description: The item barcode.
-        barcodes:
-          type: array
-          description: A list of barcodes associated with the item.
-          items:
-            type: string
-            maxLength: 64
-            minLength: 1
-            example: '10011101100'
-        accountingGroupId:
-          example: 462478248241
-          description: The unique identifier for the accounting group. Must be an existing `accountingGroupId`.
-          type: integer
-          format: int64
-        costPrice:
-          $ref: '#/components/schemas/items-apiCostPrice'
-        defaultPrice:
-          $ref: '#/components/schemas/items-apiDefaultPrice'
-        priceMode:
-          $ref: '#/components/schemas/items-apiPriceMode'
     items-apiItemDTO:
       type: object
       properties:
@@ -467,52 +432,87 @@ components:
           - SUB_ITEM
           description: Type of the item.
           example: ITEM
-    items-apiName:
-      example: Burger
-      maxLength: 180
-      minLength: 1
-      description: The name of the item.
-      type: string
-    items-apiAccountingGroupDTO:
-      description: The accounting group associated with the item.
-      properties:
-        id:
-          format: int64
-          type: integer
-          description: The unique identifier for the accounting group.
-          example: 40570261078058
-        name:
-          type: string
-          description: The name of the accounting group.
-          example: Alcoholic beverages
-      type: object
-    items-apiAccountingGroupId:
-      example: 44874545485
-      description: The unique identifier for the accounting group.
-      type: integer
-      format: int64
-    items-apiStatisticGroupDTO:
-      properties:
-        category:
-          type: string
-          description: The name of the statistic group category.
-          example: default
-        value:
-          type: string
-          description: The statistic group value.
-          example: Food
-      type: object
-    items-apiAmount:
-      description: The number of results to return with each request.
-      example: 10
-      default: 100
-      maximum: 1000
-      type: integer
-      format: int64
     items-apiActive:
       type: boolean
       description: Indicates whether or not the item is archived from the menu.
       example: true
+    items-apiSku:
+      example: UGG-BB-PUR-06
+      maxLength: 32
+      minLength: 1
+      description: A stock keeping unit.
+      type: string
+    items-apiOffset:
+      example: 10
+      default: 0
+      description: 'Offset allows you to retrieve a subset of records starting from a specified position in the dataset. Offset normally works with [`amount`](#operation-getitems-amount), which designates how many records to retrieve, starting from the offset position.
+
+        '
+      type: integer
+      format: int64
+    items-apiUpdateItemDTO:
+      required:
+      - name
+      - businessLocationId
+      - sku
+      - defaultPrice
+      - accountingGroupId
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/items-apiName'
+        businessLocationId:
+          $ref: '#/components/schemas/items-apiBusinessLocationId'
+        docketName:
+          $ref: '#/components/schemas/items-apiDocketName'
+        sku:
+          $ref: '#/components/schemas/items-apiSku'
+        active:
+          $ref: '#/components/schemas/items-apiActive'
+        barcode:
+          example: '10011101100'
+          maxLength: 64
+          type: string
+          description: The item barcode.
+        barcodes:
+          type: array
+          description: A list of barcodes associated with the item.
+          items:
+            type: string
+            maxLength: 64
+            minLength: 1
+            example: '10011101100'
+        accountingGroupId:
+          example: 462478248241
+          description: The unique identifier for the accounting group. Must be an existing `accountingGroupId`.
+          type: integer
+          format: int64
+        costPrice:
+          $ref: '#/components/schemas/items-apiCostPrice'
+        defaultPrice:
+          $ref: '#/components/schemas/items-apiDefaultPrice'
+        priceMode:
+          $ref: '#/components/schemas/items-apiPriceMode'
+    items-apiPriceDTO:
+      properties:
+        amount:
+          type: number
+          example: 10.0
+          description: The item price.
+        name:
+          type: string
+          example: Tuesday Special
+          description: The name for this item price.
+      type: object
+    items-apiItemId:
+      description: The unique identifier for the item.
+      type: integer
+      format: int64
+      example: 141948669132862
+    items-apiDefaultPrice:
+      example: 10
+      type: number
+      description: The default price of the item.
     items-apiCreateItemDTO:
       required:
       - name
@@ -555,30 +555,30 @@ components:
           $ref: '#/components/schemas/items-apiDefaultPrice'
         priceMode:
           $ref: '#/components/schemas/items-apiPriceMode'
-    items-apiCostPrice:
-      type: number
-      description: The cost price of the item.
-      example: 5.0
-    items-apiDocketName:
-      example: The Burger
-      maxLength: 64
-      type: string
-      description: The name used in the docket for the item.
-    items-apiPriceMode:
-      description: The type of price for the item.
-      example: PERCENT
-      enum:
-      - AMOUNT
-      - PERCENT
-      - POSITIVE_OPEN_PRICE
-      - NEGATIVE_OPEN_PRICE
-      default: AMOUNT
-      type: string
-    items-apiItemId:
-      description: The unique identifier for the item.
-      type: integer
-      format: int64
-      example: 141948669132862
+    items-apiStatisticGroupDTO:
+      properties:
+        category:
+          type: string
+          description: The name of the statistic group category.
+          example: default
+        value:
+          type: string
+          description: The statistic group value.
+          example: Food
+      type: object
+    items-apiAccountingGroupDTO:
+      description: The accounting group associated with the item.
+      properties:
+        id:
+          format: int64
+          type: integer
+          description: The unique identifier for the accounting group.
+          example: 40570261078058
+        name:
+          type: string
+          description: The name of the accounting group.
+          example: Alcoholic beverages
+      type: object
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

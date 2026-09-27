@@ -201,19 +201,17 @@ paths:
       - Brands
 components:
   schemas:
-    BrandCollection:
+    BrandBase:
       properties:
-        data:
-          description: An array of Brand objects wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Brand'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
+        description:
+          description: The brand description.
+          type: string
+        name:
+          description: The Brand name.
+          type: string
       required:
-      - data
-      - version
-      title: Brand Collection
+      - name
+      title: Brand
       type: object
     Brand:
       properties:
@@ -248,17 +246,19 @@ components:
           $ref: '#/components/schemas/Brand'
       title: Brand Response
       type: object
-    BrandBase:
+    BrandCollection:
       properties:
-        description:
-          description: The brand description.
-          type: string
-        name:
-          description: The Brand name.
-          type: string
+        data:
+          description: An array of Brand objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Brand'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
       required:
-      - name
-      title: Brand
+      - data
+      - version
+      title: Brand Collection
       type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.

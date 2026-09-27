@@ -102,81 +102,18 @@ paths:
       - Payment Types
 components:
   schemas:
-    GlobalPaymentType:
-      description: The global (platform-level) payment type definition associated with a retailer payment type.
+    PaymentTypeCollection:
       properties:
-        badge:
-          description: URL of the payment type badge image.
-          type:
-          - string
-          - 'null'
-        category:
-          description: The category of the payment type.
-          type: string
-        configuration_url:
-          description: URL for configuring this payment type.
-          type:
-          - string
-          - 'null'
-        description:
-          description: A description of the payment type.
-          type:
-          - string
-          - 'null'
-        header:
-          description: The display header for the payment type.
-          type:
-          - string
-          - 'null'
-        id:
-          description: The global payment type ID.
-          format: int64
-          type: integer
-        internal:
-          description: Indicates if this is an internal payment type.
-          type: boolean
-        logo:
-          description: URL of the payment type logo.
-          type:
-          - string
-          - 'null'
-        name:
-          description: The name of the global payment type.
-          type: string
-        online_only:
-          description: Indicates if this payment type is available online only.
-          type: boolean
-        platforms:
-          description: The platforms on which this payment type is supported.
+        data:
+          description: An array of payment types.
           items:
-            type: string
-          type:
-          - array
-          - 'null'
-        referred_inactive:
-          description: Indicates if the payment type was referred but is inactive.
-          type: boolean
-        show_banner:
-          description: Indicates if a banner should be shown for this payment type.
-          type: boolean
-        subcategory:
-          description: The subcategory of the payment type.
-          type: string
-        subtext:
-          description: Additional display text shown below the payment type name.
-          type:
-          - string
-          - 'null'
+            $ref: '#/components/schemas/PaymentType'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
       required:
-      - id
-      - name
-      - internal
-      - platforms
-      - category
-      - subcategory
-      - referred_inactive
-      - show_banner
-      - online_only
+      - data
+      - version
       type: object
     PaymentType:
       properties:
@@ -264,18 +201,81 @@ components:
       - max
       - min
       type: object
-    PaymentTypeCollection:
+    GlobalPaymentType:
+      description: The global (platform-level) payment type definition associated with a retailer payment type.
       properties:
-        data:
-          description: An array of payment types.
+        badge:
+          description: URL of the payment type badge image.
+          type:
+          - string
+          - 'null'
+        category:
+          description: The category of the payment type.
+          type: string
+        configuration_url:
+          description: URL for configuring this payment type.
+          type:
+          - string
+          - 'null'
+        description:
+          description: A description of the payment type.
+          type:
+          - string
+          - 'null'
+        header:
+          description: The display header for the payment type.
+          type:
+          - string
+          - 'null'
+        id:
+          description: The global payment type ID.
+          format: int64
+          type: integer
+        internal:
+          description: Indicates if this is an internal payment type.
+          type: boolean
+        logo:
+          description: URL of the payment type logo.
+          type:
+          - string
+          - 'null'
+        name:
+          description: The name of the global payment type.
+          type: string
+        online_only:
+          description: Indicates if this payment type is available online only.
+          type: boolean
+        platforms:
+          description: The platforms on which this payment type is supported.
           items:
-            $ref: '#/components/schemas/PaymentType'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
+            type: string
+          type:
+          - array
+          - 'null'
+        referred_inactive:
+          description: Indicates if the payment type was referred but is inactive.
+          type: boolean
+        show_banner:
+          description: Indicates if a banner should be shown for this payment type.
+          type: boolean
+        subcategory:
+          description: The subcategory of the payment type.
+          type: string
+        subtext:
+          description: Additional display text shown below the payment type name.
+          type:
+          - string
+          - 'null'
       required:
-      - data
-      - version
+      - id
+      - name
+      - internal
+      - platforms
+      - category
+      - subcategory
+      - referred_inactive
+      - show_banner
+      - online_only
       type: object
   securitySchemes:
     bearerAuth:
