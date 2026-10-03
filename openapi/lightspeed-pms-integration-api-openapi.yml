@@ -127,6 +127,20 @@ components:
           type: boolean
           description: Whether the tax is included in the price (VAT).
           example: true
+    pms-integrationPmsServiceChargeWebhookDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The amount of the service charge.
+          example: 1.0
+        type:
+          type: string
+          enum:
+          - UNTAXED
+          - APPORTIONED
+          description: The type of the service charge.
+          example: UNTAXED
     pms-integrationSalesWebhookDto:
       type: object
       properties:
@@ -219,62 +233,6 @@ components:
             $ref: '#/components/schemas/pms-integrationPmsPaymentWebhookDto'
         serviceCharge:
           $ref: '#/components/schemas/pms-integrationPmsServiceChargeWebhookDto'
-    pms-integrationErrorWebhookDto:
-      type: object
-      description: 'The error response body content should follow this schema.
-
-        If the response body content does not follow this schema, only the status code will be sent.
-
-        All other property beside customerErrorMessage will be ignored.
-
-        '
-      properties:
-        customerErrorMessage:
-          type: string
-          maxLength: 50
-          example: Network failure
-          description: 'The error message that will be sent and printed at the POS.
-
-            Length should not exceed 50 characters to avoid truncation.
-
-            '
-    pms-integrationPmsPaymentWebhookDto:
-      type: object
-      properties:
-        paymentDate:
-          type: string
-          format: date-time
-          description: The date and time when the payment was made in UTC
-          example: '2021-01-01T00:00:00Z'
-        staffId:
-          type: integer
-          format: int64
-          description: The ID of the POS user (staff) who processed this payment
-          example: 6
-        staffName:
-          type: string
-          description: The name of the POS user (staff) who processed this payment
-          example: John Doe
-        gratuity:
-          type: number
-          description: The amount of the gratuity (tips).
-          example: 1.0
-        amount:
-          type: number
-          description: The total amount of the received payment.
-          example: 66.0
-        methodName:
-          type: string
-          description: The name of the payment method.
-          example: MEWS
-        methodCode:
-          type: string
-          description: The code of the payment method.
-          example: IKPMS
-        reservationId:
-          type: string
-          description: The reservation ID of the payment.
-          example: '001'
     pms-integrationPmsTransactionWebhookDto:
       type: object
       properties:
@@ -355,20 +313,62 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/pms-integrationPmsTaxLineWebhookDto'
-    pms-integrationPmsServiceChargeWebhookDto:
+    pms-integrationPmsPaymentWebhookDto:
       type: object
       properties:
+        paymentDate:
+          type: string
+          format: date-time
+          description: The date and time when the payment was made in UTC
+          example: '2021-01-01T00:00:00Z'
+        staffId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who processed this payment
+          example: 6
+        staffName:
+          type: string
+          description: The name of the POS user (staff) who processed this payment
+          example: John Doe
+        gratuity:
+          type: number
+          description: The amount of the gratuity (tips).
+          example: 1.0
         amount:
           type: number
-          description: The amount of the service charge.
-          example: 1.0
-        type:
+          description: The total amount of the received payment.
+          example: 66.0
+        methodName:
           type: string
-          enum:
-          - UNTAXED
-          - APPORTIONED
-          description: The type of the service charge.
-          example: UNTAXED
+          description: The name of the payment method.
+          example: MEWS
+        methodCode:
+          type: string
+          description: The code of the payment method.
+          example: IKPMS
+        reservationId:
+          type: string
+          description: The reservation ID of the payment.
+          example: '001'
+    pms-integrationErrorWebhookDto:
+      type: object
+      description: 'The error response body content should follow this schema.
+
+        If the response body content does not follow this schema, only the status code will be sent.
+
+        All other property beside customerErrorMessage will be ignored.
+
+        '
+      properties:
+        customerErrorMessage:
+          type: string
+          maxLength: 50
+          example: Network failure
+          description: 'The error message that will be sent and printed at the POS.
+
+            Length should not exceed 50 characters to avoid truncation.
+
+            '
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

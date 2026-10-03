@@ -334,55 +334,6 @@ paths:
       - Store Credits
 components:
   schemas:
-    StoreCreditReport:
-      description: The store credit report for a retailer.
-      properties:
-        outstanding_balance:
-          description: The outstanding balance.
-          format: double
-          type: number
-        total_value_issued:
-          description: The total credit issued.
-          format: double
-          type: number
-        total_value_redeemed:
-          description: The total value redeemed.
-          format: double
-          type: number
-      title: Store Credit Report
-      type: object
-    StoreCreditBalancesBulkResponse:
-      description: The fields returned by the store_credit /store_credits/balances-bulk
-      properties:
-        data:
-          description: An array of Store Credit Customer balances
-          items:
-            $ref: '#/components/schemas/StoreCreditCustomerBalance'
-          type: array
-      required:
-      - data
-      title: Store Credit Bulk Response
-      type: object
-    StoreCreditCustomerBalance:
-      description: The store credit balance and statistics for the customer
-      properties:
-        balance:
-          description: The customers store credit balance.
-          format: double
-          type: number
-        customer_id:
-          description: The customers public id.
-          type: string
-        total_credit_issued:
-          description: Total amount of store credit issued to this customer.
-          format: double
-          type: number
-        total_credit_redeemed:
-          description: Total amount of store credit spent by this customer.
-          format: double
-          type: number
-      title: Store Credit Customer Balance
-      type: object
     StoreCreditBulkResponse:
       description: Store credit customer list with balance and transactions
       properties:
@@ -410,6 +361,38 @@ components:
               user_id: a169451c-8525-4352-b8ca-070dd449a1a5
             total_credit_issued: 10
             total_credit_redeemed: 10
+    StoreCreditReport:
+      description: The store credit report for a retailer.
+      properties:
+        outstanding_balance:
+          description: The outstanding balance.
+          format: double
+          type: number
+        total_value_issued:
+          description: The total credit issued.
+          format: double
+          type: number
+        total_value_redeemed:
+          description: The total value redeemed.
+          format: double
+          type: number
+      title: Store Credit Report
+      type: object
+    StoreCreditCreateHoldParams:
+      properties:
+        amount:
+          description: The amount of the transaction.
+          format: double
+          type: number
+        client_id:
+          description: 'The client id is a unique transaction identifier. See StoreCreditTransactionParams
+
+            '
+          type: string
+      required:
+      - amount
+      title: Store Credit Transaction Parameters to create a HOLD transaction
+      type: object
     StoreCreditTransaction:
       description: A store credit operation
       properties:
@@ -454,53 +437,6 @@ components:
           format: uuid
           type: string
       title: Store Credit Transaction for Customer
-      type: object
-    StoreCreditCreateHoldParams:
-      properties:
-        amount:
-          description: The amount of the transaction.
-          format: double
-          type: number
-        client_id:
-          description: 'The client id is a unique transaction identifier. See StoreCreditTransactionParams
-
-            '
-          type: string
-      required:
-      - amount
-      title: Store Credit Transaction Parameters to create a HOLD transaction
-      type: object
-    StoreCreditTransactionParams:
-      description: The store credit transaction parameters for a customer transaction.
-      properties:
-        amount:
-          description: The amount of the transaction.
-          format: double
-          type: number
-        client_id:
-          description: 'The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.
-
-            '
-          type: string
-        notes:
-          description: The notes associated with the transaction.
-          type: string
-        type:
-          description: The type of the transaction
-          enum:
-          - ISSUE
-          - REDEMPTION
-          - REVERSE
-          type: string
-        user_id:
-          description: The user id of the person who handled the transaction.
-          format: uuid
-          type: string
-      required:
-      - amount
-      - client_id
-      - type
-      title: Store Credit Transaction Parameters for Customer
       type: object
     StoreCreditCustomer:
       description: The store credit information for a customer.
@@ -554,6 +490,70 @@ components:
             user_id: a169451c-8525-4352-b8ca-070dd449a1a5
           total_credit_issued: 10
           total_credit_redeemed: 0
+    StoreCreditBalancesBulkResponse:
+      description: The fields returned by the store_credit /store_credits/balances-bulk
+      properties:
+        data:
+          description: An array of Store Credit Customer balances
+          items:
+            $ref: '#/components/schemas/StoreCreditCustomerBalance'
+          type: array
+      required:
+      - data
+      title: Store Credit Bulk Response
+      type: object
+    StoreCreditTransactionParams:
+      description: The store credit transaction parameters for a customer transaction.
+      properties:
+        amount:
+          description: The amount of the transaction.
+          format: double
+          type: number
+        client_id:
+          description: 'The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.
+
+            '
+          type: string
+        notes:
+          description: The notes associated with the transaction.
+          type: string
+        type:
+          description: The type of the transaction
+          enum:
+          - ISSUE
+          - REDEMPTION
+          - REVERSE
+          type: string
+        user_id:
+          description: The user id of the person who handled the transaction.
+          format: uuid
+          type: string
+      required:
+      - amount
+      - client_id
+      - type
+      title: Store Credit Transaction Parameters for Customer
+      type: object
+    StoreCreditCustomerBalance:
+      description: The store credit balance and statistics for the customer
+      properties:
+        balance:
+          description: The customers store credit balance.
+          format: double
+          type: number
+        customer_id:
+          description: The customers public id.
+          type: string
+        total_credit_issued:
+          description: Total amount of store credit issued to this customer.
+          format: double
+          type: number
+        total_credit_redeemed:
+          description: Total amount of store credit spent by this customer.
+          format: double
+          type: number
+      title: Store Credit Customer Balance
+      type: object
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

@@ -181,11 +181,19 @@ components:
       - value
       title: Attribute
       type: object
-    OutletResponse:
+    OutletCollection:
       properties:
         data:
-          $ref: '#/components/schemas/Outlet'
-      title: Outlet Response
+          description: An array of Outlet objects  wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Outlet'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Outlet Collection
       type: object
     Outlet:
       properties:
@@ -295,6 +303,12 @@ components:
       - version
       title: Outlet
       type: object
+    OutletResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Outlet'
+      title: Outlet Response
+      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -313,20 +327,6 @@ components:
       required:
       - max
       - min
-      type: object
-    OutletCollection:
-      properties:
-        data:
-          description: An array of Outlet objects  wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Outlet'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Outlet Collection
       type: object
   securitySchemes:
     bearerAuth:

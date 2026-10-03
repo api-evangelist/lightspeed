@@ -156,106 +156,6 @@ paths:
       - Partner Billing
 components:
   schemas:
-    PartnerUpdateSubscriptionTokenComponent:
-      description: PartnerUpdateSubscriptionTokenComponent represents a component to be added to an updated subscription
-      properties:
-        component_handle:
-          description: Unique reference for the component to be updated
-          example: additional_registers
-          type: string
-        component_price_handle:
-          description: Unique reference for the component price point to be updated to
-          example: lite
-          type: string
-        quantity:
-          description: How many components should be there after the update
-          example: 1
-          format: int64
-          type: integer
-      required:
-      - component_handle
-      - quantity
-      type: object
-    ProductInfoComponent:
-      properties:
-        charge_interval_unit:
-          example: month
-          type: string
-        component_name:
-          example: Additional Register(s) Support
-          type: string
-        quantity:
-          example: 2
-          format: int64
-          type: integer
-        unit_price:
-          example: 20
-          format: double
-          type: number
-      title: ProductInfoComponent contain partner product component info.
-      type: object
-    PartnerSubscriptionTokenComponent:
-      description: PartnerSubscriptionTokenComponent represents a component to be added to a subscription
-      properties:
-        component_handle:
-          description: Unique reference to the component to be included in the new subscription
-          example: additional_registers
-          type: string
-        component_price_handle:
-          description: Unique reference to the component price point
-          example: lite
-          type: string
-        quantity:
-          description: How many components should be added
-          example: 1
-          format: int64
-          type: integer
-      required:
-      - component_handle
-      - component_price_handle
-      - quantity
-      type: object
-    PartnerSubscriptionTokenResponse:
-      description: PartnerSubscriptionTokenResponse contains the token and its expiration time
-      properties:
-        expires_at:
-          description: ExpiresAt is the exact time of token expiry in UTC timezone and displayed in RFC3339 format
-          example: '2020-10-06T05:07:26Z'
-          type: string
-        expires_in:
-          description: ExpiresIn is the number of seconds till the token is expired
-          example: '86400'
-          type: string
-        token:
-          description: Token is a randomly generated string that is a required parameter for consent page
-          example: 0a7e36eb05a94bf1a4d3daeff0f561f9
-          maxLength: 32
-          minLength: 32
-          type: string
-      type: object
-    PartnerUpdateSubscriptionTokenRequest:
-      description: PartnerUpdateSubscriptionTokenRequest represents the request's body for updating a subscription via token API
-      properties:
-        components:
-          description: Components is a list of components to add on to the plan
-          items:
-            $ref: '#/components/schemas/PartnerUpdateSubscriptionTokenComponent'
-          type: array
-        price_handle:
-          description: ProductPricePointHandle is the product price point handle, required if `product_handle` is specified
-          example: small-v1
-          type: string
-        product_handle:
-          description: ProductHandle is the product handle to update
-          example: small-v1
-          type: string
-        return_url:
-          description: ReturnURL is the URL to which the user is redirected to after giving his/her consent
-          example: https://www.example.com/return
-          type: string
-      required:
-      - return_url
-      type: object
     PartnerSubscriptions:
       description: PartnerSubscriptions contains all the subscriptions of the retailer from all the partners
       items:
@@ -263,19 +163,6 @@ components:
       type:
       - array
       - 'null'
-    PartnerSubscription:
-      description: PartnerSubscription contains all the subscription under one partner application
-      properties:
-        application_id:
-          type: string
-        application_name:
-          example: Partner Application
-          type: string
-        partner_subscription_info:
-          items:
-            $ref: '#/components/schemas/PartnerSubscriptionInfo'
-          type: array
-      type: object
     PartnerSubscriptionTokenRequest:
       description: PartnerSubscriptionTokenRequest represents the request's body for subscription token API
       properties:
@@ -304,44 +191,6 @@ components:
       - price_handle
       - product_handle
       - return_url
-      type: object
-    PartnerSubscriptionInfo:
-      properties:
-        charge_interval:
-          example: 1
-          format: int64
-          type: integer
-        charge_interval_unit:
-          example: month
-          type: string
-        components:
-          items:
-            $ref: '#/components/schemas/ProductInfoComponent'
-          type: array
-        currency:
-          example: nzd
-          type: string
-        id:
-          example: '1348730086846538752'
-          type: string
-        next_assessment_at:
-          example: '2021-02-11T20:34:42Z'
-          type: string
-        price_in_cents:
-          example: '5000'
-          type: string
-        product_family_name:
-          example: Marshmallow Production Subscription
-          type: string
-        product_name:
-          example: Marshmallow Lite Subscription
-          type: string
-        product_price_point_name:
-          example: marshmallow-product-price-point
-          type: string
-        state:
-          example: canceled
-          type: string
       type: object
     PartnerSubscriptionToken:
       description: PartnerSubscriptionToken repreasent a partner subscription token
@@ -385,6 +234,157 @@ components:
         vend_application_id:
           example: iYsePmZaddtZRNYQrr7g3Eg2ItSkTiFx
           type: string
+      type: object
+    PartnerUpdateSubscriptionTokenComponent:
+      description: PartnerUpdateSubscriptionTokenComponent represents a component to be added to an updated subscription
+      properties:
+        component_handle:
+          description: Unique reference for the component to be updated
+          example: additional_registers
+          type: string
+        component_price_handle:
+          description: Unique reference for the component price point to be updated to
+          example: lite
+          type: string
+        quantity:
+          description: How many components should be there after the update
+          example: 1
+          format: int64
+          type: integer
+      required:
+      - component_handle
+      - quantity
+      type: object
+    PartnerSubscriptionInfo:
+      properties:
+        charge_interval:
+          example: 1
+          format: int64
+          type: integer
+        charge_interval_unit:
+          example: month
+          type: string
+        components:
+          items:
+            $ref: '#/components/schemas/ProductInfoComponent'
+          type: array
+        currency:
+          example: nzd
+          type: string
+        id:
+          example: '1348730086846538752'
+          type: string
+        next_assessment_at:
+          example: '2021-02-11T20:34:42Z'
+          type: string
+        price_in_cents:
+          example: '5000'
+          type: string
+        product_family_name:
+          example: Marshmallow Production Subscription
+          type: string
+        product_name:
+          example: Marshmallow Lite Subscription
+          type: string
+        product_price_point_name:
+          example: marshmallow-product-price-point
+          type: string
+        state:
+          example: canceled
+          type: string
+      type: object
+    PartnerSubscriptionTokenResponse:
+      description: PartnerSubscriptionTokenResponse contains the token and its expiration time
+      properties:
+        expires_at:
+          description: ExpiresAt is the exact time of token expiry in UTC timezone and displayed in RFC3339 format
+          example: '2020-10-06T05:07:26Z'
+          type: string
+        expires_in:
+          description: ExpiresIn is the number of seconds till the token is expired
+          example: '86400'
+          type: string
+        token:
+          description: Token is a randomly generated string that is a required parameter for consent page
+          example: 0a7e36eb05a94bf1a4d3daeff0f561f9
+          maxLength: 32
+          minLength: 32
+          type: string
+      type: object
+    PartnerSubscription:
+      description: PartnerSubscription contains all the subscription under one partner application
+      properties:
+        application_id:
+          type: string
+        application_name:
+          example: Partner Application
+          type: string
+        partner_subscription_info:
+          items:
+            $ref: '#/components/schemas/PartnerSubscriptionInfo'
+          type: array
+      type: object
+    PartnerUpdateSubscriptionTokenRequest:
+      description: PartnerUpdateSubscriptionTokenRequest represents the request's body for updating a subscription via token API
+      properties:
+        components:
+          description: Components is a list of components to add on to the plan
+          items:
+            $ref: '#/components/schemas/PartnerUpdateSubscriptionTokenComponent'
+          type: array
+        price_handle:
+          description: ProductPricePointHandle is the product price point handle, required if `product_handle` is specified
+          example: small-v1
+          type: string
+        product_handle:
+          description: ProductHandle is the product handle to update
+          example: small-v1
+          type: string
+        return_url:
+          description: ReturnURL is the URL to which the user is redirected to after giving his/her consent
+          example: https://www.example.com/return
+          type: string
+      required:
+      - return_url
+      type: object
+    ProductInfoComponent:
+      properties:
+        charge_interval_unit:
+          example: month
+          type: string
+        component_name:
+          example: Additional Register(s) Support
+          type: string
+        quantity:
+          example: 2
+          format: int64
+          type: integer
+        unit_price:
+          example: 20
+          format: double
+          type: number
+      title: ProductInfoComponent contain partner product component info.
+      type: object
+    PartnerSubscriptionTokenComponent:
+      description: PartnerSubscriptionTokenComponent represents a component to be added to a subscription
+      properties:
+        component_handle:
+          description: Unique reference to the component to be included in the new subscription
+          example: additional_registers
+          type: string
+        component_price_handle:
+          description: Unique reference to the component price point
+          example: lite
+          type: string
+        quantity:
+          description: How many components should be added
+          example: 1
+          format: int64
+          type: integer
+      required:
+      - component_handle
+      - component_price_handle
+      - quantity
       type: object
   securitySchemes:
     bearerAuth:

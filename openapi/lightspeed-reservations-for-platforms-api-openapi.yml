@@ -538,54 +538,28 @@ webhooks:
           description: Your server returns this code if it accepts the callback.
 components:
   schemas:
-    reservation-serviceConsumerRecord:
-      nullable: true
+    reservation-serviceDiscount:
       properties:
-        consumer:
-          $ref: '#/components/schemas/reservation-serviceConsumer'
-        consumerRecordUUID:
-          example: 8649450c-5c10-4e63-8461-12bbf5a51cbc
-          format: uuid
+        code:
+          description: The discount code.
+          example: test_discount
           type: string
-        contactInformation:
-          $ref: '#/components/schemas/reservation-serviceContactInfo'
-        externalReferences:
-          description: The external reservation system's unique identifier for the consumer.
-          items:
-            $ref: '#/components/schemas/reservation-serviceExternalConsumerRecord'
-          type: array
+        description:
+          description: The name of the discount.
+          example: test discount description
+          type: string
         id:
-          example: '36577'
+          description: The unique identifier of the discount.
+          example: '197568495841'
           type: string
-      type: object
-    reservation-serviceOnboardingId:
-      description: The unique identifier of the integration process that has started onboarding.
-      example: 84f16177-98c5-4010-a7ab-d00144d1dede
-      type: string
-    reservation-serviceCategory:
-      description: A list of the reporting categories in which the sale is to be aggregated.
-      properties:
-        category:
-          description: The reporting category name.
-          example: default
-          type: string
-        value:
-          description: The reporting category value.
-          example: Misc
-          type: string
-      type: object
-    reservation-servicePlatformCourseSettingsDto:
-      properties:
-        allowCourseNumberUpdates:
+        rate:
+          description: The discount rate.
+          example: 0.9
+          type: number
+        taxFree:
+          description: Indicates if the discount is considered tax free.
+          example: false
           type: boolean
-          example: true
-          default: false
-          description: If true, table statuses can be customized using a number format.
-        inServiceTableStatuses:
-          items:
-            $ref: '#/components/schemas/reservation-servicePlatformTableStatusDto'
-          type: array
-          description: List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API.
       type: object
     reservation-serviceOnboardingCode:
       description: The machine code to interact with the external platform during the onboarding process.
@@ -601,16 +575,6 @@ components:
       - UNEXPECTED_ERROR
       example: DONE
       type: string
-    reservation-serviceExternalReference:
-      description: The unique identifier of this transaction provided by 3rd parties or the K-Series backend.
-      properties:
-        prefix:
-          example: TASK
-          type: string
-        reference:
-          example: RN-197568495618-reservation_id_123213126
-          type: string
-      type: object
     reservation-servicePlatformReservationStatus:
       description: External reservation statuses for platforms.
       enum:
@@ -626,134 +590,26 @@ components:
       - ERROR
       example: SCHEDULED
       type: string
-    reservation-servicePlatformAPIKeysWebhook:
-      description: The API keys that will be sent with the webhook notifications. See [API Keys](https://swagger.io/docs/specification/authentication/api-keys/).
+    reservation-servicePlatformTableStatusDto:
       properties:
-        headers:
-          additionalProperties:
-            description: Key-value pairs of arbitrary static headers to send with the webhook request.
-            type: string
-          example:
-            X-API-ID: Example-x-api-id
-            X-API-SECRET: Example-x-api-secret
-          type: object
-        parameters:
-          additionalProperties:
-            description: Key-value pairs of arbitrary static query parameters to send with the webhook request.
-            type: string
-          example: {}
-          type: object
-      type: object
-    reservation-serviceOnboardingWebhook:
-      properties:
-        businessInformation:
-          properties:
-            businessLocationId:
-              $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
-            city:
-              description: The city of the company.
-              example: Genève
-              type: string
-            country:
-              description: The country code of the company.
-              example: CH
-              type: string
-            name:
-              description: The company name in Lightspeed Backoffice.
-              example: Le Gâteau
-              type: string
-            state:
-              description: The state of the company.
-              example: Canton de Genève
-              type: string
-            street1:
-              description: The primary street of the company.
-              example: Rue de la Servette 10
-              type: string
-            street2:
-              description: The secondary street of the company.
-              example: Suite 2
-              type: string
-            zip:
-              description: The zip code of the company.
-              example: '101201'
-              type: string
-          required:
-          - businessLocationId
-          - name
-          type: object
-        epochSecondsDeadlineUtc:
-          description: The epoch time in seconds until which the onboarding process remains active.
-          example: 1711628625
-          format: int64
-          type: integer
-        onboardingId:
-          $ref: '#/components/schemas/reservation-serviceOnboardingId'
-        platformCode:
-          $ref: '#/components/schemas/reservation-servicePlatformCode'
-        platformRestaurantReference:
-          $ref: '#/components/schemas/reservation-servicePlatformRestaurantReference'
-      required:
-      - platformCode
-      - platformRestaurantReference
-      - onboardingId
-      - epochSecondsDeadlineUtc
-      - businessInformation
-      type: object
-    reservation-servicePosReservationUpdate:
-      properties:
-        platformCode:
-          $ref: '#/components/schemas/reservation-servicePlatformCode'
-        platformRestaurantId:
-          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
-        platformReservationId:
-          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
-        businessLocationId:
-          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
-        status:
-          $ref: '#/components/schemas/reservation-serviceStatus'
-        tables:
-          description: Name of tables associated with the reservation.
-          type: array
-          items:
-            type: string
-          example:
-          - 1A
-          - 2B
-        covers:
-          description: The number of covers associated with the reservation.
+        statusLabel:
+          type: string
+          example: Appetizer
+          description: The unique text which will be displayed in the back-office for users.
+        statusValue:
+          type: string
+          example: appetizer
+          description: The unique code which will be used for outbound communication within table status mapping.
+        sequence:
           format: int32
           type: integer
+          example: 1
+          description: This number is used to resolve collisions between statuses in order of highest priority.
       type: object
-    reservation-serviceOnboardingCallbackResponse:
-      properties:
-        onboardingCode:
-          $ref: '#/components/schemas/reservation-serviceOnboardingCode'
       required:
-      - onboardingCode
-      type: object
-    reservation-serviceOrderUpdate:
-      properties:
-        account:
-          $ref: '#/components/schemas/reservation-serviceAccount'
-        businessLocationId:
-          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
-        notificationType:
-          enum:
-          - OPEN
-          - UPDATE
-          - CLOSE
-          - CANCEL
-          type: string
-        platformRestaurantId:
-          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
-        sequenceId:
-          type: string
-        platformReservationId:
-          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
-        platformCode:
-          $ref: '#/components/schemas/reservation-servicePlatformCode'
-      type: object
+      - statusLabel
+      - statusValue
+      - sequence
     reservation-servicePlatformProfile:
       properties:
         baseUrl:
@@ -860,58 +716,122 @@ components:
       - webhookAuthType
       - webhookAuthDetails
       type: object
-    reservation-serviceStatus:
-      description: Extended Lightspeed reservation statuses.
-      enum:
-      - ON_HOLD
-      - SCHEDULED
-      - PARTIALLY_ARRIVED
-      - ARRIVED
-      - PARTIALLY_SEATED
-      - SEATED
-      - DEPARTED
-      - CANCELLED
-      - NO_SHOW
-      - ERROR
-      - PAID
-      example: SEATED
-      type: string
-    reservation-servicePaymentLine:
+    reservation-servicePlatformBearerTokenWebhook:
+      description: The bearer token that will be sent with the webhook notifications. See [Bearer Authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/).
       properties:
-        accountId:
-          description: Legacy account identifier created by the POS (supplied because older API provides it to 3rd parties).
-          example: '21474836499'
+        token:
+          description: The bearer token.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+          format: password
           type: string
-        amount:
-          description: Amount given by the customer to settle the transaction.
-          example: 45
-          type: number
-        currencyCode:
-          description: An ISO-4217 3 letter currency code
-          example: GBP
+        ttl:
+          description: Token expiration time in UTC.
+          example: '2035-01-01T00:00:00'
+          format: date-time
           type: string
-        date:
-          description: Timestamp in ms of the moment when the line was registered. by the user
-          example: 1694084890294
-          format: int64
-          type: integer
-        gratuityAmount:
-          description: Amount of tip given by the customer using the payment method.
-          example: 50
-          type: number
+          x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+      required:
+      - token
+      type: object
+    reservation-servicePlatformWebhookResponseDto:
+      type: object
+      description: Updated webhook authorization details.
+      required:
+      - accepted
+      - currentAuthType
+      properties:
+        accepted:
+          description: Whether the webhook request was accepted.
+          example: true
+          type: boolean
+        currentAuthType:
+          description: The current authentication type.
+          enum:
+          - BASIC_AUTH
+          - BEARER_TOKEN
+          - API_KEYS
+          - OAUTH2
+          type: string
+    reservation-serviceConsumer:
+      nullable: true
+      properties:
+        emailAddress:
+          example: napoleon@bonapart.fr
+          type: string
         id:
-          description: Legacy line identifier created by the POS (supplied because older API provides it to 3rd parties).
-          example: 21474836506
-          format: int64
+          example: '111466'
+          type: string
+      type: object
+    reservation-serviceErrorWebhook:
+      properties:
+        entityType:
+          $ref: '#/components/schemas/reservation-serviceEntityType'
+        errorCode:
+          $ref: '#/components/schemas/reservation-serviceErrorCode'
+        errorMessage:
+          description: Error description.
+          example: Incorrect properties
+          type: string
+        errorProperties:
+          description: The list of request properties that are incorrect.
+          items:
+            example: tableNumbers
+            type: string
+          type: array
+        httpCode:
+          description: The [code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) of http error (4xx, 5xx) response.
+          example: 400
+          format: int32
           type: integer
-        paymentMethod:
-          description: Short code of the payment method the customer used to settle the transaction.
-          example: IKGIFT
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformReservationId:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+        traceId:
+          description: Unique identifier of the issue.
+          example: b43f8e3e-5ac9-464e-ab34-20b4e137115e
           type: string
-        paymentMethodDescription:
-          description: Name of the payment method used.
-          example: Geschenkkarte
+      required:
+      - errorMessage
+      - traceId
+      - httpCode
+      - entityType
+      - errorCode
+      type: object
+    reservation-servicePlatformCode:
+      description: The unique code assigned to the reservation platform.
+      example: MyPlatform
+      maxLength: 11
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-servicePlatformRestaurantReference:
+      description: The alias for a restaurant on an external platform, such as its unique identifier or local unique name.
+      example: Schnitzel_and_Kartoffel
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-serviceOrderUpdate:
+      properties:
+        account:
+          $ref: '#/components/schemas/reservation-serviceAccount'
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        notificationType:
+          enum:
+          - OPEN
+          - UPDATE
+          - CLOSE
+          - CANCEL
           type: string
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+        sequenceId:
+          type: string
+        platformReservationId:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
       type: object
     reservation-servicePlatformReservationAcceptedDto:
       required:
@@ -938,39 +858,6 @@ components:
           description: Whether the reservation request was accepted.
           example: true
           type: boolean
-    reservation-serviceBusinessLocationId:
-      description: The unique identifier of the business location.
-      example: 9765040300495493
-      format: int64
-      type: integer
-    reservation-servicePlatformRestaurantId:
-      description: The external platform's unique identifier for the restaurant.
-      example: Restaurant-123
-      pattern: '[a-zA-Z0-9_-]+'
-      type: string
-    reservation-serviceDiscount:
-      properties:
-        code:
-          description: The discount code.
-          example: test_discount
-          type: string
-        description:
-          description: The name of the discount.
-          example: test discount description
-          type: string
-        id:
-          description: The unique identifier of the discount.
-          example: '197568495841'
-          type: string
-        rate:
-          description: The discount rate.
-          example: 0.9
-          type: number
-        taxFree:
-          description: Indicates if the discount is considered tax free.
-          example: false
-          type: boolean
-      type: object
     reservation-serviceErrorCode:
       description: A code that describes the reason for the error.
       enum:
@@ -1020,154 +907,6 @@ components:
       - INTEGRATION_ONBOARDING_NOTIFICATION_FAILED
       example: REQUESTED_TABLE_IS_UNAVAILABLE
       type: string
-    reservation-servicePlatformIntegrationDto:
-      properties:
-        businessLocationId:
-          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
-        platformRestaurantId:
-          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
-      required:
-      - businessLocationId
-      - platformRestaurantId
-      type: object
-    reservation-servicePlatformDepositSupported:
-      description: Whether or not the platform supports deposits.
-      example: true
-      type: boolean
-    reservation-serviceLiability:
-      description: The guest's obligation for the reservation.
-      properties:
-        currency:
-          description: ISO-4217
-          example: EUR
-          pattern: '[A-Z]{3}'
-          type: string
-        deposits:
-          description: List of all prepaid deposits made through the external platform.
-          items:
-            properties:
-              amount:
-                description: The amount of the deposit made through the external platform.
-                example: '100.00'
-                pattern: ^[0-9]+\.[0-9]{2}$
-                type: string
-              platformDepositId:
-                description: The external platform's unique identifier for the deposit.
-                example: '1'
-                pattern: '[a-zA-Z0-9_-]+'
-                type: string
-              utcCreatedAt:
-                description: Deposit creation time.
-                example: '2024-01-01T20:00:00'
-                format: date-time
-                type: string
-                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
-              utcVoidedAt:
-                description: Deposit void time, if applicable.
-                example: '2024-01-01T20:00:00'
-                format: date-time
-                type: string
-                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
-              voided:
-                description: Whether or not the deposit was voided.
-                example: false
-                type: boolean
-            required:
-            - amount
-            - utcCreatedAt
-            type: object
-          type: array
-          uniqueItems: true
-        refunds:
-          description: List of all deposits refunded to the guest.
-          items:
-            properties:
-              amount:
-                description: The amount which was refunded by the external platform.
-                example: '100.00'
-                pattern: ^[0-9]+\.[0-9]{2}$
-                type: string
-              platformRefundId:
-                description: The external platform's unique identifier for the refund.
-                example: '1'
-                pattern: '[a-zA-Z0-9_-]+'
-                type: string
-              utcCreatedAt:
-                description: Refund creation time.
-                example: '2024-01-01T20:00:00'
-                format: date-time
-                type: string
-                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
-              utcVoidedAt:
-                description: Refund void time, if applicable.
-                example: '2024-01-01T20:00:00'
-                format: date-time
-                type: string
-                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
-              voided:
-                description: Whether or not the refund was voided.
-                example: false
-                type: boolean
-            required:
-            - amount
-            - utcCreatedAt
-            type: object
-          type: array
-          uniqueItems: true
-      required:
-      - currency
-      - deposits
-      type: object
-    reservation-servicePlatformReservationId:
-      description: The external platform's unique identifier for the reservation.
-      example: Reservation-123
-      maxLength: 36
-      pattern: '[a-zA-Z0-9_-]+'
-      type: string
-    reservation-servicePlatformWebhookResponseDto:
-      type: object
-      description: Updated webhook authorization details.
-      required:
-      - accepted
-      - currentAuthType
-      properties:
-        accepted:
-          description: Whether the webhook request was accepted.
-          example: true
-          type: boolean
-        currentAuthType:
-          description: The current authentication type.
-          enum:
-          - BASIC_AUTH
-          - BEARER_TOKEN
-          - API_KEYS
-          - OAUTH2
-          type: string
-    reservation-servicePlatformRestaurantReference:
-      description: The alias for a restaurant on an external platform, such as its unique identifier or local unique name.
-      example: Schnitzel_and_Kartoffel
-      pattern: '[a-zA-Z0-9_-]+'
-      type: string
-    reservation-serviceEntityType:
-      description: The type of entity with which the error occurred.
-      enum:
-      - business-location
-      - general
-      - platform-profile
-      - platform-restaurant
-      - platform-reservation
-      example: platform-reservation
-      type: string
-    reservation-serviceConsumer:
-      nullable: true
-      properties:
-        emailAddress:
-          example: napoleon@bonapart.fr
-          type: string
-        id:
-          example: '111466'
-          type: string
-      type: object
     reservation-serviceIntegrationWebhook:
       properties:
         businessLocationId:
@@ -1188,55 +927,36 @@ components:
       - businessLocationId
       - platformRestaurantId
       type: object
-    reservation-serviceModifier:
-      description: A production instruction entered for a line.
+    reservation-serviceEntityType:
+      description: The type of entity with which the error occurred.
+      enum:
+      - business-location
+      - general
+      - platform-profile
+      - platform-restaurant
+      - platform-reservation
+      example: platform-reservation
+      type: string
+    reservation-serviceExternalConsumerRecord:
+      description: The external reservation system's unique identifier for the consumer.
       properties:
-        name:
-          description: Line text.
-          example: Milch
+        key:
+          description: An identifier for the external reservation system.
+          example: open-table-api-client
           type: string
-        quantity:
-          description: Line quantity.
-          example: 1
-          format: int64
-          type: integer
+        reference:
+          example: OO.11.opentable-anonymous
+          type: string
       type: object
-    reservation-servicePlatformTableStatusDto:
+    reservation-serviceExternalReference:
+      description: The unique identifier of this transaction provided by 3rd parties or the K-Series backend.
       properties:
-        statusLabel:
+        prefix:
+          example: TASK
           type: string
-          example: Appetizer
-          description: The unique text which will be displayed in the back-office for users.
-        statusValue:
+        reference:
+          example: RN-197568495618-reservation_id_123213126
           type: string
-          example: appetizer
-          description: The unique code which will be used for outbound communication within table status mapping.
-        sequence:
-          format: int32
-          type: integer
-          example: 1
-          description: This number is used to resolve collisions between statuses in order of highest priority.
-      type: object
-      required:
-      - statusLabel
-      - statusValue
-      - sequence
-    reservation-servicePlatformBearerTokenWebhook:
-      description: The bearer token that will be sent with the webhook notifications. See [Bearer Authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/).
-      properties:
-        token:
-          description: The bearer token.
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-          format: password
-          type: string
-        ttl:
-          description: Token expiration time in UTC.
-          example: '2035-01-01T00:00:00'
-          format: date-time
-          type: string
-          x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
-      required:
-      - token
       type: object
     reservation-serviceAccount:
       properties:
@@ -1439,156 +1159,39 @@ components:
           format: int64
           type: integer
       type: object
-    reservation-serviceTax:
+    reservation-servicePlatformBusinessLocation:
       properties:
-        code:
-          description: Code of the tax as defined in the configuration context.
-          example: TVA77
+        businessLocationId:
+          description: The unique identifier of the business location.
           type: string
-        description:
-          description: Name of the tax as defined in the configuration context.
-          example: TVA 7.7%
-          type: string
-        rate:
-          description: Tax percentage (e.g. 19% => '1.19').
-          example: 1.07
-          format: double
-          type: number
-        taxIncluded:
-          description: Indicates whether the tax is VAT or Sales Tax.
-          example: true
-          type: boolean
-      type: object
-    reservation-servicePlatformOAuth2Webhook:
-      description: The OAuth2 credentials that will be sent with the webhook notifications. See [OAuth 2.0](https://oauth.net/2/).
-      properties:
-        authorizationGrantType:
-          default: CLIENT_CREDENTIALS
-          description: The authorization grant type. See [OAuth2 Grant Types](https://oauth.net/2/grant-types/).
-          enum:
-          - CLIENT_CREDENTIALS
-          example: CLIENT_CREDENTIALS
-          type: string
-        clientAuthorizationMethod:
-          default: CLIENT_SECRET_BASIC
-          description: The client authorization method. See [OAuth2 Client Authentication](https://oauth.net/2/client-authentication/).
-          enum:
-          - CLIENT_SECRET_BASIC
-          - CLIENT_SECRET_JWT
-          - CLIENT_SECRET_POST
-          example: CLIENT_SECRET_BASIC
-          type: string
-        clientId:
-          description: The OAuth2 client ID.
-          example: LightspeedKSeries
-          type: string
-        clientName:
-          description: The OAuth2 client name.
-          example: LightspeedKSeries
-          type: string
-        clientSecret:
-          description: The OAuth2 client secret.
-          example: Example-Client-Secret
-          format: password
-          type: string
-        providerJwkSetUri:
-          description: The external platform URL for getting public keys to verify given access tokens on the K-Series side.
-          example: https://my.platform/public-keys
-          format: uri
-          type: string
-        providerTokenUri:
-          description: The external platform URL for getting access tokens by private credentials.
-          example: https://my.platform/emitter/token
-          format: uri
-          type: string
-        scopes:
-          description: The scopes being granted to the API client.
-          example:
-          - webhooks-api
-          items:
-            type: string
-          type: array
-          uniqueItems: true
-      required:
-      - clientId
-      - clientSecret
-      - providerTokenUri
-      type: object
-    reservation-serviceErrorWebhook:
-      properties:
-        entityType:
-          $ref: '#/components/schemas/reservation-serviceEntityType'
-        errorCode:
-          $ref: '#/components/schemas/reservation-serviceErrorCode'
-        errorMessage:
-          description: Error description.
-          example: Incorrect properties
-          type: string
-        errorProperties:
-          description: The list of request properties that are incorrect.
-          items:
-            example: tableNumbers
-            type: string
-          type: array
-        httpCode:
-          description: The [code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) of http error (4xx, 5xx) response.
-          example: 400
-          format: int32
-          type: integer
-        platformCode:
-          $ref: '#/components/schemas/reservation-servicePlatformCode'
-        platformReservationId:
-          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
-        platformRestaurantId:
-          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
-        traceId:
-          description: Unique identifier of the issue.
-          example: b43f8e3e-5ac9-464e-ab34-20b4e137115e
-          type: string
-      required:
-      - errorMessage
-      - traceId
-      - httpCode
-      - entityType
-      - errorCode
-      type: object
-    reservation-serviceContactInfo:
-      properties:
         city:
-          example: Paris
+          description: The business location's city.
           type: string
-        companyName:
-          example: Non
+        country:
+          description: The business location's country.
           type: string
-        emailReceipts:
-          description: Whether or not email notifications are enabled.
-          example: false
-          type: boolean
-        firstName:
-          example: Alexandr
+        name:
+          description: The business location's name.
           type: string
-        fullName:
-          description: Combines `firstName` and `lastName`.
-          example: Alexandr Pushkin
+        state:
+          description: The business location's state.
           type: string
-        lastName:
-          example: Pushkin
+        street1:
+          description: The first line of the business location's street address.
           type: string
-        taxIdentifier:
-          example: '23142342134'
+        street2:
+          description: The second line of the business location's street address.
           type: string
+        zip:
+          description: The business location's postal code.
+          type: string
+      required:
+      - businessLocationId
       type: object
-    reservation-serviceExternalConsumerRecord:
-      description: The external reservation system's unique identifier for the consumer.
-      properties:
-        key:
-          description: An identifier for the external reservation system.
-          example: open-table-api-client
-          type: string
-        reference:
-          example: OO.11.opentable-anonymous
-          type: string
-      type: object
+    reservation-servicePlatformDepositSupported:
+      description: Whether or not the platform supports deposits.
+      example: true
+      type: boolean
     reservation-serviceTransactionLine:
       properties:
         accountId:
@@ -1678,6 +1281,78 @@ components:
           example: 0.9
           type: number
       type: object
+    reservation-serviceModifier:
+      description: A production instruction entered for a line.
+      properties:
+        name:
+          description: Line text.
+          example: Milch
+          type: string
+        quantity:
+          description: Line quantity.
+          example: 1
+          format: int64
+          type: integer
+      type: object
+    reservation-servicePlatformCourseSettingsDto:
+      properties:
+        allowCourseNumberUpdates:
+          type: boolean
+          example: true
+          default: false
+          description: If true, table statuses can be customized using a number format.
+        inServiceTableStatuses:
+          items:
+            $ref: '#/components/schemas/reservation-servicePlatformTableStatusDto'
+          type: array
+          description: List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API.
+      type: object
+    reservation-servicePlatformReservationId:
+      description: The external platform's unique identifier for the reservation.
+      example: Reservation-123
+      maxLength: 36
+      pattern: '[a-zA-Z0-9_-]+'
+      type: string
+    reservation-servicePlatformDisplayName:
+      description: The official platform name that will be displayed.
+      example: My Platform
+      type: string
+    reservation-serviceTax:
+      properties:
+        code:
+          description: Code of the tax as defined in the configuration context.
+          example: TVA77
+          type: string
+        description:
+          description: Name of the tax as defined in the configuration context.
+          example: TVA 7.7%
+          type: string
+        rate:
+          description: Tax percentage (e.g. 19% => '1.19').
+          example: 1.07
+          format: double
+          type: number
+        taxIncluded:
+          description: Indicates whether the tax is VAT or Sales Tax.
+          example: true
+          type: boolean
+      type: object
+    reservation-serviceStatus:
+      description: Extended Lightspeed reservation statuses.
+      enum:
+      - ON_HOLD
+      - SCHEDULED
+      - PARTIALLY_ARRIVED
+      - ARRIVED
+      - PARTIALLY_SEATED
+      - SEATED
+      - DEPARTED
+      - CANCELLED
+      - NO_SHOW
+      - ERROR
+      - PAID
+      example: SEATED
+      type: string
     reservation-serviceOnboardingCallbackRequest:
       properties:
         businessLocationId:
@@ -1694,45 +1369,61 @@ components:
       - platformRestaurantId
       - businessLocationId
       type: object
-    reservation-servicePlatformDisplayName:
-      description: The official platform name that will be displayed.
-      example: My Platform
-      type: string
-    reservation-servicePlatformBusinessLocation:
+    reservation-serviceConsumerRecord:
+      nullable: true
       properties:
-        businessLocationId:
-          description: The unique identifier of the business location.
+        consumer:
+          $ref: '#/components/schemas/reservation-serviceConsumer'
+        consumerRecordUUID:
+          example: 8649450c-5c10-4e63-8461-12bbf5a51cbc
+          format: uuid
           type: string
-        city:
-          description: The business location's city.
+        contactInformation:
+          $ref: '#/components/schemas/reservation-serviceContactInfo'
+        externalReferences:
+          description: The external reservation system's unique identifier for the consumer.
+          items:
+            $ref: '#/components/schemas/reservation-serviceExternalConsumerRecord'
+          type: array
+        id:
+          example: '36577'
           type: string
-        country:
-          description: The business location's country.
-          type: string
-        name:
-          description: The business location's name.
-          type: string
-        state:
-          description: The business location's state.
-          type: string
-        street1:
-          description: The first line of the business location's street address.
-          type: string
-        street2:
-          description: The second line of the business location's street address.
-          type: string
-        zip:
-          description: The business location's postal code.
-          type: string
-      required:
-      - businessLocationId
       type: object
-    reservation-servicePlatformCode:
-      description: The unique code assigned to the reservation platform.
-      example: MyPlatform
-      maxLength: 11
+    reservation-servicePlatformRestaurantId:
+      description: The external platform's unique identifier for the restaurant.
+      example: Restaurant-123
       pattern: '[a-zA-Z0-9_-]+'
       type: string
+    reservation-serviceCategory:
+      description: A list of the reporting categories in which the sale is to be aggregated.
+      properties:
+        category:
+          description: The reporting category name.
+          example: default
+          type: string
+        value:
+          description: The reporting category value.
+          example: Misc
+          type: string
+      type: object
+    reservation-servicePlatformAPIKeysWebhook:
+      description: The API keys that will be sent with the webhook notifications. See [API Keys](https://swagger.io/docs/specification/authentication/api-keys/).
+      properties:
+        headers:
+          additionalProperties:
+            description: Key-value pairs of arbitrary static headers to send with the webhook request.
+            type: string
+          example:
+            X-API-ID: Example-x-api-id
+            X-API-SECRET: Example-x-api-secret
+          type: object
+        parameters:
+          additionalProperties:
+            description: Key-value pairs of arbitrary static query parameters to send with the webhook request.
+            type: string
+          example: {}
+          type: object
+      type: object
     reservation-servicePlatformProfileResponse:
       properties:
         baseUrl:
@@ -1827,6 +1518,127 @@ components:
       - displayName
       - webhookAuthType
       type: object
+    reservation-serviceLiability:
+      description: The guest's obligation for the reservation.
+      properties:
+        currency:
+          description: ISO-4217
+          example: EUR
+          pattern: '[A-Z]{3}'
+          type: string
+        deposits:
+          description: List of all prepaid deposits made through the external platform.
+          items:
+            properties:
+              amount:
+                description: The amount of the deposit made through the external platform.
+                example: '100.00'
+                pattern: ^[0-9]+\.[0-9]{2}$
+                type: string
+              platformDepositId:
+                description: The external platform's unique identifier for the deposit.
+                example: '1'
+                pattern: '[a-zA-Z0-9_-]+'
+                type: string
+              utcCreatedAt:
+                description: Deposit creation time.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              utcVoidedAt:
+                description: Deposit void time, if applicable.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              voided:
+                description: Whether or not the deposit was voided.
+                example: false
+                type: boolean
+            required:
+            - amount
+            - utcCreatedAt
+            type: object
+          type: array
+          uniqueItems: true
+        refunds:
+          description: List of all deposits refunded to the guest.
+          items:
+            properties:
+              amount:
+                description: The amount which was refunded by the external platform.
+                example: '100.00'
+                pattern: ^[0-9]+\.[0-9]{2}$
+                type: string
+              platformRefundId:
+                description: The external platform's unique identifier for the refund.
+                example: '1'
+                pattern: '[a-zA-Z0-9_-]+'
+                type: string
+              utcCreatedAt:
+                description: Refund creation time.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              utcVoidedAt:
+                description: Refund void time, if applicable.
+                example: '2024-01-01T20:00:00'
+                format: date-time
+                type: string
+                x-field-extra-annotation: '@com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd''T''HH:mm:ss", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = "UTC")'
+              voided:
+                description: Whether or not the refund was voided.
+                example: false
+                type: boolean
+            required:
+            - amount
+            - utcCreatedAt
+            type: object
+          type: array
+          uniqueItems: true
+      required:
+      - currency
+      - deposits
+      type: object
+    reservation-serviceOnboardingCallbackResponse:
+      properties:
+        onboardingCode:
+          $ref: '#/components/schemas/reservation-serviceOnboardingCode'
+      required:
+      - onboardingCode
+      type: object
+    reservation-serviceOnboardingId:
+      description: The unique identifier of the integration process that has started onboarding.
+      example: 84f16177-98c5-4010-a7ab-d00144d1dede
+      type: string
+    reservation-serviceContactInfo:
+      properties:
+        city:
+          example: Paris
+          type: string
+        companyName:
+          example: Non
+          type: string
+        emailReceipts:
+          description: Whether or not email notifications are enabled.
+          example: false
+          type: boolean
+        firstName:
+          example: Alexandr
+          type: string
+        fullName:
+          description: Combines `firstName` and `lastName`.
+          example: Alexandr Pushkin
+          type: string
+        lastName:
+          example: Pushkin
+          type: string
+        taxIdentifier:
+          example: '23142342134'
+          type: string
+      type: object
     reservation-servicePlatformBasicAuthWebhook:
       description: The basic authentication credentials that will be sent with the webhook notifications. See [Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).
       properties:
@@ -1842,6 +1654,194 @@ components:
       required:
       - username
       - password
+      type: object
+    reservation-serviceBusinessLocationId:
+      description: The unique identifier of the business location.
+      example: 9765040300495493
+      format: int64
+      type: integer
+    reservation-serviceOnboardingWebhook:
+      properties:
+        businessInformation:
+          properties:
+            businessLocationId:
+              $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+            city:
+              description: The city of the company.
+              example: Genève
+              type: string
+            country:
+              description: The country code of the company.
+              example: CH
+              type: string
+            name:
+              description: The company name in Lightspeed Backoffice.
+              example: Le Gâteau
+              type: string
+            state:
+              description: The state of the company.
+              example: Canton de Genève
+              type: string
+            street1:
+              description: The primary street of the company.
+              example: Rue de la Servette 10
+              type: string
+            street2:
+              description: The secondary street of the company.
+              example: Suite 2
+              type: string
+            zip:
+              description: The zip code of the company.
+              example: '101201'
+              type: string
+          required:
+          - businessLocationId
+          - name
+          type: object
+        epochSecondsDeadlineUtc:
+          description: The epoch time in seconds until which the onboarding process remains active.
+          example: 1711628625
+          format: int64
+          type: integer
+        onboardingId:
+          $ref: '#/components/schemas/reservation-serviceOnboardingId'
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformRestaurantReference:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantReference'
+      required:
+      - platformCode
+      - platformRestaurantReference
+      - onboardingId
+      - epochSecondsDeadlineUtc
+      - businessInformation
+      type: object
+    reservation-servicePosReservationUpdate:
+      properties:
+        platformCode:
+          $ref: '#/components/schemas/reservation-servicePlatformCode'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+        platformReservationId:
+          $ref: '#/components/schemas/reservation-servicePlatformReservationId'
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        status:
+          $ref: '#/components/schemas/reservation-serviceStatus'
+        tables:
+          description: Name of tables associated with the reservation.
+          type: array
+          items:
+            type: string
+          example:
+          - 1A
+          - 2B
+        covers:
+          description: The number of covers associated with the reservation.
+          format: int32
+          type: integer
+      type: object
+    reservation-servicePlatformIntegrationDto:
+      properties:
+        businessLocationId:
+          $ref: '#/components/schemas/reservation-serviceBusinessLocationId'
+        platformRestaurantId:
+          $ref: '#/components/schemas/reservation-servicePlatformRestaurantId'
+      required:
+      - businessLocationId
+      - platformRestaurantId
+      type: object
+    reservation-servicePlatformOAuth2Webhook:
+      description: The OAuth2 credentials that will be sent with the webhook notifications. See [OAuth 2.0](https://oauth.net/2/).
+      properties:
+        authorizationGrantType:
+          default: CLIENT_CREDENTIALS
+          description: The authorization grant type. See [OAuth2 Grant Types](https://oauth.net/2/grant-types/).
+          enum:
+          - CLIENT_CREDENTIALS
+          example: CLIENT_CREDENTIALS
+          type: string
+        clientAuthorizationMethod:
+          default: CLIENT_SECRET_BASIC
+          description: The client authorization method. See [OAuth2 Client Authentication](https://oauth.net/2/client-authentication/).
+          enum:
+          - CLIENT_SECRET_BASIC
+          - CLIENT_SECRET_JWT
+          - CLIENT_SECRET_POST
+          example: CLIENT_SECRET_BASIC
+          type: string
+        clientId:
+          description: The OAuth2 client ID.
+          example: LightspeedKSeries
+          type: string
+        clientName:
+          description: The OAuth2 client name.
+          example: LightspeedKSeries
+          type: string
+        clientSecret:
+          description: The OAuth2 client secret.
+          example: Example-Client-Secret
+          format: password
+          type: string
+        providerJwkSetUri:
+          description: The external platform URL for getting public keys to verify given access tokens on the K-Series side.
+          example: https://my.platform/public-keys
+          format: uri
+          type: string
+        providerTokenUri:
+          description: The external platform URL for getting access tokens by private credentials.
+          example: https://my.platform/emitter/token
+          format: uri
+          type: string
+        scopes:
+          description: The scopes being granted to the API client.
+          example:
+          - webhooks-api
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      required:
+      - clientId
+      - clientSecret
+      - providerTokenUri
+      type: object
+    reservation-servicePaymentLine:
+      properties:
+        accountId:
+          description: Legacy account identifier created by the POS (supplied because older API provides it to 3rd parties).
+          example: '21474836499'
+          type: string
+        amount:
+          description: Amount given by the customer to settle the transaction.
+          example: 45
+          type: number
+        currencyCode:
+          description: An ISO-4217 3 letter currency code
+          example: GBP
+          type: string
+        date:
+          description: Timestamp in ms of the moment when the line was registered. by the user
+          example: 1694084890294
+          format: int64
+          type: integer
+        gratuityAmount:
+          description: Amount of tip given by the customer using the payment method.
+          example: 50
+          type: number
+        id:
+          description: Legacy line identifier created by the POS (supplied because older API provides it to 3rd parties).
+          example: 21474836506
+          format: int64
+          type: integer
+        paymentMethod:
+          description: Short code of the payment method the customer used to settle the transaction.
+          example: IKGIFT
+          type: string
+        paymentMethodDescription:
+          description: Name of the payment method used.
+          example: Geschenkkarte
+          type: string
       type: object
     reservation-servicePlatformReservation:
       properties:

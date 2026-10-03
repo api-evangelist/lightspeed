@@ -149,31 +149,6 @@ paths:
       - Serial Numbers
 components:
   schemas:
-    SerialNumberRequest:
-      properties:
-        code:
-          description: The actual serial number value.
-          type: string
-        outlet_id:
-          description: The ID of the outlet where the serial number is located.
-          format: uuid
-          type: string
-        product_id:
-          description: The ID of the product associated with the serial number.
-          format: uuid
-          type: string
-      required:
-      - code
-      - outlet_id
-      - product_id
-      title: Request to create a sale
-      type: object
-    SerialNumberResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/SerialNumber'
-      title: Serial Number Response
-      type: object
     SerialNumberCollection:
       properties:
         data:
@@ -237,6 +212,31 @@ components:
       required:
       - max
       - min
+      type: object
+    SerialNumberRequest:
+      properties:
+        code:
+          description: The actual serial number value.
+          type: string
+        outlet_id:
+          description: The ID of the outlet where the serial number is located.
+          format: uuid
+          type: string
+        product_id:
+          description: The ID of the product associated with the serial number.
+          format: uuid
+          type: string
+      required:
+      - code
+      - outlet_id
+      - product_id
+      title: Request to create a sale
+      type: object
+    SerialNumberResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SerialNumber'
+      title: Serial Number Response
       type: object
   securitySchemes:
     bearerAuth:

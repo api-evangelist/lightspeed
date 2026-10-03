@@ -118,26 +118,6 @@ paths:
       - Product Types
 components:
   schemas:
-    ProductTypeCollection:
-      properties:
-        data:
-          description: An array of Product Type objects wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/ProductType'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Product Type Collection
-      type: object
-    ProductTypeResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/ProductType'
-      title: Product Type Response
-      type: object
     ProductCategoryPath:
       properties:
         id:
@@ -150,6 +130,12 @@ components:
       - id
       - name
       title: Product Category Path
+      type: object
+    ProductTypeResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ProductType'
+      title: Product Type Response
       type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
@@ -200,6 +186,20 @@ components:
       - id
       - leaf_category
       title: Product Type
+      type: object
+    ProductTypeCollection:
+      properties:
+        data:
+          description: An array of Product Type objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/ProductType'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Product Type Collection
       type: object
   securitySchemes:
     bearerAuth:

@@ -190,34 +190,6 @@ paths:
       - Tags
 components:
   schemas:
-    Tag:
-      properties:
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The Tag name.
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      title: Tag
-      type: object
-    CreateTagRequest:
-      properties:
-        name:
-          description: The Tag name.
-          type: string
-      required:
-      - name
-      title: CreateTagRequest
-      type: object
     TagCollection:
       properties:
         data:
@@ -231,12 +203,6 @@ components:
       - data
       - version
       title: Tag Collection
-      type: object
-    TagResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Tag'
-      title: Tag Response
       type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
@@ -256,6 +222,40 @@ components:
       required:
       - max
       - min
+      type: object
+    Tag:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Tag name.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Tag
+      type: object
+    TagResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Tag'
+      title: Tag Response
+      type: object
+    CreateTagRequest:
+      properties:
+        name:
+          description: The Tag name.
+          type: string
+      required:
+      - name
+      title: CreateTagRequest
       type: object
   securitySchemes:
     bearerAuth:

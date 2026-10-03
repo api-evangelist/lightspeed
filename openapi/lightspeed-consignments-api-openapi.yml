@@ -335,6 +335,23 @@ paths:
       - Consignments
 components:
   schemas:
+    ConsignmentResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Consignment'
+      title: Consignment Response
+      type: object
+    ConsignmentCollection:
+      properties:
+        data:
+          description: An array of Consignment objects.
+          items:
+            $ref: '#/components/schemas/Consignment'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Consignment Collection
+      type: object
     ConsignmentTotalsResponse:
       properties:
         data:
@@ -351,24 +368,24 @@ components:
             type: object
           type: array
       type: object
-    ConsignmentRequest:
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
-        data:
-          $ref: '#/components/schemas/Consignment'
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
       required:
-      - data
-      title: Consignment Request
-      type: object
-    ConsignmentCollection:
-      properties:
-        data:
-          description: An array of Consignment objects.
-          items:
-            $ref: '#/components/schemas/Consignment'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      title: Consignment Collection
+      - max
+      - min
       type: object
     Consignment:
       properties:
@@ -499,30 +516,13 @@ components:
       - type
       title: Consignment
       type: object
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
-      properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
-      type: object
-    ConsignmentResponse:
+    ConsignmentRequest:
       properties:
         data:
           $ref: '#/components/schemas/Consignment'
-      title: Consignment Response
+      required:
+      - data
+      title: Consignment Request
       type: object
   securitySchemes:
     bearerAuth:

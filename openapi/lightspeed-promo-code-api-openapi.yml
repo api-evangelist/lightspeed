@@ -74,18 +74,18 @@ paths:
       - Promo Code
 components:
   schemas:
-    PromotionDeletePromoCodesResponse:
-      description: An array of codes which were not deleted.
-      items:
-        type: string
-      title: Promotion Promo Codes response
-      type: array
     PromoCodesMap:
       additionalProperties:
         description: A map of promo codes to booleans.
         type: boolean
       title: Map of Promo Codes to booleans
       type: object
+    PromotionDeletePromoCodesResponse:
+      description: An array of codes which were not deleted.
+      items:
+        type: string
+      title: Promotion Promo Codes response
+      type: array
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

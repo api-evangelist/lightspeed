@@ -196,16 +196,22 @@ components:
           type: string
       title: VariantAttributeResponse
       type: object
-    VariantAttributeUpdateResponse:
+    VariantAttributesListResponse:
       properties:
         data:
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-          type: object
-      title: VariantAttributeUpdateResponse
+          items:
+            $ref: '#/components/schemas/VariantAttributeResponse'
+          type: array
+      title: VariantAttributesListResponse
+      type: object
+    VariantAttributeCreateUpdateBody:
+      properties:
+        name:
+          example: Size
+          type: string
+      required:
+      - name
+      title: VariantAttributeCreateUpdateBody
       type: object
     VariantAttributeCreateResponse:
       properties:
@@ -224,14 +230,16 @@ components:
           type: object
       title: VariantAttributeCreateResponse
       type: object
-    VariantAttributeCreateUpdateBody:
+    VariantAttributeUpdateResponse:
       properties:
-        name:
-          example: Size
-          type: string
-      required:
-      - name
-      title: VariantAttributeCreateUpdateBody
+        data:
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+          type: object
+      title: VariantAttributeUpdateResponse
       type: object
     VariantAttributeDeleteResponse:
       properties:
@@ -241,14 +249,6 @@ components:
               type: string
           type: object
       title: VariantAttributeDeleteResponse
-      type: object
-    VariantAttributesListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/VariantAttributeResponse'
-          type: array
-      title: VariantAttributesListResponse
       type: object
   securitySchemes:
     bearerAuth:

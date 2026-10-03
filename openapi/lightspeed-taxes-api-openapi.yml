@@ -230,6 +230,17 @@ components:
       - version
       title: Tax
       type: object
+    TaxCollection:
+      properties:
+        data:
+          description: An array of tax objects.
+          items:
+            $ref: '#/components/schemas/Tax'
+          type: array
+      required:
+      - data
+      title: Tax Collection
+      type: object
     CreateTaxRequest:
       properties:
         clothing_footwear_exemption:
@@ -282,17 +293,6 @@ components:
       - name
       - rate
       title: Tax rate
-      type: object
-    TaxCollection:
-      properties:
-        data:
-          description: An array of tax objects.
-          items:
-            $ref: '#/components/schemas/Tax'
-          type: array
-      required:
-      - data
-      title: Tax Collection
       type: object
     TaxResponse:
       description: A response for a single tax GET request.

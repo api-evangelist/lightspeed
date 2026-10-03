@@ -117,16 +117,6 @@ components:
       - version
       title: Outlet Product Tax
       type: object
-    OutletTaxCollection:
-      properties:
-        data:
-          description: An array of outlet-product-tax records.
-          items:
-            $ref: '#/components/schemas/OutletTax'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -145,6 +135,16 @@ components:
       required:
       - max
       - min
+      type: object
+    OutletTaxCollection:
+      properties:
+        data:
+          description: An array of outlet-product-tax records.
+          items:
+            $ref: '#/components/schemas/OutletTax'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
       type: object
   securitySchemes:
     bearerAuth:

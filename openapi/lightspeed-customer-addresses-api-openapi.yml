@@ -331,23 +331,20 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
+    CustomerAddressCollection:
+      properties:
+        data:
+          description: An array of customer address objects.
+          items:
+            $ref: '#/components/schemas/CustomerAddress'
+          type: array
+      title: Customer Address Collection
+      type: object
     CustomerAddressResponse:
       properties:
         data:
           $ref: '#/components/schemas/CustomerAddress'
       title: Customer Address Response
-      type: object
-    CustomerAddressCreateResponse:
-      properties:
-        data:
-          allOf:
-          - $ref: '#/components/schemas/CustomerAddress'
-          - properties:
-              id_token:
-                description: Token to be used when associating this address with a sale.
-                type: string
-            type: object
-      title: Customer Address Create Response
       type: object
     CustomerAddress:
       properties:
@@ -424,14 +421,17 @@ components:
       - updated_at
       title: Customer Address
       type: object
-    CustomerAddressCollection:
+    CustomerAddressCreateResponse:
       properties:
         data:
-          description: An array of customer address objects.
-          items:
-            $ref: '#/components/schemas/CustomerAddress'
-          type: array
-      title: Customer Address Collection
+          allOf:
+          - $ref: '#/components/schemas/CustomerAddress'
+          - properties:
+              id_token:
+                description: Token to be used when associating this address with a sale.
+                type: string
+            type: object
+      title: Customer Address Create Response
       type: object
     CustomerAddressBase:
       properties:

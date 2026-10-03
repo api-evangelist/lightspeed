@@ -81,17 +81,18 @@ paths:
       - ID Cards
 components:
   schemas:
-    id-cards-apiCreateIdCardBatchRequest:
+    id-cards-apiCreateIdCardsResponse:
       type: object
       properties:
-        name:
-          type: string
-          description: The name of the ID card batch.
-          example: Sample Batch Name
-          pattern: .*\S.*
-          maxLength: 255
-      required:
-      - name
+        batchId:
+          type: integer
+          format: int64
+          description: The unique identifier for the batch the cards were added to.
+          example: 12345
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/id-cards-apiCardReference'
     id-cards-apiCreateIdCardsRequest:
       type: object
       properties:
@@ -104,6 +105,17 @@ components:
           maximum: 100
       required:
       - cardCount
+    id-cards-apiCreateIdCardBatchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the ID card batch.
+          example: Sample Batch Name
+          pattern: .*\S.*
+          maxLength: 255
+      required:
+      - name
     id-cards-apiCardReference:
       type: object
       properties:
@@ -142,18 +154,6 @@ components:
           format: int64
           description: The unique identifier for the business location this batch belongs to.
           example: 67890
-    id-cards-apiCreateIdCardsResponse:
-      type: object
-      properties:
-        batchId:
-          type: integer
-          format: int64
-          description: The unique identifier for the batch the cards were added to.
-          example: 12345
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/id-cards-apiCardReference'
   parameters:
     id-cards-apiBusinessLocationId:
       name: businessLocationId

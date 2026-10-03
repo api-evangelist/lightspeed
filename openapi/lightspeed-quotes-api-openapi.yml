@@ -133,6 +133,23 @@ components:
             updated_at: '2022-10-18T10:50:32.255336Z'
             user_id: 08002782-0c90-11e6-e3ed-117ec127b1ca
           TotalCount: 1
+    QuotesProductsTaxComponents:
+      properties:
+        id:
+          type: string
+        quote_product_id:
+          type: string
+        rate_id:
+          type: string
+        total_tax:
+          type: number
+      type: object
+      x-examples:
+        example-1:
+          id: '1582323235375263746'
+          quote_product_id: '1582323235375263745'
+          rate_id: 06b96260-3efa-11ed-a218-0242ac110002
+          total_tax: 2.6087
     QuoteProduct:
       properties:
         discount:
@@ -180,23 +197,6 @@ components:
           sequence: 1
           tax: 2.6087
           tax_id: 00000000-0002-0002-0002-000000000003
-    QuotesProductsTaxComponents:
-      properties:
-        id:
-          type: string
-        quote_product_id:
-          type: string
-        rate_id:
-          type: string
-        total_tax:
-          type: number
-      type: object
-      x-examples:
-        example-1:
-          id: '1582323235375263746'
-          quote_product_id: '1582323235375263745'
-          rate_id: 06b96260-3efa-11ed-a218-0242ac110002
-          total_tax: 2.6087
     Quote:
       properties:
         created_at:

@@ -498,13 +498,6 @@ components:
             $ref: '#/components/schemas/apeEventResource'
           type: array
       type: object
-    apeCurrentWarning:
-      type: object
-      properties:
-        information:
-          type: string
-        type:
-          type: string
     apeEventResource:
       description: Event to listen to by resource
       example:
@@ -539,6 +532,13 @@ components:
           - order_api
           type: string
       type: object
+    apeCurrentWarning:
+      type: object
+      properties:
+        information:
+          type: string
+        type:
+          type: string
     apeBusinessLocationId:
       description: The unique identifier for the business location.
       type: integer
