@@ -104,43 +104,6 @@ webhooks:
       - PMS Integration
 components:
   schemas:
-    pms-integrationPmsTaxLineWebhookDto:
-      type: object
-      properties:
-        taxId:
-          type: string
-          description: The tax identifier.
-          example: '12345'
-        taxName:
-          type: string
-          description: The name of the tax.
-          example: VAT 10%
-        taxAmount:
-          type: number
-          description: The amount of the tax.
-          example: 1.0
-        taxRate:
-          type: number
-          description: The rate of the tax.
-          example: 1.1
-        taxIncluded:
-          type: boolean
-          description: Whether the tax is included in the price (VAT).
-          example: true
-    pms-integrationPmsServiceChargeWebhookDto:
-      type: object
-      properties:
-        amount:
-          type: number
-          description: The amount of the service charge.
-          example: 1.0
-        type:
-          type: string
-          enum:
-          - UNTAXED
-          - APPORTIONED
-          description: The type of the service charge.
-          example: UNTAXED
     pms-integrationSalesWebhookDto:
       type: object
       properties:
@@ -233,6 +196,39 @@ components:
             $ref: '#/components/schemas/pms-integrationPmsPaymentWebhookDto'
         serviceCharge:
           $ref: '#/components/schemas/pms-integrationPmsServiceChargeWebhookDto'
+    pms-integrationErrorWebhookDto:
+      type: object
+      description: 'The error response body content should follow this schema.
+
+        If the response body content does not follow this schema, only the status code will be sent.
+
+        All other property beside customerErrorMessage will be ignored.
+
+        '
+      properties:
+        customerErrorMessage:
+          type: string
+          maxLength: 50
+          example: Network failure
+          description: 'The error message that will be sent and printed at the POS.
+
+            Length should not exceed 50 characters to avoid truncation.
+
+            '
+    pms-integrationPmsServiceChargeWebhookDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The amount of the service charge.
+          example: 1.0
+        type:
+          type: string
+          enum:
+          - UNTAXED
+          - APPORTIONED
+          description: The type of the service charge.
+          example: UNTAXED
     pms-integrationPmsTransactionWebhookDto:
       type: object
       properties:
@@ -313,6 +309,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/pms-integrationPmsTaxLineWebhookDto'
+    pms-integrationPmsTaxLineWebhookDto:
+      type: object
+      properties:
+        taxId:
+          type: string
+          description: The tax identifier.
+          example: '12345'
+        taxName:
+          type: string
+          description: The name of the tax.
+          example: VAT 10%
+        taxAmount:
+          type: number
+          description: The amount of the tax.
+          example: 1.0
+        taxRate:
+          type: number
+          description: The rate of the tax.
+          example: 1.1
+        taxIncluded:
+          type: boolean
+          description: Whether the tax is included in the price (VAT).
+          example: true
     pms-integrationPmsPaymentWebhookDto:
       type: object
       properties:
@@ -350,25 +369,6 @@ components:
           type: string
           description: The reservation ID of the payment.
           example: '001'
-    pms-integrationErrorWebhookDto:
-      type: object
-      description: 'The error response body content should follow this schema.
-
-        If the response body content does not follow this schema, only the status code will be sent.
-
-        All other property beside customerErrorMessage will be ignored.
-
-        '
-      properties:
-        customerErrorMessage:
-          type: string
-          maxLength: 50
-          example: Network failure
-          description: 'The error message that will be sent and printed at the POS.
-
-            Length should not exceed 50 characters to avoid truncation.
-
-            '
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

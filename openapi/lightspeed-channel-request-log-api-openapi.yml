@@ -259,13 +259,6 @@ paths:
       - Channel Request Log
 components:
   schemas:
-    RequestSingleResponse:
-      description: A single request log record wrapped in the top-level data object.
-      properties:
-        data:
-          $ref: '#/components/schemas/RequestLog'
-      title: Request Log response
-      type: object
     ChannelCollectionResponse:
       description: A collection of channel records wrapped in a top-level data object.
       properties:
@@ -274,50 +267,6 @@ components:
             $ref: '#/components/schemas/Channel'
           type: array
       title: Channels response
-      type: object
-    RequestLog:
-      description: An object representing a single request and response made to a channel.
-      properties:
-        error:
-          description: f an error occurred with the request, such as an inability to resolve a hostname, connect or TLS errors, this will be recorded here. Only errors with the ability to make the request are logged here, rather than errors when interpreting a response.
-          type:
-          - string
-          - 'null'
-        grouping_id:
-          description: An identifier used to group together requests that occurred together as part of the same job or Lightspeed Retail (X-Series) API request.
-          type: string
-        id:
-          description: Auto-generated object ID.
-          type: string
-        occurred_at:
-          description: An RFC3339 representation of the time at which the request was logged.
-          format: date-time
-          type: string
-        request:
-          description: A dump of the full request information in HTTP format, including headers and any request body.
-          type: string
-        request_method:
-          description: The HTTP method used to make the request.
-          enum:
-          - GET
-          - POST
-          - PUT
-          - DELETE
-          type: string
-        response:
-          description: A dump of the full response information in HTTP format, including headers and any response body.
-          type: string
-        status_code:
-          description: The HTTP status code received in the response.
-          type: number
-      required:
-      - grouping_id
-      - id
-      - occurred_at
-      - request
-      - request_method
-      - response
-      title: Request Log
       type: object
     Channel:
       description: An object representing a single channel.
@@ -368,6 +317,13 @@ components:
       - store_url
       title: Channel
       type: object
+    RequestSingleResponse:
+      description: A single request log record wrapped in the top-level data object.
+      properties:
+        data:
+          $ref: '#/components/schemas/RequestLog'
+      title: Request Log response
+      type: object
     RequestCollectionResponse:
       description: A collection of request log records wrapped in the top-level data object.
       properties:
@@ -376,6 +332,50 @@ components:
             $ref: '#/components/schemas/RequestLog'
           type: array
       title: Request Logs response
+      type: object
+    RequestLog:
+      description: An object representing a single request and response made to a channel.
+      properties:
+        error:
+          description: f an error occurred with the request, such as an inability to resolve a hostname, connect or TLS errors, this will be recorded here. Only errors with the ability to make the request are logged here, rather than errors when interpreting a response.
+          type:
+          - string
+          - 'null'
+        grouping_id:
+          description: An identifier used to group together requests that occurred together as part of the same job or Lightspeed Retail (X-Series) API request.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        occurred_at:
+          description: An RFC3339 representation of the time at which the request was logged.
+          format: date-time
+          type: string
+        request:
+          description: A dump of the full request information in HTTP format, including headers and any request body.
+          type: string
+        request_method:
+          description: The HTTP method used to make the request.
+          enum:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          type: string
+        response:
+          description: A dump of the full response information in HTTP format, including headers and any response body.
+          type: string
+        status_code:
+          description: The HTTP status code received in the response.
+          type: number
+      required:
+      - grouping_id
+      - id
+      - occurred_at
+      - request
+      - request_method
+      - response
+      title: Request Log
       type: object
   securitySchemes:
     bearerAuth:

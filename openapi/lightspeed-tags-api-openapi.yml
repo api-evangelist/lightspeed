@@ -190,6 +190,12 @@ paths:
       - Tags
 components:
   schemas:
+    TagResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Tag'
+      title: Tag Response
+      type: object
     TagCollection:
       properties:
         data:
@@ -241,12 +247,6 @@ components:
           format: int64
           type: integer
       title: Tag
-      type: object
-    TagResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Tag'
-      title: Tag Response
       type: object
     CreateTagRequest:
       properties:

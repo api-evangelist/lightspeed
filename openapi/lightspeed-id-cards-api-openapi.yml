@@ -93,6 +93,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/id-cards-apiCardReference'
+    id-cards-apiCardReference:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The unique identifier for the ID card.
+          example: 98765
+        consumerRecordId:
+          type: integer
+          format: int64
+          description: The unique identifier for the associated consumer record.
+          example: 54321
+        consumerId:
+          type: integer
+          format: int64
+          description: The unique identifier for the associated consumer.
+          example: 13579
+        url:
+          type: string
+          description: The URL for the QR code associated with the ID card.
+          example: https://example.com/id-cards/98765/qr-code
     id-cards-apiCreateIdCardsRequest:
       type: object
       properties:
@@ -116,28 +138,6 @@ components:
           maxLength: 255
       required:
       - name
-    id-cards-apiCardReference:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: The unique identifier for the ID card.
-          example: 98765
-        consumerRecordId:
-          type: integer
-          format: int64
-          description: The unique identifier for the associated consumer record.
-          example: 54321
-        consumerId:
-          type: integer
-          format: int64
-          description: The unique identifier for the associated consumer.
-          example: 13579
-        url:
-          type: string
-          description: The URL for the QR code associated with the ID card.
-          example: https://example.com/id-cards/98765/qr-code
     id-cards-apiIdCardBatch:
       type: object
       properties:

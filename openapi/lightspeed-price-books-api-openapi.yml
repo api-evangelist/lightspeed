@@ -498,113 +498,6 @@ paths:
       - Price Books
 components:
   schemas:
-    PriceBookUpdateRequest:
-      properties:
-        customer_group_ids:
-          items:
-            description: The ID of the customer group.
-            type: string
-          type: array
-        name:
-          description: Price Book name.
-          type: string
-        outlet_ids:
-          items:
-            description: The ID of an outlet for which the Price Book should be used.
-            type: string
-          type: array
-        restrict_to_platform:
-          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
-          type:
-          - string
-          - 'null'
-        valid_from:
-          description: The date when the Price Book becomes valid (active).
-          type:
-          - string
-          - 'null'
-        valid_to:
-          description: The date when the Price Book becomes invalid (inactive).
-          type:
-          - string
-          - 'null'
-      required:
-      - customer_group_ids
-      - name
-      - outlet_ids
-      title: Price Book Update Request
-      type: object
-    PriceBookProductCollection:
-      properties:
-        data:
-          description: An array of Price Book objects wrapped in a top level `data` object.
-          items:
-            $ref: '#/components/schemas/PriceBookProduct'
-          type: array
-      required:
-      - data
-      title: Price Book Product Collection
-      type: object
-    Attribute:
-      properties:
-        key:
-          description: The key for the attribute.
-          type: string
-        value:
-          description: The value for the attribute.
-          type: string
-      required:
-      - key
-      - value
-      title: Attribute
-      type: object
-    PriceBookResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/PriceBook'
-      title: Price Book Response
-      type: object
-    PriceBookCreateResponseData:
-      properties:
-        customer_groups:
-          items:
-            $ref: '#/components/schemas/CustomerGroup'
-          type: array
-        id:
-          type: string
-        name:
-          type: string
-        outlets:
-          items:
-            $ref: '#/components/schemas/Outlet'
-          type:
-          - array
-          - 'null'
-        restrict_to_platform:
-          type: string
-        retailer_id:
-          type: string
-        type:
-          type: string
-        valid_from:
-          type:
-          - string
-          - 'null'
-        valid_to:
-          type:
-          - string
-          - 'null'
-      title: Price Book Create Response Data
-    PriceBookProductsUpdateResponse:
-      properties:
-        data:
-          properties:
-            message:
-              description: Confirmation message that the request to add/update/delete PriceBookProducts was successful.
-              type: string
-          type: object
-      title: Price Book Products Update Response
-      type: object
     Outlet:
       properties:
         attributes:
@@ -712,6 +605,246 @@ components:
       - attributes
       - version
       title: Outlet
+      type: object
+    PriceBookCreateRequest:
+      properties:
+        customer_group_ids:
+          items:
+            description: The ID of the customer group.
+            type: string
+          type: array
+        name:
+          description: Price Book name.
+          type: string
+        outlet_ids:
+          items:
+            description: The ID of an outlet for which the Price Book should be used.
+            type: string
+          type: array
+        restrict_to_platform:
+          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
+          type:
+          - string
+          - 'null'
+        valid_from:
+          description: The date when the Price Book becomes valid (active).
+          type:
+          - string
+          - 'null'
+        valid_to:
+          description: The date when the Price Book becomes invalid (inactive).
+          type:
+          - string
+          - 'null'
+      required:
+      - customer_group_ids
+      - outlet_ids
+      - name
+      title: Price Book Create Request
+      type: object
+    Attribute:
+      properties:
+        key:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
+      required:
+      - key
+      - value
+      title: Attribute
+      type: object
+    CustomerGroup:
+      properties:
+        created_at:
+          description: Creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        group_id:
+          description: The customer group identifier.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The customer group name.
+          type: string
+        retailer_id:
+          description: The retailer identifier
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - name
+      title: Customer Group
+      type: object
+      x-examples:
+        All customers:
+          created_at: '2023-04-16T12:44:54+00:00'
+          deleted_at: null
+          group_id: '1111111111'
+          id: 28020918-a068-aae4-11e9-cad0d053ea28
+          name: All Customers
+          retailer_id: 00000000-0001-0001-0001-000000000001
+          updated_at: '2023-04-16T12:44:54+00:00'
+          version: 150547
+    PriceBookUpdateRequest:
+      properties:
+        customer_group_ids:
+          items:
+            description: The ID of the customer group.
+            type: string
+          type: array
+        name:
+          description: Price Book name.
+          type: string
+        outlet_ids:
+          items:
+            description: The ID of an outlet for which the Price Book should be used.
+            type: string
+          type: array
+        restrict_to_platform:
+          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
+          type:
+          - string
+          - 'null'
+        valid_from:
+          description: The date when the Price Book becomes valid (active).
+          type:
+          - string
+          - 'null'
+        valid_to:
+          description: The date when the Price Book becomes invalid (inactive).
+          type:
+          - string
+          - 'null'
+      required:
+      - customer_group_ids
+      - name
+      - outlet_ids
+      title: Price Book Update Request
+      type: object
+    PriceBookProductIdCollection:
+      properties:
+        data:
+          description: An array of Price Book ids
+          properties:
+            price_book_product_ids:
+              description: An array of price book product ids to be deleted from the given Price Book.
+              items:
+                type: string
+              type: array
+          required:
+          - price_book_product_ids
+          type: object
+      title: Price Book Product ID Collection
+      type: object
+    PriceBookResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/PriceBook'
+      title: Price Book Response
+      type: object
+    PriceBookProductCollection:
+      properties:
+        data:
+          description: An array of Price Book objects wrapped in a top level `data` object.
+          items:
+            $ref: '#/components/schemas/PriceBookProduct'
+          type: array
+      required:
+      - data
+      title: Price Book Product Collection
+      type: object
+    PriceBook:
+      properties:
+        created_at:
+          description: Created timestamp in UTC.
+          type: string
+        customer_group_ids:
+          description: The IDs of the customer groups associated with this price book.
+          items:
+            format: uuid
+            type: string
+          type:
+          - array
+          - 'null'
+        customer_groups:
+          items:
+            $ref: '#/components/schemas/CustomerGroup'
+          type:
+          - array
+          - 'null'
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: Price Book name.
+          type: string
+        outlets:
+          items:
+            $ref: '#/components/schemas/Outlet'
+          type:
+          - array
+          - 'null'
+        restrict_to_platform_key:
+          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
+          type:
+          - string
+          - 'null'
+        restrict_to_platform_label:
+          description: One of `In Store`, `Ecommerce`, `All Platforms`.
+          type:
+          - string
+          - 'null'
+        type:
+          description: Type of price book
+          type: string
+        updated_at:
+          description: Updated timestamp in UTC.
+          type: string
+        valid_from:
+          description: The date when the Price Book becomes valid (active).
+          type:
+          - string
+          - 'null'
+        valid_to:
+          description: The date when the Price Book becomes invalid (inactive).
+          type:
+          - string
+          - 'null'
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - name
+      title: Price Book
+      type: object
+    PriceBookProductsUpdateResponse:
+      properties:
+        data:
+          properties:
+            message:
+              description: Confirmation message that the request to add/update/delete PriceBookProducts was successful.
+              type: string
+          type: object
+      title: Price Book Products Update Response
       type: object
     PriceBookCollection:
       properties:
@@ -824,135 +957,21 @@ components:
           tax_id: string
           updated_at: string
           version: 123
-    PriceBookCreateRequest:
-      properties:
-        customer_group_ids:
-          items:
-            description: The ID of the customer group.
-            type: string
-          type: array
-        name:
-          description: Price Book name.
-          type: string
-        outlet_ids:
-          items:
-            description: The ID of an outlet for which the Price Book should be used.
-            type: string
-          type: array
-        restrict_to_platform:
-          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
-          type:
-          - string
-          - 'null'
-        valid_from:
-          description: The date when the Price Book becomes valid (active).
-          type:
-          - string
-          - 'null'
-        valid_to:
-          description: The date when the Price Book becomes invalid (inactive).
-          type:
-          - string
-          - 'null'
-      required:
-      - customer_group_ids
-      - outlet_ids
-      - name
-      title: Price Book Create Request
-      type: object
-    PriceBookProductIdCollection:
-      properties:
-        data:
-          description: An array of Price Book ids
-          properties:
-            price_book_product_ids:
-              description: An array of price book product ids to be deleted from the given Price Book.
-              items:
-                type: string
-              type: array
-          required:
-          - price_book_product_ids
-          type: object
-      title: Price Book Product ID Collection
-      type: object
-    CustomerGroup:
-      properties:
-        created_at:
-          description: Creation timestamp in UTC.
-          type: string
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
-        group_id:
-          description: The customer group identifier.
-          type: string
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The customer group name.
-          type: string
-        retailer_id:
-          description: The retailer identifier
-          type: string
-        updated_at:
-          description: Last update timestamp in UTC.
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      required:
-      - name
-      title: Customer Group
-      type: object
-      x-examples:
-        All customers:
-          created_at: '2023-04-16T12:44:54+00:00'
-          deleted_at: null
-          group_id: '1111111111'
-          id: 28020918-a068-aae4-11e9-cad0d053ea28
-          name: All Customers
-          retailer_id: 00000000-0001-0001-0001-000000000001
-          updated_at: '2023-04-16T12:44:54+00:00'
-          version: 150547
     PriceBookCreateResponse:
       properties:
         data:
           $ref: '#/components/schemas/PriceBookCreateResponseData'
       title: Price Book Create Response
       type: object
-    PriceBook:
+    PriceBookCreateResponseData:
       properties:
-        created_at:
-          description: Created timestamp in UTC.
-          type: string
-        customer_group_ids:
-          description: The IDs of the customer groups associated with this price book.
-          items:
-            format: uuid
-            type: string
-          type:
-          - array
-          - 'null'
         customer_groups:
           items:
             $ref: '#/components/schemas/CustomerGroup'
-          type:
-          - array
-          - 'null'
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
+          type: array
         id:
-          description: Auto-generated object ID.
           type: string
         name:
-          description: Price Book name.
           type: string
         outlets:
           items:
@@ -960,40 +979,21 @@ components:
           type:
           - array
           - 'null'
-        restrict_to_platform_key:
-          description: '`"0"` - all platforms, `"1"` - in store, `"2"` - ecommerce.'
-          type:
-          - string
-          - 'null'
-        restrict_to_platform_label:
-          description: One of `In Store`, `Ecommerce`, `All Platforms`.
-          type:
-          - string
-          - 'null'
-        type:
-          description: Type of price book
+        restrict_to_platform:
           type: string
-        updated_at:
-          description: Updated timestamp in UTC.
+        retailer_id:
+          type: string
+        type:
           type: string
         valid_from:
-          description: The date when the Price Book becomes valid (active).
           type:
           - string
           - 'null'
         valid_to:
-          description: The date when the Price Book becomes invalid (inactive).
           type:
           - string
           - 'null'
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      required:
-      - name
-      title: Price Book
-      type: object
+      title: Price Book Create Response Data
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

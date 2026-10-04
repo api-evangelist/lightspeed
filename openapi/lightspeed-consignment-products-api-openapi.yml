@@ -354,6 +354,62 @@ paths:
       - Consignment Products
 components:
   schemas:
+    InventoryCountItem:
+      properties:
+        cost:
+          description: The cost of the item.
+          type: string
+        count:
+          description: Expected item count.
+          type: string
+        created_at:
+          description: The creation timestamp in UTC.
+          type: string
+        deleted_at:
+          description: The deletion timestamp in UTC.
+          type: string
+        is_included:
+          description: Indicated whether the item was included via a filter. Can be `null`. For full count (no filters) always `true`.
+          type: boolean
+        product_id:
+          description: The ID of the product associated with this count item.
+          format: uuid
+          type: string
+        product_sku:
+          type: string
+        received:
+          description: Observed item count.
+          type: string
+        status:
+          description: 'The status of the item. One of: `PENDING`, `SUCCESS`.'
+          type: string
+        updated_at:
+          description: Last update timestamp in UTC.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - cost
+      - count
+      - created_at
+      - deleted_at
+      - product_id
+      - received
+      - status
+      - updated_at
+      - version
+      title: Inventory Count Item
+      type: object
+    ConsignmentProductResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/ConsignmentProductCollection'
+      required:
+      - data
+      title: Consignment Product Response
+      type: object
     ConsignmentProductRequest:
       properties:
         data:
@@ -369,23 +425,6 @@ components:
       required:
       - data
       title: Inventory Count Item Response
-      type: object
-    ConsignmentProductCollection:
-      properties:
-        data:
-          description: An array of consignment products.
-          items:
-            $ref: '#/components/schemas/ConsignmentProduct'
-          type: array
-      title: Consignment Product Collection
-      type: object
-    ConsignmentProductResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/ConsignmentProductCollection'
-      required:
-      - data
-      title: Consignment Product Response
       type: object
     ConsignmentProduct:
       properties:
@@ -436,53 +475,14 @@ components:
       - product_id
       title: Consignment Product
       type: object
-    InventoryCountItem:
+    ConsignmentProductCollection:
       properties:
-        cost:
-          description: The cost of the item.
-          type: string
-        count:
-          description: Expected item count.
-          type: string
-        created_at:
-          description: The creation timestamp in UTC.
-          type: string
-        deleted_at:
-          description: The deletion timestamp in UTC.
-          type: string
-        is_included:
-          description: Indicated whether the item was included via a filter. Can be `null`. For full count (no filters) always `true`.
-          type: boolean
-        product_id:
-          description: The ID of the product associated with this count item.
-          format: uuid
-          type: string
-        product_sku:
-          type: string
-        received:
-          description: Observed item count.
-          type: string
-        status:
-          description: 'The status of the item. One of: `PENDING`, `SUCCESS`.'
-          type: string
-        updated_at:
-          description: Last update timestamp in UTC.
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      required:
-      - cost
-      - count
-      - created_at
-      - deleted_at
-      - product_id
-      - received
-      - status
-      - updated_at
-      - version
-      title: Inventory Count Item
+        data:
+          description: An array of consignment products.
+          items:
+            $ref: '#/components/schemas/ConsignmentProduct'
+          type: array
+      title: Consignment Product Collection
       type: object
   securitySchemes:
     bearerAuth:

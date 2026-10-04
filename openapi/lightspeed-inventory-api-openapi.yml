@@ -551,6 +551,106 @@ paths:
       - Inventory
 components:
   schemas:
+    CustomInventoryAdjustmentReasonSingleton:
+      description: A single custom inventory adjustment reason response.
+      properties:
+        data:
+          $ref: '#/components/schemas/CustomInventoryAdjustmentReason'
+      required:
+      - data
+      title: Custom Inventory Adjustment Reason Response
+      type: object
+    ReorderPointEntry:
+      description: A reorder point entry returned by the upsert endpoint.
+      properties:
+        method:
+          description: The reorder strategy in use for this product/outlet pair.
+          enum:
+          - FIXED
+          - MIN_MAX
+          type: string
+        outlet_id:
+          description: The ID of the outlet the reorder point applies to.
+          format: uuid
+          type: string
+        product_id:
+          description: The ID of the product the reorder point applies to.
+          format: uuid
+          type: string
+        reorder_amount:
+          description: The static quantity to order. Present only when `method` is `FIXED`.
+          type: number
+        reorder_point:
+          description: The minimum inventory level below which a product is automatically suggested for reordering.
+          type: number
+        reorder_target:
+          description: The desired stock level to restore to when reordering. Present only when `method` is `MIN_MAX`.
+          type: number
+      required:
+      - product_id
+      - outlet_id
+      - method
+      - reorder_point
+      title: Reorder Point Entry
+      type: object
+    CustomInventoryAdjustmentReason:
+      description: A custom inventory adjustment reason that retailers can use when creating stock adjustments.
+      properties:
+        created_at:
+          description: The creation timestamp in RFC 3339 format.
+          format: date-time
+          type: string
+        enabled:
+          description: Whether the reason can be selected when creating stock adjustments.
+          type: boolean
+        id:
+          description: Auto-generated object ID.
+          format: uuid
+          type: string
+        is_from_external_source:
+          description: '`true` when the reason was created via the API; `false` when created via the X-Series UI.'
+          type: boolean
+        name:
+          description: Display name of the reason. Unique within the retailer. Max 30 characters.
+          maxLength: 30
+          type: string
+        type:
+          description: Whether the reason can be used for positive (stock-in) or negative (stock-out) adjustments.
+          enum:
+          - POSITIVE
+          - NEGATIVE
+          type: string
+        updated_at:
+          description: The last update timestamp in RFC 3339 format.
+          format: date-time
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - id
+      - name
+      - enabled
+      - type
+      - is_from_external_source
+      - version
+      - created_at
+      - updated_at
+      title: Custom Inventory Adjustment Reason
+      type: object
+    ReorderPointsCollection:
+      description: The response wrapper for the reorder points upsert endpoint.
+      properties:
+        data:
+          description: An array of upserted reorder point entries, in the same order as the request.
+          items:
+            $ref: '#/components/schemas/ReorderPointEntry'
+          type: array
+      required:
+      - data
+      title: Reorder Points Collection
+      type: object
     ReorderPointMinMaxRequestItem:
       additionalProperties: false
       description: A reorder point entry using the `MIN_MAX` method.
@@ -584,6 +684,43 @@ components:
       - reorder_target
       title: Reorder Point Min/Max Request Item
       type: object
+    InventoryRequest:
+      properties:
+        after:
+          description: The lower limit for the version numbers to be included in the response.
+          format: int64
+          type: integer
+        before:
+          description: The upper limit for the version numbers to be included in the response.
+          format: int64
+          type: integer
+        include_deleted:
+          default: false
+          description: Whether to include inventory records for deleted products.
+          type: boolean
+        product_id:
+          description: "Optional filter to restrict results to the specified product. When combined with variants: true, it's \ntreated as a root product ID and matches all variants of that product; otherwise it matches the exact \nproduct."
+          format: uuid
+          type: string
+        size:
+          default: 1000
+          description: The maximum number of inventory records to return.
+          format: int64
+          maximum: 5000
+          type: integer
+        sort_direction:
+          default: desc
+          description: Whether to sort the response by ascending or descending.
+          enum:
+          - asc
+          - desc
+          type: string
+        variants:
+          default: false
+          description: 'When true (and product_id is set), matches all variant products sharing the same root_product_id, rather
+
+            than just the exact product.'
+          type: boolean
     ReorderPointFixedRequestItem:
       additionalProperties: false
       description: A reorder point entry using the `FIXED` method.
@@ -617,17 +754,42 @@ components:
       - reorder_amount
       title: Reorder Point Fixed Request Item
       type: object
-    ReorderPointsCollection:
-      description: The response wrapper for the reorder points upsert endpoint.
+    CustomInventoryAdjustmentReasonCollection:
+      description: A paginated list of custom inventory adjustment reasons.
       properties:
         data:
-          description: An array of upserted reorder point entries, in the same order as the request.
+          description: An array of custom inventory adjustment reasons.
           items:
-            $ref: '#/components/schemas/ReorderPointEntry'
+            $ref: '#/components/schemas/CustomInventoryAdjustmentReason'
           type: array
+        version:
+          $ref: '#/components/schemas/Version'
       required:
       - data
-      title: Reorder Points Collection
+      - version
+      title: Custom Inventory Adjustment Reason Collection
+      type: object
+    CreateCustomInventoryAdjustmentReasonRequest:
+      description: Parameters for creating a new custom inventory adjustment reason.
+      properties:
+        enabled:
+          description: Whether the reason can be selected when creating stock adjustments.
+          type: boolean
+        name:
+          description: Display name of the reason. Must be unique within the retailer. Max 30 characters.
+          maxLength: 30
+          type: string
+        type:
+          description: Whether the reason applies to positive (stock-in) or negative (stock-out) adjustments.
+          enum:
+          - POSITIVE
+          - NEGATIVE
+          type: string
+      required:
+      - name
+      - enabled
+      - type
+      title: Create Custom Inventory Adjustment Reason Request
       type: object
     Inventory:
       properties:
@@ -693,18 +855,26 @@ components:
           type: integer
       title: Inventory
       type: object
-    UpdateCustomInventoryAdjustmentReasonRequest:
-      description: Parameters for updating a custom inventory adjustment reason.
-      properties:
-        enabled:
-          description: Whether the reason can be selected when creating stock adjustments.
-          type: boolean
-        name:
-          description: New display name. Must remain unique within the retailer. Max 30 characters.
-          maxLength: 30
-          type: string
-      title: Update Custom Inventory Adjustment Reason Request
-      type: object
+    StockAdjustmentReason:
+      description: 'The reason for a stock adjustment.
+
+
+        Negative reasons (require `quantity` < 0): `DAMAGE`, `EXPIRY`, `INTERNAL_USE`, `THEFT`, `DONATION`.
+
+        Positive reasons (require `quantity` > 0): `STOCK_FOUND`, `SAMPLE_FOR_SALE`.
+
+        For `CUSTOM`, the sign must match the referenced custom reason''s `type`.'
+      enum:
+      - DAMAGE
+      - EXPIRY
+      - INTERNAL_USE
+      - THEFT
+      - DONATION
+      - STOCK_FOUND
+      - SAMPLE_FOR_SALE
+      - CUSTOM
+      title: Stock Adjustment Reason
+      type: string
     InventoryLevelsRequest:
       properties:
         group_variants:
@@ -783,6 +953,33 @@ components:
           default: false
           description: Only include inventory with a positive quantity to procure.
           type: boolean
+    SetReorderPointsRequest:
+      description: An array of reorder point entries to upsert.
+      items:
+        discriminator:
+          mapping:
+            FIXED: '#/components/schemas/ReorderPointFixedRequestItem'
+            MIN_MAX: '#/components/schemas/ReorderPointMinMaxRequestItem'
+          propertyName: method
+        oneOf:
+        - $ref: '#/components/schemas/ReorderPointFixedRequestItem'
+        - $ref: '#/components/schemas/ReorderPointMinMaxRequestItem'
+      maxItems: 1000
+      minItems: 1
+      title: Set Reorder Points Request
+      type: array
+    UpdateCustomInventoryAdjustmentReasonRequest:
+      description: Parameters for updating a custom inventory adjustment reason.
+      properties:
+        enabled:
+          description: Whether the reason can be selected when creating stock adjustments.
+          type: boolean
+        name:
+          description: New display name. Must remain unique within the retailer. Max 30 characters.
+          maxLength: 30
+          type: string
+      title: Update Custom Inventory Adjustment Reason Request
+      type: object
     InventoryLevel:
       properties:
         average_cost:
@@ -846,62 +1043,20 @@ components:
           description: The total cost of inventory available to sell.
           format: double
           type: number
-    StockAdjustmentBatchResponse:
-      description: The response wrapper for a batch stock adjustment create.
+    StockAdjustmentCollection:
+      description: A paginated list of stock adjustments.
       properties:
         data:
-          description: The stock adjustments that were created, in the same order as the request.
+          description: An array of stock adjustments.
           items:
             $ref: '#/components/schemas/StockAdjustment'
           type: array
+        version:
+          $ref: '#/components/schemas/Version'
       required:
       - data
-      title: Stock Adjustment Batch Response
-      type: object
-    CustomInventoryAdjustmentReasonSingleton:
-      description: A single custom inventory adjustment reason response.
-      properties:
-        data:
-          $ref: '#/components/schemas/CustomInventoryAdjustmentReason'
-      required:
-      - data
-      title: Custom Inventory Adjustment Reason Response
-      type: object
-    CreateStockAdjustmentItem:
-      additionalProperties: false
-      description: A single stock adjustment to create as part of a batch.
-      properties:
-        custom_inventory_adjustment_reason_id:
-          description: Required when `reason` is `CUSTOM`; must be omitted otherwise.
-          format: uuid
-          maxLength: 36
-          minLength: 1
-          type: string
-        outlet_id:
-          description: The ID of the outlet where the adjustment is recorded.
-          format: uuid
-          maxLength: 36
-          minLength: 1
-          type: string
-        product_id:
-          description: The ID of the product to adjust.
-          format: uuid
-          maxLength: 36
-          minLength: 1
-          type: string
-        quantity:
-          description: Quantity to adjust. Must be a numeric string (e.g. `"1"` or `"-3"`). Negative for DAMAGE/EXPIRY/etc., positive for STOCK_FOUND/SAMPLE_FOR_SALE.
-          example: '1'
-          maxLength: 32
-          type: string
-        reason:
-          $ref: '#/components/schemas/StockAdjustmentReason'
-      required:
-      - product_id
-      - outlet_id
-      - quantity
-      - reason
-      title: Create Stock Adjustment Item
+      - version
+      title: Stock Adjustment Collection
       type: object
     StockAdjustment:
       description: A recorded stock adjustment.
@@ -955,141 +1110,6 @@ components:
       - version
       title: Stock Adjustment
       type: object
-    InventoryRequest:
-      properties:
-        after:
-          description: The lower limit for the version numbers to be included in the response.
-          format: int64
-          type: integer
-        before:
-          description: The upper limit for the version numbers to be included in the response.
-          format: int64
-          type: integer
-        include_deleted:
-          default: false
-          description: Whether to include inventory records for deleted products.
-          type: boolean
-        product_id:
-          description: "Optional filter to restrict results to the specified product. When combined with variants: true, it's \ntreated as a root product ID and matches all variants of that product; otherwise it matches the exact \nproduct."
-          format: uuid
-          type: string
-        size:
-          default: 1000
-          description: The maximum number of inventory records to return.
-          format: int64
-          maximum: 5000
-          type: integer
-        sort_direction:
-          default: desc
-          description: Whether to sort the response by ascending or descending.
-          enum:
-          - asc
-          - desc
-          type: string
-        variants:
-          default: false
-          description: 'When true (and product_id is set), matches all variant products sharing the same root_product_id, rather
-
-            than just the exact product.'
-          type: boolean
-    CustomInventoryAdjustmentReasonCollection:
-      description: A paginated list of custom inventory adjustment reasons.
-      properties:
-        data:
-          description: An array of custom inventory adjustment reasons.
-          items:
-            $ref: '#/components/schemas/CustomInventoryAdjustmentReason'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Custom Inventory Adjustment Reason Collection
-      type: object
-    CreateCustomInventoryAdjustmentReasonRequest:
-      description: Parameters for creating a new custom inventory adjustment reason.
-      properties:
-        enabled:
-          description: Whether the reason can be selected when creating stock adjustments.
-          type: boolean
-        name:
-          description: Display name of the reason. Must be unique within the retailer. Max 30 characters.
-          maxLength: 30
-          type: string
-        type:
-          description: Whether the reason applies to positive (stock-in) or negative (stock-out) adjustments.
-          enum:
-          - POSITIVE
-          - NEGATIVE
-          type: string
-      required:
-      - name
-      - enabled
-      - type
-      title: Create Custom Inventory Adjustment Reason Request
-      type: object
-    CreateStockAdjustmentsRequest:
-      additionalProperties: false
-      description: A batch of 1–1000 stock adjustments to create.
-      properties:
-        stock_adjustments:
-          description: The stock adjustments to create.
-          items:
-            $ref: '#/components/schemas/CreateStockAdjustmentItem'
-          maxItems: 1000
-          minItems: 1
-          type: array
-      required:
-      - stock_adjustments
-      title: Create Stock Adjustments Request
-      type: object
-    CustomInventoryAdjustmentReason:
-      description: A custom inventory adjustment reason that retailers can use when creating stock adjustments.
-      properties:
-        created_at:
-          description: The creation timestamp in RFC 3339 format.
-          format: date-time
-          type: string
-        enabled:
-          description: Whether the reason can be selected when creating stock adjustments.
-          type: boolean
-        id:
-          description: Auto-generated object ID.
-          format: uuid
-          type: string
-        is_from_external_source:
-          description: '`true` when the reason was created via the API; `false` when created via the X-Series UI.'
-          type: boolean
-        name:
-          description: Display name of the reason. Unique within the retailer. Max 30 characters.
-          maxLength: 30
-          type: string
-        type:
-          description: Whether the reason can be used for positive (stock-in) or negative (stock-out) adjustments.
-          enum:
-          - POSITIVE
-          - NEGATIVE
-          type: string
-        updated_at:
-          description: The last update timestamp in RFC 3339 format.
-          format: date-time
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      required:
-      - id
-      - name
-      - enabled
-      - type
-      - is_from_external_source
-      - version
-      - created_at
-      - updated_at
-      title: Custom Inventory Adjustment Reason
-      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -1109,88 +1129,68 @@ components:
       - max
       - min
       type: object
-    SetReorderPointsRequest:
-      description: An array of reorder point entries to upsert.
-      items:
-        discriminator:
-          mapping:
-            FIXED: '#/components/schemas/ReorderPointFixedRequestItem'
-            MIN_MAX: '#/components/schemas/ReorderPointMinMaxRequestItem'
-          propertyName: method
-        oneOf:
-        - $ref: '#/components/schemas/ReorderPointFixedRequestItem'
-        - $ref: '#/components/schemas/ReorderPointMinMaxRequestItem'
-      maxItems: 1000
-      minItems: 1
-      title: Set Reorder Points Request
-      type: array
-    StockAdjustmentCollection:
-      description: A paginated list of stock adjustments.
+    CreateStockAdjustmentsRequest:
+      additionalProperties: false
+      description: A batch of 1–1000 stock adjustments to create.
       properties:
-        data:
-          description: An array of stock adjustments.
+        stock_adjustments:
+          description: The stock adjustments to create.
           items:
-            $ref: '#/components/schemas/StockAdjustment'
+            $ref: '#/components/schemas/CreateStockAdjustmentItem'
+          maxItems: 1000
+          minItems: 1
           type: array
-        version:
-          $ref: '#/components/schemas/Version'
       required:
-      - data
-      - version
-      title: Stock Adjustment Collection
+      - stock_adjustments
+      title: Create Stock Adjustments Request
       type: object
-    StockAdjustmentReason:
-      description: 'The reason for a stock adjustment.
-
-
-        Negative reasons (require `quantity` < 0): `DAMAGE`, `EXPIRY`, `INTERNAL_USE`, `THEFT`, `DONATION`.
-
-        Positive reasons (require `quantity` > 0): `STOCK_FOUND`, `SAMPLE_FOR_SALE`.
-
-        For `CUSTOM`, the sign must match the referenced custom reason''s `type`.'
-      enum:
-      - DAMAGE
-      - EXPIRY
-      - INTERNAL_USE
-      - THEFT
-      - DONATION
-      - STOCK_FOUND
-      - SAMPLE_FOR_SALE
-      - CUSTOM
-      title: Stock Adjustment Reason
-      type: string
-    ReorderPointEntry:
-      description: A reorder point entry returned by the upsert endpoint.
+    CreateStockAdjustmentItem:
+      additionalProperties: false
+      description: A single stock adjustment to create as part of a batch.
       properties:
-        method:
-          description: The reorder strategy in use for this product/outlet pair.
-          enum:
-          - FIXED
-          - MIN_MAX
+        custom_inventory_adjustment_reason_id:
+          description: Required when `reason` is `CUSTOM`; must be omitted otherwise.
+          format: uuid
+          maxLength: 36
+          minLength: 1
           type: string
         outlet_id:
-          description: The ID of the outlet the reorder point applies to.
+          description: The ID of the outlet where the adjustment is recorded.
           format: uuid
+          maxLength: 36
+          minLength: 1
           type: string
         product_id:
-          description: The ID of the product the reorder point applies to.
+          description: The ID of the product to adjust.
           format: uuid
+          maxLength: 36
+          minLength: 1
           type: string
-        reorder_amount:
-          description: The static quantity to order. Present only when `method` is `FIXED`.
-          type: number
-        reorder_point:
-          description: The minimum inventory level below which a product is automatically suggested for reordering.
-          type: number
-        reorder_target:
-          description: The desired stock level to restore to when reordering. Present only when `method` is `MIN_MAX`.
-          type: number
+        quantity:
+          description: Quantity to adjust. Must be a numeric string (e.g. `"1"` or `"-3"`). Negative for DAMAGE/EXPIRY/etc., positive for STOCK_FOUND/SAMPLE_FOR_SALE.
+          example: '1'
+          maxLength: 32
+          type: string
+        reason:
+          $ref: '#/components/schemas/StockAdjustmentReason'
       required:
       - product_id
       - outlet_id
-      - method
-      - reorder_point
-      title: Reorder Point Entry
+      - quantity
+      - reason
+      title: Create Stock Adjustment Item
+      type: object
+    StockAdjustmentBatchResponse:
+      description: The response wrapper for a batch stock adjustment create.
+      properties:
+        data:
+          description: The stock adjustments that were created, in the same order as the request.
+          items:
+            $ref: '#/components/schemas/StockAdjustment'
+          type: array
+      required:
+      - data
+      title: Stock Adjustment Batch Response
       type: object
   securitySchemes:
     bearerAuth:

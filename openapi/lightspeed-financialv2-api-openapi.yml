@@ -316,6 +316,30 @@ paths:
         - financial-api
 components:
   schemas:
+    financial-apiLSPaymentsDto:
+      type: object
+      properties:
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial-apiLSPayment'
+          description: List of requested payments.
+          nullable: false
+        pageSize:
+          type: integer
+          format: int32
+          description: Size of the returned collection.
+          example: 100
+        offset:
+          type: integer
+          format: int32
+          description: Offset of the first item returned in the collection.
+          example: 0
+        nextOffset:
+          type: integer
+          format: int32
+          description: Next offset to get next page of data based off current pageSize and offset, if available.
+          example: 100
     financial-apiLSPaymentStatus:
       type: string
       description: The statuses for a Lightspeed Payments transaction.
@@ -324,29 +348,6 @@ components:
       - DISPUTED
       - PARTIALLY_REFUNDED
       - REFUNDED
-    financial-apiTaxLine:
-      type: object
-      properties:
-        taxId:
-          type: string
-          description: The unique identifier for the tax rate.
-          example: '41910290874374'
-        taxCode:
-          type: string
-          description: The system code for the tax rate.
-          example: VAT20
-        taxRate:
-          type: string
-          description: The tax rate, as a multiplier.
-          example: '1.2'
-        taxAmount:
-          type: string
-          description: The tax total.
-          example: '1.666667'
-        taxIncluded:
-          type: boolean
-          description: Whether or not the business is tax inclusive.
-          example: true
     financial-apiAccountingGroup:
       type: object
       properties:
@@ -367,51 +368,26 @@ components:
           type: string
           description: The code assigned to the accounting group.
           example: '123'
-    financial-apiAbortedOrderLineItemDto:
+    financial-apiAccountLink:
       type: object
       properties:
-        itemName:
+        initialAccountId:
           type: string
-          description: The name of the item that was removed from the order.
-          example: Soda
-        itemSku:
+          description: 'The `accountFiscId` of the initial transaction associated with the current account, if applicable. For example, in the case of a refund.
+
+
+            This will match the `accountFiscId` of the sale if there is no associated account.'
+          example: A65315.13
+        previousAccountId:
           type: string
-          description: The SKU of the item that was removed from the order.
-          example: '9'
-        itemQuantity:
-          type: string
-          description: The quantity of the item removed from the order.
-          example: '4.000'
-        itemAmount:
-          type: string
-          description: The total price for this item (itemPrice * itemQuantity).
-          example: '33.32'
-        itemPrice:
-          type: string
-          description: The unit price of the item removed from the order.
-          example: '8.33'
-    financial-apiAbortedOrderDto:
-      type: object
-      description: Represents an unpaid, non-committed order that has been fully aborted.
-      properties:
-        staffName:
-          type: string
-          description: The name of the staff member who aborted the order.
-          example: Employee 1
-        timeOfAbortedOrder:
-          type: string
-          format: date-time
-          description: The timestamp when the order was aborted and all line items fully cleared.
-          example: '2023-03-14T19:58:48.224Z'
-        totalAmountAborted:
-          type: string
-          description: The total value of the aborted order.
-          example: '33.32'
-        abortedLineItems:
-          type: array
-          description: A list of all line items that were removed from the aborted order.
-          items:
-            $ref: '#/components/schemas/financial-apiAbortedOrderLineItemDto'
+          description: 'The `accountFiscId` of the previous transaction associated with the current account, if applicable. For example, in the case of a refund.
+
+
+            This may be different from `initialAccountId` if there is more than one associated account.
+
+
+            It will not be displayed if there is no associated account.'
+          example: A65315.15
     financial-apiConsumer:
       type: object
       properties:
@@ -492,24 +468,6 @@ components:
       - CREATED
       - MODIFIED
       default: MODIFIED
-    financial-apiSalesDailyExportDto:
-      type: object
-      properties:
-        sales:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial-apiSale'
-          description: Array of sale objects.
-          nullable: false
-        nextStartOfDayAsIso8601:
-          type: string
-          format: date-time
-          description: Start of next business day, in the merchant's local time.
-          example: '2023-07-28T05:30:00-05:00'
-        dataComplete:
-          type: boolean
-          description: Whether or not the data is complete for the requested day.
-          example: false
     financial-apiCurrencyAmount:
       type: object
       properties:
@@ -521,163 +479,62 @@ components:
           type: string
           description: The currency code.
           example: CAD
-    financial-apiPayment:
+    financial-apiErrorResponse:
       type: object
       properties:
-        code:
-          type: string
-          description: The code of the payment method.
-          example: CASH
-        description:
-          type: string
-          description: The name of the payment method.
-          example: Cash
-        paymentMethodId:
-          type: integer
-          format: int64
-          description: The unique identifier for the payment method.
-          example: 141948669132824
-        netAmountWithTax:
-          type: string
-          description: The net payment amount, including tax. The value is precise up to two decimal places, and if necessary, it is rounded using the "half-even" rounding mode.
-          example: '11.00'
-        currency:
-          type: string
-          description: The payment currency.
-          example: GBP
-        tip:
-          type: string
-          description: The tip amount. The value is precise up to two decimal places, and if necessary, it is rounded using the "half-even" rounding mode.
-          example: '0.00'
-        consumer:
-          $ref: '#/components/schemas/financial-apiConsumer'
-        type:
-          example: NORMAL
-          description: The type of payment
-          enum:
-          - NORMAL
-          - ACCOUNTS_RECEIVABLE
-          type: string
-        deviceId:
-          type: string
-          description: The unique identifier for the device where the payment was processed.
-          example: '72676'
-        deviceName:
-          type: string
-          description: The name of the device where the payment was processed.
-          example: ipad9
-        staffId:
-          type: number
-          description: The unique identifier for the user who processed the payment.
-          example: 180480
-        staffName:
-          type: string
-          description: The name of the user who processed the payment.
-          example: Manager
-        authorization:
-          type: string
-          description: The authorization code for the payment.
-          example: '001'
-        externalReference:
-          type: string
-          description: The external reference code for the payment.
-          example: '1000'
-        revenueCenter:
-          type: string
-          description: The name of the revenue center where the payment was processed.
-          example: Fixed POS
-        revenueCenterId:
-          type: number
-          description: The unique identifier for the revenue center where the payment was processed.
-          example: 141948669132822
-        fiscId:
-          type: string
-          description: The unique identifier for the payment.
-          example: T72691.8
-        uuid:
-          type: string
-          description: The base64url encoded UUID of the payment.
-          example: bc7i2X_CTkeg8qlec66wmg==
-        fiscDate:
+        timestamp:
           type: string
           format: date-time
-          description: The time stamp of the payment.
-          example: '2023-02-14T20:04:08.665Z'
-        surcharge:
+        path:
           type: string
-          description: The surcharge amount. The value is precise up to two decimal places, and if necessary, it is rounded using the "half-even" rounding mode.
-          example: '0.00'
-        roundingAmount:
-          type: string
-          description: The cash rounding adjustment applied to the payment, in countries where cash payments are legally rounded (for example Belgium, where cash totals are rounded to the nearest 5 cents). It is the difference between the rounded amount actually paid (netAmountWithTax) and the amount payable before rounding. The value is negative when the amount was rounded down, positive when it was rounded up and "0.00" when no rounding was applied. The value is precise up to two decimal places
-          example: '-0.02'
-    financial-apiAccountLink:
-      type: object
-      properties:
-        initialAccountId:
-          type: string
-          description: 'The `accountFiscId` of the initial transaction associated with the current account, if applicable. For example, in the case of a refund.
-
-
-            This will match the `accountFiscId` of the sale if there is no associated account.'
-          example: A65315.13
-        previousAccountId:
-          type: string
-          description: 'The `accountFiscId` of the previous transaction associated with the current account, if applicable. For example, in the case of a refund.
-
-
-            This may be different from `initialAccountId` if there is more than one associated account.
-
-
-            It will not be displayed if there is no associated account.'
-          example: A65315.15
-    financial-apiLSPayment:
-      type: object
-      properties:
-        accountFiscId:
-          type: string
-          description: The account identifier.
-          example: A72691.8
-        lightspeedPaymentId:
-          type: string
-          description: "Unique identifier assigned by Lightspeed to the payment, derived from Adyen's PSP reference. \nThis alphanumeric code uniquely identifies each payment or modification request, \nincluding refunds. For more information, see Adyen's documentation: \nhttps://help.adyen.com/knowledge/payments/payment-basics/what-is-a-psp-reference-number"
-          example: ad-GJ33PFSCGVG4NFH4
-        uuid:
-          type: string
-          description: "The internal UUID of the payment. This value may not be unique in scenarios involving Pay-at-Table, partial, or split payments, \nwhere multiple payment transactions can share the same reference and/or POS Order Id\nFor a guaranteed unique identifier for each Lightspeed Payments transaction, use the `lightspeedPaymentId` field which is based off Adyen PSP ID."
-          example: bc7i2X_CTkeg8qlec66wmg==
-        reference:
-          type: string
-          description: The alphanumeric reference of the payment.
-          example: RFOOVMIMPSDY
         status:
-          $ref: '#/components/schemas/financial-apiLSPaymentStatus'
-        createdDate:
+          type: integer
+          format: int32
+        error:
           type: string
-          format: date-time
-          description: The date and time the payment was created.
-          example: '2022-09-21T10:11:56Z'
-        captureDate:
+        requestId:
           type: string
-          format: date-time
-          description: The date and time the payment was captured.
-          example: '2022-09-21T10:11:56Z'
-        modificationDate:
+      required:
+      - timestamp
+      - path
+      - status
+      - error
+      - requestId
+    financial-apiTaxLine:
+      type: object
+      properties:
+        taxId:
           type: string
-          format: date-time
-          example: '2022-09-21T10:11:56Z'
-        fees:
-          $ref: '#/components/schemas/financial-apiCurrencyAmount'
-        surcharge:
-          $ref: '#/components/schemas/financial-apiCurrencyAmount'
-    financial-apiSortDirection:
-      type: string
-      example: ASC
-      default: ASC
-      description: The direction to sort the results.
-      enum:
-      - ASC
-      - DESC
+          description: The unique identifier for the tax rate.
+          example: '41910290874374'
+        taxCode:
+          type: string
+          description: The system code for the tax rate.
+          example: VAT20
+        taxRate:
+          type: string
+          description: The tax rate, as a multiplier.
+          example: '1.2'
+        taxAmount:
+          type: string
+          description: The tax total.
+          example: '1.666667'
+        taxIncluded:
+          type: boolean
+          description: Whether or not the business is tax inclusive.
+          example: true
+    financial-apiSalesExportDto:
+      type: object
+      properties:
+        sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial-apiSale'
+          description: Array of sale objects.
+          nullable: false
+        nextPageToken:
+          type: string
+          description: Token to use to get the next page of results, if applicable.
     financial-apiServiceChargeType:
       type: string
       description: The type of service charge applied to the sale line.
@@ -686,6 +543,28 @@ components:
       - UNTAXED
       - APPORTIONED
       - NO_SERVICE_CHARGE
+    financial-apiAbortedOrderDto:
+      type: object
+      description: Represents an unpaid, non-committed order that has been fully aborted.
+      properties:
+        staffName:
+          type: string
+          description: The name of the staff member who aborted the order.
+          example: Employee 1
+        timeOfAbortedOrder:
+          type: string
+          format: date-time
+          description: The timestamp when the order was aborted and all line items fully cleared.
+          example: '2023-03-14T19:58:48.224Z'
+        totalAmountAborted:
+          type: string
+          description: The total value of the aborted order.
+          example: '33.32'
+        abortedLineItems:
+          type: array
+          description: A list of all line items that were removed from the aborted order.
+          items:
+            $ref: '#/components/schemas/financial-apiAbortedOrderLineItemDto'
     financial-apiLine:
       type: object
       properties:
@@ -858,6 +737,24 @@ components:
           type: string
           description: The code of the account profile used.
           example: AAP
+    financial-apiSalesDailyExportDto:
+      type: object
+      properties:
+        sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/financial-apiSale'
+          description: Array of sale objects.
+          nullable: false
+        nextStartOfDayAsIso8601:
+          type: string
+          format: date-time
+          description: Start of next business day, in the merchant's local time.
+          example: '2023-07-28T05:30:00-05:00'
+        dataComplete:
+          type: boolean
+          description: Whether or not the data is complete for the requested day.
+          example: false
     financial-apiCategory:
       type: object
       properties:
@@ -869,63 +766,45 @@ components:
           type: string
           description: The category value.
           example: Food
-    financial-apiSalesExportDto:
+    financial-apiLSPayment:
       type: object
       properties:
-        sales:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial-apiSale'
-          description: Array of sale objects.
-          nullable: false
-        nextPageToken:
+        accountFiscId:
           type: string
-          description: Token to use to get the next page of results, if applicable.
-    financial-apiErrorResponse:
-      type: object
-      properties:
-        timestamp:
+          description: The account identifier.
+          example: A72691.8
+        lightspeedPaymentId:
+          type: string
+          description: "Unique identifier assigned by Lightspeed to the payment, derived from Adyen's PSP reference. \nThis alphanumeric code uniquely identifies each payment or modification request, \nincluding refunds. For more information, see Adyen's documentation: \nhttps://help.adyen.com/knowledge/payments/payment-basics/what-is-a-psp-reference-number"
+          example: ad-GJ33PFSCGVG4NFH4
+        uuid:
+          type: string
+          description: "The internal UUID of the payment. This value may not be unique in scenarios involving Pay-at-Table, partial, or split payments, \nwhere multiple payment transactions can share the same reference and/or POS Order Id\nFor a guaranteed unique identifier for each Lightspeed Payments transaction, use the `lightspeedPaymentId` field which is based off Adyen PSP ID."
+          example: bc7i2X_CTkeg8qlec66wmg==
+        reference:
+          type: string
+          description: The alphanumeric reference of the payment.
+          example: RFOOVMIMPSDY
+        status:
+          $ref: '#/components/schemas/financial-apiLSPaymentStatus'
+        createdDate:
           type: string
           format: date-time
-        path:
+          description: The date and time the payment was created.
+          example: '2022-09-21T10:11:56Z'
+        captureDate:
           type: string
-        status:
-          type: integer
-          format: int32
-        error:
+          format: date-time
+          description: The date and time the payment was captured.
+          example: '2022-09-21T10:11:56Z'
+        modificationDate:
           type: string
-        requestId:
-          type: string
-      required:
-      - timestamp
-      - path
-      - status
-      - error
-      - requestId
-    financial-apiLSPaymentsDto:
-      type: object
-      properties:
-        payments:
-          type: array
-          items:
-            $ref: '#/components/schemas/financial-apiLSPayment'
-          description: List of requested payments.
-          nullable: false
-        pageSize:
-          type: integer
-          format: int32
-          description: Size of the returned collection.
-          example: 100
-        offset:
-          type: integer
-          format: int32
-          description: Offset of the first item returned in the collection.
-          example: 0
-        nextOffset:
-          type: integer
-          format: int32
-          description: Next offset to get next page of data based off current pageSize and offset, if available.
-          example: 100
+          format: date-time
+          example: '2022-09-21T10:11:56Z'
+        fees:
+          $ref: '#/components/schemas/financial-apiCurrencyAmount'
+        surcharge:
+          $ref: '#/components/schemas/financial-apiCurrencyAmount'
     financial-apiSale:
       type: object
       properties:
@@ -1034,6 +913,127 @@ components:
           type: string
           description: The void reason, if applicable.
           example: Unhappy Client
+    financial-apiSortDirection:
+      type: string
+      example: ASC
+      default: ASC
+      description: The direction to sort the results.
+      enum:
+      - ASC
+      - DESC
+    financial-apiPayment:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The code of the payment method.
+          example: CASH
+        description:
+          type: string
+          description: The name of the payment method.
+          example: Cash
+        paymentMethodId:
+          type: integer
+          format: int64
+          description: The unique identifier for the payment method.
+          example: 141948669132824
+        netAmountWithTax:
+          type: string
+          description: The net payment amount, including tax. The value is precise up to two decimal places, and if necessary, it is rounded using the "half-even" rounding mode.
+          example: '11.00'
+        currency:
+          type: string
+          description: The payment currency.
+          example: GBP
+        tip:
+          type: string
+          description: The tip amount. The value is precise up to two decimal places, and if necessary, it is rounded using the "half-even" rounding mode.
+          example: '0.00'
+        consumer:
+          $ref: '#/components/schemas/financial-apiConsumer'
+        type:
+          example: NORMAL
+          description: The type of payment
+          enum:
+          - NORMAL
+          - ACCOUNTS_RECEIVABLE
+          type: string
+        deviceId:
+          type: string
+          description: The unique identifier for the device where the payment was processed.
+          example: '72676'
+        deviceName:
+          type: string
+          description: The name of the device where the payment was processed.
+          example: ipad9
+        staffId:
+          type: number
+          description: The unique identifier for the user who processed the payment.
+          example: 180480
+        staffName:
+          type: string
+          description: The name of the user who processed the payment.
+          example: Manager
+        authorization:
+          type: string
+          description: The authorization code for the payment.
+          example: '001'
+        externalReference:
+          type: string
+          description: The external reference code for the payment.
+          example: '1000'
+        revenueCenter:
+          type: string
+          description: The name of the revenue center where the payment was processed.
+          example: Fixed POS
+        revenueCenterId:
+          type: number
+          description: The unique identifier for the revenue center where the payment was processed.
+          example: 141948669132822
+        fiscId:
+          type: string
+          description: The unique identifier for the payment.
+          example: T72691.8
+        uuid:
+          type: string
+          description: The base64url encoded UUID of the payment.
+          example: bc7i2X_CTkeg8qlec66wmg==
+        fiscDate:
+          type: string
+          format: date-time
+          description: The time stamp of the payment.
+          example: '2023-02-14T20:04:08.665Z'
+        surcharge:
+          type: string
+          description: The surcharge amount. The value is precise up to two decimal places, and if necessary, it is rounded using the "half-even" rounding mode.
+          example: '0.00'
+        roundingAmount:
+          type: string
+          description: The cash rounding adjustment applied to the payment, in countries where cash payments are legally rounded (for example Belgium, where cash totals are rounded to the nearest 5 cents). It is the difference between the rounded amount actually paid (netAmountWithTax) and the amount payable before rounding. The value is negative when the amount was rounded down, positive when it was rounded up and "0.00" when no rounding was applied. The value is precise up to two decimal places
+          example: '-0.02'
+    financial-apiAbortedOrderLineItemDto:
+      type: object
+      properties:
+        itemName:
+          type: string
+          description: The name of the item that was removed from the order.
+          example: Soda
+        itemSku:
+          type: string
+          description: The SKU of the item that was removed from the order.
+          example: '9'
+        itemQuantity:
+          type: string
+          description: The quantity of the item removed from the order.
+          example: '4.000'
+        itemAmount:
+          type: string
+          description: The total price for this item (itemPrice * itemQuantity).
+          example: '33.32'
+        itemPrice:
+          type: string
+          description: The unit price of the item removed from the order.
+          example: '8.33'
   parameters:
     financial-apiIncludeParameter:
       schema:
@@ -1046,15 +1046,6 @@ components:
       name: include
       in: query
       required: false
-    financial-apiPageSize:
-      in: query
-      name: pageSize
-      schema:
-        type: integer
-        format: int32
-        default: 50
-        maximum: 100
-      description: Number of entries to return.
     financial-apiBusinessLocationId:
       in: path
       name: businessLocationId
@@ -1072,6 +1063,15 @@ components:
         type: string
         default: ''
       description: A token that indicates the starting point of the next set of records when paginating through results.
+    financial-apiPageSize:
+      in: query
+      name: pageSize
+      schema:
+        type: integer
+        format: int32
+        default: 50
+        maximum: 100
+      description: Number of entries to return.
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).

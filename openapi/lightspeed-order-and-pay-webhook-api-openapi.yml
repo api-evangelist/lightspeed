@@ -452,6 +452,13 @@ components:
             $ref: '#/components/schemas/apeCurrentWarning'
       required:
       - businessLocationId
+    apeCurrentWarning:
+      type: object
+      properties:
+        information:
+          type: string
+        type:
+          type: string
     apeWebhookEndpoint:
       required:
       - endpointId
@@ -532,13 +539,6 @@ components:
           - order_api
           type: string
       type: object
-    apeCurrentWarning:
-      type: object
-      properties:
-        information:
-          type: string
-        type:
-          type: string
     apeBusinessLocationId:
       description: The unique identifier for the business location.
       type: integer

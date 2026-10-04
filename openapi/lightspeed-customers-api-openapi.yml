@@ -312,23 +312,6 @@ paths:
       - Customers
 components:
   schemas:
-    CustomerResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Customer'
-      title: Customer Response
-      type: object
-    CustomerCollection:
-      properties:
-        data:
-          description: An array of Customer objects.
-          items:
-            $ref: '#/components/schemas/Customer'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      title: Customer Collection
-      type: object
     CustomerBase:
       properties:
         company_name:
@@ -510,6 +493,17 @@ components:
       - first_name
       - last_name
       title: Customer Base
+      type: object
+    CustomerCollection:
+      properties:
+        data:
+          description: An array of Customer objects.
+          items:
+            $ref: '#/components/schemas/Customer'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Customer Collection
       type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
@@ -749,6 +743,12 @@ components:
       - first_name
       - last_name
       title: Customer
+      type: object
+    CustomerResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Customer'
+      title: Customer Response
       type: object
   securitySchemes:
     bearerAuth:

@@ -465,6 +465,24 @@ paths:
       - Gift Cards
 components:
   schemas:
+    GiftCardTransactionSingleton:
+      description: A single gift card transaction response.
+      properties:
+        data:
+          $ref: '#/components/schemas/GiftCardTransaction'
+      required:
+      - data
+      title: Gift Card Transaction Response
+      type: object
+    GiftCardSingleton:
+      description: A single gift card response.
+      properties:
+        data:
+          $ref: '#/components/schemas/GiftCard'
+      required:
+      - data
+      title: Gift Card Response
+      type: object
     GiftCardTransaction:
       description: A gift card transaction with the amount represented as a string for precision.
       properties:
@@ -508,53 +526,17 @@ components:
           type: string
       title: Gift Card Transaction
       type: object
-    GiftCardSingleton:
-      description: A single gift card response.
+    GiftCardCollection:
+      description: A paginated list of gift cards.
       properties:
         data:
-          $ref: '#/components/schemas/GiftCard'
+          description: An array of Gift Cards.
+          items:
+            $ref: '#/components/schemas/GiftCard'
+          type: array
       required:
       - data
-      title: Gift Card Response
-      type: object
-    GiftCardTransactionSingleton:
-      description: A single gift card transaction response.
-      properties:
-        data:
-          $ref: '#/components/schemas/GiftCardTransaction'
-      required:
-      - data
-      title: Gift Card Transaction Response
-      type: object
-    GiftCardTransactionParams:
-      description: The parameters for creating a new gift card transaction.
-      properties:
-        amount:
-          description: The transaction amount. Must be negative for REDEEMING transactions and positive for RELOADING transactions.
-          type: string
-        client_id:
-          description: A unique transaction identifier for idempotency. The client must provide this and is normally the transaction id from the client system.
-          type: string
-        expires_at:
-          description: Optional new expiry date for the gift card in YYYY-MM-DD format. Can be used to extend the gift card's expiry when reloading.
-          type: string
-        time_zone:
-          description: The timezone to use when interpreting the `expires_at` date (e.g. "Pacific/Auckland"). See the list of tz database time zones for valid values.
-          type: string
-        type:
-          description: The type of the transaction.
-          enum:
-          - REDEEMING
-          - RELOADING
-          type: string
-        user_id:
-          description: The ID of the user creating the transaction. If omitted, the authenticated user will be used.
-          type: string
-      required:
-      - amount
-      - client_id
-      - type
-      title: Gift Card Transaction Parameters
+      title: Gift Card Collection
       type: object
     GiftCard:
       description: A gift card with monetary values represented as strings for precision.
@@ -606,6 +588,36 @@ components:
           type: string
       title: Gift Card
       type: object
+    GiftCardTransactionParams:
+      description: The parameters for creating a new gift card transaction.
+      properties:
+        amount:
+          description: The transaction amount. Must be negative for REDEEMING transactions and positive for RELOADING transactions.
+          type: string
+        client_id:
+          description: A unique transaction identifier for idempotency. The client must provide this and is normally the transaction id from the client system.
+          type: string
+        expires_at:
+          description: Optional new expiry date for the gift card in YYYY-MM-DD format. Can be used to extend the gift card's expiry when reloading.
+          type: string
+        time_zone:
+          description: The timezone to use when interpreting the `expires_at` date (e.g. "Pacific/Auckland"). See the list of tz database time zones for valid values.
+          type: string
+        type:
+          description: The type of the transaction.
+          enum:
+          - REDEEMING
+          - RELOADING
+          type: string
+        user_id:
+          description: The ID of the user creating the transaction. If omitted, the authenticated user will be used.
+          type: string
+      required:
+      - amount
+      - client_id
+      - type
+      title: Gift Card Transaction Parameters
+      type: object
     GiftCardActivationParams:
       description: The parameters for creating and activating a new gift card.
       properties:
@@ -629,18 +641,6 @@ components:
       - amount
       - number
       title: Gift Card Activation Parameters
-      type: object
-    GiftCardCollection:
-      description: A paginated list of gift cards.
-      properties:
-        data:
-          description: An array of Gift Cards.
-          items:
-            $ref: '#/components/schemas/GiftCard'
-          type: array
-      required:
-      - data
-      title: Gift Card Collection
       type: object
   securitySchemes:
     bearerAuth:

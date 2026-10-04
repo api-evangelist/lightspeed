@@ -179,6 +179,52 @@ paths:
       - Variant Attributes
 components:
   schemas:
+    VariantAttributeCreateResponse:
+      properties:
+        data:
+          properties:
+            created_at:
+              description: Timestamp in UTC.
+              type: string
+            id:
+              type: string
+            name:
+              type: string
+            updated_at:
+              description: Timestamp in UTC.
+              type: string
+          type: object
+      title: VariantAttributeCreateResponse
+      type: object
+    VariantAttributeDeleteResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+          type: object
+      title: VariantAttributeDeleteResponse
+      type: object
+    VariantAttributeCreateUpdateBody:
+      properties:
+        name:
+          example: Size
+          type: string
+      required:
+      - name
+      title: VariantAttributeCreateUpdateBody
+      type: object
+    VariantAttributeUpdateResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+          type: object
+      title: VariantAttributeUpdateResponse
+      type: object
     VariantAttributeResponse:
       properties:
         deleted_at:
@@ -203,52 +249,6 @@ components:
             $ref: '#/components/schemas/VariantAttributeResponse'
           type: array
       title: VariantAttributesListResponse
-      type: object
-    VariantAttributeCreateUpdateBody:
-      properties:
-        name:
-          example: Size
-          type: string
-      required:
-      - name
-      title: VariantAttributeCreateUpdateBody
-      type: object
-    VariantAttributeCreateResponse:
-      properties:
-        data:
-          properties:
-            created_at:
-              description: Timestamp in UTC.
-              type: string
-            id:
-              type: string
-            name:
-              type: string
-            updated_at:
-              description: Timestamp in UTC.
-              type: string
-          type: object
-      title: VariantAttributeCreateResponse
-      type: object
-    VariantAttributeUpdateResponse:
-      properties:
-        data:
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-          type: object
-      title: VariantAttributeUpdateResponse
-      type: object
-    VariantAttributeDeleteResponse:
-      properties:
-        data:
-          properties:
-            id:
-              type: string
-          type: object
-      title: VariantAttributeDeleteResponse
       type: object
   securitySchemes:
     bearerAuth:

@@ -484,8 +484,27 @@ paths:
       - Products
 components:
   schemas:
-    ProductAddVariantPayload:
+    ProductCategoryPath:
       properties:
+        id:
+          description: Object id of the Product Type in the path.
+          type: string
+        name:
+          description: The Product Type name.
+          type: string
+      required:
+      - id
+      - name
+      title: Product Category Path
+      type: object
+    ProductCreateBody:
+      properties:
+        account_code_purchase:
+          description: The code used to attribute the purchase of the product to a specific account for the Xero integration.
+          type: string
+        account_code_sale:
+          description: The code used to attribute the sales of the product to a specific account for the Xero integration.
+          type: string
         all_outlets_tax:
           description: Only used for tax inclusive stores.
           properties:
@@ -497,6 +516,20 @@ components:
               format: UUID
               type: string
           type: object
+        attributes:
+          $ref: '#/components/schemas/Attribute'
+        brand_id:
+          description: The brand ID.
+          format: UUID
+          type: string
+        composite:
+          description: A list of composite components.
+          items:
+            $ref: '#/components/schemas/Composite'
+          type: array
+        description:
+          description: A detailed description of the Product. **Note** Can contain HTML.
+          type: string
         dimensions_unit:
           description: Unit of measurement for product dimensions. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
           enum:
@@ -504,6 +537,9 @@ components:
           - CM
           - MM
           - YD
+          type: string
+        handle:
+          description: Product handle.
           type: string
         height:
           description: Product height. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
@@ -517,9 +553,18 @@ components:
           items:
             $ref: '#/components/schemas/ProductAddInventoryPayload'
           type: array
+        is_active:
+          description: Indicated whether the Product is active.
+          type: boolean
         length:
           description: Product length. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
           type: number
+        loyalty_amount:
+          description: The amount of loyalty the customer receives buying this item.
+          type: number
+        name:
+          description: Product name. **Note:** Variants share the same name.
+          type: string
         outlet_taxes:
           description: Only used for tax exclusive stores.
           items:
@@ -531,6 +576,10 @@ components:
         price_including_tax:
           description: The price including all the relevant taxes.
           type: number
+        product_category_id:
+          description: The product category.
+          format: UUID
+          type: string
         product_codes:
           items:
             $ref: '#/components/schemas/ProductCode'
@@ -539,20 +588,43 @@ components:
           items:
             $ref: '#/components/schemas/ProductSupplier'
           type: array
+        product_type_id:
+          description: The product category. **Note** Product types are now product categories.
+          format: UUID
+          type: string
         sku:
-          description: Product sku. This value should be included in the `product_codes` array. If it's not, it will be added automatically.
+          description: Product sku. **Note:** Should be unique.
+          type: string
+        source:
+          description: Indicates the origin of the product. Can be USER, SHOPIFY.
+          type: string
+        source_id:
+          description: External reference ID.
+          type: string
+        source_variant_id:
+          description: Secondary external reference ID.
           type: string
         supplier_code:
           description: Supplier code.
+          type: string
+        supplier_id:
+          description: The supplier ID.
+          format: UUID
           type: string
         supply_price:
           description: Default supply price.
           format: double
           type: number
-        variant_definitions:
-          description: The attributes associated with this variant. e.g. Size.
+        tag_ids:
+          description: An array of tag IDs associated with this product.
           items:
-            $ref: '#/components/schemas/VariantAttribute'
+            description: A tag ID.
+            format: UUID
+            type: string
+          type: array
+        variants:
+          items:
+            $ref: '#/components/schemas/ProductAddVariantPayload'
           type: array
         weight:
           description: Product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
@@ -569,54 +641,82 @@ components:
         width:
           description: Product width. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
           type: number
-      title: Add Product Variant Payload
-      type: object
-    ProductCode:
-      properties:
-        code:
-          description: The sku code being added.
-          type: string
-        id:
-          description: Auto-generated object ID.
-          type: string
-        type:
-          description: The type of code being added.
-          enum:
-          - CUSTOM
-          - EAN
-          - ISBN
-          - ITF
-          - JAN
-          - UPC
-          type: string
       required:
-      - code
-      - id
-      title: ProductCode
+      - name
+      title: Product
       type: object
-    VariantAttribute:
+    Attribute:
       properties:
-        attribute_id:
-          description: The ID of the variant attribute.
-          format: uuid
-          type: string
-        value:
-          description: The value associated with the given attribute_id. e.g. Green.
-          type: string
-      title: Variant Attribute
-      type: object
-    ProductAttribute:
-      properties:
-        name:
+        key:
           description: The key for the attribute.
           type: string
         value:
           description: The value for the attribute.
           type: string
       required:
-      - name
+      - key
       - value
       title: Attribute
+      type: object
+    BrandSample:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Brand Sample
+      type:
+      - object
+      - 'null'
+    ProductCollection:
+      properties:
+        data:
+          description: An array of Product objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Product'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Product Collection
+      type: object
+    ProductAddOutletTax:
+      properties:
+        outlet_id:
+          description: The outlet the tax is for.
+          format: UUID
+          type: string
+        tax_id:
+          description: The tax id associated with this outlet.
+          format: UUID
+          type: string
+      required:
+      - outlet_id
+      - tax_id
+      title: Product Add Outlet Tax
+      type: object
+    Composite:
+      properties:
+        product_id:
+          description: The ID of the component product.
+          format: uuid
+          type: string
+        quantity:
+          description: The quantity of the component product.
+          type: number
+      title: Composite
       type: object
     ProductUpdate21Request:
       properties:
@@ -840,36 +940,81 @@ components:
           type: object
       title: Product Update 2.1 Request
       type: object
-    ProductCategory:
+    Image:
       properties:
-        category_path:
-          items:
-            $ref: '#/components/schemas/ProductCategoryPath'
-          type: array
         id:
-          description: The category id
+          description: Auto-generated object ID.
           format: uuid
           type: string
-        leaf_category:
-          description: True if the category does not have any more children (i.e. leaf).
-          type: boolean
-        name:
-          description: The name of the category
-          type: string
-        parent_category_id:
-          description: The parent category id, or null if its root category.
+        position:
+          description: Position of the image in collection of images associated with a product.
+          format: double
+          type: number
+        product_id:
+          description: The ID of the product this image is associated with.
           format: uuid
           type: string
-        root_category_id:
-          description: The category id of the root of the category tree. If category is a root, this will be itself.
-          format: uuid
+        status:
+          description: Status if the image upload processing. Can be `processing`, `uploaded`, `error`.
           type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Image
+      type: object
+    ProductResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Product'
+      required:
+      - data
+      title: Product Response
       type: object
     ImageResponse:
       properties:
         data:
           $ref: '#/components/schemas/Image'
       title: Image Response
+      type: object
+    ProductUpdate21Supplier:
+      properties:
+        code:
+          description: The supplier's code or reference for the product. To remove the code, please provide empty value "".
+          type: string
+        price:
+          description: The cost of supply for the product. -1 price will delete the price.
+          type: number
+        supplier_id:
+          description: The supplier ID.
+          type: string
+      title: Product Update 2.1 Product Supplier Request
+      type: object
+    ImageSample:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        url:
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Image Sample
+      type: object
+    ProductAttribute:
+      properties:
+        name:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
+      required:
+      - name
+      - value
+      title: Attribute
       type: object
     PriceBookProduct:
       properties:
@@ -973,236 +1118,99 @@ components:
           tax_id: string
           updated_at: string
           version: 123
-    ProductCategoryPath:
+    VariantAttribute:
       properties:
-        id:
-          description: Object id of the Product Type in the path.
-          type: string
-        name:
-          description: The Product Type name.
-          type: string
-      required:
-      - id
-      - name
-      title: Product Category Path
-      type: object
-    VariantOption:
-      properties:
-        name:
-          description: The Variant Option name.
+        attribute_id:
+          description: The ID of the variant attribute.
+          format: uuid
           type: string
         value:
-          description: The value of a Variant Option.
+          description: The value associated with the given attribute_id. e.g. Green.
           type: string
-      title: Variant Option
+      title: Variant Attribute
       type: object
-    SupplierSample:
+    ProductCode:
       properties:
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
+        code:
+          description: The sku code being added.
+          type: string
         id:
           description: Auto-generated object ID.
           type: string
-        name:
-          type: string
-      title: Supplier Sample
-      type:
-      - object
-      - 'null'
-    BrandSample:
-      properties:
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      title: Brand Sample
-      type:
-      - object
-      - 'null'
-    ProductCreateBody:
-      properties:
-        account_code_purchase:
-          description: The code used to attribute the purchase of the product to a specific account for the Xero integration.
-          type: string
-        account_code_sale:
-          description: The code used to attribute the sales of the product to a specific account for the Xero integration.
-          type: string
-        all_outlets_tax:
-          description: Only used for tax inclusive stores.
-          properties:
-            is_default:
-              description: Is this the default tax.
-              type: boolean
-            tax_id:
-              description: The tax id associated with this product.
-              format: UUID
-              type: string
-          type: object
-        attributes:
-          $ref: '#/components/schemas/Attribute'
-        brand_id:
-          description: The brand ID.
-          format: UUID
-          type: string
-        composite:
-          description: A list of composite components.
-          items:
-            $ref: '#/components/schemas/Composite'
-          type: array
-        description:
-          description: A detailed description of the Product. **Note** Can contain HTML.
-          type: string
-        dimensions_unit:
-          description: Unit of measurement for product dimensions. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+        type:
+          description: The type of code being added.
           enum:
-          - IN
-          - CM
-          - MM
-          - YD
+          - CUSTOM
+          - EAN
+          - ISBN
+          - ITF
+          - JAN
+          - UPC
           type: string
-        handle:
-          description: Product handle.
-          type: string
-        height:
-          description: Product height. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
-          type: number
-        images:
-          description: A list of image objects.
-          items:
-            $ref: '#/components/schemas/ProductAddImage'
-          type: array
-        inventory:
-          items:
-            $ref: '#/components/schemas/ProductAddInventoryPayload'
-          type: array
-        is_active:
-          description: Indicated whether the Product is active.
-          type: boolean
-        length:
-          description: Product length. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
-          type: number
-        loyalty_amount:
-          description: The amount of loyalty the customer receives buying this item.
-          type: number
-        name:
-          description: Product name. **Note:** Variants share the same name.
-          type: string
-        outlet_taxes:
-          description: Only used for tax exclusive stores.
-          items:
-            $ref: '#/components/schemas/ProductAddOutletTax'
-          type: array
-        price_excluding_tax:
-          description: The price before tax is added.
-          type: number
-        price_including_tax:
-          description: The price including all the relevant taxes.
-          type: number
-        product_category_id:
-          description: The product category.
+      required:
+      - code
+      - id
+      title: ProductCode
+      type: object
+    ProductSupplier:
+      properties:
+        code:
+          description: The code associated with this supplier.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
           format: UUID
           type: string
-        product_codes:
-          items:
-            $ref: '#/components/schemas/ProductCode'
-          type: array
-        product_suppliers:
-          items:
-            $ref: '#/components/schemas/ProductSupplier'
-          type: array
-        product_type_id:
-          description: The product category. **Note** Product types are now product categories.
+        price:
+          description: The price associated with this supplier.
+          format: double
+          type:
+          - number
+          - 'null'
+        product_id:
+          description: The ID of the product.
           format: UUID
-          type: string
-        sku:
-          description: Product sku. **Note:** Should be unique.
-          type: string
-        source:
-          description: Indicates the origin of the product. Can be USER, SHOPIFY.
-          type: string
-        source_id:
-          description: External reference ID.
-          type: string
-        source_variant_id:
-          description: Secondary external reference ID.
-          type: string
-        supplier_code:
-          description: Supplier code.
           type: string
         supplier_id:
-          description: The supplier ID.
+          description: The ID of the supplier.
           format: UUID
-          type: string
-        supply_price:
-          description: Default supply price.
+          type:
+          - string
+          - 'null'
+        supplier_name:
+          description: The name of the supplier.
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+      - product_id
+      - supplier_id
+      - supplier_name
+      title: Product Supplier
+      type: object
+    ProductAddInventoryPayload:
+      properties:
+        current_amount:
+          description: Current inventory at a given outlet.
           format: double
           type: number
-        tag_ids:
-          description: An array of tag IDs associated with this product.
-          items:
-            description: A tag ID.
-            format: UUID
-            type: string
-          type: array
-        variants:
-          items:
-            $ref: '#/components/schemas/ProductAddVariantPayload'
-          type: array
-        weight:
-          description: Product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
-          type: number
-        weight_unit:
-          description: Unit of measurement for product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
-          enum:
-          - CT
-          - G
-          - OZ
-          - LB
-          - KG
+        outlet_id:
+          description: The outlet the inventory is for.
+          format: UUID
           type: string
-        width:
-          description: Product width. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+        reorder_amount:
+          description: The default of the quantity for auto-filled inventory orders.
+          type: number
+        reorder_point:
+          description: Quantity below which the product should be included in the auto-filled inventory orders. use -1 to clear the reorder point.
           type: number
       required:
-      - name
-      title: Product
-      type: object
-    PriceBookProductCollection:
-      properties:
-        data:
-          description: An array of Price Book objects wrapped in a top level `data` object.
-          items:
-            $ref: '#/components/schemas/PriceBookProduct'
-          type: array
-      required:
-      - data
-      title: Price Book Product Collection
-      type: object
-    Attribute:
-      properties:
-        key:
-          description: The key for the attribute.
-          type: string
-        value:
-          description: The value for the attribute.
-          type: string
-      required:
-      - key
-      - value
-      title: Attribute
+      - outlet_id
+      - current_amount
+      title: Product Add Inventory Payload
       type: object
     ProductTypeSample:
       properties:
@@ -1232,6 +1240,238 @@ components:
       type:
       - object
       - 'null'
+    ProductCategory:
+      properties:
+        category_path:
+          items:
+            $ref: '#/components/schemas/ProductCategoryPath'
+          type: array
+        id:
+          description: The category id
+          format: uuid
+          type: string
+        leaf_category:
+          description: True if the category does not have any more children (i.e. leaf).
+          type: boolean
+        name:
+          description: The name of the category
+          type: string
+        parent_category_id:
+          description: The parent category id, or null if its root category.
+          format: uuid
+          type: string
+        root_category_id:
+          description: The category id of the root of the category tree. If category is a root, this will be itself.
+          format: uuid
+          type: string
+      type: object
+    ProductAddImage:
+      properties:
+        index:
+          description: The position of the image in the list of images.
+          format: int64
+          type: integer
+        location:
+          description: 'The location of the given file. Depending on the image provider type. s3 - The s3 key for s3 transfers. url - A full URL for url based images. product-image - the image id from an existing product image. sku-image - the image id from an existing variant image.
+
+            '
+          type: string
+        type:
+          description: The image provider type.
+          enum:
+          - s3
+          - url
+          - product-image
+          - sku-image
+          type: string
+      required:
+      - type
+      - location
+      title: Add Image
+      type: object
+    PriceBookProductCollection:
+      properties:
+        data:
+          description: An array of Price Book objects wrapped in a top level `data` object.
+          items:
+            $ref: '#/components/schemas/PriceBookProduct'
+          type: array
+      required:
+      - data
+      title: Price Book Product Collection
+      type: object
+    SupplierSample:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          type: string
+      title: Supplier Sample
+      type:
+      - object
+      - 'null'
+    ProductAddVariantPayload:
+      properties:
+        all_outlets_tax:
+          description: Only used for tax inclusive stores.
+          properties:
+            is_default:
+              description: Is this the default tax.
+              type: boolean
+            tax_id:
+              description: The tax id associated with this product.
+              format: UUID
+              type: string
+          type: object
+        dimensions_unit:
+          description: Unit of measurement for product dimensions. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          enum:
+          - IN
+          - CM
+          - MM
+          - YD
+          type: string
+        height:
+          description: Product height. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type: number
+        images:
+          description: A list of image objects.
+          items:
+            $ref: '#/components/schemas/ProductAddImage'
+          type: array
+        inventory:
+          items:
+            $ref: '#/components/schemas/ProductAddInventoryPayload'
+          type: array
+        length:
+          description: Product length. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type: number
+        outlet_taxes:
+          description: Only used for tax exclusive stores.
+          items:
+            $ref: '#/components/schemas/ProductAddOutletTax'
+          type: array
+        price_excluding_tax:
+          description: The price before tax is added.
+          type: number
+        price_including_tax:
+          description: The price including all the relevant taxes.
+          type: number
+        product_codes:
+          items:
+            $ref: '#/components/schemas/ProductCode'
+          type: array
+        product_suppliers:
+          items:
+            $ref: '#/components/schemas/ProductSupplier'
+          type: array
+        sku:
+          description: Product sku. This value should be included in the `product_codes` array. If it's not, it will be added automatically.
+          type: string
+        supplier_code:
+          description: Supplier code.
+          type: string
+        supply_price:
+          description: Default supply price.
+          format: double
+          type: number
+        variant_definitions:
+          description: The attributes associated with this variant. e.g. Size.
+          items:
+            $ref: '#/components/schemas/VariantAttribute'
+          type: array
+        weight:
+          description: Product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type: number
+        weight_unit:
+          description: Unit of measurement for product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          enum:
+          - CT
+          - G
+          - OZ
+          - LB
+          - KG
+          type: string
+        width:
+          description: Product width. These are used to calculate variable shipping rates for stores using Lightspeed eCom.
+          type: number
+      title: Add Product Variant Payload
+      type: object
+    ProductPackage:
+      properties:
+        amount:
+          description: The quantity involved in the packaging relationship.
+          type: number
+        destination_product_id:
+          description: The ID of the destination product (present in breaks_into entries).
+          format: UUID
+          type: string
+        package_id:
+          description: Auto-generated package ID.
+          format: UUID
+          type: string
+        source_product_id:
+          description: The ID of the source product (present in made_from entries).
+          format: UUID
+          type: string
+      required:
+      - package_id
+      - amount
+      type: object
+    VariantOption:
+      properties:
+        name:
+          description: The Variant Option name.
+          type: string
+        value:
+          description: The value of a Variant Option.
+          type: string
+      title: Variant Option
+      type: object
+    Tag:
+      properties:
+        deleted_at:
+          description: Deletion timestamp in UTC.
+          type:
+          - string
+          - 'null'
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Tag name.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      title: Tag
+      type: object
+    Version:
+      description: An object containing the highest and lowest version numbers for all items of the returned collection.
+      properties:
+        max:
+          description: Highest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+        min:
+          description: Lowest version number of the payload, or `null` when the result set is empty.
+          format: int64
+          type:
+          - integer
+          - 'null'
+      required:
+      - max
+      - min
+      type: object
     Product:
       properties:
         account_code:
@@ -1570,246 +1810,6 @@ components:
             weight: 1
             weight_unit: KG
             width: 3
-    Image:
-      properties:
-        id:
-          description: Auto-generated object ID.
-          format: uuid
-          type: string
-        position:
-          description: Position of the image in collection of images associated with a product.
-          format: double
-          type: number
-        product_id:
-          description: The ID of the product this image is associated with.
-          format: uuid
-          type: string
-        status:
-          description: Status if the image upload processing. Can be `processing`, `uploaded`, `error`.
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      title: Image
-      type: object
-    ProductCollection:
-      properties:
-        data:
-          description: An array of Product objects wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Product'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Product Collection
-      type: object
-    Tag:
-      properties:
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The Tag name.
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      title: Tag
-      type: object
-    ProductPackage:
-      properties:
-        amount:
-          description: The quantity involved in the packaging relationship.
-          type: number
-        destination_product_id:
-          description: The ID of the destination product (present in breaks_into entries).
-          format: UUID
-          type: string
-        package_id:
-          description: Auto-generated package ID.
-          format: UUID
-          type: string
-        source_product_id:
-          description: The ID of the source product (present in made_from entries).
-          format: UUID
-          type: string
-      required:
-      - package_id
-      - amount
-      type: object
-    Composite:
-      properties:
-        product_id:
-          description: The ID of the component product.
-          format: uuid
-          type: string
-        quantity:
-          description: The quantity of the component product.
-          type: number
-      title: Composite
-      type: object
-    ProductAddInventoryPayload:
-      properties:
-        current_amount:
-          description: Current inventory at a given outlet.
-          format: double
-          type: number
-        outlet_id:
-          description: The outlet the inventory is for.
-          format: UUID
-          type: string
-        reorder_amount:
-          description: The default of the quantity for auto-filled inventory orders.
-          type: number
-        reorder_point:
-          description: Quantity below which the product should be included in the auto-filled inventory orders. use -1 to clear the reorder point.
-          type: number
-      required:
-      - outlet_id
-      - current_amount
-      title: Product Add Inventory Payload
-      type: object
-    ProductAddImage:
-      properties:
-        index:
-          description: The position of the image in the list of images.
-          format: int64
-          type: integer
-        location:
-          description: 'The location of the given file. Depending on the image provider type. s3 - The s3 key for s3 transfers. url - A full URL for url based images. product-image - the image id from an existing product image. sku-image - the image id from an existing variant image.
-
-            '
-          type: string
-        type:
-          description: The image provider type.
-          enum:
-          - s3
-          - url
-          - product-image
-          - sku-image
-          type: string
-      required:
-      - type
-      - location
-      title: Add Image
-      type: object
-    ImageSample:
-      properties:
-        id:
-          description: Auto-generated object ID.
-          type: string
-        url:
-          type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
-      title: Image Sample
-      type: object
-    ProductUpdate21Supplier:
-      properties:
-        code:
-          description: The supplier's code or reference for the product. To remove the code, please provide empty value "".
-          type: string
-        price:
-          description: The cost of supply for the product. -1 price will delete the price.
-          type: number
-        supplier_id:
-          description: The supplier ID.
-          type: string
-      title: Product Update 2.1 Product Supplier Request
-      type: object
-    Version:
-      description: An object containing the highest and lowest version numbers for all items of the returned collection.
-      properties:
-        max:
-          description: Highest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-        min:
-          description: Lowest version number of the payload, or `null` when the result set is empty.
-          format: int64
-          type:
-          - integer
-          - 'null'
-      required:
-      - max
-      - min
-      type: object
-    ProductResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Product'
-      required:
-      - data
-      title: Product Response
-      type: object
-    ProductAddOutletTax:
-      properties:
-        outlet_id:
-          description: The outlet the tax is for.
-          format: UUID
-          type: string
-        tax_id:
-          description: The tax id associated with this outlet.
-          format: UUID
-          type: string
-      required:
-      - outlet_id
-      - tax_id
-      title: Product Add Outlet Tax
-      type: object
-    ProductSupplier:
-      properties:
-        code:
-          description: The code associated with this supplier.
-          type:
-          - string
-          - 'null'
-        id:
-          description: Auto-generated object ID.
-          format: UUID
-          type: string
-        price:
-          description: The price associated with this supplier.
-          format: double
-          type:
-          - number
-          - 'null'
-        product_id:
-          description: The ID of the product.
-          format: UUID
-          type: string
-        supplier_id:
-          description: The ID of the supplier.
-          format: UUID
-          type:
-          - string
-          - 'null'
-        supplier_name:
-          description: The name of the supplier.
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - product_id
-      - supplier_id
-      - supplier_name
-      title: Product Supplier
-      type: object
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

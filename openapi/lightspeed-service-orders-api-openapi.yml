@@ -876,19 +876,23 @@ components:
       type:
       - object
       - 'null'
-    Role:
+    DetailedService:
       properties:
-        id:
-          description: Auto-generated object ID.
-          type: string
-        name:
-          description: The Role name.
-          type: string
-        system_role_id:
-          description: A system role id of the Role. Will be either '100', '200', or '300'.
-          type: string
-      title: Role
+        notes:
+          description: An array of service notes, or null if no notes exist.
+          items:
+            $ref: '#/components/schemas/ServiceNote'
+          type:
+          - array
+          - 'null'
+        service:
+          $ref: '#/components/schemas/ServiceOrder'
+        serviceItems:
+          $ref: '#/components/schemas/ServiceItems'
+      title: DetailedService
       type: object
+      x-stoplight:
+        id: 2fu3rgyr0q1gp
     UserImages:
       description: On object containing URLs for different sizes of the user’s avatar.
       properties:
@@ -910,176 +914,146 @@ components:
       type:
       - object
       - 'null'
-    ServiceItems:
+    User:
       properties:
-        item_details:
-          $ref: '#/components/schemas/ItemDetails'
-        location:
+        account_type:
+          description: User's account type.
+          enum:
+          - cashier
+          - manager
+          - admin
           type: string
-      title: ServiceItems
-      type: object
-    ServiceNote:
-      properties:
-        body:
+        created_at:
+          description: Creation timestamp in UTC.
           type: string
-        createdAt:
-          type: string
-        id:
-          type: string
-        is_visible_to_customer:
-          description: Whether the note should be printed in the service receipt or not
-          type: boolean
-        location:
-          deprecated: true
-          description: 'Deprecated: Use top-level location field on ServiceOrder instead. Location where the service will be performed'
-          type: string
-        serviceId:
-          type: string
-        serviceStatus:
-          deprecated: true
-          type: number
-        user:
-          $ref: '#/components/schemas/User'
-        userId:
-          type: string
-      title: ServiceNote
-      type: object
-      x-stoplight:
-        id: 2fu3rgyr0q1gp
-    ServiceOrderRequest:
-      description: Request payload for creating a service order
-      example:
-        assigned_user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
-        customer_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
-        item:
-          description: Red mountain bike requiring brake service
-          initial_condition: Brakes not functioning properly
-          item_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
-          item_name: Mountain Bike
-          serial_number: MB2025-001
-        location: Service Bay 2
-        notes:
-        - body: Customer requested bike before the weekend
-          created_at: '2026-01-27T10:00:00Z'
-          is_visible_to_customer: true
-        - body: 'Internal note: Check brake fluid levels'
-        outlet_id: 348fff91-8c43-4599-812b-13636760895a
-        register_id: b1e198a9-f019-11e3-a0f5-b8ca3a64f8f4
-        status: NEW
-      properties:
-        assigned_user_id:
-          description: The user assigned to work on the service order
-          format: uuid
-          type: string
-        customer_id:
-          description: The customer associated with the service
-          format: uuid
-          type: string
-        extra_fields:
-          deprecated: true
-          description: Deprecated. Additional custom fields for the service order
-          properties:
-            location:
-              deprecated: true
-              description: 'Deprecated: Use top-level location field instead. Location where the service will be performed'
-              type: string
-            note:
-              deprecated: true
-              description: 'Deprecated: Use top-level Notes field instead. Additional note for the service order'
-              type: string
-          type: object
-        item:
-          description: Service item and its details
-          properties:
-            description:
-              description: Item description
-              type: string
-            initial_condition:
-              description: Item's initial condition
-              type: string
-            item_id:
-              description: ID of an already existing item
-              format: uuid
-              type: string
-            item_name:
-              description: Item name
-              type: string
-            serial_number:
-              description: Item serial number
-              type: string
-          type: object
-        job_status_id:
-          description: The ID of a custom service status to assign to this order. When provided, overrides the `status` field.
+        deleted_at:
+          description: Deletion timestamp in UTC.
           type:
           - string
           - 'null'
-        location:
-          description: Location where the service will be performed
-          type: string
-        notes:
-          description: Notes associated with the service order
-          items:
-            properties:
-              body:
-                description: The body of the note
-                type: string
-              created_at:
-                description: The date and time when the note was created (possible to pre-date the note)
-                format: date-time
-                type: string
-              is_visible_to_customer:
-                default: false
-                description: Whether the note is visible to customer (printed on the service receipt or not)
-                type: boolean
-            type: object
-          type: array
-        outlet_id:
-          description: The outlet of the service order
+        display_name:
+          description: Full user's name to be used for display in the UI.
+          type:
+          - string
+          - 'null'
+        email:
+          description: User's email address.
+          format: email
+          type:
+          - string
+          - 'null'
+        email_verified_at:
+          description: The timestamp of users email verification.
+          type:
+          - string
+          - 'null'
+        enabled:
+          description: Indicates whether the user is enabled.
+          type: boolean
+        enabled_mfa:
+          description: The user's enabled MFA factor, or null if MFA is not enabled.
+          properties:
+            created_at:
+              description: Timestamp when the MFA factor was created.
+              type: string
+            id:
+              description: Auto-generated MFA factor ID.
+              type: string
+            type:
+              description: The MFA factor type (e.g. "otp").
+              enum:
+              - otp
+              type: string
+          type:
+          - object
+          - 'null'
+        id:
+          description: Auto-generated object ID.
           format: uuid
           type: string
-        register_id:
-          description: The register of the service order
-          format: uuid
+        image_source:
+          description: URL of the default-sized user's avatar.
           type: string
-        status:
-          default: NEW
-          description: The status of the service order
-          type: string
-      required:
-      - outlet_id
-      - register_id
-      - customer_id
-      type: object
-    DetailedService:
-      properties:
-        notes:
-          description: An array of service notes, or null if no notes exist.
+        images:
+          $ref: '#/components/schemas/UserImages'
+        is_primary_user:
+          description: Indicated whether this user is the primary user for the account.
+          type: boolean
+        permissions:
+          description: The permissions assigned to the user.
           items:
-            $ref: '#/components/schemas/ServiceNote'
+            type: string
           type:
           - array
           - 'null'
-        service:
-          $ref: '#/components/schemas/ServiceOrder'
-        serviceItems:
-          $ref: '#/components/schemas/ServiceItems'
-      title: DetailedService
-      type: object
-      x-stoplight:
-        id: 2fu3rgyr0q1gp
-    PromotionDescription:
-      description: Basic description for a Promotion.
-      properties:
-        description:
-          description: A short description for the promotion.
+        require_password_change:
+          description: Indicates whether the user is required to change their password.
+          type: boolean
+        restricted_outlet_id:
+          deprecated: true
+          description: '**deprecated** Use the `restricted_outlet_ids` instead.'
+          type:
+          - string
+          - 'null'
+        restricted_outlet_ids:
+          description: A list of outlet IDs the user is associated with
+          items:
+            format: uuid
+            type: string
+          type: array
+        roles:
+          description: The roles assigned to the user.
+          items:
+            $ref: '#/components/schemas/Role'
+          type: array
+        rules:
+          description: The rules assigned to the user.
+          type: object
+        seen_at:
+          description: The timestamp of the user's last activity in the system.
           type: string
-        id:
-          description: Auto-generated object ID.
+        switch_id:
+          description: The switch id for the user.
           type: string
-        name:
-          description: The name of the promotion.
+        target_daily:
+          description: Daily sales target for the user.
+          type:
+          - number
+          - 'null'
+        target_monthly:
+          description: Monthly sales target for the user.
+          type:
+          - number
+          - 'null'
+        target_weekly:
+          description: Weekly sales target for the user.
+          type:
+          - number
+          - 'null'
+        time_until_deletion:
+          description: The time until the user is deleted.
+          type:
+          - string
+          - 'null'
+        updated_at:
+          description: Last update timestamp in UTC.
           type: string
-      title: PromotionDescription
+        username:
+          description: User's username used for login.
+          type: string
+        version:
+          description: Auto-incrementing object version number.
+          format: int64
+          type: integer
+      required:
+      - account_type
+      - created_at
+      - id
+      - is_primary_user
+      - updated_at
+      - username
+      - version
+      title: User
       type: object
     LineItemTaxComponent:
       properties:
@@ -1094,6 +1068,36 @@ components:
       - rate_id
       - total_tax
       title: Line Item Tax Component
+      type: object
+    PromotionDescription:
+      description: Basic description for a Promotion.
+      properties:
+        description:
+          description: A short description for the promotion.
+          type: string
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The name of the promotion.
+          type: string
+      title: PromotionDescription
+      type: object
+    ServiceItems:
+      properties:
+        item_details:
+          $ref: '#/components/schemas/ItemDetails'
+        location:
+          type: string
+      title: ServiceItems
+      type: object
+    DailyAgenda:
+      properties:
+        date:
+          type: string
+        minutes_scheduled:
+          type: integer
+      title: DailyAgenda
       type: object
     ServiceOrder:
       properties:
@@ -1261,6 +1265,34 @@ components:
           total_tax: '1.95'
         updated_at: '2025-08-25T16:26:29.732308Z'
         updated_by: 06e94082-ed4f-11ed-fd41-fef5ad8054af
+    ServiceNote:
+      properties:
+        body:
+          type: string
+        createdAt:
+          type: string
+        id:
+          type: string
+        is_visible_to_customer:
+          description: Whether the note should be printed in the service receipt or not
+          type: boolean
+        location:
+          deprecated: true
+          description: 'Deprecated: Use top-level location field on ServiceOrder instead. Location where the service will be performed'
+          type: string
+        serviceId:
+          type: string
+        serviceStatus:
+          deprecated: true
+          type: number
+        user:
+          $ref: '#/components/schemas/User'
+        userId:
+          type: string
+      title: ServiceNote
+      type: object
+      x-stoplight:
+        id: 2fu3rgyr0q1gp
     ItemDetails:
       properties:
         description:
@@ -1275,154 +1307,122 @@ components:
           type: string
       title: ItemDetails
       type: object
-    DailyAgenda:
+    ServiceOrderRequest:
+      description: Request payload for creating a service order
+      example:
+        assigned_user_id: b1ed6158-f019-11e3-a0f5-b8ca3a64f8f4
+        customer_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
+        item:
+          description: Red mountain bike requiring brake service
+          initial_condition: Brakes not functioning properly
+          item_id: 06e35f89-3783-11e6-ec7e-13193f7bd2ed
+          item_name: Mountain Bike
+          serial_number: MB2025-001
+        location: Service Bay 2
+        notes:
+        - body: Customer requested bike before the weekend
+          created_at: '2026-01-27T10:00:00Z'
+          is_visible_to_customer: true
+        - body: 'Internal note: Check brake fluid levels'
+        outlet_id: 348fff91-8c43-4599-812b-13636760895a
+        register_id: b1e198a9-f019-11e3-a0f5-b8ca3a64f8f4
+        status: NEW
       properties:
-        date:
-          type: string
-        minutes_scheduled:
-          type: integer
-      title: DailyAgenda
-      type: object
-    User:
-      properties:
-        account_type:
-          description: User's account type.
-          enum:
-          - cashier
-          - manager
-          - admin
-          type: string
-        created_at:
-          description: Creation timestamp in UTC.
-          type: string
-        deleted_at:
-          description: Deletion timestamp in UTC.
-          type:
-          - string
-          - 'null'
-        display_name:
-          description: Full user's name to be used for display in the UI.
-          type:
-          - string
-          - 'null'
-        email:
-          description: User's email address.
-          format: email
-          type:
-          - string
-          - 'null'
-        email_verified_at:
-          description: The timestamp of users email verification.
-          type:
-          - string
-          - 'null'
-        enabled:
-          description: Indicates whether the user is enabled.
-          type: boolean
-        enabled_mfa:
-          description: The user's enabled MFA factor, or null if MFA is not enabled.
-          properties:
-            created_at:
-              description: Timestamp when the MFA factor was created.
-              type: string
-            id:
-              description: Auto-generated MFA factor ID.
-              type: string
-            type:
-              description: The MFA factor type (e.g. "otp").
-              enum:
-              - otp
-              type: string
-          type:
-          - object
-          - 'null'
-        id:
-          description: Auto-generated object ID.
+        assigned_user_id:
+          description: The user assigned to work on the service order
           format: uuid
           type: string
-        image_source:
-          description: URL of the default-sized user's avatar.
+        customer_id:
+          description: The customer associated with the service
+          format: uuid
           type: string
-        images:
-          $ref: '#/components/schemas/UserImages'
-        is_primary_user:
-          description: Indicated whether this user is the primary user for the account.
-          type: boolean
-        permissions:
-          description: The permissions assigned to the user.
-          items:
-            type: string
-          type:
-          - array
-          - 'null'
-        require_password_change:
-          description: Indicates whether the user is required to change their password.
-          type: boolean
-        restricted_outlet_id:
+        extra_fields:
           deprecated: true
-          description: '**deprecated** Use the `restricted_outlet_ids` instead.'
-          type:
-          - string
-          - 'null'
-        restricted_outlet_ids:
-          description: A list of outlet IDs the user is associated with
-          items:
-            format: uuid
-            type: string
-          type: array
-        roles:
-          description: The roles assigned to the user.
-          items:
-            $ref: '#/components/schemas/Role'
-          type: array
-        rules:
-          description: The rules assigned to the user.
+          description: Deprecated. Additional custom fields for the service order
+          properties:
+            location:
+              deprecated: true
+              description: 'Deprecated: Use top-level location field instead. Location where the service will be performed'
+              type: string
+            note:
+              deprecated: true
+              description: 'Deprecated: Use top-level Notes field instead. Additional note for the service order'
+              type: string
           type: object
-        seen_at:
-          description: The timestamp of the user's last activity in the system.
-          type: string
-        switch_id:
-          description: The switch id for the user.
-          type: string
-        target_daily:
-          description: Daily sales target for the user.
-          type:
-          - number
-          - 'null'
-        target_monthly:
-          description: Monthly sales target for the user.
-          type:
-          - number
-          - 'null'
-        target_weekly:
-          description: Weekly sales target for the user.
-          type:
-          - number
-          - 'null'
-        time_until_deletion:
-          description: The time until the user is deleted.
+        item:
+          description: Service item and its details
+          properties:
+            description:
+              description: Item description
+              type: string
+            initial_condition:
+              description: Item's initial condition
+              type: string
+            item_id:
+              description: ID of an already existing item
+              format: uuid
+              type: string
+            item_name:
+              description: Item name
+              type: string
+            serial_number:
+              description: Item serial number
+              type: string
+          type: object
+        job_status_id:
+          description: The ID of a custom service status to assign to this order. When provided, overrides the `status` field.
           type:
           - string
           - 'null'
-        updated_at:
-          description: Last update timestamp in UTC.
+        location:
+          description: Location where the service will be performed
           type: string
-        username:
-          description: User's username used for login.
+        notes:
+          description: Notes associated with the service order
+          items:
+            properties:
+              body:
+                description: The body of the note
+                type: string
+              created_at:
+                description: The date and time when the note was created (possible to pre-date the note)
+                format: date-time
+                type: string
+              is_visible_to_customer:
+                default: false
+                description: Whether the note is visible to customer (printed on the service receipt or not)
+                type: boolean
+            type: object
+          type: array
+        outlet_id:
+          description: The outlet of the service order
+          format: uuid
           type: string
-        version:
-          description: Auto-incrementing object version number.
-          format: int64
-          type: integer
+        register_id:
+          description: The register of the service order
+          format: uuid
+          type: string
+        status:
+          default: NEW
+          description: The status of the service order
+          type: string
       required:
-      - account_type
-      - created_at
-      - id
-      - is_primary_user
-      - updated_at
-      - username
-      - version
-      title: User
+      - outlet_id
+      - register_id
+      - customer_id
+      type: object
+    Role:
+      properties:
+        id:
+          description: Auto-generated object ID.
+          type: string
+        name:
+          description: The Role name.
+          type: string
+        system_role_id:
+          description: A system role id of the Role. Will be either '100', '200', or '300'.
+          type: string
+      title: Role
       type: object
   securitySchemes:
     bearerAuth:

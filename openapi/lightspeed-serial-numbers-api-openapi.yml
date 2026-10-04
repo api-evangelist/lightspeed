@@ -194,6 +194,12 @@ components:
           type: integer
       title: SerialNumber
       type: object
+    SerialNumberResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SerialNumber'
+      title: Serial Number Response
+      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -231,12 +237,6 @@ components:
       - outlet_id
       - product_id
       title: Request to create a sale
-      type: object
-    SerialNumberResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/SerialNumber'
-      title: Serial Number Response
       type: object
   securitySchemes:
     bearerAuth:

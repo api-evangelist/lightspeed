@@ -168,33 +168,6 @@ paths:
       - Outlets
 components:
   schemas:
-    Attribute:
-      properties:
-        key:
-          description: The key for the attribute.
-          type: string
-        value:
-          description: The value for the attribute.
-          type: string
-      required:
-      - key
-      - value
-      title: Attribute
-      type: object
-    OutletCollection:
-      properties:
-        data:
-          description: An array of Outlet objects  wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Outlet'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Outlet Collection
-      type: object
     Outlet:
       properties:
         attributes:
@@ -309,6 +282,19 @@ components:
           $ref: '#/components/schemas/Outlet'
       title: Outlet Response
       type: object
+    Attribute:
+      properties:
+        key:
+          description: The key for the attribute.
+          type: string
+        value:
+          description: The value for the attribute.
+          type: string
+      required:
+      - key
+      - value
+      title: Attribute
+      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -327,6 +313,20 @@ components:
       required:
       - max
       - min
+      type: object
+    OutletCollection:
+      properties:
+        data:
+          description: An array of Outlet objects  wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Outlet'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Outlet Collection
       type: object
   securitySchemes:
     bearerAuth:

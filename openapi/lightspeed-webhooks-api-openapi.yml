@@ -185,6 +185,29 @@ paths:
       - Webhooks
 components:
   schemas:
+    WebhookRequest:
+      description: Webhook create/update request data.
+      properties:
+        active:
+          description: Whether this webhook is enabled or not
+          type: boolean
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          description: The URL to send webhooks to
+          minLength: 3
+          type: string
+      required:
+      - active
+      - type
+      - url
+      title: WebhookRequest
+      type: object
+      x-examples:
+        example-1:
+          active: true
+          type: sale.update
+          url: string
     WebhookType:
       description: 'The webhook type. These can be one of:
 
@@ -215,29 +238,6 @@ components:
       type: string
       x-examples:
         example-1: sale.update
-    WebhookRequest:
-      description: Webhook create/update request data.
-      properties:
-        active:
-          description: Whether this webhook is enabled or not
-          type: boolean
-        type:
-          $ref: '#/components/schemas/WebhookType'
-        url:
-          description: The URL to send webhooks to
-          minLength: 3
-          type: string
-      required:
-      - active
-      - type
-      - url
-      title: WebhookRequest
-      type: object
-      x-examples:
-        example-1:
-          active: true
-          type: sale.update
-          url: string
     Webhook:
       description: The configuration for a webhook.
       properties:

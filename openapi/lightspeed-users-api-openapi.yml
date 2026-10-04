@@ -438,6 +438,48 @@ paths:
       - Users
 components:
   schemas:
+    UserResponse:
+      description: A response for a single user GET request.
+      properties:
+        data:
+          $ref: '#/components/schemas/User'
+      title: User Response
+      type: object
+    UserCollection:
+      properties:
+        data:
+          description: An array of users.
+          items:
+            $ref: '#/components/schemas/User'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: User Collection
+      type: object
+    UserImages:
+      description: On object containing URLs for different sizes of the user’s avatar.
+      properties:
+        original:
+          type: string
+        sl:
+          type: string
+        sm:
+          type: string
+        ss:
+          type: string
+        st:
+          type: string
+        standard:
+          type: string
+        thumb:
+          type: string
+      title: User Image
+      type:
+      - object
+      - 'null'
     User:
       properties:
         account_type:
@@ -579,27 +621,6 @@ components:
       - version
       title: User
       type: object
-    UserImages:
-      description: On object containing URLs for different sizes of the user’s avatar.
-      properties:
-        original:
-          type: string
-        sl:
-          type: string
-        sm:
-          type: string
-        ss:
-          type: string
-        st:
-          type: string
-        standard:
-          type: string
-        thumb:
-          type: string
-      title: User Image
-      type:
-      - object
-      - 'null'
     UserSaleTotalCollection:
       properties:
         cost:
@@ -641,35 +662,13 @@ components:
           type: number
       title: User Sale Total Collection
       type: object
-    UserResponse:
-      description: A response for a single user GET request.
-      properties:
-        data:
-          $ref: '#/components/schemas/User'
-      title: User Response
-      type: object
-    UserSaleTotalResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/UserSaleTotalCollection'
-          type: array
-      title: User Sale Total Response
-      type: object
-    UserCollection:
-      properties:
-        data:
-          description: An array of users.
-          items:
-            $ref: '#/components/schemas/User'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: User Collection
-      type: object
+    GetUsersByIdsRequest:
+      description: An array of user IDs to retrieve.
+      items:
+        format: uuid
+        type: string
+      title: GetUsersByIdsRequest
+      type: array
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -689,13 +688,6 @@ components:
       - max
       - min
       type: object
-    GetUsersByIdsRequest:
-      description: An array of user IDs to retrieve.
-      items:
-        format: uuid
-        type: string
-      title: GetUsersByIdsRequest
-      type: array
     Role:
       properties:
         id:
@@ -708,6 +700,14 @@ components:
           description: A system role id of the Role. Will be either '100', '200', or '300'.
           type: string
       title: Role
+      type: object
+    UserSaleTotalResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/UserSaleTotalCollection'
+          type: array
+      title: User Sale Total Response
       type: object
   securitySchemes:
     bearerAuth:

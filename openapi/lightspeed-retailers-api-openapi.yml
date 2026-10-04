@@ -42,13 +42,6 @@ paths:
       - Retailers
 components:
   schemas:
-    RetailerResponse:
-      description: A Retailer record wrapped in the top-level data object.
-      properties:
-        data:
-          $ref: '#/components/schemas/Retailer'
-      title: Retailer response
-      type: object
     Retailer:
       description: A Retailer record.
       properties:
@@ -163,6 +156,13 @@ components:
           description: Auto-incrementing object version number.
           type: string
       title: Retailer
+      type: object
+    RetailerResponse:
+      description: A Retailer record wrapped in the top-level data object.
+      properties:
+        data:
+          $ref: '#/components/schemas/Retailer'
+      title: Retailer response
       type: object
     RetailerCurrency:
       properties:

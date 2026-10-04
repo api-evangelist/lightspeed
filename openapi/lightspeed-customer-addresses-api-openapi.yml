@@ -331,15 +331,6 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    CustomerAddressCollection:
-      properties:
-        data:
-          description: An array of customer address objects.
-          items:
-            $ref: '#/components/schemas/CustomerAddress'
-          type: array
-      title: Customer Address Collection
-      type: object
     CustomerAddressResponse:
       properties:
         data:
@@ -484,6 +475,15 @@ components:
       - country_code
       - type
       title: Customer Address Base
+      type: object
+    CustomerAddressCollection:
+      properties:
+        data:
+          description: An array of customer address objects.
+          items:
+            $ref: '#/components/schemas/CustomerAddress'
+          type: array
+      title: Customer Address Collection
       type: object
   securitySchemes:
     bearerAuth:
