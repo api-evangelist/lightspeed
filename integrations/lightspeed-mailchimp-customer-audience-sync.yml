@@ -1,0 +1,84 @@
+arazzo: 1.0.1
+info:
+  title: Lightspeed Mailchimp Customer Audience Sync
+  summary: Add Lightspeed POS customers to a Mailchimp audience.
+  description: Lightspeed lists Mailchimp on its integrations marketplace. This workflow reads changed X-Series customers
+    and adds each to a Mailchimp audience (list) as a member.
+  version: 1.0.0
+sourceDescriptions:
+- name: lightspeedCustomers
+  url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/openapi/lightspeed-customers-api-openapi.yml
+  type: openapi
+- name: mailchimpLists
+  url: https://raw.githubusercontent.com/api-evangelist/mailchimp/refs/heads/main/openapi/mailchimp-lists-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lightspeed-mailchimp-customer-audience-sync
+  summary: Add Lightspeed POS customers to a Mailchimp audience.
+  inputs:
+    type: object
+    properties:
+      domain_prefix:
+        type: string
+      after:
+        type: integer
+        description: Lightspeed version cursor
+  steps:
+  - stepId: list-customers
+    description: Read changed Lightspeed X-Series customers since the version cursor.
+    operationId: $sourceDescriptions.lightspeedCustomers.ListCustomers
+    parameters:
+    - name: after
+      in: query
+      value: $inputs.after
+    - name: page_size
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      customers: $response.body#/data
+      email: $response.body#/data/0/email
+      first_name: $response.body#/data/0/first_name
+      last_name: $response.body#/data/0/last_name
+      phone: $response.body#/data/0/mobile
+      max_version: $response.body#/version/max
+  - stepId: add-member
+    description: Add the customer to the Mailchimp audience.
+    operationId: $sourceDescriptions.mailchimpLists.postListsIdMembers
+    parameters:
+    - name: list_id
+      in: path
+      value: $inputs.list_id
+    requestBody:
+      contentType: application/json
+      payload:
+        email_address: $steps.list-customers.outputs.email
+        status: subscribed
+        merge_fields:
+          FNAME: $steps.list-customers.outputs.first_name
+          LNAME: $steps.list-customers.outputs.last_name
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      member_id: $response.body#/id
+  outputs:
+    member_id: $steps.add-member.outputs.member_id
+    next_after: $steps.list-customers.outputs.max_version
+x-integration:
+  partner: mailchimp
+  edge_evidence: https://www.lightspeedhq.com/integrations/
+  edge_type: claimed
+  category: Marketing
+  relationship: workflow
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (local-v5 enrichment)
+  guessed_steps:
+  - step: list-customers
+    cause: provider-contract
+    why: collection response documented by example; version.max cursor path not in a schema
+  - step: add-member
+    cause: partner-contract
+    why: idempotent upsert (putListsIdMembersId) needs an MD5 subscriber_hash Arazzo cannot compute, so the create operation
+      is used and a repeat run returns Member Exists; Lightspeed do_not_email is not mapped to status

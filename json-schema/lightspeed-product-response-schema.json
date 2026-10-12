@@ -1,0 +1,739 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-product-response-schema.json",
+  "title": "Product Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-products-api-openapi.yml#/components/schemas/ProductResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/Product"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "BrandSample": {
+      "properties": {
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "title": "Brand Sample",
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "ImageSample": {
+      "properties": {
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "title": "Image Sample",
+      "type": "object"
+    },
+    "Product": {
+      "properties": {
+        "account_code": {
+          "description": "???",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "account_code_purchase": {
+          "description": "???",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "active": {
+          "description": "Indicated whether the Product is active.",
+          "type": "boolean"
+        },
+        "attributes": {
+          "description": "A list of attributes",
+          "items": {
+            "$ref": "#/$defs/ProductAttribute"
+          },
+          "type": "array"
+        },
+        "brand": {
+          "$ref": "#/$defs/BrandSample"
+        },
+        "brand_id": {
+          "description": "The brand ID.",
+          "format": "UUID",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "button_order": {
+          "description": "???",
+          "type": "integer"
+        },
+        "categories": {
+          "description": "A list of tag objects.",
+          "items": {
+            "$ref": "#/$defs/Tag"
+          },
+          "type": "array"
+        },
+        "composite_bom": {
+          "description": "A bill of materials object. This field is only relevant for composite products. It is a map of product ids to the quantity of each product that is needed to make up the composite product.",
+          "type": "object"
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": "string"
+        },
+        "customizations": {
+          "description": "A list of product family customization input fields.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "A detailed description of the Product. **Note** Can contain HTML.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dimensions_unit": {
+          "description": "Unit of measurement for product dimensions. These are used to calculate variable shipping rates for stores using Lightspeed eCom.",
+          "enum": [
+            "IN",
+            "CM",
+            "MM",
+            "YD"
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "family_id": {
+          "description": "This is a family identifier. All members of a product family will have the same identifier. In the future, this will replace the variant_parent_id as the family group identifier. This field is currently read-only.",
+          "format": "UUID",
+          "type": "string"
+        },
+        "handle": {
+          "description": "Product handle. **Note:** Variants share the same handle.",
+          "type": "string"
+        },
+        "has_inventory": {
+          "description": "Indicates whether inventory is being tracked for the Product.",
+          "type": "boolean"
+        },
+        "has_variants": {
+          "description": "Indicated whether product has variants.",
+          "type": "boolean"
+        },
+        "height": {
+          "description": "Product height. These are used to calculate variable shipping rates for stores using Lightspeed eCom.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "format": "UUID",
+          "type": "string"
+        },
+        "image_thumbnail_url": {
+          "type": "string"
+        },
+        "image_url": {
+          "type": "string"
+        },
+        "images": {
+          "description": "A list of image objects.",
+          "items": {
+            "$ref": "#/$defs/ImageSample"
+          },
+          "type": "array"
+        },
+        "is_composite": {
+          "description": "Indicates whether the Product is a composite one.",
+          "type": "boolean"
+        },
+        "length": {
+          "description": "Product length. These are used to calculate variable shipping rates for stores using Lightspeed eCom.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "loyalty_amount": {
+          "description": "The amount of loyalty the customer receives buying this item.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "Product name.",
+          "type": "string"
+        },
+        "outlet_taxes": {
+          "description": "A list of outlet-specific tax overrides. Only present when non-empty.",
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "packaging": {
+          "description": "Packaging relationships for this product.",
+          "properties": {
+            "breaks_into": {
+              "description": "Packages this product can be broken into.",
+              "items": {
+                "$ref": "#/$defs/ProductPackage"
+              },
+              "type": "array"
+            },
+            "made_from": {
+              "description": "Packages this product can be made from.",
+              "items": {
+                "$ref": "#/$defs/ProductPackage"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "price_excluding_tax": {
+          "description": "The price before tax is added.",
+          "type": "number"
+        },
+        "price_including_tax": {
+          "description": "The price including all the relevant taxes.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "product_category": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ProductCategory"
+            }
+          ],
+          "description": "The product category this product belongs to.",
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "product_codes": {
+          "description": "A list of product code objects.",
+          "items": {
+            "$ref": "#/$defs/ProductCode"
+          },
+          "type": "array"
+        },
+        "product_suppliers": {
+          "description": "A list of product supplier objects.",
+          "items": {
+            "$ref": "#/$defs/ProductSupplier"
+          },
+          "type": "array"
+        },
+        "product_type_id": {
+          "description": "The product type.",
+          "format": "UUID",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sku": {
+          "description": "Product sku. **Note:** Should be unique.",
+          "type": "string"
+        },
+        "skuImages": {
+          "description": "A list of variant-level image objects.",
+          "items": {
+            "$ref": "#/$defs/ImageSample"
+          },
+          "type": "array"
+        },
+        "source": {
+          "description": "Indicates the origin of the product. Can be USER, SHOPIFY.",
+          "type": "string"
+        },
+        "source_id": {
+          "description": "External reference ID.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_variant_id": {
+          "description": "Secondary external reference ID.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supplier": {
+          "$ref": "#/$defs/SupplierSample"
+        },
+        "supplier_code": {
+          "description": "Supplier code.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supplier_id": {
+          "description": "The supplier ID.",
+          "format": "UUID",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supply_price": {
+          "description": "Default supply price,",
+          "format": "double",
+          "type": "number"
+        },
+        "tag_ids": {
+          "description": "An array of tag IDs associated with this product.",
+          "items": {
+            "description": "A tag ID.",
+            "format": "UUID",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tax_category": {
+          "description": "Tax category identifier for the product.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "$ref": "#/$defs/ProductTypeSample"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        },
+        "variant_count": {
+          "description": "The number of variants for this product.",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "variant_name": {
+          "description": "The name of the variant product.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "variant_options": {
+          "description": "A list of variant option objects.",
+          "items": {
+            "$ref": "#/$defs/VariantOption"
+          },
+          "type": "array"
+        },
+        "variant_parent_id": {
+          "description": "This value is set if a Product is a variant of another Product.",
+          "format": "UUID",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "weight": {
+          "description": "Product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "weight_unit": {
+          "description": "Unit of measurement for product weight. These are used to calculate variable shipping rates for stores using Lightspeed eCom.",
+          "enum": [
+            "CT",
+            "G",
+            "OZ",
+            "LB",
+            "KG"
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "description": "Product width. These are used to calculate variable shipping rates for stores using Lightspeed eCom.",
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "handle",
+        "name",
+        "sku",
+        "active",
+        "is_composite",
+        "has_inventory",
+        "has_variants",
+        "version",
+        "variant_options",
+        "categories",
+        "tag_ids",
+        "images",
+        "skuImages",
+        "attributes",
+        "product_codes",
+        "product_suppliers",
+        "packaging",
+        "customizations",
+        "price_including_tax",
+        "price_excluding_tax"
+      ],
+      "title": "Product",
+      "type": "object"
+    },
+    "ProductAttribute": {
+      "properties": {
+        "name": {
+          "description": "The key for the attribute.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value for the attribute.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "Attribute",
+      "type": "object"
+    },
+    "ProductCategory": {
+      "properties": {
+        "category_path": {
+          "items": {
+            "$ref": "#/$defs/ProductCategoryPath"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The category id",
+          "format": "uuid",
+          "type": "string"
+        },
+        "leaf_category": {
+          "description": "True if the category does not have any more children (i.e. leaf).",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "The name of the category",
+          "type": "string"
+        },
+        "parent_category_id": {
+          "description": "The parent category id, or null if its root category.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "root_category_id": {
+          "description": "The category id of the root of the category tree. If category is a root, this will be itself.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProductCategoryPath": {
+      "properties": {
+        "id": {
+          "description": "Object id of the Product Type in the path.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The Product Type name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "Product Category Path",
+      "type": "object"
+    },
+    "ProductCode": {
+      "properties": {
+        "code": {
+          "description": "The sku code being added.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of code being added.",
+          "enum": [
+            "CUSTOM",
+            "EAN",
+            "ISBN",
+            "ITF",
+            "JAN",
+            "UPC"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "id"
+      ],
+      "title": "ProductCode",
+      "type": "object"
+    },
+    "ProductPackage": {
+      "properties": {
+        "amount": {
+          "description": "The quantity involved in the packaging relationship.",
+          "type": "number"
+        },
+        "destination_product_id": {
+          "description": "The ID of the destination product (present in breaks_into entries).",
+          "format": "UUID",
+          "type": "string"
+        },
+        "package_id": {
+          "description": "Auto-generated package ID.",
+          "format": "UUID",
+          "type": "string"
+        },
+        "source_product_id": {
+          "description": "The ID of the source product (present in made_from entries).",
+          "format": "UUID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "package_id",
+        "amount"
+      ],
+      "type": "object"
+    },
+    "ProductSupplier": {
+      "properties": {
+        "code": {
+          "description": "The code associated with this supplier.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "format": "UUID",
+          "type": "string"
+        },
+        "price": {
+          "description": "The price associated with this supplier.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "product_id": {
+          "description": "The ID of the product.",
+          "format": "UUID",
+          "type": "string"
+        },
+        "supplier_id": {
+          "description": "The ID of the supplier.",
+          "format": "UUID",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supplier_name": {
+          "description": "The name of the supplier.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "product_id",
+        "supplier_id",
+        "supplier_name"
+      ],
+      "title": "Product Supplier",
+      "type": "object"
+    },
+    "ProductTypeSample": {
+      "properties": {
+        "category_path": {
+          "description": "The path of this product type (now product category) in the hierarchy.",
+          "items": {
+            "$ref": "#/$defs/ProductCategoryPath"
+          },
+          "type": "array"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "leaf_category": {
+          "description": "Is this product type (now product category) at the bottom of the hierarchy.",
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "title": "Product Type Sample",
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "SupplierSample": {
+      "properties": {
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "Supplier Sample",
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "Tag": {
+      "properties": {
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The Tag name.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "title": "Tag",
+      "type": "object"
+    },
+    "VariantOption": {
+      "properties": {
+        "name": {
+          "description": "The Variant Option name.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value of a Variant Option.",
+          "type": "string"
+        }
+      },
+      "title": "Variant Option",
+      "type": "object"
+    }
+  }
+}

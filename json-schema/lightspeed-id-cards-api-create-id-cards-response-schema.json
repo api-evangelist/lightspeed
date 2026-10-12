@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-id-cards-api-create-id-cards-response-schema.json",
+  "title": "id-cards-apiCreateIdCardsResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-id-cards-api-openapi.yml#/components/schemas/id-cards-apiCreateIdCardsResponse",
+  "type": "object",
+  "properties": {
+    "batchId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique identifier for the batch the cards were added to."
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id-cards-apiCardReference"
+      }
+    }
+  },
+  "$defs": {
+    "id-cards-apiCardReference": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the ID card."
+        },
+        "consumerRecordId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the associated consumer record."
+        },
+        "consumerId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the associated consumer."
+        },
+        "url": {
+          "type": "string",
+          "description": "The URL for the QR code associated with the ID card."
+        }
+      }
+    }
+  }
+}

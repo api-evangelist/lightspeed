@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-ape-account-snapshot-schema.json",
+  "title": "apeAccountSnapshot",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-order-and-pay-api-openapi.yml#/components/schemas/apeAccountSnapshot",
+  "type": "object",
+  "properties": {
+    "clientCount": {
+      "type": "integer",
+      "format": "int32",
+      "description": "The number of guests at the table."
+    },
+    "identifier": {
+      "type": "string",
+      "deprecated": true
+    },
+    "uuid": {
+      "type": "string",
+      "description": "The account uuid."
+    },
+    "openDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date this account was opened in UTC."
+    },
+    "closeDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date this account was closed in UTC."
+    },
+    "paidAmount": {
+      "type": "number",
+      "description": "The total of all payments on the check."
+    },
+    "serviceCharge": {
+      "type": "number",
+      "description": "The service charge applied to the check."
+    },
+    "name": {
+      "type": "string",
+      "description": "The check name."
+    },
+    "currentAmount": {
+      "type": "number",
+      "description": "The current total amount on the check."
+    },
+    "staffName": {
+      "type": "string",
+      "description": "The name of the staff member assigned to the check."
+    },
+    "staffId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique ID of the staff member assigned to the check."
+    },
+    "salesEntries": {
+      "type": "array",
+      "description": "Collection of check items.",
+      "items": {
+        "$ref": "#/$defs/apeAccountLineItem"
+      }
+    },
+    "paymentEntries": {
+      "type": "array",
+      "description": "Collection of payment entries to the check.",
+      "items": {
+        "$ref": "#/$defs/apeAccountPaymentLine"
+      }
+    },
+    "id": {
+      "type": "string",
+      "deprecated": true
+    },
+    "ikaccountId": {
+      "type": "string",
+      "description": "The system-generated account identifier for this check.(Applies to iKentoo V3+)."
+    },
+    "number": {
+      "type": "integer",
+      "format": "int32",
+      "deprecated": true
+    },
+    "tableNumber": {
+      "type": "integer",
+      "format": "int32",
+      "description": "The table number assigned to the check."
+    },
+    "posId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique ID of the POS station that processed the check."
+    },
+    "deviceId": {
+      "type": "integer",
+      "format": "int64",
+      "deprecated": true
+    }
+  },
+  "$defs": {
+    "apeAccountLineItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique ID assigned to the sale line."
+        },
+        "uuid": {
+          "type": "string",
+          "description": "The UUID assigned to the sale line."
+        },
+        "itemName": {
+          "type": "string",
+          "description": "The name given to the item."
+        },
+        "itemSku": {
+          "type": "string",
+          "description": "The SKU assigned to the item."
+        },
+        "unitAmount": {
+          "type": "number",
+          "description": "The price per unit."
+        },
+        "quantity": {
+          "type": "number",
+          "format": "double",
+          "description": "The quantity of the item for this sale line."
+        },
+        "modifiers": {
+          "type": "array",
+          "description": "The modifiers of the item for this sale line.",
+          "items": {
+            "$ref": "#/$defs/apeModifier"
+          }
+        },
+        "amountWithTax": {
+          "type": "number",
+          "description": "The total price of the item including tax."
+        },
+        "amountLessTax": {
+          "type": "number",
+          "description": "The total price of the item without tax."
+        },
+        "discountedAmount": {
+          "type": "number",
+          "description": "The amount the item was discounted."
+        },
+        "timeOfTransactionUtc": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time in UTC when the transaction occurred."
+        },
+        "active": {
+          "type": "boolean",
+          "deprecated": true
+        },
+        "parentId": {
+          "type": "integer",
+          "format": "int64",
+          "writeOnly": true
+        },
+        "subLineItems": {
+          "type": "array",
+          "description": "Collection of sub-line items associated with this sale line.",
+          "items": {
+            "$ref": "#/$defs/apeAccountLineItem"
+          }
+        },
+        "isTaxIncluded": {
+          "type": "boolean",
+          "writeOnly": true
+        },
+        "taxIncluded": {
+          "type": "boolean",
+          "description": "Indicates whether tax is included in the unit amount."
+        }
+      }
+    },
+    "apeAccountPaymentLine": {
+      "type": "object",
+      "properties": {
+        "paymentMethodDescription": {
+          "type": "string",
+          "description": "Payment method for this payment line."
+        },
+        "externalReference": {
+          "type": "string",
+          "description": "Payment external reference."
+        },
+        "paymentMethodCode": {
+          "type": "string",
+          "description": "Payment method code for this payment line."
+        },
+        "amountPaid": {
+          "type": "number",
+          "description": "Amount paid for this payment line."
+        },
+        "paymentDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date/Time in UTC of this payment."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether this payment line is active or not."
+        },
+        "accountCancelled": {
+          "type": "boolean",
+          "writeOnly": true
+        }
+      },
+      "description": "Payments associated with this check."
+    },
+    "apeModifier": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the modifier.",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "The quantity of the modifier.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "The modifiers of the item for this sale line"
+    }
+  }
+}

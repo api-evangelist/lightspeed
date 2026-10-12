@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-teckel-rich-item-description-dto-schema.json",
+  "title": "teckelRichItemDescriptionDto",
+  "description": "Stores an item description with its locale code.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-rich-item-api-openapi.yml#/components/schemas/teckelRichItemDescriptionDto",
+  "properties": {
+    "localeCode": {
+      "description": "The language code (ISO 639) of the description.",
+      "minLength": 2,
+      "maxLength": 7,
+      "nullable": false,
+      "type": "string"
+    },
+    "description": {
+      "description": "The item description in the language of the locale.",
+      "maxLength": 4000,
+      "type": "string"
+    },
+    "displayName": {
+      "description": "The display name of the item in the language of the locale.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "localeCode"
+  ],
+  "type": "object"
+}

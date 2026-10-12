@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-id-cards-api-id-card-batch-schema.json",
+  "title": "id-cards-apiIdCardBatch",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-id-cards-api-openapi.yml#/components/schemas/id-cards-apiIdCardBatch",
+  "type": "object",
+  "properties": {
+    "batchId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique identifier for the ID card batch."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the ID card batch."
+    },
+    "businessLocationId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique identifier for the business location this batch belongs to."
+    }
+  }
+}

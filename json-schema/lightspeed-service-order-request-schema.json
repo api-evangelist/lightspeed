@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-service-order-request-schema.json",
+  "title": "ServiceOrderRequest",
+  "description": "Request payload for creating a service order",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-service-orders-api-openapi.yml#/components/schemas/ServiceOrderRequest",
+  "properties": {
+    "assigned_user_id": {
+      "description": "The user assigned to work on the service order",
+      "format": "uuid",
+      "type": "string"
+    },
+    "customer_id": {
+      "description": "The customer associated with the service",
+      "format": "uuid",
+      "type": "string"
+    },
+    "extra_fields": {
+      "deprecated": true,
+      "description": "Deprecated. Additional custom fields for the service order",
+      "properties": {
+        "location": {
+          "deprecated": true,
+          "description": "Deprecated: Use top-level location field instead. Location where the service will be performed",
+          "type": "string"
+        },
+        "note": {
+          "deprecated": true,
+          "description": "Deprecated: Use top-level Notes field instead. Additional note for the service order",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "item": {
+      "description": "Service item and its details",
+      "properties": {
+        "description": {
+          "description": "Item description",
+          "type": "string"
+        },
+        "initial_condition": {
+          "description": "Item's initial condition",
+          "type": "string"
+        },
+        "item_id": {
+          "description": "ID of an already existing item",
+          "format": "uuid",
+          "type": "string"
+        },
+        "item_name": {
+          "description": "Item name",
+          "type": "string"
+        },
+        "serial_number": {
+          "description": "Item serial number",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "job_status_id": {
+      "description": "The ID of a custom service status to assign to this order. When provided, overrides the `status` field.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "location": {
+      "description": "Location where the service will be performed",
+      "type": "string"
+    },
+    "notes": {
+      "description": "Notes associated with the service order",
+      "items": {
+        "properties": {
+          "body": {
+            "description": "The body of the note",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date and time when the note was created (possible to pre-date the note)",
+            "format": "date-time",
+            "type": "string"
+          },
+          "is_visible_to_customer": {
+            "default": false,
+            "description": "Whether the note is visible to customer (printed on the service receipt or not)",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "outlet_id": {
+      "description": "The outlet of the service order",
+      "format": "uuid",
+      "type": "string"
+    },
+    "register_id": {
+      "description": "The register of the service order",
+      "format": "uuid",
+      "type": "string"
+    },
+    "status": {
+      "default": "NEW",
+      "description": "The status of the service order",
+      "type": "string"
+    }
+  },
+  "required": [
+    "outlet_id",
+    "register_id",
+    "customer_id"
+  ],
+  "type": "object"
+}

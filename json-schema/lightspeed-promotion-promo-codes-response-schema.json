@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-promotion-promo-codes-response-schema.json",
+  "title": "Promotion Promo Codes response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-promotions-api-openapi.yml#/components/schemas/PromotionPromoCodesResponse",
+  "properties": {
+    "data": {
+      "description": "An array of promotion promo codes.",
+      "items": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "created_user_id": {
+            "type": "string"
+          },
+          "group_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "promotion_id": {
+            "type": "string"
+          },
+          "redeemed": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  }
+}

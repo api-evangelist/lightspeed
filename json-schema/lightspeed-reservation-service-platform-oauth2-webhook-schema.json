@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-reservation-service-platform-oauth2-webhook-schema.json",
+  "title": "reservation-servicePlatformOAuth2Webhook",
+  "description": "The OAuth2 credentials that will be sent with the webhook notifications. See [OAuth 2.0](https://oauth.net/2/).",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-reservations-for-platforms-api-openapi.yml#/components/schemas/reservation-servicePlatformOAuth2Webhook",
+  "properties": {
+    "authorizationGrantType": {
+      "default": "CLIENT_CREDENTIALS",
+      "description": "The authorization grant type. See [OAuth2 Grant Types](https://oauth.net/2/grant-types/).",
+      "enum": [
+        "CLIENT_CREDENTIALS"
+      ],
+      "type": "string"
+    },
+    "clientAuthorizationMethod": {
+      "default": "CLIENT_SECRET_BASIC",
+      "description": "The client authorization method. See [OAuth2 Client Authentication](https://oauth.net/2/client-authentication/).",
+      "enum": [
+        "CLIENT_SECRET_BASIC",
+        "CLIENT_SECRET_JWT",
+        "CLIENT_SECRET_POST"
+      ],
+      "type": "string"
+    },
+    "clientId": {
+      "description": "The OAuth2 client ID.",
+      "type": "string"
+    },
+    "clientName": {
+      "description": "The OAuth2 client name.",
+      "type": "string"
+    },
+    "clientSecret": {
+      "description": "The OAuth2 client secret.",
+      "format": "password",
+      "type": "string"
+    },
+    "providerJwkSetUri": {
+      "description": "The external platform URL for getting public keys to verify given access tokens on the K-Series side.",
+      "format": "uri",
+      "type": "string"
+    },
+    "providerTokenUri": {
+      "description": "The external platform URL for getting access tokens by private credentials.",
+      "format": "uri",
+      "type": "string"
+    },
+    "scopes": {
+      "description": "The scopes being granted to the API client.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "clientId",
+    "clientSecret",
+    "providerTokenUri"
+  ],
+  "type": "object"
+}

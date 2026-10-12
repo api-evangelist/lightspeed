@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-consignment-request-schema.json",
+  "title": "Consignment Request",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-consignments-api-openapi.yml#/components/schemas/ConsignmentRequest",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/Consignment"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "Consignment": {
+      "properties": {
+        "consignment_date": {
+          "description": "11-28T19:02:15+00:00 (timestamp) - Consignment creation date.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "due_at": {
+          "description": "11-30T19:08:541+00:00 (timestamp) - Due date.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": {
+          "description": "Tue 29 Nov 2016 (string) - Consignment name. For orders, the note field in the UI will be the name value.",
+          "type": "string"
+        },
+        "outlet_id": {
+          "description": "A valid ID of an outlet where stock will be received.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "received_at": {
+          "description": "11-30T19:08:541+00:00 (timestamp) - The date when consignment was received.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reference": {
+          "description": "Order number.+ `total_count_gain` (number)",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_outlet_id": {
+          "description": "A valid ID of an outlet where stock will come from. **Stock transfers only**.",
+          "format": "uuid",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "description": "* Supplier Order: One of `OPEN`, `SENT`, `DISPATCHED`, `RECEIVED`, `CANCELLED`\n* Outlet Transfer: One of `OPEN`, `SENT`, `RECEIVED`, `CANCELLED`\n* Return Order: One of `OPEN`, `SENT`, `CANCELLED`\n* Stocktake: One of `STOCKTAKE_SCHEDULED`, `STOCKTAKE_IN_PROGRESS`, `STOCKTAKE_IN_PROGRESS_PROCESSED`, `STOCKTAKE_COMPLETE`, `CLOSED`, `CANCELLED`\nThis is not a definitive list and may be extended in future\n",
+          "enum": [
+            "OPEN",
+            "SENT",
+            "DISPATCHED",
+            "RECEIVED",
+            "STOCKTAKE_IN_PROGRESS",
+            "STOCKTAKE_SCHEDULED",
+            "STOCKTAKE_IN_PROGRESS_PROCESSED",
+            "STOCKTAKE_COMPLETE",
+            "CLOSED",
+            "CANCELLED"
+          ],
+          "type": "string"
+        },
+        "supplier_id": {
+          "description": "a valid supplier ID.",
+          "format": "uuid",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supplier_invoice": {
+          "description": "Supplier invoice number.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "total_cost_gain": {
+          "description": "The cost of items over the expected level.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "total_cost_loss": {
+          "description": "The cost of items below the expected level.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "total_count_gain": {
+          "description": "The number of items over the expected level.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "total_count_loss": {
+          "description": "The number of items below the expected level.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "type": {
+          "description": "One of `SUPPLIER`, `OUTLET`, `STOCKTAKE`, `RETURN`.",
+          "enum": [
+            "SUPPLIER",
+            "OUTLET",
+            "STOCKTAKE",
+            "RETURN"
+          ],
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "outlet_id",
+        "type"
+      ],
+      "title": "Consignment",
+      "type": "object"
+    }
+  }
+}

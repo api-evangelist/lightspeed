@@ -1,0 +1,572 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-financial-api-sales-daily-export-dto-schema.json",
+  "title": "financial-apiSalesDailyExportDto",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-financialv2-api-openapi.yml#/components/schemas/financial-apiSalesDailyExportDto",
+  "type": "object",
+  "properties": {
+    "sales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/financial-apiSale"
+      },
+      "description": "Array of sale objects.",
+      "nullable": false
+    },
+    "nextStartOfDayAsIso8601": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start of next business day, in the merchant's local time."
+    },
+    "dataComplete": {
+      "type": "boolean",
+      "description": "Whether or not the data is complete for the requested day."
+    }
+  },
+  "$defs": {
+    "financial-apiAccountLink": {
+      "type": "object",
+      "properties": {
+        "initialAccountId": {
+          "type": "string",
+          "description": "The `accountFiscId` of the initial transaction associated with the current account, if applicable. For example, in the case of a refund.\n\nThis will match the `accountFiscId` of the sale if there is no associated account."
+        },
+        "previousAccountId": {
+          "type": "string",
+          "description": "The `accountFiscId` of the previous transaction associated with the current account, if applicable. For example, in the case of a refund.\n\nThis may be different from `initialAccountId` if there is more than one associated account.\n\nIt will not be displayed if there is no associated account."
+        }
+      }
+    },
+    "financial-apiAccountingGroup": {
+      "type": "object",
+      "properties": {
+        "accountingGroupId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the item's accounting group."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the accounting group."
+        },
+        "statisticGroup": {
+          "type": "string",
+          "description": "The accounting group's statistic group."
+        },
+        "code": {
+          "type": "string",
+          "description": "The code assigned to the accounting group."
+        }
+      }
+    },
+    "financial-apiCategory": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "The line item's category."
+        },
+        "value": {
+          "type": "string",
+          "description": "The category value."
+        }
+      }
+    },
+    "financial-apiConsumer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The UUID of the customer associated with the payment, if applicable."
+        },
+        "customerId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the customer."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title or honorific of the customer."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the customer."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the customer."
+        },
+        "phoneNumber1": {
+          "type": "string",
+          "description": "The primary phone number of the customer."
+        },
+        "phoneNumber2": {
+          "type": "string",
+          "description": "An alternative phone number for the customer."
+        },
+        "companyName": {
+          "type": "string",
+          "description": "The name of the company associated with the customer, if applicable."
+        },
+        "addressLine1": {
+          "type": "string",
+          "description": "The primary address line for the customer's address."
+        },
+        "addressLine2": {
+          "type": "string",
+          "description": "The secondary address line for the customer's address, such as apartment or suite number."
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "The postal code for the customer's address."
+        },
+        "city": {
+          "type": "string",
+          "description": "The city of the customer's address."
+        },
+        "state": {
+          "type": "string",
+          "description": "The state or region of the customer's address."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the customer."
+        },
+        "taxIdentifier": {
+          "type": "string",
+          "description": "The tax identifier of the customer."
+        },
+        "fiscalCode": {
+          "type": "string",
+          "description": "The fiscal code of the customer."
+        },
+        "destinationCode": {
+          "type": "string",
+          "description": "The destination code of the customer."
+        }
+      }
+    },
+    "financial-apiLine": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The sale line identifier."
+        },
+        "parentLineId": {
+          "type": "string",
+          "description": "The sale line this item is associated with, if applicable."
+        },
+        "totalNetAmountWithTax": {
+          "type": "string",
+          "description": "Total amount of sale line, including tax. **Important Note:** This field is for use with tax inclusive businesses.\nFor tax exclusive businesses, see `taxAmount` and `taxLines` for tax calculations.\nThe value is precise up to six decimal places."
+        },
+        "totalNetAmountWithoutTax": {
+          "type": "string",
+          "description": "The total amount of the sale line, before tax. The value is precise up to six decimal places."
+        },
+        "menuListPrice": {
+          "type": "string",
+          "description": "The price listed on the menu."
+        },
+        "unitCostPrice": {
+          "type": "string",
+          "description": "The unit cost price."
+        },
+        "serviceCharge": {
+          "type": "string",
+          "description": "The service charge."
+        },
+        "serviceChargeType": {
+          "$ref": "#/$defs/financial-apiServiceChargeType"
+        },
+        "serviceChargeRate": {
+          "type": "string",
+          "description": "The service charge rate, as a percentage. The value is precise up to two decimal places."
+        },
+        "discountAmount": {
+          "type": "string",
+          "description": "The discount amount. The value is precise up to six decimal places."
+        },
+        "taxCode": {
+          "type": "string",
+          "description": "The system code for the tax rate."
+        },
+        "taxAmount": {
+          "type": "string",
+          "description": "The tax total."
+        },
+        "taxRatePercentage": {
+          "type": "string",
+          "description": "The tax rate, as a percentage. The value is precise up to two decimal places."
+        },
+        "taxLines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/financial-apiTaxLine"
+          }
+        },
+        "discountType": {
+          "type": "string",
+          "description": "The type of discount."
+        },
+        "discountCode": {
+          "type": "string",
+          "description": "The discount code."
+        },
+        "discountName": {
+          "type": "string",
+          "description": "The name of the discount."
+        },
+        "accountDiscountAmount": {
+          "type": "string",
+          "description": "The account discount amount. The value is precise up to two decimal places."
+        },
+        "accountDiscountType": {
+          "type": "string",
+          "description": "The account discount type (if any)."
+        },
+        "accountDiscountCode": {
+          "type": "string",
+          "description": "The account discount code (if any)."
+        },
+        "accountDiscountName": {
+          "type": "string",
+          "description": "The account discount name (if any)."
+        },
+        "totalDiscountAmount": {
+          "type": "string",
+          "description": "The total discount amount. The value is precise up to two decimal places."
+        },
+        "sku": {
+          "type": "string",
+          "description": "The item SKU."
+        },
+        "name": {
+          "type": "string",
+          "description": "The item name."
+        },
+        "nameOverride": {
+          "type": "string",
+          "description": "Item name entered manually by the POS user upon item selection."
+        },
+        "statisticGroup": {
+          "type": "string",
+          "description": "The item's statistic group."
+        },
+        "quantity": {
+          "type": "string",
+          "description": "The quantity of the item sold, which can potentially be a fractional value,\nespecially in cases where the item is sold by weight. The value is precise up to three\ndecimal places."
+        },
+        "accountingGroup": {
+          "$ref": "#/$defs/financial-apiAccountingGroup"
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency for the sale line."
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "description": "The tags attached to the line item."
+        },
+        "revenueCenter": {
+          "type": "string",
+          "description": "The name of the revenue center where the sale line was created."
+        },
+        "revenueCenterId": {
+          "format": "int64",
+          "type": "integer",
+          "description": "The unique identifier for the revenue center where the sale line was created."
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/financial-apiCategory"
+          }
+        },
+        "timeOfSale": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of when the line item was created."
+        },
+        "staffId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the user who created the line item."
+        },
+        "staffName": {
+          "type": "string",
+          "description": "The name of the user who created the line item."
+        },
+        "deviceId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the device where the sale line was created."
+        },
+        "deviceName": {
+          "type": "string",
+          "description": "The name of the device where the sale line was created."
+        },
+        "voidReason": {
+          "type": "string",
+          "description": "The void reason, if applicable."
+        },
+        "accountProfileCode": {
+          "type": "string",
+          "description": "The code of the account profile used."
+        }
+      }
+    },
+    "financial-apiPayment": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The code of the payment method."
+        },
+        "description": {
+          "type": "string",
+          "description": "The name of the payment method."
+        },
+        "paymentMethodId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the payment method."
+        },
+        "netAmountWithTax": {
+          "type": "string",
+          "description": "The net payment amount, including tax. The value is precise up to two decimal places, and if necessary, it is rounded using the \"half-even\" rounding mode."
+        },
+        "currency": {
+          "type": "string",
+          "description": "The payment currency."
+        },
+        "tip": {
+          "type": "string",
+          "description": "The tip amount. The value is precise up to two decimal places, and if necessary, it is rounded using the \"half-even\" rounding mode."
+        },
+        "consumer": {
+          "$ref": "#/$defs/financial-apiConsumer"
+        },
+        "type": {
+          "description": "The type of payment",
+          "enum": [
+            "NORMAL",
+            "ACCOUNTS_RECEIVABLE"
+          ],
+          "type": "string"
+        },
+        "deviceId": {
+          "type": "string",
+          "description": "The unique identifier for the device where the payment was processed."
+        },
+        "deviceName": {
+          "type": "string",
+          "description": "The name of the device where the payment was processed."
+        },
+        "staffId": {
+          "type": "number",
+          "description": "The unique identifier for the user who processed the payment."
+        },
+        "staffName": {
+          "type": "string",
+          "description": "The name of the user who processed the payment."
+        },
+        "authorization": {
+          "type": "string",
+          "description": "The authorization code for the payment."
+        },
+        "externalReference": {
+          "type": "string",
+          "description": "The external reference code for the payment."
+        },
+        "revenueCenter": {
+          "type": "string",
+          "description": "The name of the revenue center where the payment was processed."
+        },
+        "revenueCenterId": {
+          "type": "number",
+          "description": "The unique identifier for the revenue center where the payment was processed."
+        },
+        "fiscId": {
+          "type": "string",
+          "description": "The unique identifier for the payment."
+        },
+        "uuid": {
+          "type": "string",
+          "description": "The base64url encoded UUID of the payment."
+        },
+        "fiscDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time stamp of the payment."
+        },
+        "surcharge": {
+          "type": "string",
+          "description": "The surcharge amount. The value is precise up to two decimal places, and if necessary, it is rounded using the \"half-even\" rounding mode."
+        },
+        "roundingAmount": {
+          "type": "string",
+          "description": "The cash rounding adjustment applied to the payment, in countries where cash payments are legally rounded (for example Belgium, where cash totals are rounded to the nearest 5 cents). It is the difference between the rounded amount actually paid (netAmountWithTax) and the amount payable before rounding. The value is negative when the amount was rounded down, positive when it was rounded up and \"0.00\" when no rounding was applied. The value is precise up to two decimal places"
+        }
+      }
+    },
+    "financial-apiSale": {
+      "type": "object",
+      "properties": {
+        "accountReference": {
+          "type": "string",
+          "description": "Unique reference id of the account."
+        },
+        "accountFiscId": {
+          "type": "string",
+          "description": "The account identifier."
+        },
+        "receiptId": {
+          "type": "string",
+          "description": "The unique identifier for the receipt associated with this account."
+        },
+        "source": {
+          "$ref": "#/$defs/financial-apiAccountLink"
+        },
+        "salesLines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/financial-apiLine"
+          }
+        },
+        "payments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/financial-apiPayment"
+          }
+        },
+        "timeOfOpening": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The account creation timestamp."
+        },
+        "timeClosed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The account close timestamp."
+        },
+        "cancelled": {
+          "type": "boolean",
+          "description": "Whether the account was cancelled."
+        },
+        "externalFiscalNumber": {
+          "type": "string",
+          "description": "The external reference id of the account."
+        },
+        "tableNumber": {
+          "type": "string",
+          "description": "The table number."
+        },
+        "tableName": {
+          "type": "string",
+          "description": "The name of the table."
+        },
+        "accountProfileCode": {
+          "type": "string",
+          "description": "The account profile associated with the account."
+        },
+        "ownerName": {
+          "type": "string",
+          "description": "The name of the user associated with the account."
+        },
+        "ownerId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the user associated with the account."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of sale.",
+          "enum": [
+            "SALE",
+            "VOID",
+            "RECALL",
+            "REFUND",
+            "SPLIT",
+            "UPDATE",
+            "TRANSFER",
+            "FLOAT",
+            "TRANSITORY",
+            "CROSS_BL",
+            "CANCEL"
+          ]
+        },
+        "externalReferences": {
+          "items": {
+            "type": "string",
+            "description": "List of external references for online orders. Includes the TASK prefix, `businessLocationId`, and the unique reference code provided in the [`thirdPartyReference`](https://api-docs.lsk.lightspeed.app/operation/operation-apelocalorder#operation-apelocalorder-body-application-json-thirdpartyreference) field of an online order."
+          },
+          "type": "array"
+        },
+        "nbCovers": {
+          "type": "number",
+          "format": "double",
+          "description": "The number of covers."
+        },
+        "dineIn": {
+          "type": "boolean",
+          "description": "Whether the order is dine-in."
+        },
+        "deviceId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the device where the account was created."
+        },
+        "deviceName": {
+          "type": "string",
+          "description": "The name of the device where the account was created."
+        },
+        "voidReason": {
+          "type": "string",
+          "description": "The void reason, if applicable."
+        }
+      }
+    },
+    "financial-apiServiceChargeType": {
+      "type": "string",
+      "description": "The type of service charge applied to the sale line.",
+      "enum": [
+        "UNTAXED",
+        "APPORTIONED",
+        "NO_SERVICE_CHARGE"
+      ]
+    },
+    "financial-apiTaxLine": {
+      "type": "object",
+      "properties": {
+        "taxId": {
+          "type": "string",
+          "description": "The unique identifier for the tax rate."
+        },
+        "taxCode": {
+          "type": "string",
+          "description": "The system code for the tax rate."
+        },
+        "taxRate": {
+          "type": "string",
+          "description": "The tax rate, as a multiplier."
+        },
+        "taxAmount": {
+          "type": "string",
+          "description": "The tax total."
+        },
+        "taxIncluded": {
+          "type": "boolean",
+          "description": "Whether or not the business is tax inclusive."
+        }
+      }
+    }
+  }
+}

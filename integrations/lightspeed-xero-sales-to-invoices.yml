@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Lightspeed Xero Sales to Invoices
+  summary: Post Lightspeed POS sales to Xero as invoices.
+  description: Lightspeed lists Xero on its integrations marketplace under Accounting. This workflow reads changed X-Series
+    sales and creates a matching Xero sales invoice.
+  version: 1.0.0
+sourceDescriptions:
+- name: lightspeedSales
+  url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/openapi/lightspeed-sales-api-openapi.yml
+  type: openapi
+- name: xeroAccounting
+  url: https://raw.githubusercontent.com/api-evangelist/xero/refs/heads/main/openapi/xero-accounting-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lightspeed-xero-sales-to-invoices
+  summary: Post Lightspeed POS sales to Xero as invoices.
+  inputs:
+    type: object
+    properties:
+      domain_prefix:
+        type: string
+      after:
+        type: integer
+        description: Lightspeed version cursor
+  steps:
+  - stepId: list-sales
+    description: Read changed Lightspeed X-Series sales since the version cursor.
+    operationId: $sourceDescriptions.lightspeedSales.ListSales
+    parameters:
+    - name: after
+      in: query
+      value: $inputs.after
+    - name: page_size
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sales: $response.body#/data
+      sale_id: $response.body#/data/0/id
+      invoice_number: $response.body#/data/0/invoice_number
+      date: $response.body#/data/0/date
+      total: $response.body#/data/0/totals/total_price
+      max_version: $response.body#/version/max
+  - stepId: create-invoice
+    description: Create an ACCREC invoice in Xero for the sale.
+    operationId: $sourceDescriptions.xeroAccounting.createInvoices
+    parameters:
+    - name: xero-tenant-id
+      in: header
+      value: $inputs.xero_tenant_id
+    - name: Idempotency-Key
+      in: header
+      value: $steps.list-sales.outputs.sale_id
+    requestBody:
+      contentType: application/json
+      payload:
+        Invoices:
+        - Type: ACCREC
+          Contact:
+            ContactID: $inputs.xero_contact_id
+          Reference: $steps.list-sales.outputs.invoice_number
+          Date: $steps.list-sales.outputs.date
+          LineItems:
+          - Description: $steps.list-sales.outputs.invoice_number
+            Quantity: 1
+            UnitAmount: $steps.list-sales.outputs.total
+            AccountCode: $inputs.xero_account_code
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      invoice_id: $response.body#/Invoices/0/InvoiceID
+  outputs:
+    invoice_id: $steps.create-invoice.outputs.invoice_id
+    next_after: $steps.list-sales.outputs.max_version
+x-integration:
+  partner: xero
+  edge_evidence: https://www.lightspeedhq.com/integrations/
+  edge_type: claimed
+  category: Accounting
+  relationship: workflow
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (local-v5 enrichment)
+  guessed_steps:
+  - step: create-invoice
+    cause: provider-contract
+    why: sale-level totals are mapped to one line item; per-line tax mapping between Lightspeed taxes and Xero tax types is
+      not settled by either spec
+  - step: create-invoice
+    cause: partner-contract
+    why: header names xero-tenant-id and Idempotency-Key come from Xero parameter refs; contact resolution needs a separate
+      lookup

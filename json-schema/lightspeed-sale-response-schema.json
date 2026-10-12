@@ -1,0 +1,838 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-sale-response-schema.json",
+  "title": "Sale Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-sales-api-openapi.yml#/components/schemas/SaleResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/Sale"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "CustomizationFile": {
+      "properties": {
+        "filename": {
+          "description": "The name of the file.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The ID of the file.",
+          "type": "string"
+        },
+        "provider": {
+          "description": "Storage provider of the file.",
+          "type": "string"
+        },
+        "size": {
+          "description": "Size of the file in bytes.",
+          "type": "integer"
+        }
+      },
+      "title": "Customization File",
+      "type": "object"
+    },
+    "EcomCustomCharge": {
+      "properties": {
+        "name": {
+          "description": "Display name of eCom custom charge",
+          "type": "string"
+        },
+        "source_id": {
+          "description": "Unique identifier of eCom custom charge type",
+          "type": "string"
+        },
+        "tax_components": {
+          "description": "Collection of tax components associated with specific eCom custom charge",
+          "items": {
+            "$ref": "#/$defs/EcomCustomChargeTaxComponent"
+          },
+          "type": "array"
+        },
+        "total": {
+          "description": "Tax exclusive amount for specific eCom custom charge",
+          "format": "double",
+          "type": "number"
+        },
+        "total_incl": {
+          "description": "Tax inclusive amount for specific eCom custom charge",
+          "format": "double",
+          "type": "number"
+        },
+        "total_tax": {
+          "description": "Total tax for specific eCom custom charge",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Ecom Custom Charges",
+      "type": "object"
+    },
+    "EcomCustomChargeTaxComponent": {
+      "properties": {
+        "rate_id": {
+          "description": "Tax rate ID.",
+          "type": "string"
+        },
+        "total_tax": {
+          "description": "Tax total.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Ecom Custom Charge Tax Component",
+      "type": "object"
+    },
+    "LineItemCustomization": {
+      "properties": {
+        "field_type": {
+          "description": "The field type of the customization.",
+          "type": "string"
+        },
+        "files": {
+          "description": "Files attached to this customization.",
+          "items": {
+            "$ref": "#/$defs/CustomizationFile"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The ID of the customization.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the customization.",
+          "type": "string"
+        },
+        "value": {
+          "description": "The value of the customization.",
+          "type": "string"
+        }
+      },
+      "title": "Line Item Customization",
+      "type": "object"
+    },
+    "LineItemProductDetails": {
+      "properties": {
+        "id": {
+          "description": "The ID of the product associated with this line item.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Line Item Product Details",
+      "type": "object"
+    },
+    "LineItemPromotion": {
+      "properties": {
+        "amount": {
+          "description": "Promotion discount amount.",
+          "format": "double",
+          "type": "number"
+        },
+        "id": {
+          "description": "Promotion ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Promotion name.",
+          "type": "string"
+        },
+        "promo_code": {
+          "description": "Promo code used.",
+          "type": "string"
+        },
+        "promo_code_id": {
+          "description": "Promo code ID.",
+          "type": "string"
+        }
+      },
+      "title": "Line Item Promotion",
+      "type": "object"
+    },
+    "LineItemResponseMetadata": {
+      "properties": {
+        "is_price_override": {
+          "description": "Indicates whether the price was overridden, preventing recalculation of the total price based on the price from the database.",
+          "type": "boolean"
+        },
+        "sequence": {
+          "description": "Order of the line item in the sale.",
+          "type": "integer"
+        },
+        "tax_components": {
+          "description": "Tax components for this line item.",
+          "items": {
+            "$ref": "#/$defs/LineItemTaxComponentResponse"
+          },
+          "type": "array"
+        }
+      },
+      "title": "Line Item Response Metadata",
+      "type": "object"
+    },
+    "LineItemResponsePricing": {
+      "properties": {
+        "cost": {
+          "description": "Unit cost for the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "cost_total": {
+          "description": "Total cost for the line item (`cost` × `quantity`).",
+          "format": "double",
+          "type": "number"
+        },
+        "discount": {
+          "description": "Discount value of the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "discount_total": {
+          "description": "Total discount for the line item (`discount` × `quantity`).",
+          "format": "double",
+          "type": "number"
+        },
+        "loyalty_amount": {
+          "description": "The value that should be added to associated customer's loyalty balance.",
+          "format": "double",
+          "type": "number"
+        },
+        "loyalty_amount_total": {
+          "description": "Total loyalty value for the line item (`loyalty_amount` × `quantity`).",
+          "format": "double",
+          "type": "number"
+        },
+        "price": {
+          "description": "Unit price of the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "total": {
+          "description": "Total price for the line item.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Line Item Response Pricing",
+      "type": "object"
+    },
+    "LineItemResponseSource": {
+      "properties": {
+        "register_id": {
+          "description": "The ID of the register which was used to add this line item to the sale.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Line Item Response Source",
+      "type": "object"
+    },
+    "LineItemResponseTax": {
+      "properties": {
+        "amount": {
+          "description": "The unit tax value associated with this line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "id": {
+          "description": "The ID of the tax associated with this line item.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "total": {
+          "description": "Total tax value.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Line Item Response Tax",
+      "type": "object"
+    },
+    "LineItemReturn": {
+      "properties": {
+        "is_return": {
+          "description": "Indicates whether this line item is a return.",
+          "type": "boolean"
+        },
+        "reason": {
+          "description": "Return reason.",
+          "type": "string"
+        }
+      },
+      "title": "Line Item Return",
+      "type": "object"
+    },
+    "LineItemSurcharge": {
+      "properties": {
+        "tax_components": {
+          "description": "Collection of tax components associated with the surcharge.",
+          "items": {
+            "$ref": "#/$defs/LineItemTaxComponentResponse"
+          },
+          "type": "array"
+        },
+        "value": {
+          "description": "Tax exclusive surcharge amount for a specific payment.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Line Item Surcharge",
+      "type": "object"
+    },
+    "LineItemTaxComponentResponse": {
+      "properties": {
+        "rate_id": {
+          "description": "Tax rate ID.",
+          "type": "string"
+        },
+        "total_tax": {
+          "description": "Tax total.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Line Item Tax Component",
+      "type": "object"
+    },
+    "PaymentExternalApplication": {
+      "properties": {
+        "application_id": {
+          "description": "ID of the external application.",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": "string"
+        },
+        "external_id": {
+          "description": "ID from the external application.",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        }
+      },
+      "title": "Payment External Application",
+      "type": "object"
+    },
+    "PaymentExternalAttribute": {
+      "additionalProperties": true,
+      "description": "External attributes for the payment. Additional dynamic keys may be present.",
+      "properties": {
+        "card_last_four_digits": {
+          "description": "Last 4 digits of the card.",
+          "type": "string"
+        },
+        "source": {
+          "description": "Source of the external attribute.",
+          "type": "string"
+        },
+        "transaction_id": {
+          "description": "Transaction ID from the external system.",
+          "type": "string"
+        }
+      },
+      "title": "Payment External Attribute",
+      "type": "object"
+    },
+    "PaymentResponseMetadata": {
+      "properties": {
+        "register_open_sequence_id": {
+          "description": "Register open sequence ID.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Payment Response Metadata",
+      "type": "object"
+    },
+    "PaymentResponseSource": {
+      "properties": {
+        "id": {
+          "description": "Integrator-derived payment source ID. Non-null when the integrator provides a transaction ID.",
+          "type": "string"
+        },
+        "outlet_id": {
+          "description": "A valid outlet ID.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "register_id": {
+          "description": "The ID of the register used to add this payment to the sale.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Payment Response Source",
+      "type": "object"
+    },
+    "PaymentSurcharge": {
+      "properties": {
+        "amount": {
+          "description": "Surcharge amount.",
+          "format": "double",
+          "type": "number"
+        },
+        "rule": {
+          "description": "Specifies the rule of the surcharge to be applied.",
+          "type": "string"
+        }
+      },
+      "title": "Payment Surcharge",
+      "type": "object"
+    },
+    "PaymentTypeDetails": {
+      "properties": {
+        "config_id": {
+          "description": "Payment type id to be used for the payment.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "id": {
+          "description": "**internal** Global payment type ID. Irrelevant for external use.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the payment type.",
+          "type": "string"
+        }
+      },
+      "title": "Payment Type Details",
+      "type": "object"
+    },
+    "Sale": {
+      "description": "Sale object",
+      "properties": {
+        "_metadata": {
+          "$ref": "#/$defs/SaleResponseMetadata"
+        },
+        "adjustments": {
+          "description": "Collection of aggregated adjustments.",
+          "items": {
+            "$ref": "#/$defs/SaleResponseAdjustment"
+          },
+          "type": "array"
+        },
+        "attributes": {
+          "description": "Attributes for this sale.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": "string"
+        },
+        "customer_id": {
+          "description": "The ID of the customer associated with this sale.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "date": {
+          "description": "Sale timestamp in UTC.",
+          "type": "string"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": "string"
+        },
+        "ecom_custom_charges": {
+          "description": "Collection of eCom custom charges associated with the sale.",
+          "items": {
+            "$ref": "#/$defs/EcomCustomCharge"
+          },
+          "type": "array"
+        },
+        "external_applications": {
+          "description": "External applications associated with the sale.",
+          "items": {
+            "$ref": "#/$defs/SaleExternalApplication"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "invoice_number": {
+          "description": "Invoice number which if provided, should use the prefix and suffix defined for the register.",
+          "type": "string"
+        },
+        "line_items": {
+          "description": "Collection of line items.",
+          "items": {
+            "$ref": "#/$defs/SaleResponseLineItem"
+          },
+          "type": "array"
+        },
+        "note": {
+          "description": "Sale Note.",
+          "type": "string"
+        },
+        "payments": {
+          "description": "Collection of payments.",
+          "items": {
+            "$ref": "#/$defs/SaleResponsePayment"
+          },
+          "type": "array"
+        },
+        "receipt_number": {
+          "description": "The receipt number for the sale.",
+          "type": "string"
+        },
+        "return": {
+          "$ref": "#/$defs/SaleReturn"
+        },
+        "short_code": {
+          "description": "Short, unique code used for loyalty tracking purposes.",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SaleResponseSource"
+        },
+        "state": {
+          "description": "State of the sale.",
+          "enum": [
+            "parked",
+            "pending",
+            "voided",
+            "closed"
+          ],
+          "type": "string"
+        },
+        "taxes": {
+          "description": "Collection of taxes.",
+          "items": {
+            "$ref": "#/$defs/SaleResponseTax"
+          },
+          "type": "array"
+        },
+        "totals": {
+          "$ref": "#/$defs/SaleTotals"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        }
+      },
+      "title": "Sale",
+      "type": "object"
+    },
+    "SaleAuthor": {
+      "properties": {
+        "id": {
+          "description": "The ID of the user (cashier) who created the sale.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Sale Author",
+      "type": "object"
+    },
+    "SaleExternalApplication": {
+      "properties": {
+        "application_id": {
+          "description": "ID of the external application.",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": "string"
+        },
+        "external_id": {
+          "description": "ID from the external application.",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version of the external application record.",
+          "type": "string"
+        }
+      },
+      "title": "Sale External Application",
+      "type": "object"
+    },
+    "SaleResponseAdjustment": {
+      "description": "Sale-level adjustment totals compounded by adjustment type. E-commerce custom charge adjustments are returned separately in `ecom_custom_charges`.",
+      "properties": {
+        "adjustment_type": {
+          "description": "The adjustment type, such as `NON_CASH_FEE` or `SURCHARGE`.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Display name from the first adjustment in the compounded adjustment group.",
+          "type": "string"
+        },
+        "tax_components": {
+          "description": "Tax component totals for this adjustment group.",
+          "items": {
+            "$ref": "#/$defs/LineItemTaxComponentResponse"
+          },
+          "type": "array"
+        },
+        "total": {
+          "description": "Sum of fixed, non-each adjustment values for this credit or debit adjustment group.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Sale Response Adjustment",
+      "type": "object"
+    },
+    "SaleResponseLineItem": {
+      "properties": {
+        "_metadata": {
+          "$ref": "#/$defs/LineItemResponseMetadata"
+        },
+        "customizations": {
+          "description": "Product customizations for this line item.",
+          "items": {
+            "$ref": "#/$defs/LineItemCustomization"
+          },
+          "type": "array"
+        },
+        "gift_card_number": {
+          "description": "Gift card number if this line item is a gift card.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The ID of this line item.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "note": {
+          "description": "Line item note.",
+          "type": "string"
+        },
+        "pricing": {
+          "$ref": "#/$defs/LineItemResponsePricing"
+        },
+        "product": {
+          "$ref": "#/$defs/LineItemProductDetails"
+        },
+        "promotions": {
+          "description": "Promotions applied to this line item.",
+          "items": {
+            "$ref": "#/$defs/LineItemPromotion"
+          },
+          "type": "array"
+        },
+        "quantity": {
+          "description": "Quantity of products for the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "return": {
+          "$ref": "#/$defs/LineItemReturn"
+        },
+        "salesperson_id": {
+          "description": "The ID of the salesperson associated with this line item. Salesperson IDs can be retrieved from the /api/2.0/users endpoint. Only needed when this line item is not sold by current login user.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/LineItemResponseSource"
+        },
+        "status": {
+          "description": "If defined as `CONFIRMED` for pending sales, the line item will be added as **read-only**.",
+          "type": "string"
+        },
+        "surcharges": {
+          "description": "Collection of surcharges associated with the line item.",
+          "items": {
+            "$ref": "#/$defs/LineItemSurcharge"
+          },
+          "type": "array"
+        },
+        "tax": {
+          "$ref": "#/$defs/LineItemResponseTax"
+        }
+      },
+      "title": "Sale Response Line Item",
+      "type": "object"
+    },
+    "SaleResponseMetadata": {
+      "properties": {
+        "complete_open_sequence_id": {
+          "description": "The sequence ID of the register open at the time the sale was completed.",
+          "type": "string"
+        },
+        "has_unsynced_on_account_payments": {
+          "description": "Whether the sale has unsynced on-account payments.",
+          "type": "boolean"
+        },
+        "version": {
+          "description": "Monotonically increasing version number of the sale.",
+          "type": "integer"
+        },
+        "xero_reference": {
+          "description": "Xero invoice reference ID. Only editable for `ONACCOUNT` sales.",
+          "type": "string"
+        }
+      },
+      "title": "Sale Response Metadata",
+      "type": "object"
+    },
+    "SaleResponsePayment": {
+      "properties": {
+        "_metadata": {
+          "$ref": "#/$defs/PaymentResponseMetadata"
+        },
+        "amount": {
+          "description": "Payment amount.",
+          "format": "double",
+          "type": "number"
+        },
+        "billing_address_id": {
+          "description": "The ID of the billing address associated with this payment.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "date": {
+          "description": "Payment date in UTC.",
+          "type": "string"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": "string"
+        },
+        "external_applications": {
+          "description": "External applications associated with the payment.",
+          "items": {
+            "$ref": "#/$defs/PaymentExternalApplication"
+          },
+          "type": "array"
+        },
+        "external_attributes": {
+          "description": "External attributes for the payment.",
+          "items": {
+            "$ref": "#/$defs/PaymentExternalAttribute"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Auto-generated payment ID.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/PaymentResponseSource"
+        },
+        "surcharge": {
+          "$ref": "#/$defs/PaymentSurcharge"
+        },
+        "type": {
+          "$ref": "#/$defs/PaymentTypeDetails"
+        }
+      },
+      "title": "Sale Response Payment",
+      "type": "object"
+    },
+    "SaleResponseSource": {
+      "properties": {
+        "author": {
+          "$ref": "#/$defs/SaleAuthor"
+        },
+        "id": {
+          "description": "The ID of the sale on the client side or another system where the sale was originally created.",
+          "type": "string"
+        },
+        "outlet_id": {
+          "description": "The ID of the outlet where the sale was created.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "register_id": {
+          "description": "The ID of the register where the sale was created.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "type": {
+          "description": "This is the identifier of the 3rd party system that the `source_id` is associated with. 'Xero' or 'Magento' would be examples.",
+          "type": "string"
+        }
+      },
+      "title": "Sale Response Source",
+      "type": "object"
+    },
+    "SaleResponseTax": {
+      "properties": {
+        "id": {
+          "description": "Auto-generated object ID.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "tax": {
+          "description": "The total tax value for this tax.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Sale Response Tax",
+      "type": "object"
+    },
+    "SaleReturn": {
+      "properties": {
+        "is_return": {
+          "description": "Indicates whether this sale is a return.",
+          "type": "boolean"
+        },
+        "original_sale_id": {
+          "description": "Reference ID to a different sale if this sale was created as a return.",
+          "type": "string"
+        },
+        "return_sale_ids": {
+          "description": "IDs of return sales created from this sale.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "title": "Sale Return",
+      "type": "object"
+    },
+    "SaleTotals": {
+      "properties": {
+        "loyalty": {
+          "description": "Total loyalty value for this sale.",
+          "format": "double",
+          "type": "number"
+        },
+        "price": {
+          "description": "Total price for this sale, tax exclusive.",
+          "format": "double",
+          "type": "number"
+        },
+        "price_incl_tax": {
+          "description": "Total price for this sale, tax inclusive.",
+          "format": "double",
+          "type": "number"
+        },
+        "surcharge": {
+          "description": "Total surcharge value for this sale.",
+          "format": "double",
+          "type": "number"
+        },
+        "tax": {
+          "description": "Total tax value for this sale.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "Sale Totals",
+      "type": "object"
+    }
+  }
+}

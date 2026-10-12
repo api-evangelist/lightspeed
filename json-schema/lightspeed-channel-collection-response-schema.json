@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-channel-collection-response-schema.json",
+  "title": "Channels response",
+  "description": "A collection of channel records wrapped in a top-level data object.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-channel-request-log-api-openapi.yml#/components/schemas/ChannelCollectionResponse",
+  "properties": {
+    "data": {
+      "items": {
+        "$ref": "#/$defs/Channel"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "Channel": {
+      "description": "An object representing a single channel.",
+      "properties": {
+        "channel_type": {
+          "description": "The type of channel this is.",
+          "enum": [
+            "woocommerce"
+          ],
+          "type": "string"
+        },
+        "created_at": {
+          "description": "An RFC3339 representation of the time at which the channel was created.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "inventory_outlet_ids": {
+          "description": "IDs of the outlets that count towards inventory.",
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "payment_type_id": {
+          "description": "The payment type id that sale payments will be associated to.",
+          "type": "string"
+        },
+        "products_last_imported_at": {
+          "description": "An RFC3339 representation of the time at which products were last imported.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "register_id": {
+          "description": "The register id that sales will be associated to.",
+          "type": "string"
+        },
+        "sales_last_imported_at": {
+          "description": "An RFC3339 representation of the time at which sales were last imported.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "store_url": {
+          "description": "The store identifier.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "channel_type",
+        "id",
+        "inventory_outlet_ids",
+        "payment_type_id",
+        "products_last_imported_at",
+        "register_id",
+        "sales_last_imported_at",
+        "store_url"
+      ],
+      "title": "Channel",
+      "type": "object"
+    }
+  }
+}

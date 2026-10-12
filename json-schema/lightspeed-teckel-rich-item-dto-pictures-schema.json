@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-teckel-rich-item-dto-pictures-schema.json",
+  "title": "teckelRichItemDtoPictures",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-rich-item-api-openapi.yml#/components/schemas/teckelRichItemDtoPictures",
+  "properties": {
+    "pictureUrl": {
+      "description": "The URL of the picture.",
+      "type": "string"
+    },
+    "previewPictureUrl": {
+      "description": "The URL of the preview picture.",
+      "type": "string"
+    },
+    "rawPictureUrl": {
+      "description": "The URL of the raw picture.",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

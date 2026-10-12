@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-staff-api-shift-schema.json",
+  "title": "staff-apiShift",
+  "description": "Shift details.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-staff-api-openapi.yml#/components/schemas/staff-apiShift",
+  "x-plural": "shifts",
+  "type": "object",
+  "properties": {
+    "uuid": {
+      "description": "The unique identifier for the shift.",
+      "type": "string"
+    },
+    "businessId": {
+      "description": "The unique identifier for the business.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "businessLocationId": {
+      "description": "The unique identifier for the business location.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "deviceId": {
+      "description": "The unique identifier for the device.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "staffId": {
+      "description": "The unique identifier for the user.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "declaredCashTips": {
+      "description": "The declared tips for the shift.",
+      "type": "string",
+      "multipleOf": 0.01
+    },
+    "dateInUTC": {
+      "description": "The timestamp of the last update to the shift.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "events": {
+      "description": "List of events during the shift.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/staff-apiEvent"
+      }
+    }
+  },
+  "$defs": {
+    "staff-apiEvent": {
+      "description": "Shift event such as clock in/out, please use the newest one when multiple events existing with same event type.",
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "description": "The unique identifier for the event.",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "The time of the event.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdOn": {
+          "description": "The creation time of the event.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "eventType": {
+          "$ref": "#/$defs/staff-apiEventType"
+        }
+      }
+    },
+    "staff-apiEventType": {
+      "description": "The type of event.",
+      "type": "string",
+      "enum": [
+        "CLOCK_IN",
+        "CLOCK_OUT"
+      ]
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-partner-update-subscription-token-request-schema.json",
+  "title": "PartnerUpdateSubscriptionTokenRequest",
+  "description": "PartnerUpdateSubscriptionTokenRequest represents the request's body for updating a subscription via token API",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-partner-billing-api-openapi.yml#/components/schemas/PartnerUpdateSubscriptionTokenRequest",
+  "properties": {
+    "components": {
+      "description": "Components is a list of components to add on to the plan",
+      "items": {
+        "$ref": "#/$defs/PartnerUpdateSubscriptionTokenComponent"
+      },
+      "type": "array"
+    },
+    "price_handle": {
+      "description": "ProductPricePointHandle is the product price point handle, required if `product_handle` is specified",
+      "type": "string"
+    },
+    "product_handle": {
+      "description": "ProductHandle is the product handle to update",
+      "type": "string"
+    },
+    "return_url": {
+      "description": "ReturnURL is the URL to which the user is redirected to after giving his/her consent",
+      "type": "string"
+    }
+  },
+  "required": [
+    "return_url"
+  ],
+  "type": "object",
+  "$defs": {
+    "PartnerUpdateSubscriptionTokenComponent": {
+      "description": "PartnerUpdateSubscriptionTokenComponent represents a component to be added to an updated subscription",
+      "properties": {
+        "component_handle": {
+          "description": "Unique reference for the component to be updated",
+          "type": "string"
+        },
+        "component_price_handle": {
+          "description": "Unique reference for the component price point to be updated to",
+          "type": "string"
+        },
+        "quantity": {
+          "description": "How many components should be there after the update",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "component_handle",
+        "quantity"
+      ],
+      "type": "object"
+    }
+  }
+}

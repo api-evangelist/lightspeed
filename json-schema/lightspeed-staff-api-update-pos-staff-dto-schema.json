@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-staff-api-update-pos-staff-dto-schema.json",
+  "title": "staff-apiUpdatePosStaffDto",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-staff-api-openapi.yml#/components/schemas/staff-apiUpdatePosStaffDto",
+  "type": "object",
+  "required": [
+    "username",
+    "pinCode",
+    "firstName",
+    "lastName",
+    "active",
+    "visible",
+    "reportAccess",
+    "roles"
+  ],
+  "properties": {
+    "username": {
+      "$ref": "#/$defs/staff-apiUsername"
+    },
+    "pinCode": {
+      "type": "string",
+      "maxLength": 4,
+      "description": "The 4-digit pin code for the user."
+    },
+    "firstName": {
+      "$ref": "#/$defs/staff-apiFirstNameNoDefault"
+    },
+    "lastName": {
+      "$ref": "#/$defs/staff-apiLastNameNoDefault"
+    },
+    "active": {
+      "$ref": "#/$defs/staff-apiActiveNoDefault"
+    },
+    "visible": {
+      "$ref": "#/$defs/staff-apiVisibleNoDefault"
+    },
+    "group": {
+      "type": "integer",
+      "format": "int64",
+      "default": -1,
+      "x-positive-number-required": true,
+      "description": "The unique identifier for the user group."
+    },
+    "reportAccess": {
+      "$ref": "#/$defs/staff-apiReportAccessNoDefault"
+    },
+    "roles": {
+      "type": "array",
+      "x-default-null": true,
+      "description": "The roles assigned to the user.",
+      "items": {
+        "$ref": "#/$defs/staff-apiCreatestaffRoleDto"
+      }
+    }
+  },
+  "$defs": {
+    "staff-apiActiveNoDefault": {
+      "type": "boolean",
+      "description": "Indicates if the user is active."
+    },
+    "staff-apiCreatestaffRoleDto": {
+      "type": "string",
+      "description": "List of roles assigned to the user. Normally, these are the default POS user roles. See [Get All POS User Permissions](https://api-docs.lsk.lightspeed.app/operation/operation-staff-apigetposuserpermissions) for a list of roles."
+    },
+    "staff-apiFirstNameNoDefault": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "The first name of the user."
+    },
+    "staff-apiLastNameNoDefault": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "The last name of the user."
+    },
+    "staff-apiReportAccessNoDefault": {
+      "type": "string",
+      "description": "User report permissions."
+    },
+    "staff-apiUsername": {
+      "description": "The staff username. Only used for POS staff.",
+      "type": "string",
+      "x-nonempty": true,
+      "maxLength": 128
+    },
+    "staff-apiVisibleNoDefault": {
+      "type": "boolean",
+      "description": "Indicates if the user is visible."
+    }
+  }
+}

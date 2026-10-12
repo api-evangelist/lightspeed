@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-reservation-service-platform-profile-schema.json",
+  "title": "reservation-servicePlatformProfile",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-k-series-openapi.yml#/components/schemas/reservation-servicePlatformProfile",
+  "properties": {
+    "baseUrl": {
+      "description": "The base URL of the external platform (optional).",
+      "format": "uri",
+      "type": "string"
+    },
+    "depositSupported": {
+      "$ref": "#/$defs/reservation-servicePlatformDepositSupported"
+    },
+    "displayName": {
+      "$ref": "#/$defs/reservation-servicePlatformDisplayName"
+    },
+    "errorsWebhookUrl": {
+      "description": "The URL where notifications for any issues will be sent. <br> Required for [`error` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Get Sample Error notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationErrorNotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "integrationWebhookUrl": {
+      "description": "The URL where notifications for activation or deactivation of the customer's integration will be sent. <br> Required for [`integration` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Integration notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationintegrationnotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "notificationTypes": {
+      "description": "The events that trigger a notification.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ORDER_OPENED",
+          "ORDER_UPDATED",
+          "ORDER_CLOSED",
+          "ONBOARDING_STARTED",
+          "INTEGRATION_ACTIVATED",
+          "INTEGRATION_DEACTIVATED",
+          "POS_RESERVATION_UPDATED",
+          "ERROR"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "onboardingWebhookUrl": {
+      "description": "The URL where notifications for the customer's integration onboarding will be sent. <br> Required for [`onboarding` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Onboarding notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationonboardingnotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "orderWebhookUrl": {
+      "description": "The URL where order notifications will be sent. <br> Required for [`order` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Order Notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationordernotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "posReservationUpdateWebhookUrl": {
+      "description": "The URL where notifications about reservation changes on POS will be sent.",
+      "type": "string",
+      "format": "uri"
+    },
+    "ownNotificationsOnly": {
+      "description": "When `true`, notifications will only be sent for orders linked to the reservation platform.",
+      "type": "boolean"
+    },
+    "webhookAuthDetails": {
+      "description": "The authentication credentials to be sent with the webhook notifications.",
+      "properties": {
+        "apiKeys": {
+          "$ref": "#/$defs/reservation-servicePlatformAPIKeysWebhook"
+        },
+        "basic": {
+          "$ref": "#/$defs/reservation-servicePlatformBasicAuthWebhook"
+        },
+        "bearer": {
+          "$ref": "#/$defs/reservation-servicePlatformBearerTokenWebhook"
+        },
+        "oauth2": {
+          "$ref": "#/$defs/reservation-servicePlatformOAuth2Webhook"
+        }
+      },
+      "type": "object"
+    },
+    "webhookAuthType": {
+      "description": "The type of authentication used by the webhook.",
+      "enum": [
+        "BASIC_AUTH",
+        "BEARER_TOKEN",
+        "API_KEYS",
+        "OAUTH2",
+        "NONE"
+      ],
+      "type": "string"
+    },
+    "allowCourseNumberUpdates": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, table statuses can be customized using a number format."
+    },
+    "inServiceTableStatuses": {
+      "items": {
+        "$ref": "#/$defs/reservation-servicePlatformTableStatusDto"
+      },
+      "type": "array",
+      "description": "List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API."
+    },
+    "allowedPosStatuses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reservation-servicePlatformReservationStatus"
+      }
+    }
+  },
+  "required": [
+    "displayName",
+    "webhookAuthType",
+    "webhookAuthDetails"
+  ],
+  "type": "object",
+  "$defs": {
+    "reservation-servicePlatformAPIKeysWebhook": {
+      "description": "The API keys that will be sent with the webhook notifications. See [API Keys](https://swagger.io/docs/specification/authentication/api-keys/).",
+      "properties": {
+        "headers": {
+          "additionalProperties": {
+            "description": "Key-value pairs of arbitrary static headers to send with the webhook request.",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "parameters": {
+          "additionalProperties": {
+            "description": "Key-value pairs of arbitrary static query parameters to send with the webhook request.",
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "reservation-servicePlatformBasicAuthWebhook": {
+      "description": "The basic authentication credentials that will be sent with the webhook notifications. See [Basic Authentication](https://swagger.io/docs/specification/authentication/basic-authentication/).",
+      "properties": {
+        "password": {
+          "description": "The basic auth password.",
+          "format": "password",
+          "type": "string"
+        },
+        "username": {
+          "description": "The basic auth username.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ],
+      "type": "object"
+    },
+    "reservation-servicePlatformBearerTokenWebhook": {
+      "description": "The bearer token that will be sent with the webhook notifications. See [Bearer Authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/).",
+      "properties": {
+        "token": {
+          "description": "The bearer token.",
+          "format": "password",
+          "type": "string"
+        },
+        "ttl": {
+          "description": "Token expiration time in UTC.",
+          "format": "date-time",
+          "type": "string",
+          "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+        }
+      },
+      "required": [
+        "token"
+      ],
+      "type": "object"
+    },
+    "reservation-servicePlatformDepositSupported": {
+      "description": "Whether or not the platform supports deposits.",
+      "type": "boolean"
+    },
+    "reservation-servicePlatformDisplayName": {
+      "description": "The official platform name that will be displayed.",
+      "type": "string"
+    },
+    "reservation-servicePlatformOAuth2Webhook": {
+      "description": "The OAuth2 credentials that will be sent with the webhook notifications. See [OAuth 2.0](https://oauth.net/2/).",
+      "properties": {
+        "authorizationGrantType": {
+          "default": "CLIENT_CREDENTIALS",
+          "description": "The authorization grant type. See [OAuth2 Grant Types](https://oauth.net/2/grant-types/).",
+          "enum": [
+            "CLIENT_CREDENTIALS"
+          ],
+          "type": "string"
+        },
+        "clientAuthorizationMethod": {
+          "default": "CLIENT_SECRET_BASIC",
+          "description": "The client authorization method. See [OAuth2 Client Authentication](https://oauth.net/2/client-authentication/).",
+          "enum": [
+            "CLIENT_SECRET_BASIC",
+            "CLIENT_SECRET_JWT",
+            "CLIENT_SECRET_POST"
+          ],
+          "type": "string"
+        },
+        "clientId": {
+          "description": "The OAuth2 client ID.",
+          "type": "string"
+        },
+        "clientName": {
+          "description": "The OAuth2 client name.",
+          "type": "string"
+        },
+        "clientSecret": {
+          "description": "The OAuth2 client secret.",
+          "format": "password",
+          "type": "string"
+        },
+        "providerJwkSetUri": {
+          "description": "The external platform URL for getting public keys to verify given access tokens on the K-Series side.",
+          "format": "uri",
+          "type": "string"
+        },
+        "providerTokenUri": {
+          "description": "The external platform URL for getting access tokens by private credentials.",
+          "format": "uri",
+          "type": "string"
+        },
+        "scopes": {
+          "description": "The scopes being granted to the API client.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "clientId",
+        "clientSecret",
+        "providerTokenUri"
+      ],
+      "type": "object"
+    },
+    "reservation-servicePlatformReservationStatus": {
+      "description": "External reservation statuses for platforms.",
+      "enum": [
+        "ON_HOLD",
+        "SCHEDULED",
+        "PARTIALLY_ARRIVED",
+        "ARRIVED",
+        "PARTIALLY_SEATED",
+        "SEATED",
+        "DEPARTED",
+        "CANCELLED",
+        "NO_SHOW",
+        "ERROR"
+      ],
+      "type": "string"
+    },
+    "reservation-servicePlatformTableStatusDto": {
+      "properties": {
+        "statusLabel": {
+          "type": "string",
+          "description": "The unique text which will be displayed in the back-office for users."
+        },
+        "statusValue": {
+          "type": "string",
+          "description": "The unique code which will be used for outbound communication within table status mapping."
+        },
+        "sequence": {
+          "format": "int32",
+          "type": "integer",
+          "description": "This number is used to resolve collisions between statuses in order of highest priority."
+        }
+      },
+      "type": "object",
+      "required": [
+        "statusLabel",
+        "statusValue",
+        "sequence"
+      ]
+    }
+  }
+}

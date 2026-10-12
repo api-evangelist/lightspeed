@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-consignment-product-request-schema.json",
+  "title": "Consignment Product Request",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/ConsignmentProductRequest",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/ConsignmentProduct"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "ConsignmentProduct": {
+      "properties": {
+        "cost": {
+          "description": "The cost of the item.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "count": {
+          "description": "Expected item count.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "description": "The creation timestamp in UTC.",
+          "type": "string"
+        },
+        "deleted_at": {
+          "description": "The deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_included": {
+          "description": "Indicated whether the item was included via a filter. Can be `null`. For full count (no filters) always `true`.",
+          "type": "boolean"
+        },
+        "product_id": {
+          "description": "The ID of the product.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "product_sku": {
+          "description": "The SKU of the product.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "received": {
+          "description": "Observed item count.",
+          "type": "string"
+        },
+        "status": {
+          "description": "The status of the item. One of: `PENDING`, `SUCCESS`.",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_id"
+      ],
+      "title": "Consignment Product",
+      "type": "object"
+    }
+  }
+}

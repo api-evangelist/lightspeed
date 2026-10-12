@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-teckel-picture-spec-dto-schema.json",
+  "title": "teckelPictureSpecDto",
+  "description": "Contains picture requirements.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-rich-item-api-openapi.yml#/components/schemas/teckelPictureSpecDto",
+  "properties": {
+    "_links": {
+      "$ref": "#/$defs/teckelLinks"
+    },
+    "minHeight": {
+      "description": "The minimum image height.",
+      "format": "int32",
+      "type": "integer"
+    },
+    "minWidth": {
+      "description": "The minimum image width.",
+      "format": "int32",
+      "type": "integer"
+    },
+    "requiredAspectRatio": {
+      "description": "The image aspect ratio (width divided by length). If not set, there is no aspect ratio check.",
+      "format": "float",
+      "type": "number"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "teckelLink": {
+      "properties": {
+        "deprecation": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        },
+        "hreflang": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "templated": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "teckelLinks": {
+      "additionalProperties": {
+        "$ref": "#/$defs/teckelLink"
+      },
+      "type": "object"
+    }
+  }
+}

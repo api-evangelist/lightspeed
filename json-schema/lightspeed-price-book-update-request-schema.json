@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-price-book-update-request-schema.json",
+  "title": "Price Book Update Request",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-price-books-api-openapi.yml#/components/schemas/PriceBookUpdateRequest",
+  "properties": {
+    "customer_group_ids": {
+      "items": {
+        "description": "The ID of the customer group.",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "name": {
+      "description": "Price Book name.",
+      "type": "string"
+    },
+    "outlet_ids": {
+      "items": {
+        "description": "The ID of an outlet for which the Price Book should be used.",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "restrict_to_platform": {
+      "description": "`\"0\"` - all platforms, `\"1\"` - in store, `\"2\"` - ecommerce.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "valid_from": {
+      "description": "The date when the Price Book becomes valid (active).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "valid_to": {
+      "description": "The date when the Price Book becomes invalid (inactive).",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "customer_group_ids",
+    "name",
+    "outlet_ids"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-loyalty-adjustment-create-body-schema.json",
+  "title": "LoyaltyAdjustmentCreateBody",
+  "description": "Request body to perform loyalty balance adjustment",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-loyalty-adjustments-beta-api-openapi.yml#/components/schemas/LoyaltyAdjustmentCreateBody",
+  "properties": {
+    "adjustments": {
+      "items": {
+        "description": "single customer loyalty adjustment item",
+        "properties": {
+          "credit": {
+            "description": "how much loyalty to add to the balance (mutually exclusive with debit)",
+            "type": "number"
+          },
+          "customer_id": {
+            "description": "id of a customer to perform an adjustment",
+            "format": "uuid",
+            "type": "string"
+          },
+          "debit": {
+            "description": "how much loyalty to subtract from the balance (mutually exclusive with credit)",
+            "type": "number"
+          },
+          "reason": {
+            "description": "Arbitrary note that would be associated with the transaction",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "session_id": {
+      "description": "An unique ID that prevents double adjustment (same request sent twice will be only applied once)\nMust be an uuidv4",
+      "format": "uuid",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

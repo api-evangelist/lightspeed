@@ -1,0 +1,1379 @@
+{
+  "@context": {
+    "@vocab": "https://lightspeedhq.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "lightspeed": "https://lightspeedhq.com/schema#",
+    "AuditLogEvent": "lightspeed:AuditLogEvent",
+    "action": {
+      "@id": "lightspeed:action",
+      "@type": "xsd:string"
+    },
+    "created_at": {
+      "@id": "lightspeed:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "data": {
+      "@id": "lightspeed:data"
+    },
+    "entity_id": {
+      "@id": "lightspeed:entity_id",
+      "@type": "xsd:string"
+    },
+    "id": {
+      "@id": "lightspeed:id",
+      "@type": "xsd:string"
+    },
+    "ip_address": {
+      "@id": "lightspeed:ip_address",
+      "@type": "xsd:string"
+    },
+    "occurred_at": {
+      "@id": "lightspeed:occurred_at",
+      "@type": "xsd:dateTime"
+    },
+    "old_data": {
+      "@id": "lightspeed:old_data"
+    },
+    "type": {
+      "@id": "lightspeed:type",
+      "@type": "xsd:string"
+    },
+    "user_agent": {
+      "@id": "lightspeed:user_agent",
+      "@type": "xsd:string"
+    },
+    "user_id": {
+      "@id": "lightspeed:user_id",
+      "@type": "xsd:string"
+    },
+    "Version": "lightspeed:Version",
+    "max": {
+      "@id": "lightspeed:max",
+      "@type": "xsd:integer"
+    },
+    "min": {
+      "@id": "lightspeed:min",
+      "@type": "xsd:integer"
+    },
+    "Brand": "lightspeed:Brand",
+    "deleted_at": {
+      "@id": "lightspeed:deleted_at",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "lightspeed:description",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "lightspeed:name",
+      "@type": "xsd:string"
+    },
+    "version": {
+      "@id": "lightspeed:version",
+      "@type": "xsd:integer"
+    },
+    "BrandBase": "lightspeed:BrandBase",
+    "BrandResponse": "lightspeed:BrandResponse",
+    "BrandCollection": "lightspeed:BrandCollection",
+    "ChannelCollectionResponse": "lightspeed:ChannelCollectionResponse",
+    "Channel": "lightspeed:Channel",
+    "channel_type": {
+      "@id": "lightspeed:channel_type",
+      "@type": "xsd:string"
+    },
+    "inventory_outlet_ids": {
+      "@id": "lightspeed:inventory_outlet_ids",
+      "@container": "@list"
+    },
+    "payment_type_id": {
+      "@id": "lightspeed:payment_type_id",
+      "@type": "xsd:string"
+    },
+    "products_last_imported_at": {
+      "@id": "lightspeed:products_last_imported_at",
+      "@type": "xsd:dateTime"
+    },
+    "register_id": {
+      "@id": "lightspeed:register_id",
+      "@type": "xsd:string"
+    },
+    "sales_last_imported_at": {
+      "@id": "lightspeed:sales_last_imported_at",
+      "@type": "xsd:dateTime"
+    },
+    "store_url": {
+      "@id": "lightspeed:store_url",
+      "@type": "xsd:string"
+    },
+    "RequestSingleResponse": "lightspeed:RequestSingleResponse",
+    "RequestCollectionResponse": "lightspeed:RequestCollectionResponse",
+    "RequestLog": "lightspeed:RequestLog",
+    "error": {
+      "@id": "lightspeed:error",
+      "@type": "xsd:string"
+    },
+    "grouping_id": {
+      "@id": "lightspeed:grouping_id",
+      "@type": "xsd:string"
+    },
+    "request": {
+      "@id": "lightspeed:request",
+      "@type": "xsd:string"
+    },
+    "request_method": {
+      "@id": "lightspeed:request_method",
+      "@type": "xsd:string"
+    },
+    "response": {
+      "@id": "lightspeed:response",
+      "@type": "xsd:string"
+    },
+    "status_code": {
+      "@id": "lightspeed:status_code",
+      "@type": "xsd:decimal"
+    },
+    "InventoryCountItem": "lightspeed:InventoryCountItem",
+    "cost": {
+      "@id": "lightspeed:cost",
+      "@type": "xsd:string"
+    },
+    "count": {
+      "@id": "lightspeed:count",
+      "@type": "xsd:string"
+    },
+    "is_included": {
+      "@id": "lightspeed:is_included",
+      "@type": "xsd:boolean"
+    },
+    "product_id": {
+      "@id": "lightspeed:product_id",
+      "@type": "xsd:string"
+    },
+    "product_sku": {
+      "@id": "lightspeed:product_sku",
+      "@type": "xsd:string"
+    },
+    "received": {
+      "@id": "lightspeed:received",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "lightspeed:status",
+      "@type": "xsd:string"
+    },
+    "updated_at": {
+      "@id": "lightspeed:updated_at",
+      "@type": "xsd:string"
+    },
+    "ConsignmentProductResponse": "lightspeed:ConsignmentProductResponse",
+    "ConsignmentProductRequest": "lightspeed:ConsignmentProductRequest",
+    "InventoryCountItemResponse": "lightspeed:InventoryCountItemResponse",
+    "ConsignmentProduct": "lightspeed:ConsignmentProduct",
+    "ConsignmentProductCollection": "lightspeed:ConsignmentProductCollection",
+    "ConsignmentResponse": "lightspeed:ConsignmentResponse",
+    "ConsignmentCollection": "lightspeed:ConsignmentCollection",
+    "ConsignmentTotalsResponse": "lightspeed:ConsignmentTotalsResponse",
+    "Consignment": "lightspeed:Consignment",
+    "consignment_date": {
+      "@id": "lightspeed:consignment_date",
+      "@type": "xsd:string"
+    },
+    "due_at": {
+      "@id": "lightspeed:due_at",
+      "@type": "xsd:string"
+    },
+    "outlet_id": {
+      "@id": "lightspeed:outlet_id",
+      "@type": "xsd:string"
+    },
+    "received_at": {
+      "@id": "lightspeed:received_at",
+      "@type": "xsd:string"
+    },
+    "reference": {
+      "@id": "lightspeed:reference",
+      "@type": "xsd:string"
+    },
+    "source_outlet_id": {
+      "@id": "lightspeed:source_outlet_id",
+      "@type": "xsd:string"
+    },
+    "supplier_id": {
+      "@id": "lightspeed:supplier_id",
+      "@type": "xsd:string"
+    },
+    "supplier_invoice": {
+      "@id": "lightspeed:supplier_invoice",
+      "@type": "xsd:string"
+    },
+    "total_cost_gain": {
+      "@id": "lightspeed:total_cost_gain",
+      "@type": "xsd:decimal"
+    },
+    "total_cost_loss": {
+      "@id": "lightspeed:total_cost_loss",
+      "@type": "xsd:decimal"
+    },
+    "total_count_gain": {
+      "@id": "lightspeed:total_count_gain",
+      "@type": "xsd:decimal"
+    },
+    "total_count_loss": {
+      "@id": "lightspeed:total_count_loss",
+      "@type": "xsd:decimal"
+    },
+    "ConsignmentRequest": "lightspeed:ConsignmentRequest",
+    "CustomerAddressResponse": "lightspeed:CustomerAddressResponse",
+    "CustomerAddress": "lightspeed:CustomerAddress",
+    "address_line_1": {
+      "@id": "lightspeed:address_line_1",
+      "@type": "xsd:string"
+    },
+    "address_line_2": {
+      "@id": "lightspeed:address_line_2",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "lightspeed:city",
+      "@type": "xsd:string"
+    },
+    "country_code": {
+      "@id": "lightspeed:country_code",
+      "@type": "xsd:string"
+    },
+    "country_name": {
+      "@id": "lightspeed:country_name",
+      "@type": "xsd:string"
+    },
+    "customer_id": {
+      "@id": "lightspeed:customer_id",
+      "@type": "xsd:string"
+    },
+    "postcode": {
+      "@id": "lightspeed:postcode",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "lightspeed:state",
+      "@type": "xsd:string"
+    },
+    "state_code": {
+      "@id": "lightspeed:state_code",
+      "@type": "xsd:string"
+    },
+    "suburb": {
+      "@id": "lightspeed:suburb",
+      "@type": "xsd:string"
+    },
+    "CustomerAddressCreateResponse": "lightspeed:CustomerAddressCreateResponse",
+    "CustomerAddressBase": "lightspeed:CustomerAddressBase",
+    "CustomerAddressCollection": "lightspeed:CustomerAddressCollection",
+    "CustomerGroupCollection": "lightspeed:CustomerGroupCollection",
+    "CustomerGroup": "lightspeed:CustomerGroup",
+    "group_id": {
+      "@id": "lightspeed:group_id",
+      "@type": "xsd:string"
+    },
+    "retailer_id": {
+      "@id": "lightspeed:retailer_id",
+      "@type": "xsd:string"
+    },
+    "CustomerCollection": "lightspeed:CustomerCollection",
+    "Customer": "lightspeed:Customer",
+    "balance": {
+      "@id": "lightspeed:balance",
+      "@type": "xsd:decimal"
+    },
+    "company_name": {
+      "@id": "lightspeed:company_name",
+      "@type": "xsd:string"
+    },
+    "custom_field_1": {
+      "@id": "lightspeed:custom_field_1",
+      "@type": "xsd:string"
+    },
+    "custom_field_2": {
+      "@id": "lightspeed:custom_field_2",
+      "@type": "xsd:string"
+    },
+    "custom_field_3": {
+      "@id": "lightspeed:custom_field_3",
+      "@type": "xsd:string"
+    },
+    "custom_field_4": {
+      "@id": "lightspeed:custom_field_4",
+      "@type": "xsd:string"
+    },
+    "customer_code": {
+      "@id": "lightspeed:customer_code",
+      "@type": "xsd:string"
+    },
+    "customer_group_id": {
+      "@id": "lightspeed:customer_group_id",
+      "@type": "xsd:string"
+    },
+    "date_of_birth": {
+      "@id": "lightspeed:date_of_birth",
+      "@type": "xsd:string"
+    },
+    "do_not_email": {
+      "@id": "lightspeed:do_not_email",
+      "@type": "xsd:boolean"
+    },
+    "email": {
+      "@id": "lightspeed:email",
+      "@type": "xsd:string"
+    },
+    "enable_loyalty": {
+      "@id": "lightspeed:enable_loyalty",
+      "@type": "xsd:boolean"
+    },
+    "enable_promotional_sms": {
+      "@id": "lightspeed:enable_promotional_sms",
+      "@type": "xsd:boolean"
+    },
+    "fax": {
+      "@id": "lightspeed:fax",
+      "@type": "xsd:string"
+    },
+    "first_name": {
+      "@id": "lightspeed:first_name",
+      "@type": "xsd:string"
+    },
+    "gender": {
+      "@id": "lightspeed:gender",
+      "@type": "xsd:string"
+    },
+    "last_name": {
+      "@id": "lightspeed:last_name",
+      "@type": "xsd:string"
+    },
+    "loyalty_balance": {
+      "@id": "lightspeed:loyalty_balance",
+      "@type": "xsd:decimal"
+    },
+    "mobile": {
+      "@id": "lightspeed:mobile",
+      "@type": "xsd:string"
+    },
+    "note": {
+      "@id": "lightspeed:note",
+      "@type": "xsd:string"
+    },
+    "on_account_limit": {
+      "@id": "lightspeed:on_account_limit",
+      "@type": "xsd:decimal"
+    },
+    "phone": {
+      "@id": "lightspeed:phone",
+      "@type": "xsd:string"
+    },
+    "physical_address_1": {
+      "@id": "lightspeed:physical_address_1",
+      "@type": "xsd:string"
+    },
+    "physical_address_2": {
+      "@id": "lightspeed:physical_address_2",
+      "@type": "xsd:string"
+    },
+    "physical_city": {
+      "@id": "lightspeed:physical_city",
+      "@type": "xsd:string"
+    },
+    "physical_country_id": {
+      "@id": "lightspeed:physical_country_id",
+      "@type": "xsd:string"
+    },
+    "physical_postcode": {
+      "@id": "lightspeed:physical_postcode",
+      "@type": "xsd:string"
+    },
+    "physical_state": {
+      "@id": "lightspeed:physical_state",
+      "@type": "xsd:string"
+    },
+    "physical_suburb": {
+      "@id": "lightspeed:physical_suburb",
+      "@type": "xsd:string"
+    },
+    "postal_address_1": {
+      "@id": "lightspeed:postal_address_1",
+      "@type": "xsd:string"
+    },
+    "postal_address_2": {
+      "@id": "lightspeed:postal_address_2",
+      "@type": "xsd:string"
+    },
+    "postal_city": {
+      "@id": "lightspeed:postal_city",
+      "@type": "xsd:string"
+    },
+    "postal_country_id": {
+      "@id": "lightspeed:postal_country_id",
+      "@type": "xsd:string"
+    },
+    "postal_postcode": {
+      "@id": "lightspeed:postal_postcode",
+      "@type": "xsd:string"
+    },
+    "postal_state": {
+      "@id": "lightspeed:postal_state",
+      "@type": "xsd:string"
+    },
+    "postal_suburb": {
+      "@id": "lightspeed:postal_suburb",
+      "@type": "xsd:string"
+    },
+    "tax_id": {
+      "@id": "lightspeed:tax_id",
+      "@type": "xsd:string"
+    },
+    "twitter": {
+      "@id": "lightspeed:twitter",
+      "@type": "xsd:string"
+    },
+    "website": {
+      "@id": "lightspeed:website",
+      "@type": "xsd:string"
+    },
+    "year_to_date": {
+      "@id": "lightspeed:year_to_date",
+      "@type": "xsd:decimal"
+    },
+    "CustomerGroupResponse": "lightspeed:CustomerGroupResponse",
+    "CustomerBase": "lightspeed:CustomerBase",
+    "CustomerResponse": "lightspeed:CustomerResponse",
+    "financial-apiSaleDto": "lightspeed:financial-apiSaleDto",
+    "accountReference": {
+      "@id": "lightspeed:accountReference",
+      "@type": "xsd:string"
+    },
+    "accountFiscId": {
+      "@id": "lightspeed:accountFiscId",
+      "@type": "xsd:string"
+    },
+    "receiptId": {
+      "@id": "lightspeed:receiptId",
+      "@type": "xsd:string"
+    },
+    "source": {
+      "@id": "lightspeed:source"
+    },
+    "salesLines": {
+      "@id": "lightspeed:salesLines",
+      "@container": "@list"
+    },
+    "payments": {
+      "@id": "lightspeed:payments",
+      "@container": "@list"
+    },
+    "timeofOpening": {
+      "@id": "lightspeed:timeofOpening",
+      "@type": "xsd:string"
+    },
+    "timeofCloseAndPaid": {
+      "@id": "lightspeed:timeofCloseAndPaid",
+      "@type": "xsd:string"
+    },
+    "cancelled": {
+      "@id": "lightspeed:cancelled",
+      "@type": "xsd:boolean"
+    },
+    "externalFiscalNumber": {
+      "@id": "lightspeed:externalFiscalNumber",
+      "@type": "xsd:string"
+    },
+    "tableNumber": {
+      "@id": "lightspeed:tableNumber",
+      "@type": "xsd:string"
+    },
+    "tableName": {
+      "@id": "lightspeed:tableName",
+      "@type": "xsd:string"
+    },
+    "accountProfileCode": {
+      "@id": "lightspeed:accountProfileCode",
+      "@type": "xsd:string"
+    },
+    "ownerName": {
+      "@id": "lightspeed:ownerName",
+      "@type": "xsd:string"
+    },
+    "ownerId": {
+      "@id": "lightspeed:ownerId",
+      "@type": "xsd:decimal"
+    },
+    "externalReferences": {
+      "@id": "lightspeed:externalReferences",
+      "@container": "@list"
+    },
+    "nbCovers": {
+      "@id": "lightspeed:nbCovers",
+      "@type": "xsd:decimal"
+    },
+    "dineIn": {
+      "@id": "lightspeed:dineIn",
+      "@type": "xsd:boolean"
+    },
+    "deviceId": {
+      "@id": "lightspeed:deviceId",
+      "@type": "xsd:decimal"
+    },
+    "deviceName": {
+      "@id": "lightspeed:deviceName",
+      "@type": "xsd:string"
+    },
+    "voidReason": {
+      "@id": "lightspeed:voidReason",
+      "@type": "xsd:string"
+    },
+    "financial-apiResourcesTaxRate": "lightspeed:financial-apiResourcesTaxRate",
+    "_embedded": {
+      "@id": "lightspeed:_embedded"
+    },
+    "_links": {
+      "@id": "lightspeed:_links"
+    },
+    "financial-apiFinancialDto": "lightspeed:financial-apiFinancialDto",
+    "businessName": {
+      "@id": "lightspeed:businessName",
+      "@type": "xsd:string"
+    },
+    "nextStartOfDayAsIso8601": {
+      "@id": "lightspeed:nextStartOfDayAsIso8601",
+      "@type": "xsd:string"
+    },
+    "businessLocationId": {
+      "@id": "lightspeed:businessLocationId",
+      "@type": "xsd:decimal"
+    },
+    "sales": {
+      "@id": "lightspeed:sales",
+      "@container": "@list"
+    },
+    "dataComplete": {
+      "@id": "lightspeed:dataComplete",
+      "@type": "xsd:boolean"
+    },
+    "financial-apiTaxRate": "lightspeed:financial-apiTaxRate",
+    "code": {
+      "@id": "lightspeed:code",
+      "@type": "xsd:string"
+    },
+    "rate": {
+      "@id": "lightspeed:rate",
+      "@type": "xsd:decimal"
+    },
+    "taxIncluded": {
+      "@id": "lightspeed:taxIncluded",
+      "@type": "xsd:boolean"
+    },
+    "accountingReference": {
+      "@id": "lightspeed:accountingReference",
+      "@type": "xsd:string"
+    },
+    "financial-apiServiceChargeType": "lightspeed:financial-apiServiceChargeType",
+    "financial-apiLSPaymentsDto": "lightspeed:financial-apiLSPaymentsDto",
+    "pageSize": {
+      "@id": "lightspeed:pageSize",
+      "@type": "xsd:integer"
+    },
+    "offset": {
+      "@id": "lightspeed:offset",
+      "@type": "xsd:integer"
+    },
+    "nextOffset": {
+      "@id": "lightspeed:nextOffset",
+      "@type": "xsd:integer"
+    },
+    "financial-apiLSPaymentStatus": "lightspeed:financial-apiLSPaymentStatus",
+    "financial-apiAccountingGroup": "lightspeed:financial-apiAccountingGroup",
+    "accountingGroupId": {
+      "@id": "lightspeed:accountingGroupId",
+      "@type": "xsd:integer"
+    },
+    "statisticGroup": {
+      "@id": "lightspeed:statisticGroup",
+      "@type": "xsd:string"
+    },
+    "financial-apiAccountLink": "lightspeed:financial-apiAccountLink",
+    "initialAccountId": {
+      "@id": "lightspeed:initialAccountId",
+      "@type": "xsd:string"
+    },
+    "previousAccountId": {
+      "@id": "lightspeed:previousAccountId",
+      "@type": "xsd:string"
+    },
+    "financial-apiConsumer": "lightspeed:financial-apiConsumer",
+    "customerId": {
+      "@id": "lightspeed:customerId",
+      "@type": "xsd:integer"
+    },
+    "title": {
+      "@id": "lightspeed:title",
+      "@type": "xsd:string"
+    },
+    "firstName": {
+      "@id": "lightspeed:firstName",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "lightspeed:lastName",
+      "@type": "xsd:string"
+    },
+    "phoneNumber1": {
+      "@id": "lightspeed:phoneNumber1",
+      "@type": "xsd:string"
+    },
+    "phoneNumber2": {
+      "@id": "lightspeed:phoneNumber2",
+      "@type": "xsd:string"
+    },
+    "companyName": {
+      "@id": "lightspeed:companyName",
+      "@type": "xsd:string"
+    },
+    "addressLine1": {
+      "@id": "lightspeed:addressLine1",
+      "@type": "xsd:string"
+    },
+    "addressLine2": {
+      "@id": "lightspeed:addressLine2",
+      "@type": "xsd:string"
+    },
+    "zipCode": {
+      "@id": "lightspeed:zipCode",
+      "@type": "xsd:string"
+    },
+    "taxIdentifier": {
+      "@id": "lightspeed:taxIdentifier",
+      "@type": "xsd:string"
+    },
+    "fiscalCode": {
+      "@id": "lightspeed:fiscalCode",
+      "@type": "xsd:string"
+    },
+    "destinationCode": {
+      "@id": "lightspeed:destinationCode",
+      "@type": "xsd:string"
+    },
+    "financial-apiDateType": "lightspeed:financial-apiDateType",
+    "financial-apiCurrencyAmount": "lightspeed:financial-apiCurrencyAmount",
+    "value": {
+      "@id": "lightspeed:value",
+      "@type": "xsd:string"
+    },
+    "currency": {
+      "@id": "lightspeed:currency",
+      "@type": "xsd:string"
+    },
+    "financial-apiErrorResponse": "lightspeed:financial-apiErrorResponse",
+    "timestamp": {
+      "@id": "lightspeed:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "path": {
+      "@id": "lightspeed:path",
+      "@type": "xsd:string"
+    },
+    "requestId": {
+      "@id": "lightspeed:requestId",
+      "@type": "xsd:string"
+    },
+    "financial-apiTaxLine": "lightspeed:financial-apiTaxLine",
+    "taxId": {
+      "@id": "lightspeed:taxId",
+      "@type": "xsd:string"
+    },
+    "taxCode": {
+      "@id": "lightspeed:taxCode",
+      "@type": "xsd:string"
+    },
+    "taxRate": {
+      "@id": "lightspeed:taxRate",
+      "@type": "xsd:string"
+    },
+    "taxAmount": {
+      "@id": "lightspeed:taxAmount",
+      "@type": "xsd:string"
+    },
+    "financial-apiSalesExportDto": "lightspeed:financial-apiSalesExportDto",
+    "nextPageToken": {
+      "@id": "lightspeed:nextPageToken",
+      "@type": "xsd:string"
+    },
+    "financial-apiAbortedOrderDto": "lightspeed:financial-apiAbortedOrderDto",
+    "staffName": {
+      "@id": "lightspeed:staffName",
+      "@type": "xsd:string"
+    },
+    "timeOfAbortedOrder": {
+      "@id": "lightspeed:timeOfAbortedOrder",
+      "@type": "xsd:dateTime"
+    },
+    "totalAmountAborted": {
+      "@id": "lightspeed:totalAmountAborted",
+      "@type": "xsd:string"
+    },
+    "abortedLineItems": {
+      "@id": "lightspeed:abortedLineItems",
+      "@container": "@list"
+    },
+    "financial-apiLine": "lightspeed:financial-apiLine",
+    "parentLineId": {
+      "@id": "lightspeed:parentLineId",
+      "@type": "xsd:string"
+    },
+    "totalNetAmountWithTax": {
+      "@id": "lightspeed:totalNetAmountWithTax",
+      "@type": "xsd:string"
+    },
+    "totalNetAmountWithoutTax": {
+      "@id": "lightspeed:totalNetAmountWithoutTax",
+      "@type": "xsd:string"
+    },
+    "menuListPrice": {
+      "@id": "lightspeed:menuListPrice",
+      "@type": "xsd:string"
+    },
+    "unitCostPrice": {
+      "@id": "lightspeed:unitCostPrice",
+      "@type": "xsd:string"
+    },
+    "serviceCharge": {
+      "@id": "lightspeed:serviceCharge",
+      "@type": "xsd:string"
+    },
+    "serviceChargeType": {
+      "@id": "lightspeed:serviceChargeType",
+      "@type": "@id"
+    },
+    "serviceChargeRate": {
+      "@id": "lightspeed:serviceChargeRate",
+      "@type": "xsd:string"
+    },
+    "discountAmount": {
+      "@id": "lightspeed:discountAmount",
+      "@type": "xsd:string"
+    },
+    "taxRatePercentage": {
+      "@id": "lightspeed:taxRatePercentage",
+      "@type": "xsd:string"
+    },
+    "taxLines": {
+      "@id": "lightspeed:taxLines",
+      "@container": "@list"
+    },
+    "discountType": {
+      "@id": "lightspeed:discountType",
+      "@type": "xsd:string"
+    },
+    "discountCode": {
+      "@id": "lightspeed:discountCode",
+      "@type": "xsd:string"
+    },
+    "discountName": {
+      "@id": "lightspeed:discountName",
+      "@type": "xsd:string"
+    },
+    "accountDiscountAmount": {
+      "@id": "lightspeed:accountDiscountAmount",
+      "@type": "xsd:string"
+    },
+    "accountDiscountType": {
+      "@id": "lightspeed:accountDiscountType",
+      "@type": "xsd:string"
+    },
+    "accountDiscountCode": {
+      "@id": "lightspeed:accountDiscountCode",
+      "@type": "xsd:string"
+    },
+    "accountDiscountName": {
+      "@id": "lightspeed:accountDiscountName",
+      "@type": "xsd:string"
+    },
+    "totalDiscountAmount": {
+      "@id": "lightspeed:totalDiscountAmount",
+      "@type": "xsd:string"
+    },
+    "sku": {
+      "@id": "lightspeed:sku",
+      "@type": "xsd:string"
+    },
+    "nameOverride": {
+      "@id": "lightspeed:nameOverride",
+      "@type": "xsd:string"
+    },
+    "quantity": {
+      "@id": "lightspeed:quantity",
+      "@type": "xsd:string"
+    },
+    "accountingGroup": {
+      "@id": "lightspeed:accountingGroup",
+      "@type": "@id"
+    },
+    "tags": {
+      "@id": "lightspeed:tags",
+      "@container": "@list"
+    },
+    "revenueCenter": {
+      "@id": "lightspeed:revenueCenter",
+      "@type": "xsd:string"
+    },
+    "revenueCenterId": {
+      "@id": "lightspeed:revenueCenterId",
+      "@type": "xsd:integer"
+    },
+    "categories": {
+      "@id": "lightspeed:categories",
+      "@container": "@list"
+    },
+    "timeOfSale": {
+      "@id": "lightspeed:timeOfSale",
+      "@type": "xsd:dateTime"
+    },
+    "staffId": {
+      "@id": "lightspeed:staffId",
+      "@type": "xsd:integer"
+    },
+    "financial-apiSalesDailyExportDto": "lightspeed:financial-apiSalesDailyExportDto",
+    "financial-apiCategory": "lightspeed:financial-apiCategory",
+    "category": {
+      "@id": "lightspeed:category",
+      "@type": "xsd:string"
+    },
+    "financial-apiLSPayment": "lightspeed:financial-apiLSPayment",
+    "lightspeedPaymentId": {
+      "@id": "lightspeed:lightspeedPaymentId",
+      "@type": "xsd:string"
+    },
+    "uuid": {
+      "@id": "lightspeed:uuid",
+      "@type": "xsd:string"
+    },
+    "createdDate": {
+      "@id": "lightspeed:createdDate",
+      "@type": "xsd:dateTime"
+    },
+    "captureDate": {
+      "@id": "lightspeed:captureDate",
+      "@type": "xsd:dateTime"
+    },
+    "modificationDate": {
+      "@id": "lightspeed:modificationDate",
+      "@type": "xsd:dateTime"
+    },
+    "fees": {
+      "@id": "lightspeed:fees",
+      "@type": "@id"
+    },
+    "surcharge": {
+      "@id": "lightspeed:surcharge",
+      "@type": "@id"
+    },
+    "financial-apiSale": "lightspeed:financial-apiSale",
+    "timeOfOpening": {
+      "@id": "lightspeed:timeOfOpening",
+      "@type": "xsd:dateTime"
+    },
+    "timeClosed": {
+      "@id": "lightspeed:timeClosed",
+      "@type": "xsd:dateTime"
+    },
+    "financial-apiSortDirection": "lightspeed:financial-apiSortDirection",
+    "financial-apiPayment": "lightspeed:financial-apiPayment",
+    "paymentMethodId": {
+      "@id": "lightspeed:paymentMethodId",
+      "@type": "xsd:integer"
+    },
+    "netAmountWithTax": {
+      "@id": "lightspeed:netAmountWithTax",
+      "@type": "xsd:string"
+    },
+    "tip": {
+      "@id": "lightspeed:tip",
+      "@type": "xsd:string"
+    },
+    "consumer": {
+      "@id": "lightspeed:consumer",
+      "@type": "@id"
+    },
+    "authorization": {
+      "@id": "lightspeed:authorization",
+      "@type": "xsd:string"
+    },
+    "externalReference": {
+      "@id": "lightspeed:externalReference",
+      "@type": "xsd:string"
+    },
+    "fiscId": {
+      "@id": "lightspeed:fiscId",
+      "@type": "xsd:string"
+    },
+    "fiscDate": {
+      "@id": "lightspeed:fiscDate",
+      "@type": "xsd:dateTime"
+    },
+    "roundingAmount": {
+      "@id": "lightspeed:roundingAmount",
+      "@type": "xsd:string"
+    },
+    "financial-apiAbortedOrderLineItemDto": "lightspeed:financial-apiAbortedOrderLineItemDto",
+    "itemName": {
+      "@id": "lightspeed:itemName",
+      "@type": "xsd:string"
+    },
+    "itemSku": {
+      "@id": "lightspeed:itemSku",
+      "@type": "xsd:string"
+    },
+    "itemQuantity": {
+      "@id": "lightspeed:itemQuantity",
+      "@type": "xsd:string"
+    },
+    "itemAmount": {
+      "@id": "lightspeed:itemAmount",
+      "@type": "xsd:string"
+    },
+    "itemPrice": {
+      "@id": "lightspeed:itemPrice",
+      "@type": "xsd:string"
+    },
+    "PickLineItemsResponse": "lightspeed:PickLineItemsResponse",
+    "PackLineItemsResponse": "lightspeed:PackLineItemsResponse",
+    "PickLineItemsRequest": "lightspeed:PickLineItemsRequest",
+    "line_items": {
+      "@id": "lightspeed:line_items",
+      "@container": "@list"
+    },
+    "FulfillmentSummaryItem": "lightspeed:FulfillmentSummaryItem",
+    "sale_id": {
+      "@id": "lightspeed:sale_id",
+      "@type": "xsd:string"
+    },
+    "shipping_address_id": {
+      "@id": "lightspeed:shipping_address_id",
+      "@type": "xsd:string"
+    },
+    "user_ids": {
+      "@id": "lightspeed:user_ids",
+      "@container": "@list"
+    },
+    "FulfillmentSummaryLineItem": "lightspeed:FulfillmentSummaryLineItem",
+    "fulfilled_quantity": {
+      "@id": "lightspeed:fulfilled_quantity",
+      "@type": "xsd:string"
+    },
+    "packed_quantity": {
+      "@id": "lightspeed:packed_quantity",
+      "@type": "xsd:string"
+    },
+    "picked_quantity": {
+      "@id": "lightspeed:picked_quantity",
+      "@type": "xsd:string"
+    },
+    "sale_line_item_id": {
+      "@id": "lightspeed:sale_line_item_id",
+      "@type": "xsd:string"
+    },
+    "FulfillLineItemSourceBreakdown": "lightspeed:FulfillLineItemSourceBreakdown",
+    "quantity_from_not_started": {
+      "@id": "lightspeed:quantity_from_not_started",
+      "@type": "xsd:decimal"
+    },
+    "quantity_from_packed": {
+      "@id": "lightspeed:quantity_from_packed",
+      "@type": "xsd:decimal"
+    },
+    "quantity_from_picked": {
+      "@id": "lightspeed:quantity_from_picked",
+      "@type": "xsd:decimal"
+    },
+    "FulfillmentHistoryResponse": "lightspeed:FulfillmentHistoryResponse",
+    "next_cursor": {
+      "@id": "lightspeed:next_cursor",
+      "@type": "xsd:string"
+    },
+    "FulfillmentLineItemRequest": "lightspeed:FulfillmentLineItemRequest",
+    "source_breakdown": {
+      "@id": "lightspeed:source_breakdown",
+      "@type": "@id"
+    },
+    "FulfillmentHistoryEntry": "lightspeed:FulfillmentHistoryEntry",
+    "event_type": {
+      "@id": "lightspeed:event_type",
+      "@type": "xsd:string"
+    },
+    "fulfilled_delta": {
+      "@id": "lightspeed:fulfilled_delta",
+      "@type": "xsd:string"
+    },
+    "packed_quantity_delta": {
+      "@id": "lightspeed:packed_quantity_delta",
+      "@type": "xsd:string"
+    },
+    "picked_quantity_delta": {
+      "@id": "lightspeed:picked_quantity_delta",
+      "@type": "xsd:string"
+    },
+    "quantity_delta": {
+      "@id": "lightspeed:quantity_delta",
+      "@type": "xsd:string"
+    },
+    "source_sale_id": {
+      "@id": "lightspeed:source_sale_id",
+      "@type": "xsd:string"
+    },
+    "FulfillSaleResponse": "lightspeed:FulfillSaleResponse",
+    "PickLineItemRequest": "lightspeed:PickLineItemRequest",
+    "PackLineItemSourceBreakdown": "lightspeed:PackLineItemSourceBreakdown",
+    "FulfillmentResponse": "lightspeed:FulfillmentResponse",
+    "FulfillmentSummaryResponse": "lightspeed:FulfillmentSummaryResponse",
+    "PackLineItemsRequest": "lightspeed:PackLineItemsRequest",
+    "FulfillLineItemsRequest": "lightspeed:FulfillLineItemsRequest",
+    "FulfillLineItemsResponse": "lightspeed:FulfillLineItemsResponse",
+    "FulfillSaleRequest": "lightspeed:FulfillSaleRequest",
+    "PackLineItemRequest": "lightspeed:PackLineItemRequest",
+    "GiftCardTransactionSingleton": "lightspeed:GiftCardTransactionSingleton",
+    "GiftCardSingleton": "lightspeed:GiftCardSingleton",
+    "GiftCardTransaction": "lightspeed:GiftCardTransaction",
+    "amount": {
+      "@id": "lightspeed:amount",
+      "@type": "xsd:string"
+    },
+    "client_id": {
+      "@id": "lightspeed:client_id",
+      "@type": "xsd:string"
+    },
+    "source_id": {
+      "@id": "lightspeed:source_id",
+      "@type": "xsd:string"
+    },
+    "GiftCardCollection": "lightspeed:GiftCardCollection",
+    "GiftCard": "lightspeed:GiftCard",
+    "expires_at": {
+      "@id": "lightspeed:expires_at",
+      "@type": "xsd:string"
+    },
+    "gift_card_transactions": {
+      "@id": "lightspeed:gift_card_transactions",
+      "@container": "@list"
+    },
+    "number": {
+      "@id": "lightspeed:number",
+      "@type": "xsd:string"
+    },
+    "sale_source": {
+      "@id": "lightspeed:sale_source",
+      "@type": "xsd:string"
+    },
+    "total_redeemed": {
+      "@id": "lightspeed:total_redeemed",
+      "@type": "xsd:string"
+    },
+    "total_sold": {
+      "@id": "lightspeed:total_sold",
+      "@type": "xsd:string"
+    },
+    "GiftCardTransactionParams": "lightspeed:GiftCardTransactionParams",
+    "time_zone": {
+      "@id": "lightspeed:time_zone",
+      "@type": "xsd:string"
+    },
+    "GiftCardActivationParams": "lightspeed:GiftCardActivationParams",
+    "id-cards-apiCreateIdCardsResponse": "lightspeed:id-cards-apiCreateIdCardsResponse",
+    "batchId": {
+      "@id": "lightspeed:batchId",
+      "@type": "xsd:integer"
+    },
+    "cards": {
+      "@id": "lightspeed:cards",
+      "@container": "@list"
+    },
+    "id-cards-apiCardReference": "lightspeed:id-cards-apiCardReference",
+    "consumerRecordId": {
+      "@id": "lightspeed:consumerRecordId",
+      "@type": "xsd:integer"
+    },
+    "consumerId": {
+      "@id": "lightspeed:consumerId",
+      "@type": "xsd:integer"
+    },
+    "url": {
+      "@id": "lightspeed:url",
+      "@type": "xsd:string"
+    },
+    "id-cards-apiCreateIdCardsRequest": "lightspeed:id-cards-apiCreateIdCardsRequest",
+    "cardCount": {
+      "@id": "lightspeed:cardCount",
+      "@type": "xsd:integer"
+    },
+    "id-cards-apiCreateIdCardBatchRequest": "lightspeed:id-cards-apiCreateIdCardBatchRequest",
+    "id-cards-apiIdCardBatch": "lightspeed:id-cards-apiIdCardBatch",
+    "CustomInventoryAdjustmentReasonSingleton": "lightspeed:CustomInventoryAdjustmentReasonSingleton",
+    "ReorderPointEntry": "lightspeed:ReorderPointEntry",
+    "method": {
+      "@id": "lightspeed:method",
+      "@type": "xsd:string"
+    },
+    "reorder_amount": {
+      "@id": "lightspeed:reorder_amount",
+      "@type": "xsd:decimal"
+    },
+    "reorder_point": {
+      "@id": "lightspeed:reorder_point",
+      "@type": "xsd:decimal"
+    },
+    "reorder_target": {
+      "@id": "lightspeed:reorder_target",
+      "@type": "xsd:decimal"
+    },
+    "CustomInventoryAdjustmentReason": "lightspeed:CustomInventoryAdjustmentReason",
+    "enabled": {
+      "@id": "lightspeed:enabled",
+      "@type": "xsd:boolean"
+    },
+    "is_from_external_source": {
+      "@id": "lightspeed:is_from_external_source",
+      "@type": "xsd:boolean"
+    },
+    "ReorderPointsCollection": "lightspeed:ReorderPointsCollection",
+    "ReorderPointMinMaxRequestItem": "lightspeed:ReorderPointMinMaxRequestItem",
+    "InventoryRequest": "lightspeed:InventoryRequest",
+    "after": {
+      "@id": "lightspeed:after",
+      "@type": "xsd:integer"
+    },
+    "before": {
+      "@id": "lightspeed:before",
+      "@type": "xsd:integer"
+    },
+    "include_deleted": {
+      "@id": "lightspeed:include_deleted",
+      "@type": "xsd:boolean"
+    },
+    "size": {
+      "@id": "lightspeed:size",
+      "@type": "xsd:integer"
+    },
+    "sort_direction": {
+      "@id": "lightspeed:sort_direction",
+      "@type": "xsd:string"
+    },
+    "variants": {
+      "@id": "lightspeed:variants",
+      "@type": "xsd:boolean"
+    },
+    "ReorderPointFixedRequestItem": "lightspeed:ReorderPointFixedRequestItem",
+    "CustomInventoryAdjustmentReasonCollection": "lightspeed:CustomInventoryAdjustmentReasonCollection",
+    "CreateCustomInventoryAdjustmentReasonRequest": "lightspeed:CreateCustomInventoryAdjustmentReasonRequest",
+    "Inventory": "lightspeed:Inventory",
+    "average_cost": {
+      "@id": "lightspeed:average_cost",
+      "@type": "xsd:decimal"
+    },
+    "current_inventory_level": {
+      "@id": "lightspeed:current_inventory_level",
+      "@type": "xsd:decimal"
+    },
+    "quantity_to_procure": {
+      "@id": "lightspeed:quantity_to_procure",
+      "@type": "xsd:decimal"
+    },
+    "reorder_method": {
+      "@id": "lightspeed:reorder_method",
+      "@type": "xsd:string"
+    },
+    "StockAdjustmentReason": "lightspeed:StockAdjustmentReason",
+    "InventoryLevelsRequest": "lightspeed:InventoryLevelsRequest",
+    "group_variants": {
+      "@id": "lightspeed:group_variants",
+      "@type": "xsd:boolean"
+    },
+    "include_composites": {
+      "@id": "lightspeed:include_composites",
+      "@type": "xsd:boolean"
+    },
+    "include_inactive": {
+      "@id": "lightspeed:include_inactive",
+      "@type": "xsd:boolean"
+    },
+    "location_ids": {
+      "@id": "lightspeed:location_ids",
+      "@container": "@list"
+    },
+    "product_ids": {
+      "@id": "lightspeed:product_ids",
+      "@container": "@list"
+    },
+    "root_product_ids": {
+      "@id": "lightspeed:root_product_ids",
+      "@container": "@list"
+    },
+    "sort_type": {
+      "@id": "lightspeed:sort_type",
+      "@type": "xsd:string"
+    },
+    "supplier_ids": {
+      "@id": "lightspeed:supplier_ids",
+      "@container": "@list"
+    },
+    "to_be_procured_only": {
+      "@id": "lightspeed:to_be_procured_only",
+      "@type": "xsd:boolean"
+    },
+    "UpdateCustomInventoryAdjustmentReasonRequest": "lightspeed:UpdateCustomInventoryAdjustmentReasonRequest",
+    "InventoryLevel": "lightspeed:InventoryLevel",
+    "brand_id": {
+      "@id": "lightspeed:brand_id",
+      "@type": "xsd:string"
+    },
+    "location_id": {
+      "@id": "lightspeed:location_id",
+      "@type": "xsd:string"
+    },
+    "product_type_id": {
+      "@id": "lightspeed:product_type_id",
+      "@type": "xsd:string"
+    },
+    "reorder_threshold": {
+      "@id": "lightspeed:reorder_threshold",
+      "@type": "xsd:decimal"
+    },
+    "root_product_id": {
+      "@id": "lightspeed:root_product_id",
+      "@type": "xsd:string"
+    },
+    "total_cost": {
+      "@id": "lightspeed:total_cost",
+      "@type": "xsd:decimal"
+    },
+    "StockAdjustmentCollection": "lightspeed:StockAdjustmentCollection",
+    "StockAdjustment": "lightspeed:StockAdjustment",
+    "custom_inventory_adjustment_reason_id": {
+      "@id": "lightspeed:custom_inventory_adjustment_reason_id",
+      "@type": "xsd:string"
+    },
+    "reason": {
+      "@id": "lightspeed:reason",
+      "@type": "@id"
+    },
+    "CreateStockAdjustmentsRequest": "lightspeed:CreateStockAdjustmentsRequest",
+    "stock_adjustments": {
+      "@id": "lightspeed:stock_adjustments",
+      "@container": "@list"
+    },
+    "CreateStockAdjustmentItem": "lightspeed:CreateStockAdjustmentItem",
+    "StockAdjustmentBatchResponse": "lightspeed:StockAdjustmentBatchResponse",
+    "items-apiPriceDTO": "lightspeed:items-apiPriceDTO",
+    "items-apiAccountingGroupDTO": "lightspeed:items-apiAccountingGroupDTO",
+    "items-apiPriceMode": "lightspeed:items-apiPriceMode",
+    "items-apiStatisticGroupDTO": "lightspeed:items-apiStatisticGroupDTO",
+    "items-apiUpdateItemDTO": "lightspeed:items-apiUpdateItemDTO",
+    "docketName": {
+      "@id": "lightspeed:docketName",
+      "@type": "@id"
+    },
+    "active": {
+      "@id": "lightspeed:active",
+      "@type": "@id"
+    },
+    "barcode": {
+      "@id": "lightspeed:barcode",
+      "@type": "xsd:string"
+    },
+    "barcodes": {
+      "@id": "lightspeed:barcodes",
+      "@container": "@list"
+    },
+    "costPrice": {
+      "@id": "lightspeed:costPrice",
+      "@type": "@id"
+    },
+    "defaultPrice": {
+      "@id": "lightspeed:defaultPrice",
+      "@type": "@id"
+    },
+    "priceMode": {
+      "@id": "lightspeed:priceMode",
+      "@type": "@id"
+    },
+    "items-apiItemDTO": "lightspeed:items-apiItemDTO",
+    "statisticGroups": {
+      "@id": "lightspeed:statisticGroups",
+      "@container": "@list"
+    },
+    "prices": {
+      "@id": "lightspeed:prices",
+      "@container": "@list"
+    },
+    "sharingType": {
+      "@id": "lightspeed:sharingType",
+      "@type": "xsd:string"
+    },
+    "inventorySource": {
+      "@id": "lightspeed:inventorySource",
+      "@type": "xsd:string"
+    },
+    "disabled": {
+      "@id": "lightspeed:disabled",
+      "@type": "xsd:boolean"
+    },
+    "contentDimension": {
+      "@id": "lightspeed:contentDimension",
+      "@type": "xsd:string"
+    },
+    "contentUom": {
+      "@id": "lightspeed:contentUom",
+      "@type": "xsd:string"
+    },
+    "contentValue": {
+      "@id": "lightspeed:contentValue",
+      "@type": "xsd:decimal"
+    },
+    "itemType": {
+      "@id": "lightspeed:itemType",
+      "@type": "xsd:string"
+    },
+    "items-apiCreateItemDTO": "lightspeed:items-apiCreateItemDTO",
+    "access-control-serviceAttributeType": "lightspeed:access-control-serviceAttributeType",
+    "access-control-serviceAttributeDto": "lightspeed:access-control-serviceAttributeDto",
+    "key": {
+      "@id": "lightspeed:key",
+      "@type": "xsd:string"
+    },
+    "values": {
+      "@id": "lightspeed:values",
+      "@container": "@list"
+    },
+    "access-control-serviceCallerDto": "lightspeed:access-control-serviceCallerDto",
+    "applicationName": {
+      "@id": "lightspeed:applicationName",
+      "@type": "xsd:string"
+    },
+    "access-control-serviceHeaderDto": "lightspeed:access-control-serviceHeaderDto",
+    "access-control-serviceRequestRepresentationDto": "lightspeed:access-control-serviceRequestRepresentationDto",
+    "uri": {
+      "@id": "lightspeed:uri",
+      "@type": "xsd:string"
+    },
+    "headers": {
+      "@id": "lightspeed:headers",
+      "@container": "@list"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Lightspeed Commerce API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Lightspeed Commerce's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-12) from openapi/lightspeed-audit-api-openapi.yml, openapi/lightspeed-brands-api-openapi.yml, openapi/lightspeed-channel-request-log-api-openapi.yml.",
+  "dcterms:created": "2026-10-12",
+  "dcterms:source": [
+    "openapi/lightspeed-audit-api-openapi.yml",
+    "openapi/lightspeed-brands-api-openapi.yml",
+    "openapi/lightspeed-channel-request-log-api-openapi.yml",
+    "openapi/lightspeed-consignment-products-api-openapi.yml",
+    "openapi/lightspeed-consignments-api-openapi.yml"
+  ]
+}

@@ -1,0 +1,17 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://www.lightspeedhq.com/legal/subprocessors/
+signals:
+  subprocessors:
+    url: https://www.lightspeedhq.com/legal/subprocessors/
+    note: Sub-processors page lists each vendor with purpose, the Lightspeed product lines it serves and location.
+    evidence:
+    - source: https://www.lightspeedhq.com/legal/subprocessors/
+      http_status: 200
+      fetched: '2026-10-12'
+      quote: Amazon Web Services, Inc. Cloud hosting provider Retail (R-Series) Retail (X-Series) eCom (C-Series) eCom (E-Series) Hospitality (K-Series)
+probes:
+- {url: https://www.lightspeedhq.com/accessibility/, status: 404}
+- {url: https://www.lightspeedhq.com/trust/, status: 404}
+- {url: https://www.lightspeedhq.com/legal/dpa/, status: 200, note: page carries no DPA substance in its static HTML; not recorded}

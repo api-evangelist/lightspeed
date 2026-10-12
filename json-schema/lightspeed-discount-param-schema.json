@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-discount-param-schema.json",
+  "title": "DiscountParam consists of a Sale, and related information to check if a promotion applies, and to calculate the discount",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-promotions-api-openapi.yml#/components/schemas/DiscountParam",
+  "properties": {
+    "channel": {
+      "description": "The channel where the sale is coming from",
+      "type": "string"
+    },
+    "customer": {
+      "$ref": "#/$defs/DiscountCustomerParam"
+    },
+    "is_tax_inclusive": {
+      "description": "Indication whether the sale is tax inclusive or tax exclusive",
+      "type": "boolean"
+    },
+    "outlet_id": {
+      "description": "The outlet ID for this sale",
+      "type": "string"
+    },
+    "promo_code": {
+      "description": "The promo code to apply to this sale",
+      "type": "string"
+    },
+    "sale": {
+      "$ref": "#/$defs/DiscountSaleParam"
+    }
+  },
+  "required": [
+    "channel",
+    "customer",
+    "outlet_id",
+    "sale"
+  ],
+  "type": "object",
+  "$defs": {
+    "DiscountCustomerParam": {
+      "properties": {
+        "customer_group_id": {
+          "description": "Customer group ID",
+          "type": "string"
+        }
+      },
+      "title": "Customer applicable to a discount",
+      "type": "object"
+    },
+    "DiscountLineItem": {
+      "properties": {
+        "confirmed": {
+          "description": "Whether the line item is confirmed as part of a layby or on account sale.",
+          "type": "boolean"
+        },
+        "explicit_loyalty_value": {
+          "description": "Whether loyalty was explicitly set in the product or it just uses the default outlet ratio.",
+          "type": "boolean"
+        },
+        "handle": {
+          "description": "Handle.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Line item ID.",
+          "type": "string"
+        },
+        "loyalty_value": {
+          "description": "The line item's loyalty value",
+          "format": "double",
+          "type": "number"
+        },
+        "price_adjusted": {
+          "description": "Indicator to suggest that the price has been adjusted manually, such as through a discount.",
+          "type": "boolean"
+        },
+        "product_brand_id": {
+          "description": "Product Brand ID.",
+          "type": "string"
+        },
+        "product_id": {
+          "description": "Product ID",
+          "type": "string"
+        },
+        "product_supplier_id": {
+          "description": "Product Supplier ID.",
+          "type": "string"
+        },
+        "product_tag_ids": {
+          "description": "Product Tag IDs.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "product_type_id": {
+          "description": "Product Type ID.",
+          "type": "string"
+        },
+        "promotion_ids": {
+          "description": "List of promotion IDs applied to this line item.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "quantity": {
+          "description": "Quantity of the line item.",
+          "type": "integer"
+        },
+        "unit_discount": {
+          "description": "The line item's unit discount",
+          "format": "double",
+          "type": "number"
+        },
+        "unit_price": {
+          "description": "The unit price for the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "unit_tax_discount": {
+          "description": "The line item's unit tax discount",
+          "format": "double",
+          "type": "number"
+        },
+        "variant_parent_id": {
+          "description": "Product variant parent ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "handle",
+        "product_brand_id",
+        "product_id",
+        "product_supplier_id",
+        "product_tag_ids",
+        "product_type_id",
+        "quantity",
+        "unit_price",
+        "unit_tax_discount"
+      ],
+      "title": "Line Item, for use while applying a discount",
+      "type": "object"
+    },
+    "DiscountSaleParam": {
+      "properties": {
+        "line_items": {
+          "description": "Collection of line items.",
+          "items": {
+            "$ref": "#/$defs/DiscountLineItem"
+          },
+          "type": "array"
+        },
+        "sale_date": {
+          "description": "Sale timestamp in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).",
+          "type": "string"
+        },
+        "total_price": {
+          "description": "Total (tax exclusive) price of the sale",
+          "format": "double",
+          "type": "number"
+        },
+        "total_tax": {
+          "description": "Total tax.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "line_items",
+        "sale_date",
+        "total_price",
+        "total_tax"
+      ],
+      "title": "Sale object for use in a Discount request",
+      "type": "object"
+    }
+  }
+}

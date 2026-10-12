@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-ape-customer-info-schema.json",
+  "title": "apeCustomerInfo",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-order-and-pay-api-openapi.yml#/components/schemas/apeCustomerInfo",
+  "required": [
+    "firstName"
+  ],
+  "properties": {
+    "firstName": {
+      "description": "Customer first name.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "lastName": {
+      "description": "Customer last name.",
+      "type": "string"
+    },
+    "thirdPartyReference": {
+      "type": "string",
+      "description": "The unique reference for this customer which can help to identify them later on. If the email is left empty, this should be empty as well."
+    },
+    "email": {
+      "description": "The email address for this customer.",
+      "type": "string"
+    },
+    "contactNumberAsE164": {
+      "description": "The customer phone number in E164 format.",
+      "type": "string"
+    },
+    "notes": {
+      "description": "The notes attached to the customer.",
+      "type": "string"
+    },
+    "salutation": {
+      "description": "Salutation for the customer (Mr., Mrs., Dr., etc...).",
+      "type": "string"
+    },
+    "sendEmailReceipts": {
+      "description": "Default value of emailNotification setting for new customers",
+      "type": "boolean"
+    },
+    "emailNotification": {
+      "default": "DONT_CHANGE",
+      "description": "Update the customer email notification setting. For example, sendEmailReceipts = true, emailNotification = DONT_CHANGE - sends receipt email for all users who haven't disabled it in the Backoffice. sendEmailReceipts = false, emailNotification = DONT_CHANGE - will not send receipt email for all users except those who enabled it in the Backoffice",
+      "enum": [
+        "ENABLE",
+        "DISABLE",
+        "DONT_CHANGE"
+      ],
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

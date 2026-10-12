@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-custom-field-values-params-schema.json",
+  "title": "Custom Field Value Parameters",
+  "description": "The parameters that can be passed to the set custom field values API.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-workflows-api-openapi.yml#/components/schemas/CustomFieldValuesParams",
+  "properties": {
+    "entity": {
+      "description": "The entity type.",
+      "enum": [
+        "sale",
+        "line_item",
+        "customer",
+        "product"
+      ],
+      "type": "string"
+    },
+    "entity_id": {
+      "description": "The ID of entity.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "values": {
+      "description": "The values.",
+      "items": {
+        "properties": {
+          "boolean_value": {
+            "type": "boolean"
+          },
+          "integer_value": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "name": {
+            "description": "The name of the custom field to set a value for. Must match an existing custom field name for the entity type.",
+            "type": "string"
+          },
+          "string_value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "string_value"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "entity",
+    "entity_id",
+    "values"
+  ],
+  "type": "object"
+}

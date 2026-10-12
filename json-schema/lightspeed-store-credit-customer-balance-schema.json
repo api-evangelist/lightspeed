@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-store-credit-customer-balance-schema.json",
+  "title": "Store Credit Customer Balance",
+  "description": "The store credit balance and statistics for the customer",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-store-credits-api-openapi.yml#/components/schemas/StoreCreditCustomerBalance",
+  "properties": {
+    "balance": {
+      "description": "The customers store credit balance.",
+      "format": "double",
+      "type": "number"
+    },
+    "customer_id": {
+      "description": "The customers public id.",
+      "type": "string"
+    },
+    "total_credit_issued": {
+      "description": "Total amount of store credit issued to this customer.",
+      "format": "double",
+      "type": "number"
+    },
+    "total_credit_redeemed": {
+      "description": "Total amount of store credit spent by this customer.",
+      "format": "double",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}

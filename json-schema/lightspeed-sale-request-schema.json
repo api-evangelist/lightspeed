@@ -1,0 +1,681 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-sale-request-schema.json",
+  "title": "Sale Request",
+  "description": "Editable attributes of the sale.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-sales-api-openapi.yml#/components/schemas/SaleRequest",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SaleRequestBase"
+    },
+    {
+      "properties": {
+        "id": {
+          "description": "User-provided sale ID. If not included, one will be generated.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  ],
+  "$defs": {
+    "AdjustmentAmount": {
+      "properties": {
+        "type": {
+          "description": "The value type of the adjustment.",
+          "enum": [
+            "FIXED",
+            "PERCENT"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "description": "The value of the adjustment.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "title": "Adjustment Amount",
+      "type": "object"
+    },
+    "AdjustmentSource": {
+      "properties": {
+        "id": {
+          "description": "The ID of the source of the adjustment.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Adjustment Source",
+      "type": "object"
+    },
+    "AdjustmentTarget": {
+      "properties": {
+        "ids": {
+          "description": "An array of target IDs.",
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "method": {
+          "description": "The method of the adjustment.",
+          "enum": [
+            "PROPORTIONED",
+            "EACH",
+            "SINGLE"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "method"
+      ],
+      "title": "Adjustment Target",
+      "type": "object"
+    },
+    "DailyAgenda": {
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "minutes_scheduled": {
+          "type": "integer"
+        }
+      },
+      "title": "DailyAgenda",
+      "type": "object"
+    },
+    "FulfillmentDetail": {
+      "properties": {
+        "note": {
+          "description": "The fulfillment note for fulfillments of the specified type.",
+          "type": "string"
+        },
+        "shipping_address_id": {
+          "description": "The ID of the shipping address to use for DISPATCH fulfillments. Either this or shipping_address_token must be provided for DISPATCH.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "shipping_address_token": {
+          "description": "The token of a newly created shipping address to use for DISPATCH fulfillments. Either this or shipping_address_id must be provided for DISPATCH.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "description": "The fulfillment type to which this fulfillment detail applies.",
+          "enum": [
+            "DISPATCH",
+            "PICKUP"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ItemDetails": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "initial_condition": {
+          "type": "string"
+        },
+        "item_id": {
+          "type": "string"
+        },
+        "item_name": {
+          "type": "string"
+        },
+        "serial_number": {
+          "type": "string"
+        }
+      },
+      "title": "ItemDetails",
+      "type": "object"
+    },
+    "LineItemAdjustment": {
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/AdjustmentAmount"
+        },
+        "name": {
+          "description": "The name of the adjustment.",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/AdjustmentSource"
+        },
+        "target": {
+          "$ref": "#/$defs/AdjustmentTarget"
+        },
+        "type": {
+          "description": "The type of the adjustment.",
+          "enum": [
+            "NON_CASH_FEE",
+            "DISCOUNT",
+            "TIP"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "target"
+      ],
+      "title": "Line Item Adjustment",
+      "type": "object"
+    },
+    "LineItemAttribute": {
+      "properties": {
+        "name": {
+          "description": "Attribute name. (`line_note` for a line item note.)",
+          "type": "string"
+        },
+        "value": {
+          "description": "Attribute value. (For `line_note`, the string value of the line_item note.)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "Line Item Attribute",
+      "type": "object"
+    },
+    "LineItemMetadata": {
+      "properties": {
+        "fulfillment_method": {
+          "description": "The fulfillment type for this line item. Only used when creating new sales, ignored when updating existing sales.",
+          "enum": [
+            "DISPATCH",
+            "PICKUP"
+          ],
+          "type": "string"
+        },
+        "is_price_override": {
+          "description": "Indicates whether the price was overridden, preventing recalculation of the total price based on the price from the database.",
+          "type": "boolean"
+        },
+        "sequence": {
+          "description": "Order number of the line item.",
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "title": "Line Item Metadata",
+      "type": "object"
+    },
+    "LineItemPricing": {
+      "properties": {
+        "adjustments": {
+          "description": "Adjustments.",
+          "items": {
+            "$ref": "#/$defs/LineItemAdjustment"
+          },
+          "type": "array"
+        },
+        "cost": {
+          "description": "Unit cost of the line item",
+          "format": "double",
+          "type": "number"
+        },
+        "discount": {
+          "description": "Discount value of the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "loyalty_amount": {
+          "description": "The value of loyalty that will be incurred by the customer for this line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "price": {
+          "description": "Unit price of the line item.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "price"
+      ],
+      "title": "Line Item Pricing",
+      "type": "object"
+    },
+    "LineItemProduct": {
+      "properties": {
+        "id": {
+          "description": "The ID of the product associated with this line item.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Line Item Product",
+      "type": "object"
+    },
+    "LineItemSource": {
+      "properties": {
+        "author_id": {
+          "description": "The ID of the salesperson associated with this line item. Salesperson IDs can be retrieved from the /api/2.0/users endpoint. Only needed when this line item is not sold by current login user.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "register_id": {
+          "description": "The ID of the register which was used to add this line item to the sale.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Line Item Source",
+      "type": "object"
+    },
+    "LineItemTax": {
+      "properties": {
+        "amount": {
+          "description": "The unit tax value associated with this line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "id": {
+          "description": "The ID of the tax associated with this line item. Tax IDs can be retrieved from the /api/2.0/taxes endpoint; for tax-free items, please use the ID of the tax named 'No Tax'",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "amount"
+      ],
+      "title": "Line Item Tax",
+      "type": "object"
+    },
+    "LineItemTaxComponent": {
+      "properties": {
+        "rate_id": {
+          "description": "Tax rate ID.",
+          "type": "string"
+        },
+        "total_tax": {
+          "description": "Tax total.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "rate_id",
+        "total_tax"
+      ],
+      "title": "Line Item Tax Component",
+      "type": "object"
+    },
+    "PaymentSource": {
+      "properties": {
+        "register_id": {
+          "description": "The ID of the register used to add this payment to the sale.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Payment Source",
+      "type": "object"
+    },
+    "PaymentTypeConfig": {
+      "properties": {
+        "config_id": {
+          "description": "Payment type id to be used for the payment.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "config_id"
+      ],
+      "title": "Payment Type Config",
+      "type": "object"
+    },
+    "PromotionDescription": {
+      "description": "Basic description for a Promotion.",
+      "properties": {
+        "description": {
+          "description": "A short description for the promotion.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the promotion.",
+          "type": "string"
+        }
+      },
+      "title": "PromotionDescription",
+      "type": "object"
+    },
+    "SaleAdjustment": {
+      "properties": {
+        "amount": {
+          "$ref": "#/$defs/AdjustmentAmount"
+        },
+        "name": {
+          "description": "The name of the adjustment.",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/AdjustmentSource"
+        },
+        "type": {
+          "description": "The type of the adjustment.",
+          "enum": [
+            "NON_CASH_FEE",
+            "DISCOUNT",
+            "TIP"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "Sale Adjustment",
+      "type": "object"
+    },
+    "SaleLineItem": {
+      "properties": {
+        "_metadata": {
+          "$ref": "#/$defs/LineItemMetadata"
+        },
+        "attributes": {
+          "description": "Additional line item attributes.",
+          "items": {
+            "$ref": "#/$defs/LineItemAttribute"
+          },
+          "type": "array"
+        },
+        "fulfilment_outlet_id": {
+          "description": "The outlet that should fulfill this line item. Mutually exclusive with pick lists created via `/sales/{sale_id}/pick_lists`.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "id": {
+          "description": "Existing line item ID. If included in the POST request it will cause an update instead of a creating a new object.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "pricing": {
+          "$ref": "#/$defs/LineItemPricing"
+        },
+        "product": {
+          "$ref": "#/$defs/LineItemProduct"
+        },
+        "quantity": {
+          "description": "Quantity of products for the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "source": {
+          "$ref": "#/$defs/LineItemSource"
+        },
+        "status": {
+          "description": "If defined as `CONFIRMED` for pending sales, the line item will be added as **read-only**.",
+          "type": "string"
+        },
+        "tax": {
+          "$ref": "#/$defs/LineItemTax"
+        }
+      },
+      "required": [
+        "product",
+        "quantity",
+        "pricing",
+        "tax"
+      ],
+      "title": "Sale Line Item",
+      "type": "object"
+    },
+    "SalePayment": {
+      "properties": {
+        "amount": {
+          "description": "Payment amount.",
+          "format": "double",
+          "type": "number"
+        },
+        "billing_address_id": {
+          "description": "The ID of the billing address to use for this payment. Either this or billing_address_token must be provided when billing address is required.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "billing_address_token": {
+          "description": "The token of the billing address to use for this payment. Required when billing_address_id is provided.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "date": {
+          "description": "The date and time of the payment.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Existing payment ID. If included in the POST request it will cause an update instead of a creating a new supplier.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/PaymentSource"
+        },
+        "type": {
+          "$ref": "#/$defs/PaymentTypeConfig"
+        }
+      },
+      "required": [
+        "amount",
+        "type"
+      ],
+      "title": "Sale Payment",
+      "type": "object"
+    },
+    "SalePricing": {
+      "properties": {
+        "adjustments": {
+          "description": "Adjustments.",
+          "items": {
+            "$ref": "#/$defs/SaleAdjustment"
+          },
+          "type": "array"
+        }
+      },
+      "title": "Sale Pricing",
+      "type": "object"
+    },
+    "SaleRequestBase": {
+      "description": "Editable attributes of the sale.",
+      "properties": {
+        "accounts_transaction_id": {
+          "description": "Xero invoice reference ID. Only editable for `ONACCOUNT` sales.",
+          "type": "string"
+        },
+        "attributes": {
+          "description": "An array of attributes",
+          "items": {
+            "description": "Attributes for this sale",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "customer_id": {
+          "description": "The ID of the customer associated with this sale.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "date": {
+          "description": "The date of the sale in RFC3339 format. If not provided will be added as the time the sale reached the server.",
+          "type": "string"
+        },
+        "fulfillment_details": {
+          "description": "Fulfillment details for DISPATCH or PICKUP fulfillments.",
+          "items": {
+            "$ref": "#/$defs/FulfillmentDetail"
+          },
+          "type": "array"
+        },
+        "fulfillment_outlet_id": {
+          "description": "The default outlet that should fulfill this sale when a line item does not specify its own `fulfilment_outlet_id`. Mutually exclusive with pick lists created via `/sales/{sale_id}/pick_lists`.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "invoice_number": {
+          "description": "The invoice number for the sale. If left null it will be populated by Lightspeed with the next available invoice number.",
+          "type": "string"
+        },
+        "line_items": {
+          "description": "Line items.",
+          "items": {
+            "$ref": "#/$defs/SaleLineItem"
+          },
+          "type": "array"
+        },
+        "note": {
+          "description": "A note on the sale entered by the cashier.",
+          "type": "string"
+        },
+        "payments": {
+          "description": "Payments.",
+          "items": {
+            "$ref": "#/$defs/SalePayment"
+          },
+          "type": "array"
+        },
+        "pricing": {
+          "$ref": "#/$defs/SalePricing"
+        },
+        "service_fields": {
+          "properties": {
+            "service_action": {
+              "type": "string"
+            },
+            "service_agenda": {
+              "$ref": "#/$defs/DailyAgenda"
+            },
+            "service_items": {
+              "$ref": "#/$defs/ServiceItems"
+            },
+            "service_line_items": {
+              "description": "An array of service line items.",
+              "items": {
+                "$ref": "#/$defs/ServiceOrderLineItem"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "short_code": {
+          "description": "Short, unique code to be printed on the receipt for loyalty tracking purposes.",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SaleRequestSource"
+        },
+        "state": {
+          "description": "State of the sale.",
+          "enum": [
+            "parked",
+            "pending",
+            "voided",
+            "closed"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "state"
+      ],
+      "title": "Sale Request Base",
+      "type": "object"
+    },
+    "SaleRequestSource": {
+      "properties": {
+        "author_id": {
+          "description": "The ID of the user (cashier) who created the sale.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "id": {
+          "description": "The ID of the sale on the client side or another system where the sale was originally created.",
+          "type": "string"
+        },
+        "register_id": {
+          "description": "The ID of the register where the sale was created.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "type": {
+          "description": "This is the identifier of the 3rd party system that the `source_id` is associated with. 'Xero' or 'Magento' would be examples.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "author_id"
+      ],
+      "title": "Sale Request Source",
+      "type": "object"
+    },
+    "ServiceItems": {
+      "properties": {
+        "item_details": {
+          "$ref": "#/$defs/ItemDetails"
+        },
+        "location": {
+          "type": "string"
+        }
+      },
+      "title": "ServiceItems",
+      "type": "object"
+    },
+    "ServiceOrderLineItem": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/SaleLineItem"
+        },
+        {
+          "properties": {
+            "promotions": {
+              "items": {
+                "$ref": "#/$defs/PromotionDescription"
+              },
+              "type": "array"
+            },
+            "tax_component": {
+              "items": {
+                "$ref": "#/$defs/LineItemTaxComponent"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "title": "Service Order Line Item"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-custom-field-definition-params-schema.json",
+  "title": "Custom Field Definition Parameters",
+  "description": "The parameters that can be passed to the create custom field definition API.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-workflows-api-openapi.yml#/components/schemas/CustomFieldDefinitionParams",
+  "properties": {
+    "editable_in_ui": {
+      "default": false,
+      "description": "Should this custom field be editable in the UI.",
+      "type": "boolean"
+    },
+    "entity": {
+      "description": "The type of entity.",
+      "enum": [
+        "sale",
+        "line_item",
+        "customer",
+        "product"
+      ],
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "print_on_receipt": {
+      "default": false,
+      "description": "Should this custom field be printed on receipts.",
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string"
+    },
+    "type": {
+      "description": "The type of the value to be stored using this custom field.",
+      "enum": [
+        "string",
+        "integer",
+        "boolean",
+        "date",
+        "product_id",
+        "qrcode",
+        "string_array"
+      ],
+      "type": "string"
+    },
+    "visible_in_ui": {
+      "default": false,
+      "description": "Should this custom field be visible in the UI.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "entity",
+    "name",
+    "title",
+    "type"
+  ],
+  "type": "object"
+}

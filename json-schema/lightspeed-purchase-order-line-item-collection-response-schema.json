@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-purchase-order-line-item-collection-response-schema.json",
+  "title": "Purchase Order Line Item Collection Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-purchase-orders-api-openapi.yml#/components/schemas/PurchaseOrderLineItemCollectionResponse",
+  "properties": {
+    "data": {
+      "items": {
+        "$ref": "#/$defs/PurchaseOrderLineItem"
+      },
+      "type": "array"
+    },
+    "version": {
+      "$ref": "#/$defs/PurchaseOrderVersion"
+    }
+  },
+  "required": [
+    "data",
+    "version"
+  ],
+  "type": "object",
+  "$defs": {
+    "PurchaseOrderLineItem": {
+      "properties": {
+        "allocations": {
+          "items": {
+            "$ref": "#/$defs/PurchaseOrderLineItemAllocation"
+          },
+          "type": "array"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/PurchaseOrderLineItemComponent"
+          },
+          "type": "array"
+        },
+        "cost_price": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "purchase_order_id": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "version": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "purchase_order_id",
+        "product_id",
+        "quantity",
+        "cost_price",
+        "allocations",
+        "created_at",
+        "updated_at"
+      ],
+      "title": "Purchase Order Line Item",
+      "type": "object"
+    },
+    "PurchaseOrderLineItemAllocation": {
+      "properties": {
+        "outlet_id": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "outlet_id",
+        "quantity"
+      ],
+      "title": "Purchase Order Line Item Allocation",
+      "type": "object"
+    },
+    "PurchaseOrderLineItemComponent": {
+      "properties": {
+        "bom_quantity": {
+          "type": "string"
+        },
+        "component_product_id": {
+          "type": "string"
+        },
+        "cost_price": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "component_product_id",
+        "bom_quantity",
+        "cost_price"
+      ],
+      "title": "Purchase Order Line Item Component",
+      "type": "object"
+    },
+    "PurchaseOrderVersion": {
+      "properties": {
+        "max": {
+          "description": "Highest version number in the payload.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "min": {
+          "description": "Lowest version number in the payload.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "min",
+        "max"
+      ],
+      "title": "Purchase Order Version",
+      "type": "object"
+    }
+  }
+}

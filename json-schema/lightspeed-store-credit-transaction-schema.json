@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-store-credit-transaction-schema.json",
+  "title": "Store Credit Transaction for Customer",
+  "description": "A store credit operation",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-store-credits-api-openapi.yml#/components/schemas/StoreCreditTransaction",
+  "properties": {
+    "amount": {
+      "description": "The amount of the transaction",
+      "format": "double",
+      "type": "number"
+    },
+    "client_id": {
+      "description": "An operation idempotency identifier.\nThe client must provide this and normally it should be the transaction id from the client system.\nAn operation and it's reverse operation must have the same client_id\n",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "The date time the transaction was created.",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "type": "string"
+    },
+    "id": {
+      "description": "transaction unique identifier (base64 encoded)",
+      "type": "string"
+    },
+    "notes": {
+      "description": "The notes associated with the transaction.",
+      "type": "string"
+    },
+    "sale_id": {
+      "description": "The sale id the transaction is associated with. This should be null for transactions initiated outside of Lightspeed Retail. If it is a sale id, it will be in UUID format.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "type": {
+      "description": "The type of the transaction",
+      "enum": [
+        "ISSUE",
+        "REDEMPTION",
+        "REVERSE"
+      ],
+      "type": "string"
+    },
+    "user_id": {
+      "description": "The user id of the person who performed the transaction (during a sale or a manual issue)",
+      "format": "uuid",
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

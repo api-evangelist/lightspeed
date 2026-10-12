@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-create-tax-request-schema.json",
+  "title": "CreateTaxRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-taxes-api-openapi.yml#/components/schemas/CreateTaxRequest",
+  "properties": {
+    "clothing_footwear_exemption": {
+      "description": "Whether the tax is exempt for clothing and footwear. This is applicable for tax exclusive retailers only.",
+      "type": "boolean"
+    },
+    "clothing_footwear_threshold_value": {
+      "description": "The threshold value for clothing and footwear exemption. This is applicable for tax exclusive retailers only.",
+      "format": "double",
+      "type": "number"
+    },
+    "name": {
+      "description": "The Tax name.",
+      "type": "string"
+    },
+    "rate": {
+      "description": "The Tax rate percentage.",
+      "format": "double",
+      "type": "number"
+    },
+    "tax_over_threshold": {
+      "description": "Whether the tax applies over the threshold. This is applicable for tax exclusive retailers only.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "rate"
+  ],
+  "type": "object"
+}

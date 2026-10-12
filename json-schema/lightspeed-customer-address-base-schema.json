@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-customer-address-base-schema.json",
+  "title": "Customer Address Base",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-customer-addresses-api-openapi.yml#/components/schemas/CustomerAddressBase",
+  "properties": {
+    "address_line_1": {
+      "description": "Primary address line (street address, P.O. box, etc.).",
+      "maxLength": 50,
+      "type": "string"
+    },
+    "address_line_2": {
+      "description": "Secondary address line (apartment, suite, unit, building, floor, etc.).",
+      "maxLength": 50,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "city": {
+      "description": "City or town name.",
+      "maxLength": 28,
+      "type": "string"
+    },
+    "country_code": {
+      "description": "ISO 3166-1 alpha-2 country code (e.g., US, NZ, AU).",
+      "type": "string"
+    },
+    "postcode": {
+      "description": "Postal code or ZIP code.",
+      "type": "string"
+    },
+    "state": {
+      "description": "State, province, or region name.",
+      "maxLength": 35,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "state_code": {
+      "description": "State or province code. Required for US and CA.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "suburb": {
+      "description": "Suburb or district.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "type": {
+      "description": "The type of address.",
+      "enum": [
+        "BILLING",
+        "SHIPPING"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "address_line_1",
+    "city",
+    "postcode",
+    "country_code",
+    "type"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-user-sale-total-response-schema.json",
+  "title": "User Sale Total Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-users-api-openapi.yml#/components/schemas/UserSaleTotalResponse",
+  "properties": {
+    "data": {
+      "items": {
+        "$ref": "#/$defs/UserSaleTotalCollection"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "UserSaleTotalCollection": {
+      "properties": {
+        "cost": {
+          "description": "The cost total of sales for the user.",
+          "format": "double",
+          "type": "number"
+        },
+        "date_from": {
+          "description": "From timestamp in UTC.",
+          "type": "string"
+        },
+        "date_to": {
+          "description": "To timestamp in UTC.",
+          "type": "string"
+        },
+        "discounts": {
+          "description": "The discounts total of sales for the user.",
+          "format": "double",
+          "type": "number"
+        },
+        "label": {
+          "description": "The label for what the total represents.",
+          "type": "string"
+        },
+        "loyalty": {
+          "description": "The loyalty total of sales for the user.",
+          "format": "double",
+          "type": "number"
+        },
+        "revenue": {
+          "description": "The revenue total of sales for the user.",
+          "format": "double",
+          "type": "number"
+        },
+        "sale_count": {
+          "description": "The total number of sales for the user.",
+          "format": "integer",
+          "type": "number"
+        },
+        "tax": {
+          "description": "The tax total of sales for the user.",
+          "format": "double",
+          "type": "number"
+        },
+        "total": {
+          "description": "The total sales for the user.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "User Sale Total Collection",
+      "type": "object"
+    }
+  }
+}

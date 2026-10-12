@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-partner-subscription-token-schema.json",
+  "title": "PartnerSubscriptionToken",
+  "description": "PartnerSubscriptionToken repreasent a partner subscription token",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-partner-billing-api-openapi.yml#/components/schemas/PartnerSubscriptionToken",
+  "properties": {
+    "components": {
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "is_used": {
+      "type": "boolean"
+    },
+    "product_handle": {
+      "type": "string"
+    },
+    "product_price_point_handle": {
+      "type": "string"
+    },
+    "retailer_id": {
+      "type": "string"
+    },
+    "return_url": {
+      "type": "string"
+    },
+    "subscription_id": {
+      "format": "int64",
+      "type": "integer"
+    },
+    "token": {
+      "description": "Token is a randomly generated string that is a required parameter for consent page",
+      "maxLength": 32,
+      "minLength": 32,
+      "type": "string"
+    },
+    "used_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "vend_application_id": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

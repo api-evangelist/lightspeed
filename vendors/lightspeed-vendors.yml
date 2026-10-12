@@ -1,0 +1,63 @@
+generated: '2026-10-12'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: cloudflare
+  name: Cloudflare
+  area: cdn
+  host: www.lightspeedhq.com
+  evidence: header:cf-ray
+  signal: header
+  confidence: high
+  kin_score:
+  - https_enforced
+  - hsts
+- vendor: fastly
+  name: Fastly
+  area: cdn
+  host: developers.lightspeedhq.com
+  evidence: header:x-served-by:cache-
+  signal: header
+  confidence: high
+  kin_score: []
+reliance:
+  areas_vendor_served:
+  - cdn
+  vendor_count: 2
+  areas_observed: 12
+  share_of_observable_areas: 0.083
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: not probed'
+- www.lightspeedhq.com (Website)
+- developers.lightspeedhq.com (Documentation)
+- status.lightspeedhq.com (StatusPage)
+- developers.lightspeedhq.com (DeveloperPortal)
+- www.lightspeedhq.com (Support)
+- www.lightspeedhq.com (SignUp)
+- x-series-api.lightspeedhq.com (APIReference)
+- x-series-api.lightspeedhq.com (GettingStarted)
+- developers.lightspeedhq.com (Postman)
+- api.lightspeedapp.com (baseURL)
+- api.shoplightspeed.com (baseURL)
+- app.ecwid.com (baseURL)
+- api.lsk.lightspeed.app (baseURL)
+- api.kounta.com (baseURL)
+- partner-api.chronogolf.com (baseURL)
+- '{domain_prefix}.retail.lightspeed.app (baseURL)'
+- x-series-api.lightspeedhq.com (mcp)

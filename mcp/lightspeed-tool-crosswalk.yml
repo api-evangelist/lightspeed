@@ -1,25 +1,22 @@
 name: Lightspeed Commerce MCP <-> OpenAPI Tool Crosswalk
 generated: '2026-08-27'
 method: derived
-source: >-
-  mcp/lightspeed-x-series-tools-list.json, mcp/lightspeed-k-series-tools-list.json,
-  openapi/lightspeed-x-series-openapi.json, openapi/lightspeed-k-series-openapi.json
-summary: >-
-  Lightspeed's two MCP servers are meta-tools over the specification, not projections of it. Every tool
-  operates on the OpenAPI document or the documentation portal; none binds to a business operation. The
-  crosswalk is therefore almost entirely mcp_only on one side and rest_only on the other, and that
-  asymmetry is the finding: 292 published REST operations (201 X-Series + 91 K-Series) have zero direct
-  tool representation.
+source: mcp/lightspeed-x-series-tools-list.json, mcp/lightspeed-k-series-tools-list.json, openapi/lightspeed-x-series-openapi.json,
+  openapi/lightspeed-k-series-openapi.json
+summary: 'Lightspeed''s two MCP servers are meta-tools over the specification, not projections of it. Every tool
+  operates on the OpenAPI document or the documentation portal; none binds to a business operation. The crosswalk
+  is therefore almost entirely mcp_only on one side and rest_only on the other, and that asymmetry is the finding:
+  292 published REST operations (201 X-Series + 91 K-Series) have zero direct tool representation.'
 surfaces:
   openapi:
   - api: lightspeed:retail-x-series
     file: openapi/lightspeed-x-series-openapi.json
-    version: '3.0.1'
+    version: 3.0.1
     operations: 201
     gated: false
   - api: lightspeed:restaurant-k-series
     file: openapi/lightspeed-k-series-openapi.json
-    version: '3.1.0'
+    version: 3.1.0
     operations: 91
     webhooks: 11
     gated: false
@@ -33,14 +30,14 @@ crosswalk:
 - tool: execute-request
   server: x-series
   category: generic-proxy
-  rest: ALL
+  rest: []
   binding: proxy
   confidence: high
-  note: >-
-    Accepts an arbitrary HAR request object, so it can reach any of the 201 X-Series operations, but it
-    inherits none of their parameter schemas. An agent must already know the path, method, body shape
-    and required OAuth scope; the tool provides no operation-level inputSchema. Recorded as a proxy
-    binding rather than 201 separate rows because that is what it actually is.
+  note: Accepts an arbitrary HAR request object, so it can reach any of the 201 X-Series operations, but it inherits
+    none of their parameter schemas. An agent must already know the path, method, body shape and required OAuth
+    scope; the tool provides no operation-level inputSchema. Recorded as a proxy binding rather than 201 separate
+    rows because that is what it actually is.
+  rest_scope: ALL
 - tool: get-endpoint
   server: x-series
   category: contract-introspection
@@ -66,10 +63,8 @@ crosswalk:
   rest: []
   binding: metadata
   confidence: high
-  note: >-
-    Materially useful here — the X-Series server URL is templated
-    (https://{domain_prefix}.retail.lightspeed.app/api/2026-07) and an agent cannot call the API
-    without resolving domain_prefix.
+  note: Materially useful here — the X-Series server URL is templated (https://{domain_prefix}.retail.lightspeed.app/api/2026-07)
+    and an agent cannot call the API without resolving domain_prefix.
 - tool: search
   server: k-series
   category: docs-retrieval
@@ -122,10 +117,9 @@ mcp_only:
   reason: Spec introspection.
 rest_only:
   count: 292
-  note: >-
-    All 201 X-Series operations and all 91 K-Series operations are rest_only in the strict sense — no
-    named MCP tool corresponds to any of them. X-Series operations are reachable indirectly through
-    execute-request; K-Series operations are not reachable through MCP at all.
+  note: All 201 X-Series operations and all 91 K-Series operations are rest_only in the strict sense — no named
+    MCP tool corresponds to any of them. X-Series operations are reachable indirectly through execute-request; K-Series
+    operations are not reachable through MCP at all.
   examples:
   - operationId: ListProducts
     api: lightspeed:retail-x-series

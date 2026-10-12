@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-financial-api-lspayments-dto-schema.json",
+  "title": "financial-apiLSPaymentsDto",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-financialv2-api-openapi.yml#/components/schemas/financial-apiLSPaymentsDto",
+  "type": "object",
+  "properties": {
+    "payments": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/financial-apiLSPayment"
+      },
+      "description": "List of requested payments.",
+      "nullable": false
+    },
+    "pageSize": {
+      "type": "integer",
+      "format": "int32",
+      "description": "Size of the returned collection."
+    },
+    "offset": {
+      "type": "integer",
+      "format": "int32",
+      "description": "Offset of the first item returned in the collection."
+    },
+    "nextOffset": {
+      "type": "integer",
+      "format": "int32",
+      "description": "Next offset to get next page of data based off current pageSize and offset, if available."
+    }
+  },
+  "$defs": {
+    "financial-apiCurrencyAmount": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "The amount in dollars."
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency code."
+        }
+      }
+    },
+    "financial-apiLSPayment": {
+      "type": "object",
+      "properties": {
+        "accountFiscId": {
+          "type": "string",
+          "description": "The account identifier."
+        },
+        "lightspeedPaymentId": {
+          "type": "string",
+          "description": "Unique identifier assigned by Lightspeed to the payment, derived from Adyen's PSP reference. \nThis alphanumeric code uniquely identifies each payment or modification request, \nincluding refunds. For more information, see Adyen's documentation: \nhttps://help.adyen.com/knowledge/payments/payment-basics/what-is-a-psp-reference-number"
+        },
+        "uuid": {
+          "type": "string",
+          "description": "The internal UUID of the payment. This value may not be unique in scenarios involving Pay-at-Table, partial, or split payments, \nwhere multiple payment transactions can share the same reference and/or POS Order Id\nFor a guaranteed unique identifier for each Lightspeed Payments transaction, use the `lightspeedPaymentId` field which is based off Adyen PSP ID."
+        },
+        "reference": {
+          "type": "string",
+          "description": "The alphanumeric reference of the payment."
+        },
+        "status": {
+          "$ref": "#/$defs/financial-apiLSPaymentStatus"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the payment was created."
+        },
+        "captureDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time the payment was captured."
+        },
+        "modificationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "fees": {
+          "$ref": "#/$defs/financial-apiCurrencyAmount"
+        },
+        "surcharge": {
+          "$ref": "#/$defs/financial-apiCurrencyAmount"
+        }
+      }
+    },
+    "financial-apiLSPaymentStatus": {
+      "type": "string",
+      "description": "The statuses for a Lightspeed Payments transaction.",
+      "enum": [
+        "CAPTURED",
+        "DISPUTED",
+        "PARTIALLY_REFUNDED",
+        "REFUNDED"
+      ]
+    }
+  }
+}

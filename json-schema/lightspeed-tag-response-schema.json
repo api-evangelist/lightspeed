@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-tag-response-schema.json",
+  "title": "Tag Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-tags-api-openapi.yml#/components/schemas/TagResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/Tag"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "Tag": {
+      "properties": {
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The Tag name.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "title": "Tag",
+      "type": "object"
+    }
+  }
+}

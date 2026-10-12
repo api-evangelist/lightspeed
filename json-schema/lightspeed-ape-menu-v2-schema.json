@@ -1,0 +1,507 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-ape-menu-v2-schema.json",
+  "title": "apeMenuV2",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-order-and-pay-api-openapi.yml#/components/schemas/apeMenuV2",
+  "properties": {
+    "menuName": {
+      "description": "The name of the menu.",
+      "type": "string"
+    },
+    "menuEntryGroups": {
+      "description": "Menu groups of this menu. The top-level entry will always be of type \"group\", representing a menu screen. Beneath each `menuEntryGroup` will be a `menuEntry` array containing any combination of one or more menu entries:\n* A `menuItemEntry` represents an individual item and may include product modifier groups.\n* A `menuGroupEntry` represents a menu sub-screen.\n* A `menuDealEntry` represents a combo.\n* A `menuProductModifierEntry` represents a product modifier.",
+      "items": {
+        "$ref": "#/$defs/apeTopLevelMenuGroupEntryV2"
+      },
+      "type": "array"
+    },
+    "richDataMissing": {
+      "description": "Indicates whether or not rich item data is missing, if requested.",
+      "type": "boolean"
+    },
+    "ikentooMenuId": {
+      "type": "integer",
+      "description": "The unique identifier for the menu.",
+      "format": "int64"
+    },
+    "conditionalTaxRules": {
+      "description": "Warning that actual tax depends on a POS Account condition and may be different from what is provided in this API.",
+      "type": "boolean"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "apeItemRichData": {
+      "type": "object",
+      "properties": {
+        "squareImageUrl": {
+          "description": "A download link for the image associated with this item, as formatted for display in the POS.",
+          "type": "string"
+        },
+        "rawImageUrl": {
+          "description": "A download link for the image associated with this item.",
+          "type": "string"
+        },
+        "previewImageUrl": {
+          "description": "A download link for the preview image associated with this item.",
+          "type": "string"
+        },
+        "containsAlcohol": {
+          "description": "Flag to indicate if the item contains alcohol.",
+          "type": "boolean"
+        },
+        "alcoholPercentage": {
+          "description": "The percentage of alcohol in the item.",
+          "type": "number"
+        },
+        "texts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/apeItemTexts"
+          }
+        },
+        "allergenCodes": {
+          "description": "The allergen codes associated with this item.",
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "apeItemTexts": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": "string",
+          "description": "The two letter language code associated with this item text."
+        },
+        "friendlyDisplayName": {
+          "type": "string",
+          "description": "The display name for this item in the configured language."
+        },
+        "description": {
+          "type": "string",
+          "description": "The descriptive text for this item in the configured language."
+        }
+      }
+    },
+    "apeMenuDealEntryV2": {
+      "title": "menuDeal",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "description": "Indicates the item is a Combo.",
+              "enum": [
+                "menuDeal"
+              ]
+            },
+            "items": {
+              "description": "List of items to select from.",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/apeMenuItemEntryV2"
+              }
+            },
+            "menuDealGroups": {
+              "type": "array",
+              "description": "Array of Items in the Combo",
+              "items": {
+                "$ref": "#/$defs/apeMenuDealGroupV2"
+              }
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/apeMenuItemEntryParentV2"
+        }
+      ]
+    },
+    "apeMenuDealGroupV2": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Description of the combo item grouping."
+        },
+        "sku": {
+          "type": "string",
+          "description": "The SKU of the combo item grouping."
+        },
+        "mustSelectAnItem": {
+          "type": "boolean",
+          "description": "Whether or not this is a required selection."
+        },
+        "multiSelectionPermitted": {
+          "type": "boolean",
+          "description": "Whether or not multiple items can be selected from this item grouping."
+        },
+        "minimumSelection": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The minimum number of items that must be selected from this item grouping. If null then no minimum is set."
+        },
+        "maximumSelection": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The maximum number of items that can be selected from this item grouping. If null then no maximum is set."
+        },
+        "itemRichData": {
+          "$ref": "#/$defs/apeItemRichData"
+        },
+        "items": {
+          "description": "List of items to select from.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/apeMenuItemEntryV2"
+          }
+        }
+      },
+      "description": "Collections of item groups within the combo to select from."
+    },
+    "apeMenuGroupEntryV2": {
+      "title": "group",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "description": "Indicates this is a menu group.",
+              "enum": [
+                "group"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "description": "The menu group ID."
+            },
+            "name": {
+              "type": "string",
+              "description": "The menu group name."
+            },
+            "color": {
+              "type": "string",
+              "description": "The color of the button in the POS."
+            },
+            "menuEntry": {
+              "type": "array",
+              "description": "Array of menu entry objects.",
+              "items": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/apeMenuItemEntryV2"
+                  },
+                  {
+                    "$ref": "#/$defs/apeMenuDealEntryV2"
+                  },
+                  {
+                    "$ref": "#/$defs/apeMenuGroupEntryV2"
+                  },
+                  {
+                    "$ref": "#/$defs/apeMenuProductModifierEntryV2"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "apeMenuItemEntryParentV2": {
+      "properties": {
+        "productName": {
+          "type": "string",
+          "description": "The name of the item."
+        },
+        "productPrice": {
+          "type": "number",
+          "description": "The price of the item."
+        },
+        "extraPrice": {
+          "type": "number",
+          "description": "Additional item price when selected in a combo group."
+        },
+        "color": {
+          "type": "string",
+          "description": "The color of the menu button for this item."
+        },
+        "sku": {
+          "type": "string",
+          "description": "The SKU of the item."
+        },
+        "customItemNameEnabled": {
+          "type": "boolean",
+          "description": "Whether the name of the item can be customized."
+        },
+        "pricingStrategy": {
+          "type": "string",
+          "description": "The pricing type of the item.",
+          "enum": [
+            "CUSTOMIZED_ITEM_PRICE_WILL_BE_NEGATIVE",
+            "CUSTOMIZED_ITEM_PRICE_WILL_BE_POSTIVE",
+            "CUSTOMIZED_ITEM_PRICE_WILL_BE_A_PERCENTAGE_OF_TOTAL",
+            "PRICE_CANNOT_BE_CUSTOMIZED"
+          ]
+        },
+        "itemRichData": {
+          "$ref": "#/$defs/apeItemRichData"
+        },
+        "defaultTaxAmount": {
+          "description": "The tax amount as calculated at the default tax rate (a sum for multiple taxes).",
+          "type": "number"
+        },
+        "defaultTaxPercentage": {
+          "description": "The default tax percentage for this item (a sum for multiple taxes).",
+          "type": "number"
+        },
+        "taxIncludedInPrice": {
+          "description": "Whether or not tax is included in the price of the item.",
+          "type": "boolean"
+        },
+        "conditionalTaxRules": {
+          "description": "Warning that actual tax depends on a POS Account condition and may be different from what is provided in this API.",
+          "type": "boolean"
+        },
+        "taxes": {
+          "description": "Detailed tax info",
+          "items": {
+            "$ref": "#/$defs/apeMenuItemTax"
+          },
+          "type": "array"
+        }
+      }
+    },
+    "apeMenuItemEntryV2": {
+      "title": "menuItem",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "description": "Indicates this is an individual item.",
+              "enum": [
+                "menuItem"
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/apeMenuItemEntryParentV2"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asSubItem": {
+              "type": "boolean",
+              "description": "Indicates whether or not this product is a sub-item that cannot be sold alone. Note - when the item is nested under a `menuDeal` this will always be false."
+            },
+            "productionInstructionList": {
+              "type": "array",
+              "description": "Array of production instructions for this product",
+              "items": {
+                "$ref": "#/$defs/apeProductionInstruction"
+              }
+            },
+            "menuModifierGroups": {
+              "type": "array",
+              "description": "Array of product modifier groups for this product",
+              "items": {
+                "$ref": "#/$defs/apeMenuModifierGroupV2"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "apeMenuItemTax": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Tax description as it appears on a POS and receipt."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount of Tax applied by default by this Tax, this can change dynamically at time of sale."
+        },
+        "percentage": {
+          "type": "number",
+          "description": "The percentage of Tax applied by default by this Tax, this can change dynamically at time of sale."
+        }
+      }
+    },
+    "apeMenuModifierGroupV2": {
+      "type": "object",
+      "description": "A product modifier group containing product modifiers to select from.",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Description of the modifier group."
+        },
+        "sku": {
+          "type": "string",
+          "description": "The SKU of the modifier group."
+        },
+        "mustSelectAnItem": {
+          "type": "boolean",
+          "description": "Whether or not this is a required selection."
+        },
+        "multiSelectionPermitted": {
+          "type": "boolean",
+          "description": "Whether or not multiple items can be selected from this modifier group."
+        },
+        "minimumSelection": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The minimum number of items that must be selected from this modifier group. If null then no minimum is set."
+        },
+        "maximumSelection": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The maximum number of items that can be selected from this modifier group. If null then no maximum is set."
+        },
+        "itemRichData": {
+          "$ref": "#/$defs/apeItemRichData"
+        },
+        "productModifiers": {
+          "description": "Array of product modifiers within this modifier group.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/apeMenuProductModifierEntryV2"
+          }
+        }
+      }
+    },
+    "apeMenuProductModifierEntryV2": {
+      "title": "menuProductModifier",
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "description": "Indicates this is a product modifier.",
+              "enum": [
+                "menuProductModifier"
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/$defs/apeMenuItemEntryParentV2"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "productionInstructionList": {
+              "type": "array",
+              "description": "Array of production instructions for this modifier",
+              "items": {
+                "$ref": "#/$defs/apeProductionInstruction"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "apeProductionInstruction": {
+      "type": "object",
+      "properties": {
+        "multiSelectionPermitted": {
+          "type": "boolean",
+          "description": "Specifies if more than one production instruction can be selected for this group."
+        },
+        "productionInstructionGroupName": {
+          "type": "string",
+          "description": "The group name for this production instruction."
+        },
+        "productionIntructionGroupId": {
+          "type": "integer",
+          "description": "The unique identifier for this production instruction group.",
+          "format": "int64"
+        },
+        "productionInstructionList": {
+          "type": "array",
+          "description": "Array of production instructions for this group.",
+          "items": {
+            "$ref": "#/$defs/apeProductionInstructionEntry"
+          }
+        }
+      }
+    },
+    "apeProductionInstructionEntry": {
+      "type": "object",
+      "properties": {
+        "instruction": {
+          "type": "string",
+          "description": "The name of the production instruction."
+        },
+        "ikentooModifierId": {
+          "description": "The unique identifier of this production instruction.",
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "description": "Array of production instructions for this group"
+    },
+    "apeTopLevelMenuGroupEntryV2": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "description": "Indicates this is a menu group.",
+              "enum": [
+                "group"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "description": "The menu group ID."
+            },
+            "name": {
+              "type": "string",
+              "description": "The menu group name."
+            },
+            "color": {
+              "type": "string",
+              "description": "The color of the button in the POS."
+            },
+            "menuEntry": {
+              "type": "array",
+              "description": "Array of menu entry objects.",
+              "items": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/apeMenuItemEntryV2"
+                  },
+                  {
+                    "$ref": "#/$defs/apeMenuDealEntryV2"
+                  },
+                  {
+                    "$ref": "#/$defs/apeMenuGroupEntryV2"
+                  },
+                  {
+                    "$ref": "#/$defs/apeMenuProductModifierEntryV2"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

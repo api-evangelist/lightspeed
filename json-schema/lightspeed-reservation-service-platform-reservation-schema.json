@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-reservation-service-platform-reservation-schema.json",
+  "title": "reservation-servicePlatformReservation",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-k-series-openapi.yml#/components/schemas/reservation-servicePlatformReservation",
+  "properties": {
+    "guest": {
+      "description": "Guest information associated with the reservation.",
+      "properties": {
+        "email": {
+          "description": "The guest's email address.",
+          "format": "email",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "The guest's first name.",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The guest's last name.",
+          "type": "string"
+        },
+        "phone": {
+          "description": "The guest's phone number.",
+          "format": "phone",
+          "type": "string"
+        },
+        "platformGuestId": {
+          "description": "The external platform's unique identifier for the guest.",
+          "pattern": "[a-zA-Z0-9_-]+",
+          "type": "string"
+        },
+        "walkIn": {
+          "default": false,
+          "description": "When `true`, indicates this is a walk-in reservation.",
+          "type": "boolean"
+        },
+        "foodAndDrinkNotes": {
+          "type": "string",
+          "description": "Any details about guest's food and drink preferences."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Other notes about the guest."
+        },
+        "language": {
+          "type": "string",
+          "description": "Guest's language; use [two-symbol ISO-639](https://www.loc.gov/standards/iso639-2/php/code_list.php) for best results on POS."
+        },
+        "allergens": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Any allergens linked to this guest. See [Allergens](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/allergens) table for a list of allergen names with available translations. Any other text will be displayed as provided in the request body."
+        },
+        "dietaryRestrictions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true,
+          "description": "Any dietary restrictions linked to this guest. See [Dietary Restrictions](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/dietary-restrictions) table for a list of restrictions with available translations. Any other text will be displayed as provided in the request body."
+        }
+      },
+      "required": [
+        "platformGuestId",
+        "firstName"
+      ],
+      "type": "object"
+    },
+    "liability": {
+      "$ref": "#/$defs/reservation-serviceLiability"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Venue-entered notes specific to the reservation."
+    },
+    "specialOffer": {
+      "type": "string",
+      "description": "Any special offer linked to the reservation."
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true,
+      "description": "Tags linked to this reservation. See [Reservation Tags](https://api-portal.lsk.lightspeed.app/guides/reference/reference-tables/reservation-tags) table for a list of tags with available translations. All others will be displayed as provided in the request body."
+    },
+    "partySize": {
+      "description": "The number of expected guests.",
+      "format": "int32",
+      "type": "integer"
+    },
+    "sequenceId": {
+      "description": "An optional sequence number assigned by the external platform. If provided, it will be used to determine the order of updates of a reservation. It is the responsibility of the external platform to provide a monotonically increasing sequence number.\nIf omitted, the utcUpdatedAt field will be used to determine the order of updates. That can be imprecise when dealing with events that happen in short timeframes in a distributed system.\nThe value SHOULD NOT be set to null or zero or any special value, but instead omitted from the JSON object entirely if it is not used.\n",
+      "type": "integer",
+      "format": "int64"
+    },
+    "status": {
+      "$ref": "#/$defs/reservation-servicePlatformReservationStatus"
+    },
+    "tableNumbers": {
+      "description": "The list of table numbers associated with this reservation.\nIf no valid table is provided, POS order is not created.\n",
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "utcScheduledAt": {
+      "description": "The scheduled reservation time.",
+      "format": "date-time",
+      "type": "string",
+      "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+    },
+    "utcUpdatedAt": {
+      "description": "The timestamp of the most recent change to the reservation.\n",
+      "format": "date-time",
+      "type": "string",
+      "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+    },
+    "guestRequest": {
+      "description": "Notes added to the reservation by the guest.",
+      "type": "string"
+    },
+    "expectedDuration": {
+      "description": "Expected duration of the meal. ISO-8601 format.",
+      "type": "string",
+      "format": "duration",
+      "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+    }
+  },
+  "required": [
+    "utcUpdatedAt",
+    "utcScheduledAt",
+    "partySize",
+    "guest",
+    "status"
+  ],
+  "type": "object",
+  "$defs": {
+    "reservation-serviceLiability": {
+      "description": "The guest's obligation for the reservation.",
+      "properties": {
+        "currency": {
+          "description": "ISO-4217",
+          "pattern": "[A-Z]{3}",
+          "type": "string"
+        },
+        "deposits": {
+          "description": "List of all prepaid deposits made through the external platform.",
+          "items": {
+            "properties": {
+              "amount": {
+                "description": "The amount of the deposit made through the external platform.",
+                "pattern": "^[0-9]+\\.[0-9]{2}$",
+                "type": "string"
+              },
+              "platformDepositId": {
+                "description": "The external platform's unique identifier for the deposit.",
+                "pattern": "[a-zA-Z0-9_-]+",
+                "type": "string"
+              },
+              "utcCreatedAt": {
+                "description": "Deposit creation time.",
+                "format": "date-time",
+                "type": "string",
+                "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+              },
+              "utcVoidedAt": {
+                "description": "Deposit void time, if applicable.",
+                "format": "date-time",
+                "type": "string",
+                "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+              },
+              "voided": {
+                "description": "Whether or not the deposit was voided.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "amount",
+              "utcCreatedAt"
+            ],
+            "type": "object"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "refunds": {
+          "description": "List of all deposits refunded to the guest.",
+          "items": {
+            "properties": {
+              "amount": {
+                "description": "The amount which was refunded by the external platform.",
+                "pattern": "^[0-9]+\\.[0-9]{2}$",
+                "type": "string"
+              },
+              "platformRefundId": {
+                "description": "The external platform's unique identifier for the refund.",
+                "pattern": "[a-zA-Z0-9_-]+",
+                "type": "string"
+              },
+              "utcCreatedAt": {
+                "description": "Refund creation time.",
+                "format": "date-time",
+                "type": "string",
+                "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+              },
+              "utcVoidedAt": {
+                "description": "Refund void time, if applicable.",
+                "format": "date-time",
+                "type": "string",
+                "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+              },
+              "voided": {
+                "description": "Whether or not the refund was voided.",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "amount",
+              "utcCreatedAt"
+            ],
+            "type": "object"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "currency",
+        "deposits"
+      ],
+      "type": "object"
+    },
+    "reservation-servicePlatformReservationStatus": {
+      "description": "External reservation statuses for platforms.",
+      "enum": [
+        "ON_HOLD",
+        "SCHEDULED",
+        "PARTIALLY_ARRIVED",
+        "ARRIVED",
+        "PARTIALLY_SEATED",
+        "SEATED",
+        "DEPARTED",
+        "CANCELLED",
+        "NO_SHOW",
+        "ERROR"
+      ],
+      "type": "string"
+    }
+  }
+}

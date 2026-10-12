@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-gift-card-transaction-params-schema.json",
+  "title": "Gift Card Transaction Parameters",
+  "description": "The parameters for creating a new gift card transaction.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-gift-cards-api-openapi.yml#/components/schemas/GiftCardTransactionParams",
+  "properties": {
+    "amount": {
+      "description": "The transaction amount. Must be negative for REDEEMING transactions and positive for RELOADING transactions.",
+      "type": "string"
+    },
+    "client_id": {
+      "description": "A unique transaction identifier for idempotency. The client must provide this and is normally the transaction id from the client system.",
+      "type": "string"
+    },
+    "expires_at": {
+      "description": "Optional new expiry date for the gift card in YYYY-MM-DD format. Can be used to extend the gift card's expiry when reloading.",
+      "type": "string"
+    },
+    "time_zone": {
+      "description": "The timezone to use when interpreting the `expires_at` date (e.g. \"Pacific/Auckland\"). See the list of tz database time zones for valid values.",
+      "type": "string"
+    },
+    "type": {
+      "description": "The type of the transaction.",
+      "enum": [
+        "REDEEMING",
+        "RELOADING"
+      ],
+      "type": "string"
+    },
+    "user_id": {
+      "description": "The ID of the user creating the transaction. If omitted, the authenticated user will be used.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "amount",
+    "client_id",
+    "type"
+  ],
+  "type": "object"
+}

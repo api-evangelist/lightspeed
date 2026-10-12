@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-inventory-request-schema.json",
+  "title": "InventoryRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-inventory-api-openapi.yml#/components/schemas/InventoryRequest",
+  "properties": {
+    "after": {
+      "description": "The lower limit for the version numbers to be included in the response.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "before": {
+      "description": "The upper limit for the version numbers to be included in the response.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "include_deleted": {
+      "default": false,
+      "description": "Whether to include inventory records for deleted products.",
+      "type": "boolean"
+    },
+    "product_id": {
+      "description": "Optional filter to restrict results to the specified product. When combined with variants: true, it's \ntreated as a root product ID and matches all variants of that product; otherwise it matches the exact \nproduct.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "size": {
+      "default": 1000,
+      "description": "The maximum number of inventory records to return.",
+      "format": "int64",
+      "maximum": 5000,
+      "type": "integer"
+    },
+    "sort_direction": {
+      "default": "desc",
+      "description": "Whether to sort the response by ascending or descending.",
+      "enum": [
+        "asc",
+        "desc"
+      ],
+      "type": "string"
+    },
+    "variants": {
+      "default": false,
+      "description": "When true (and product_id is set), matches all variant products sharing the same root_product_id, rather\nthan just the exact product.",
+      "type": "boolean"
+    }
+  }
+}

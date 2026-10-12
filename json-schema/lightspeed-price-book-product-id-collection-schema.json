@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-price-book-product-id-collection-schema.json",
+  "title": "Price Book Product ID Collection",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-price-books-api-openapi.yml#/components/schemas/PriceBookProductIdCollection",
+  "properties": {
+    "data": {
+      "description": "An array of Price Book ids",
+      "properties": {
+        "price_book_product_ids": {
+          "description": "An array of price book product ids to be deleted from the given Price Book.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "price_book_product_ids"
+      ],
+      "type": "object"
+    }
+  },
+  "type": "object"
+}

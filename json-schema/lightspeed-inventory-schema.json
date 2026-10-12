@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-inventory-schema.json",
+  "title": "Inventory",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-inventory-api-openapi.yml#/components/schemas/Inventory",
+  "properties": {
+    "average_cost": {
+      "description": "The average cost of inventory available to sell.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "current_inventory_level": {
+      "description": "Current inventory level.",
+      "format": "double",
+      "type": "number"
+    },
+    "deleted_at": {
+      "description": "The deletion timestamp in UTC, or null if not deleted.",
+      "format": "date-time",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "description": "Auto-generated object ID.",
+      "type": "string"
+    },
+    "outlet_id": {
+      "description": "The ID of the outlet associated with this inventory record.",
+      "type": "string"
+    },
+    "product_id": {
+      "description": "The ID of the product associated with this inventory record.",
+      "type": "string"
+    },
+    "quantity_to_procure": {
+      "description": "Quantity of stock to procure in order to satisfy current fulfilments and service orders.",
+      "format": "double",
+      "type": "number"
+    },
+    "reorder_amount": {
+      "description": "The quantity to order to reach the desired stock level. For the `FIXED` method, this is a static amount that was set when the reorder method was configured. For `MIN_MAX`, this is dynamically computed as the difference between reorder_target and current_inventory_level, or zero if current stock exceeds the target. This computation is independent of reorder_point and may produce a non-zero value even when current_inventory_level is above the reorder point. It is null if no reorder method is configured.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "reorder_method": {
+      "description": "The reorder strategy in use. Either `FIXED` or `MIN_MAX`. Null if no reorder method is configured.",
+      "enum": [
+        "FIXED",
+        "MIN_MAX",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reorder_point": {
+      "description": "The inventory level at which a product should be automatically included in stock orders.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "reorder_target": {
+      "description": "The desired stock level to restore to when reordering. For reorder_method `MIN_MAX`, this is the target the reorder amount is computed against. For `FIXED`, this equals reorder_point + reorder_amount. Null if no reorder method is configured.",
+      "format": "double",
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "version": {
+      "description": "Auto-incrementing object version number.",
+      "format": "int64",
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-update-custom-field-params-schema.json",
+  "title": "Parameters for updating a custom field",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-workflows-api-openapi.yml#/components/schemas/UpdateCustomFieldParams",
+  "properties": {
+    "editable_in_ui": {
+      "description": "Should this custom field be editable in the UI.",
+      "type": "boolean"
+    },
+    "print_on_receipt": {
+      "description": "Should this custom field be printed on receipts.",
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string"
+    },
+    "visible_in_ui": {
+      "description": "Should this custom field be visible in the UI.",
+      "type": "boolean"
+    }
+  },
+  "type": "object"
+}

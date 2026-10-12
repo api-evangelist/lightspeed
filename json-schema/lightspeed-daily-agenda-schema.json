@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-daily-agenda-schema.json",
+  "title": "DailyAgenda",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-service-orders-api-openapi.yml#/components/schemas/DailyAgenda",
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "minutes_scheduled": {
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}

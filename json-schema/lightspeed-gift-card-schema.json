@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-gift-card-schema.json",
+  "title": "Gift Card",
+  "description": "A gift card with monetary values represented as strings for precision.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-gift-cards-api-openapi.yml#/components/schemas/GiftCard",
+  "properties": {
+    "balance": {
+      "description": "The balance of the gift card, represented as a string for precision.",
+      "type": "string"
+    },
+    "created_at": {
+      "description": "The creation timestamp in UTC.",
+      "type": "string"
+    },
+    "expires_at": {
+      "description": "The expiry timestamp in UTC.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gift_card_transactions": {
+      "description": "An array of Gift Card Transactions.",
+      "items": {
+        "$ref": "#/$defs/GiftCardTransaction"
+      },
+      "type": "array"
+    },
+    "id": {
+      "description": "Auto-generated object ID.",
+      "type": "string"
+    },
+    "number": {
+      "description": "The gift card number.",
+      "type": "string"
+    },
+    "sale_id": {
+      "description": "The ID of the sale associated with the gift card creation, if it was created through a register sale. Null if the gift card was created directly via the API.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "sale_source": {
+      "description": "The source system where the gift card was created (e.g. x-series, e-series).",
+      "type": "string"
+    },
+    "status": {
+      "description": "The gift card status.",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE",
+        "REDEEMED",
+        "VOIDED",
+        "EXPIRED"
+      ],
+      "type": "string"
+    },
+    "total_redeemed": {
+      "description": "The amount redeemed with this gift card, represented as a string for precision.",
+      "type": "string"
+    },
+    "total_sold": {
+      "description": "The amount loaded onto this gift card during activation or reloading, represented as a string for precision.",
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "GiftCardTransaction": {
+      "description": "A gift card transaction with the amount represented as a string for precision.",
+      "properties": {
+        "amount": {
+          "description": "The transaction amount, represented as a string for precision.",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "description": "The creation timestamp in UTC.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "source": {
+          "description": "The source of the transaction.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "description": "The source id is a unique identifier for the transaction in the source system.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "description": "The type of transaction.",
+          "enum": [
+            "ACTIVATION",
+            "REDEEMING",
+            "IMPORTING",
+            "VOIDING",
+            "EXPIRING",
+            "REVERSING",
+            "RELOADING"
+          ],
+          "type": "string"
+        },
+        "user_id": {
+          "description": "The user id associated with the transaction.",
+          "type": "string"
+        }
+      },
+      "title": "Gift Card Transaction",
+      "type": "object"
+    }
+  }
+}

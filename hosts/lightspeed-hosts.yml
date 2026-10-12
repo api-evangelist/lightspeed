@@ -1,0 +1,209 @@
+generated: '2026-10-12'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 19
+  own: 5
+  other_domain: 11
+  platform: 3
+  roles:
+  - api
+  - docs
+  - other
+  - portal
+  - source
+  - status
+  - website
+hosts:
+- host: api-docs.ecwid.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: ecwid.com
+  role: other
+  relation: other-domain
+- host: api-portal.lsk.lightspeed.app
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: lightspeed.app
+  role: other
+  relation: other-domain
+- host: api.kounta.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: kounta.com
+  role: api
+  relation: other-domain
+- host: api.lightspeedapp.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: lightspeedapp.com
+  role: api
+  relation: other-domain
+- host: api.lsk.lightspeed.app
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: lightspeed.app
+  role: api
+  relation: other-domain
+- host: api.shoplightspeed.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: shoplightspeed.com
+  role: api
+  relation: other-domain
+- host: apidoc.kounta.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: kounta.com
+  role: other
+  relation: other-domain
+- host: app.ecwid.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: ecwid.com
+  role: other
+  relation: other-domain
+- host: developers.lightspeedhq.com
+  found_by:
+  - pointer
+  - apis[]
+  - vendor-detect
+  types:
+  - Documentation
+  - DeveloperPortal
+  - Postman
+  serves:
+  - docs
+  - cdn
+  vendor: fastly
+  registrable_domain: lightspeedhq.com
+  role: portal
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: partner-api.chronogolf.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: chronogolf.com
+  role: other
+  relation: other-domain
+- host: partner-api.docs.chronogolf.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: chronogolf.com
+  role: docs
+  relation: other-domain
+- host: status.lightspeedhq.com
+  found_by:
+  - pointer
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: lightspeedhq.com
+  role: status
+  relation: own
+- host: trust.lightspeedhq.com
+  found_by:
+  - pointer
+  types:
+  - TrustCenter
+  serves: []
+  registrable_domain: lightspeedhq.com
+  role: other
+  relation: own
+- host: www.lightspeedhq.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - Newsroom
+  - Website
+  - Blog
+  - Pricing
+  - Support
+  - TermsOfService
+  - PrivacyPolicy
+  - SignUp
+  serves:
+  - cdn
+  vendor: cloudflare
+  registrable_domain: lightspeedhq.com
+  role: website
+  relation: own
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: x-series-api.lightspeedhq.com
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - APIReference
+  - GettingStarted
+  serves:
+  - docs
+  registrable_domain: lightspeedhq.com
+  role: docs
+  relation: own
+- host: x.com
+  found_by:
+  - pointer
+  types:
+  - X
+  serves: []
+  registrable_domain: x.com
+  role: other
+  relation: platform
+- host: '{domain_prefix}.retail.lightspeed.app'
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: lightspeed.app
+  role: other
+  relation: other-domain

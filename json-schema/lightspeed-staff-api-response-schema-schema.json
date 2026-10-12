@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-staff-api-response-schema-schema.json",
+  "title": "staff-apiResponseSchema",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-staff-api-openapi.yml#/components/schemas/staff-apiResponseSchema",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "items": {}
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "first": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "description": "The URL for the first page of results.",
+              "format": "uri"
+            }
+          }
+        },
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "description": "The URL for the current page of results.",
+              "format": "uri"
+            }
+          }
+        },
+        "next": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "description": "The URL for the next page of results.",
+              "format": "uri"
+            }
+          }
+        },
+        "last": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string",
+              "description": "The URL for the last page of results.",
+              "format": "uri"
+            }
+          }
+        }
+      }
+    },
+    "page": {
+      "$ref": "#/$defs/staff-apiPageInfo"
+    }
+  },
+  "$defs": {
+    "staff-apiPageInfo": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "description": "The current page number."
+        },
+        "size": {
+          "type": "integer",
+          "description": "The number of elements in the page."
+        },
+        "totalElements": {
+          "type": "integer",
+          "description": "The total number of elements."
+        },
+        "totalPages": {
+          "type": "integer",
+          "description": "The total number of pages of results."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-create-custom-inventory-adjustment-reason-request-schema.json",
+  "title": "Create Custom Inventory Adjustment Reason Request",
+  "description": "Parameters for creating a new custom inventory adjustment reason.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-inventory-api-openapi.yml#/components/schemas/CreateCustomInventoryAdjustmentReasonRequest",
+  "properties": {
+    "enabled": {
+      "description": "Whether the reason can be selected when creating stock adjustments.",
+      "type": "boolean"
+    },
+    "name": {
+      "description": "Display name of the reason. Must be unique within the retailer. Max 30 characters.",
+      "maxLength": 30,
+      "type": "string"
+    },
+    "type": {
+      "description": "Whether the reason applies to positive (stock-in) or negative (stock-out) adjustments.",
+      "enum": [
+        "POSITIVE",
+        "NEGATIVE"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "enabled",
+    "type"
+  ],
+  "type": "object"
+}

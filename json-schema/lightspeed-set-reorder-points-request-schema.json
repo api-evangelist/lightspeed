@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-set-reorder-points-request-schema.json",
+  "title": "Set Reorder Points Request",
+  "description": "An array of reorder point entries to upsert.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-inventory-api-openapi.yml#/components/schemas/SetReorderPointsRequest",
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/$defs/ReorderPointFixedRequestItem"
+      },
+      {
+        "$ref": "#/$defs/ReorderPointMinMaxRequestItem"
+      }
+    ]
+  },
+  "maxItems": 1000,
+  "minItems": 1,
+  "type": "array",
+  "$defs": {
+    "ReorderPointFixedRequestItem": {
+      "additionalProperties": false,
+      "description": "A reorder point entry using the `FIXED` method.",
+      "properties": {
+        "method": {
+          "description": "The reorder method. Must be `FIXED`.",
+          "enum": [
+            "FIXED"
+          ],
+          "type": "string"
+        },
+        "outlet_id": {
+          "description": "The ID of the outlet the reorder point applies to.",
+          "format": "uuid",
+          "maxLength": 36,
+          "type": "string"
+        },
+        "product_id": {
+          "description": "The ID of the product the reorder point applies to.",
+          "format": "uuid",
+          "maxLength": 36,
+          "type": "string"
+        },
+        "reorder_amount": {
+          "description": "The static quantity to order each time the reorder point is triggered.",
+          "type": "number"
+        },
+        "reorder_point": {
+          "description": "The minimum inventory level below which a product is automatically suggested for reordering.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "product_id",
+        "outlet_id",
+        "method",
+        "reorder_point",
+        "reorder_amount"
+      ],
+      "title": "Reorder Point Fixed Request Item",
+      "type": "object"
+    },
+    "ReorderPointMinMaxRequestItem": {
+      "additionalProperties": false,
+      "description": "A reorder point entry using the `MIN_MAX` method.",
+      "properties": {
+        "method": {
+          "description": "The reorder method. Must be `MIN_MAX`.",
+          "enum": [
+            "MIN_MAX"
+          ],
+          "type": "string"
+        },
+        "outlet_id": {
+          "description": "The ID of the outlet the reorder point applies to.",
+          "format": "uuid",
+          "maxLength": 36,
+          "type": "string"
+        },
+        "product_id": {
+          "description": "The ID of the product the reorder point applies to.",
+          "format": "uuid",
+          "maxLength": 36,
+          "type": "string"
+        },
+        "reorder_point": {
+          "description": "The minimum inventory level below which a product is automatically suggested for reordering.",
+          "type": "number"
+        },
+        "reorder_target": {
+          "description": "The desired stock level to restore to when reordering.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "product_id",
+        "outlet_id",
+        "method",
+        "reorder_point",
+        "reorder_target"
+      ],
+      "title": "Reorder Point Min/Max Request Item",
+      "type": "object"
+    }
+  }
+}

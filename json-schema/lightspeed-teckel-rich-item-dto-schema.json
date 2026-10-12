@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-teckel-rich-item-dto-schema.json",
+  "title": "teckelRichItemDto",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-rich-item-api-openapi.yml#/components/schemas/teckelRichItemDto",
+  "properties": {
+    "businessId": {
+      "$ref": "#/$defs/teckelBusinessId"
+    },
+    "sku": {
+      "$ref": "#/$defs/teckelSKU"
+    },
+    "descriptions": {
+      "description": "List of localized descriptions",
+      "items": {
+        "$ref": "#/$defs/teckelRichItemDescriptionDto"
+      },
+      "uniqueItems": true,
+      "type": "array"
+    },
+    "allergenCodes": {
+      "description": "List of allergen codes.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "teckelBusinessId": {
+      "description": "The unique identifier for the business.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "teckelRichItemDescriptionDto": {
+      "description": "Stores an item description with its locale code.",
+      "properties": {
+        "localeCode": {
+          "description": "The language code (ISO 639) of the description.",
+          "minLength": 2,
+          "maxLength": 7,
+          "nullable": false,
+          "type": "string"
+        },
+        "description": {
+          "description": "The item description in the language of the locale.",
+          "maxLength": 4000,
+          "type": "string"
+        },
+        "displayName": {
+          "description": "The display name of the item in the language of the locale.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "localeCode"
+      ],
+      "type": "object"
+    },
+    "teckelSKU": {
+      "maxLength": 25,
+      "description": "The SKU of the item.",
+      "type": "string"
+    }
+  }
+}

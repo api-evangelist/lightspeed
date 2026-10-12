@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-register-close-request-schema.json",
+  "title": "Register Close Request",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-registers-api-openapi.yml#/components/schemas/RegisterCloseRequest",
+  "properties": {
+    "payments": {
+      "description": "An array Register objects wrapped in a top level `data` object.",
+      "items": {
+        "$ref": "#/$defs/RegisterClosePaymentType"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "RegisterClosePaymentType": {
+      "properties": {
+        "payment_type_id": {
+          "description": "The ID of the Payment Type.",
+          "type": "string"
+        },
+        "total": {
+          "description": "The Total amount for this Payment Type.",
+          "type": "string"
+        }
+      },
+      "title": "Register Close Payment Type",
+      "type": "object"
+    }
+  }
+}

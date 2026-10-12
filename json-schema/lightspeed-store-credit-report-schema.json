@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-store-credit-report-schema.json",
+  "title": "Store Credit Report",
+  "description": "The store credit report for a retailer.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-store-credits-api-openapi.yml#/components/schemas/StoreCreditReport",
+  "properties": {
+    "outstanding_balance": {
+      "description": "The outstanding balance.",
+      "format": "double",
+      "type": "number"
+    },
+    "total_value_issued": {
+      "description": "The total credit issued.",
+      "format": "double",
+      "type": "number"
+    },
+    "total_value_redeemed": {
+      "description": "The total value redeemed.",
+      "format": "double",
+      "type": "number"
+    }
+  },
+  "type": "object"
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-pms-api-get-provider-schema.json",
+  "title": "pms-apiGetProvider",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-pms-api-openapi.yml#/components/schemas/pms-apiGetProvider",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for the provider.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "name": {
+      "description": "The name of the PMS provider.",
+      "type": "string"
+    },
+    "apiKey": {
+      "description": "The API key for the PMS provider.",
+      "type": "string"
+    },
+    "businessLocationId": {
+      "description": "The unique identifier for the business location.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "endpoint": {
+      "description": "The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.",
+      "type": "string"
+    },
+    "features": {
+      "description": "The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.",
+      "items": {
+        "$ref": "#/$defs/pms-apiProviderFeature"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "pms-apiProviderFeature": {
+      "type": "string",
+      "enum": [
+        "SEARCH_BY_NAME",
+        "MIRRORING",
+        "PARTIAL_PAYMENTS",
+        "MULTI_PAYMENTS",
+        "SERVICE_CHARGE",
+        "ENRICHED_PAYLOAD"
+      ]
+    }
+  }
+}

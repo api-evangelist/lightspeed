@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-brand-base-schema.json",
+  "title": "Brand",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-brands-api-openapi.yml#/components/schemas/BrandBase",
+  "properties": {
+    "description": {
+      "description": "The brand description.",
+      "type": "string"
+    },
+    "name": {
+      "description": "The Brand name.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "type": "object"
+}

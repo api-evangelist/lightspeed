@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-get-users-by-ids-request-schema.json",
+  "title": "GetUsersByIdsRequest",
+  "description": "An array of user IDs to retrieve.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-users-api-openapi.yml#/components/schemas/GetUsersByIdsRequest",
+  "items": {
+    "format": "uuid",
+    "type": "string"
+  },
+  "type": "array"
+}

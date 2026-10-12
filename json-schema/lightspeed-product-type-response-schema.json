@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-product-type-response-schema.json",
+  "title": "Product Type Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-product-types-api-openapi.yml#/components/schemas/ProductTypeResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/ProductType"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "ProductCategoryPath": {
+      "properties": {
+        "id": {
+          "description": "Object id of the Product Type in the path.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The Product Type name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "Product Category Path",
+      "type": "object"
+    },
+    "ProductType": {
+      "properties": {
+        "category_path": {
+          "description": "The path of this product type (now product category) in the hierarchy.",
+          "items": {
+            "$ref": "#/$defs/ProductCategoryPath"
+          },
+          "type": "array"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "leaf_category": {
+          "description": "Is this product type (now product category) at the bottom of the hierarchy.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "The Product Type name.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "id",
+        "leaf_category"
+      ],
+      "title": "Product Type",
+      "type": "object"
+    }
+  }
+}

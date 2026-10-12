@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-product-category-schema.json",
+  "title": "ProductCategory",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-product-categories-api-openapi.yml#/components/schemas/ProductCategory",
+  "properties": {
+    "category_path": {
+      "items": {
+        "$ref": "#/$defs/ProductCategoryPath"
+      },
+      "type": "array"
+    },
+    "id": {
+      "description": "The category id",
+      "format": "uuid",
+      "type": "string"
+    },
+    "leaf_category": {
+      "description": "True if the category does not have any more children (i.e. leaf).",
+      "type": "boolean"
+    },
+    "name": {
+      "description": "The name of the category",
+      "type": "string"
+    },
+    "parent_category_id": {
+      "description": "The parent category id, or null if its root category.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "root_category_id": {
+      "description": "The category id of the root of the category tree. If category is a root, this will be itself.",
+      "format": "uuid",
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "ProductCategoryPath": {
+      "properties": {
+        "id": {
+          "description": "Object id of the Product Type in the path.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The Product Type name.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "Product Category Path",
+      "type": "object"
+    }
+  }
+}

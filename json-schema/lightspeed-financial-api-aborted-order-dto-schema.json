@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-financial-api-aborted-order-dto-schema.json",
+  "title": "financial-apiAbortedOrderDto",
+  "description": "Represents an unpaid, non-committed order that has been fully aborted.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-financialv2-api-openapi.yml#/components/schemas/financial-apiAbortedOrderDto",
+  "type": "object",
+  "properties": {
+    "staffName": {
+      "type": "string",
+      "description": "The name of the staff member who aborted the order."
+    },
+    "timeOfAbortedOrder": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the order was aborted and all line items fully cleared."
+    },
+    "totalAmountAborted": {
+      "type": "string",
+      "description": "The total value of the aborted order."
+    },
+    "abortedLineItems": {
+      "type": "array",
+      "description": "A list of all line items that were removed from the aborted order.",
+      "items": {
+        "$ref": "#/$defs/financial-apiAbortedOrderLineItemDto"
+      }
+    }
+  },
+  "$defs": {
+    "financial-apiAbortedOrderLineItemDto": {
+      "type": "object",
+      "properties": {
+        "itemName": {
+          "type": "string",
+          "description": "The name of the item that was removed from the order."
+        },
+        "itemSku": {
+          "type": "string",
+          "description": "The SKU of the item that was removed from the order."
+        },
+        "itemQuantity": {
+          "type": "string",
+          "description": "The quantity of the item removed from the order."
+        },
+        "itemAmount": {
+          "type": "string",
+          "description": "The total price for this item (itemPrice * itemQuantity)."
+        },
+        "itemPrice": {
+          "type": "string",
+          "description": "The unit price of the item removed from the order."
+        }
+      }
+    }
+  }
+}

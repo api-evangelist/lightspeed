@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-brand-response-schema.json",
+  "title": "Brand Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-brands-api-openapi.yml#/components/schemas/BrandResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/Brand"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "Brand": {
+      "properties": {
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "The brand description.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The brand name.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "id"
+      ],
+      "title": "Brand",
+      "type": "object"
+    }
+  }
+}

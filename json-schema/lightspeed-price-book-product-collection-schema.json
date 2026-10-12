@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-price-book-product-collection-schema.json",
+  "title": "Price Book Product Collection",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-price-books-api-openapi.yml#/components/schemas/PriceBookProductCollection",
+  "properties": {
+    "data": {
+      "description": "An array of Price Book objects wrapped in a top level `data` object.",
+      "items": {
+        "$ref": "#/$defs/PriceBookProduct"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "PriceBookProduct": {
+      "properties": {
+        "adjustment": {
+          "description": "The adjustment amount",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "adjustment_type": {
+          "description": "The adjustment type",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": "string"
+        },
+        "default_display_price": {
+          "description": "The default display price",
+          "format": "double",
+          "type": "number"
+        },
+        "deleted_at": {
+          "description": "Deletion timestamp in UTC.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "discount": {
+          "description": "The discount amount",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "loyalty_value": {
+          "description": "Price Book defined loyalty value.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "max_units": {
+          "description": "The maximum number of items for which this price will be used.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "min_units": {
+          "description": "The minimum number of items for which this price will be used.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "price": {
+          "description": "The Retail price of the product.",
+          "format": "double",
+          "type": "number"
+        },
+        "price_book_id": {
+          "description": "The ID of the Price Book this product belongs to.",
+          "type": "string"
+        },
+        "product_id": {
+          "description": "The ID of the associated product.",
+          "type": "string"
+        },
+        "retail_tax": {
+          "description": "The retail tax",
+          "format": "double",
+          "type": "number"
+        },
+        "rounding": {
+          "description": "The format for the rounding",
+          "type": "string"
+        },
+        "tax_id": {
+          "description": "The id for the tax rate",
+          "type": "string"
+        },
+        "updated_at": {
+          "description": "Last update timestamp in UTC.",
+          "type": "string"
+        },
+        "version": {
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "price",
+        "product_id",
+        "tax_id"
+      ],
+      "title": "Price Book Product",
+      "type": "object"
+    }
+  }
+}

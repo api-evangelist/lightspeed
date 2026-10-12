@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-remote-business-rule-schema.json",
+  "title": "Remote Business Rules",
+  "description": "The configuration of a remote business rule.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-workflows-api-openapi.yml#/components/schemas/RemoteBusinessRule",
+  "properties": {
+    "created_at": {
+      "description": "The creation timestamp in UTC.",
+      "format": "date-time",
+      "readOnly": true,
+      "type": "string"
+    },
+    "id": {
+      "readOnly": true,
+      "type": "string"
+    },
+    "oauth_application_id": {
+      "description": "The ID of the application the created the remote business rule.",
+      "readOnly": true,
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "type": "string"
+    }
+  },
+  "required": [
+    "url"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-pack-line-items-request-schema.json",
+  "title": "PackLineItemsRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-fulfillments-api-openapi.yml#/components/schemas/PackLineItemsRequest",
+  "properties": {
+    "line_items": {
+      "description": "The line items to be packed",
+      "items": {
+        "$ref": "#/$defs/PackLineItemRequest"
+      },
+      "type": "array"
+    },
+    "version": {
+      "description": "The current version number of the fulfillment.",
+      "format": "int32",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "version",
+    "line_items"
+  ],
+  "type": "object",
+  "$defs": {
+    "PackLineItemRequest": {
+      "properties": {
+        "quantity": {
+          "description": "The quantity to be packed",
+          "format": "double",
+          "type": "number"
+        },
+        "sale_line_item_id": {
+          "description": "The unique identifier of the sale line item to be packed.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source_breakdown": {
+          "$ref": "#/$defs/PackLineItemSourceBreakdown"
+        }
+      },
+      "required": [
+        "sale_line_item_id",
+        "quantity"
+      ],
+      "type": "object"
+    },
+    "PackLineItemSourceBreakdown": {
+      "description": "Specifies how a packing quantity should be sourced. When provided, both fields are required and must sum to the parent quantity. Source breakdown is not allowed when the parent quantity is negative (unpacking).",
+      "properties": {
+        "quantity_from_not_started": {
+          "description": "Quantity to source from the not-started state.",
+          "format": "double",
+          "type": "number"
+        },
+        "quantity_from_picked": {
+          "description": "Quantity to source from the picked state.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "quantity_from_picked",
+        "quantity_from_not_started"
+      ],
+      "type": "object"
+    }
+  }
+}

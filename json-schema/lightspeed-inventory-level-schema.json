@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-inventory-level-schema.json",
+  "title": "InventoryLevel",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-inventory-api-openapi.yml#/components/schemas/InventoryLevel",
+  "properties": {
+    "average_cost": {
+      "description": "The average cost of inventory available to sell.\n\n🔒 Requires: `product:cost:view` scope",
+      "format": "double",
+      "type": "number"
+    },
+    "brand_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "current_inventory_level": {
+      "description": "Total inventory available to sell.",
+      "format": "double",
+      "type": "number"
+    },
+    "location_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "product_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "product_type_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "quantity_to_procure": {
+      "description": "Quantity of stock to procure in order to satisfy current fulfilments and service orders.",
+      "format": "double",
+      "type": "number"
+    },
+    "reorder_amount": {
+      "description": "The quantity of stock to reorder. For `FIXED`, this is the static amount configured when the reorder method was set up. For `MIN_MAX`, this is dynamically computed as `reorder_target` minus `current_inventory_level` (or zero if current stock already meets or exceeds the target). Omitted if no reorder method is configured.",
+      "format": "double",
+      "type": "number"
+    },
+    "reorder_method": {
+      "description": "The reorder strategy in use. `FIXED` uses a static reorder amount each time the threshold is reached. `MIN_MAX` dynamically computes the reorder amount to bring stock up to the configured maximum. Omitted if no reorder method is configured.",
+      "enum": [
+        "FIXED",
+        "MIN_MAX",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reorder_target": {
+      "description": "The target inventory level for replenishment. For `FIXED`, this equals `reorder_threshold` + `reorder_amount`. For `MIN_MAX`, this is the maximum inventory level to restock to. Omitted if no reorder method is configured.",
+      "format": "double",
+      "type": "number"
+    },
+    "reorder_threshold": {
+      "description": "The inventory level at which reordering is triggered. For `FIXED`, this is the reorder point below which a reorder is suggested. For `MIN_MAX`, this is the minimum inventory level. Omitted if no reorder method is configured.",
+      "format": "double",
+      "type": "number"
+    },
+    "root_product_id": {
+      "description": "The root product ID of the product's variant family.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "supplier_id": {
+      "format": "uuid",
+      "type": "string"
+    },
+    "total_cost": {
+      "description": "The total cost of inventory available to sell.",
+      "format": "double",
+      "type": "number"
+    }
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-discount-response-schema.json",
+  "title": "DiscountParam consists of a Sale, and related information to check if a promotion applies, and to calculate the discount",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-promotions-api-openapi.yml#/components/schemas/DiscountResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/DiscountResponseParam"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "DiscountLineItem": {
+      "properties": {
+        "confirmed": {
+          "description": "Whether the line item is confirmed as part of a layby or on account sale.",
+          "type": "boolean"
+        },
+        "explicit_loyalty_value": {
+          "description": "Whether loyalty was explicitly set in the product or it just uses the default outlet ratio.",
+          "type": "boolean"
+        },
+        "handle": {
+          "description": "Handle.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Line item ID.",
+          "type": "string"
+        },
+        "loyalty_value": {
+          "description": "The line item's loyalty value",
+          "format": "double",
+          "type": "number"
+        },
+        "price_adjusted": {
+          "description": "Indicator to suggest that the price has been adjusted manually, such as through a discount.",
+          "type": "boolean"
+        },
+        "product_brand_id": {
+          "description": "Product Brand ID.",
+          "type": "string"
+        },
+        "product_id": {
+          "description": "Product ID",
+          "type": "string"
+        },
+        "product_supplier_id": {
+          "description": "Product Supplier ID.",
+          "type": "string"
+        },
+        "product_tag_ids": {
+          "description": "Product Tag IDs.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "product_type_id": {
+          "description": "Product Type ID.",
+          "type": "string"
+        },
+        "promotion_ids": {
+          "description": "List of promotion IDs applied to this line item.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "quantity": {
+          "description": "Quantity of the line item.",
+          "type": "integer"
+        },
+        "unit_discount": {
+          "description": "The line item's unit discount",
+          "format": "double",
+          "type": "number"
+        },
+        "unit_price": {
+          "description": "The unit price for the line item.",
+          "format": "double",
+          "type": "number"
+        },
+        "unit_tax_discount": {
+          "description": "The line item's unit tax discount",
+          "format": "double",
+          "type": "number"
+        },
+        "variant_parent_id": {
+          "description": "Product variant parent ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "handle",
+        "product_brand_id",
+        "product_id",
+        "product_supplier_id",
+        "product_tag_ids",
+        "product_type_id",
+        "quantity",
+        "unit_price",
+        "unit_tax_discount"
+      ],
+      "title": "Line Item, for use while applying a discount",
+      "type": "object"
+    },
+    "DiscountResponseParam": {
+      "properties": {
+        "promo_code_validation": {
+          "$ref": "#/$defs/PromoCodeValidation"
+        },
+        "promotions": {
+          "items": {
+            "$ref": "#/$defs/PromotionDescription"
+          },
+          "type": "array"
+        },
+        "sale": {
+          "$ref": "#/$defs/DiscountSaleParam"
+        }
+      },
+      "title": "DiscountParam consists of a Sale, and related information to check if a promotion applies, and to calculate the discount",
+      "type": "object"
+    },
+    "DiscountSaleParam": {
+      "properties": {
+        "line_items": {
+          "description": "Collection of line items.",
+          "items": {
+            "$ref": "#/$defs/DiscountLineItem"
+          },
+          "type": "array"
+        },
+        "sale_date": {
+          "description": "Sale timestamp in UTC, e.g. `2006-01-02T15:04:05` (no timezone suffix).",
+          "type": "string"
+        },
+        "total_price": {
+          "description": "Total (tax exclusive) price of the sale",
+          "format": "double",
+          "type": "number"
+        },
+        "total_tax": {
+          "description": "Total tax.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "line_items",
+        "sale_date",
+        "total_price",
+        "total_tax"
+      ],
+      "title": "Sale object for use in a Discount request",
+      "type": "object"
+    },
+    "PromoCodeValidation": {
+      "properties": {
+        "promo_code": {
+          "description": "The promo code itself.",
+          "type": "string"
+        },
+        "promo_code_id": {
+          "description": "ID for the promo code.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "promotion_id": {
+          "description": "ID for the promotion.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "description": "Status field for the promo code.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "promo_code",
+        "status"
+      ],
+      "title": "Promo Code validation result",
+      "type": "object"
+    },
+    "PromotionDescription": {
+      "description": "Basic description for a Promotion.",
+      "properties": {
+        "description": {
+          "description": "A short description for the promotion.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the promotion.",
+          "type": "string"
+        }
+      },
+      "title": "PromotionDescription",
+      "type": "object"
+    }
+  }
+}

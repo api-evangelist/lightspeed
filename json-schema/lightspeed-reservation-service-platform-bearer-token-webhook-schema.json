@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-reservation-service-platform-bearer-token-webhook-schema.json",
+  "title": "reservation-servicePlatformBearerTokenWebhook",
+  "description": "The bearer token that will be sent with the webhook notifications. See [Bearer Authentication](https://swagger.io/docs/specification/authentication/bearer-authentication/).",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-reservations-for-platforms-api-openapi.yml#/components/schemas/reservation-servicePlatformBearerTokenWebhook",
+  "properties": {
+    "token": {
+      "description": "The bearer token.",
+      "format": "password",
+      "type": "string"
+    },
+    "ttl": {
+      "description": "Token expiration time in UTC.",
+      "format": "date-time",
+      "type": "string",
+      "x-field-extra-annotation": "@com.fasterxml.jackson.annotation.JsonFormat(pattern = \"yyyy-MM-dd'T'HH:mm:ss\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, timezone = \"UTC\")"
+    }
+  },
+  "required": [
+    "token"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-product-update21-request-schema.json",
+  "title": "Product Update 2.1 Request",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-products-api-openapi.yml#/components/schemas/ProductUpdate21Request",
+  "properties": {
+    "common": {
+      "description": "Information to update to the product family. For variants, this will update the fields to all variants in the family.",
+      "properties": {
+        "account_code_purchase": {
+          "description": "The code used to attribute the purchase (cost) of the product to a specific account for the Xero integration.",
+          "type": "string"
+        },
+        "account_code_sale": {
+          "description": "The code used to attribute the sales of the product to a specific account for the Xero integration.",
+          "type": "string"
+        },
+        "brand_id": {
+          "description": "The brand ID that the product is associated to. To remove the brand from the product, please provide empty value \"\".",
+          "type": "string"
+        },
+        "description": {
+          "description": "Product description.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Product name",
+          "type": "string"
+        },
+        "product_category_id": {
+          "description": "The product category ID tha the product is associated to. A product can only be associated to the last level (leaf) category.\nTo remove the product category from the product, please provide empty value \"\".\nProduct category was previously known as product types.\n",
+          "type": "string"
+        },
+        "product_suppliers": {
+          "description": "A full list of suppliers and its details that are associated to the product family.\nThe order of the supplier listed in this list will reflect the supplier's order in the product.\nThe first supplier is the default supplier.\nIf do not wish to override the code and price that may be custom per variant, just provide the id.\n",
+          "items": {
+            "$ref": "#/$defs/ProductUpdate21Supplier"
+          },
+          "type": "array"
+        },
+        "tag_ids": {
+          "description": "The full list of tag ids that the product is associated to. To remove all tags, please provide empty list.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "track_inventory": {
+          "description": "True to enable inventory tracking for product. This will updating of inventory details such as manual adjustments and reorder details.",
+          "type": "boolean"
+        },
+        "variant_attributes": {
+          "description": "A full list of the variant attributes for the product family.\nThe order of the variant attributes in this list will reflect the order of the attribute on the variant. Maximum three attributes.\n",
+          "items": {
+            "properties": {
+              "attribute_id": {
+                "description": "The ID of attribute represented at the specified position in the list.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "details": {
+      "description": "Information to update to the product. For variants, this will update the fields for the individual variant product of this request only.",
+      "properties": {
+        "all_outlets_tax": {
+          "description": "Set the tax on a product for tax inclusive store.",
+          "properties": {
+            "tax_id": {
+              "description": "The selected custom tax ID. Leave blank (\"\") to use the default tax.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "composite_components": {
+          "description": "A full list of composite components.",
+          "items": {
+            "properties": {
+              "product_id": {
+                "description": "The ID of the component product.",
+                "format": "uuid",
+                "type": "string"
+              },
+              "quantity": {
+                "description": "The quantity of the component product.",
+                "type": "number"
+              }
+            },
+            "required": [
+              "product_id",
+              "quantity"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "dimensions_unit": {
+          "description": "The unit for any height, width, or length provided.",
+          "enum": [
+            "IN",
+            "CM",
+            "MM",
+            "YD"
+          ],
+          "type": "string"
+        },
+        "height": {
+          "description": "The height of the product. If provided, dimensions_unit for this value must also be provided.",
+          "type": "number"
+        },
+        "inventory": {
+          "description": "A list of inventory outlet information to update.",
+          "items": {
+            "properties": {
+              "current_amount": {
+                "description": "Current inventory quantity of the product at the given outlet.",
+                "type": "number"
+              },
+              "outlet_id": {
+                "description": "The outlet ID.",
+                "type": "string"
+              },
+              "reorder_amount": {
+                "description": "The default of the quantity for auto-filled inventory orders.",
+                "type": "number"
+              },
+              "reorder_point": {
+                "description": "Quantity below which the product should be included in the auto-filled inventory orders. use -1 to clear the reorder point.",
+                "type": "number"
+              }
+            },
+            "required": [
+              "outlet_id"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "is_active": {
+          "description": "True to enable Sell on POS, false to disable.",
+          "type": "boolean"
+        },
+        "length": {
+          "description": "The length of the product. If provided, dimensions_unit for this value must also be provided.",
+          "type": "number"
+        },
+        "loyalty_amount": {
+          "description": "The custom loyalty amount. -1 to use the default loyalty amount.",
+          "type": "number"
+        },
+        "outlet_taxes": {
+          "description": "A list of outlet taxes to update on a product for tax exclusive store.",
+          "items": {
+            "properties": {
+              "outlet_id": {
+                "description": "The outlet ID to apply the tax.",
+                "type": "string"
+              },
+              "tax_id": {
+                "description": "The selected custom tax ID. Leave blank (\"\") to use the default tax.",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "packaging": {
+          "description": "Packaging this product belongs to.",
+          "items": {
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "destination_product_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "source_product_id": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "price_excluding_tax": {
+          "description": "Price exclusive of tax. For tax exclusive store.",
+          "type": "number"
+        },
+        "price_including_tax": {
+          "description": "Price inclusive of tax. For tax inclusive store.",
+          "type": "number"
+        },
+        "product_codes": {
+          "description": "A full list of product codes for the product. The first product code is used as the default product code.",
+          "items": {
+            "properties": {
+              "code": {
+                "description": "The product code value.",
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "CUSTOM",
+                  "EAN",
+                  "ISBN",
+                  "ITF",
+                  "JAN",
+                  "UPC"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "code"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "product_suppliers": {
+          "description": "A list of suppliers and its details if the supplier needs updating. The supplier referenced by this subset must be a supplier associated to the product family.\n",
+          "items": {
+            "$ref": "#/$defs/ProductUpdate21Supplier"
+          },
+          "type": "array"
+        },
+        "variant_attribute_values": {
+          "description": "A list of values for the variant attributes defined for the product. The attributes used here must match the product family.",
+          "items": {
+            "properties": {
+              "attribute_id": {
+                "description": "The variant attribute id. This variant attribute must be an attribute on the product family.",
+                "type": "string"
+              },
+              "attribute_value": {
+                "description": "The value for the variant attribute.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "attribute_id",
+              "attribute_value"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "weight": {
+          "description": "The weight of the product. If provided, weight_unit for this value must also be provided.",
+          "type": "number"
+        },
+        "weight_unit": {
+          "description": "The unit for the weight provided.",
+          "enum": [
+            "CT",
+            "G",
+            "OZ",
+            "LB",
+            "KG"
+          ],
+          "type": "string"
+        },
+        "width": {
+          "description": "The width of the product. If provided, dimensions_unit for this value must also be provided.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "ProductUpdate21Supplier": {
+      "properties": {
+        "code": {
+          "description": "The supplier's code or reference for the product. To remove the code, please provide empty value \"\".",
+          "type": "string"
+        },
+        "price": {
+          "description": "The cost of supply for the product. -1 price will delete the price.",
+          "type": "number"
+        },
+        "supplier_id": {
+          "description": "The supplier ID.",
+          "type": "string"
+        }
+      },
+      "title": "Product Update 2.1 Product Supplier Request",
+      "type": "object"
+    }
+  }
+}

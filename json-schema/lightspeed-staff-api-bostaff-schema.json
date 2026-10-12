@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-staff-api-bostaff-schema.json",
+  "title": "staff-apiBOStaff",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-staff-api-openapi.yml#/components/schemas/staff-apiBOStaff",
+  "type": "object",
+  "x-plural": "staff",
+  "properties": {
+    "staffId": {
+      "$ref": "#/$defs/staff-apiStaffId"
+    },
+    "userTypes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/staff-apiUserType"
+      }
+    },
+    "firstName": {
+      "$ref": "#/$defs/staff-apiFirstName"
+    },
+    "lastName": {
+      "$ref": "#/$defs/staff-apiLastName"
+    },
+    "email": {
+      "$ref": "#/$defs/staff-apiEmail"
+    },
+    "active": {
+      "$ref": "#/$defs/staff-apiActive"
+    },
+    "createdOn": {
+      "$ref": "#/$defs/staff-apiCreatedOn"
+    },
+    "modifiedOn": {
+      "$ref": "#/$defs/staff-apiModifiedOn"
+    },
+    "businessId": {
+      "$ref": "#/$defs/staff-apiBusinessId"
+    },
+    "businessLocationId": {
+      "$ref": "#/$defs/staff-apiBusinessLocationId"
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/staff-apiStaffGroupIdDto"
+      }
+    },
+    "reportAccess": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/staff-apiReportAccess"
+      }
+    },
+    "roles": {
+      "type": "array",
+      "description": "The roles assigned to the user.",
+      "items": {
+        "$ref": "#/$defs/staff-apiStaffRoleDto"
+      }
+    }
+  },
+  "$defs": {
+    "staff-apiActive": {
+      "type": "boolean",
+      "default": true,
+      "description": "Indicates if the user is active."
+    },
+    "staff-apiBusinessId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique identifier for the business."
+    },
+    "staff-apiBusinessLocationId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique identifier for the business location."
+    },
+    "staff-apiCreatedOn": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp of the creation of the user."
+    },
+    "staff-apiEmail": {
+      "description": "The email associated with the user. Only used for Back Office staff.",
+      "type": "string",
+      "format": "email",
+      "maxLength": 128
+    },
+    "staff-apiFirstName": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "The first name of the user.",
+      "default": ""
+    },
+    "staff-apiLastName": {
+      "type": "string",
+      "maxLength": 128,
+      "description": "The last name of the user.",
+      "default": ""
+    },
+    "staff-apiModifiedOn": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp of the last update to the user."
+    },
+    "staff-apiReportAccess": {
+      "type": "string",
+      "default": "STAFF_REPORT_OWN_ACCESS",
+      "description": "User report permissions."
+    },
+    "staff-apiStaffGroupIdDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the user group."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the user group."
+        }
+      }
+    },
+    "staff-apiStaffId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The unique identifier for the user."
+    },
+    "staff-apiStaffRoleDto": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The unique identifier for the role."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the role."
+        }
+      }
+    },
+    "staff-apiUserType": {
+      "description": "The user type.",
+      "type": "string",
+      "enum": [
+        "POS",
+        "BACK_OFFICE",
+        "API"
+      ]
+    }
+  }
+}

@@ -1,0 +1,2554 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/lightspeed/integrations
+- https://composio.dev/toolkits/lightspeed
+checked:
+- https://composio.dev/toolkits/lightspeed
+- https://monid.ai/tools/lightspeed
+- https://n8n.io/integrations/lightspeed/
+- https://www.lightspeedhq.com/integrations/
+- https://www.lightspeedhq.com/pos/retail/integrations/
+- https://zapier.com/apps/lightspeed/integrations
+summary: 251 partners named on the Lightspeed integrations marketplace (lightspeedhq.com/integrations/, HTTP 200),
+  across retail, restaurant, eCom and golf; Zapier app listed with no triggers/actions; Composio lists 7 read actions.
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: lightspeed
+  url: https://zapier.com/apps/lightspeed/integrations
+  external_url: https://www.lightspeedhq.com/
+  partner_tier: null
+  triggers: []
+  actions: []
+  searches: []
+- marketplace: composio
+  channel: agent-gateway
+  app: lightspeed
+  url: https://composio.dev/toolkits/lightspeed
+  identity: action-prefix
+  actions:
+  - key: LIGHTSPEED_GET_CUSTOMER
+  - key: LIGHTSPEED_GET_PRODUCT
+  - key: LIGHTSPEED_GET_RETAILER
+  - key: LIGHTSPEED_LIST_CUSTOMERS
+  - key: LIGHTSPEED_LIST_PAYMENT_TYPES
+  - key: LIGHTSPEED_LIST_PRODUCTS
+  - key: LIGHTSPEED_LIST_SALES
+edges:
+- partner_name: 2ACCEPT
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/2accept/
+  category: Payment Provider -USA
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: 7shifts
+  partner: 7shifts
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/7shifts/
+  category: Employee Scheduling, Payroll, Reporting, Restaurant Management, Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: 99minds Inc.
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/99minds-inc/
+  category: Gift Card, Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Access
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/access/
+  category: Booking, Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Accumula
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/accumula/
+  category: eCommerce, ERP
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: AdVision eCommerce
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/advision-ecommerce/
+  category: eCommerce, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: AgeChecker.Net
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/agechecker-net/
+  category: Data Security
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Agendrix
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/agendrix/
+  category: Employee Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Amadeus
+  partner: amadeus
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/amadeus/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Annoncer
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/annoncer/
+  category: Kitchen Display
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: AnyDay
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/anyday/
+  category: Payments, Payroll
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: APICBASE
+  partner: apicbase
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/apicbase/
+  category: Analytics, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: AppCard
+  partner: appcard
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/appcard/
+  category: Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Ascent360
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/ascent360/
+  category: Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Astro Loyalty
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/astro-loyalty/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Atlas
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/atlas/
+  category: Payments, Payroll, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Avero
+  partner: avero
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/avero/
+  category: Features / Tools, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Beesly
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/beesly/
+  category: Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Better Chains
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/better-chains/
+  category: Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BevSpot
+  partner: bevspot
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bevspot/
+  category: Inventory Management, Invoicing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BigCommerce
+  partner: bigcommerce
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bigcommerce/
+  category: eCommerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Bike Index
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bike-index/
+  category: Customer Service
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: bike.rent Manager
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bike-rent-manager/
+  category: Rental, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BikeExchange
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bike-exchange/
+  category: eCommerce, Inventory Management, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BirdEye
+  partner: birdeye
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/birdeye/
+  category: Communication, Customer Service
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Bite
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bite/
+  category: Digital menus
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BloomSuite
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bloomsuite/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BlueCheck Age & ID Verification
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bluecheck/
+  category: Analytics
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Bookingplanner by Stardekk
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bookingplanner-by-stardekk/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Boomtown
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/boomtown/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Booxi
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/booxi/
+  category: Appointment scheduling, Features / Tools, Rental, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Bounce
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bounce/
+  category: Customer Service, Features / Tools, Payment Provider -Canada
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BPL Digital Online Ordering
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/bpldigital-online-ordering/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Brightpearl by Sage
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/brightpearl-by-sage/
+  category: Inventory Management, Reporting, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: BriteCo
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/briteco/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Campspot
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/campspot/
+  category: PMS, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Capitan
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/capitan/
+  category: Membership Management, Reporting, Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Chowly
+  partner: chowly
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/chowly/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Cin7
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/cin7/
+  category: Inventory Management, Reporting, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: City Hive
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/city-hive/
+  category: Loyalty, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Clock
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/clock/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Cloudbeds
+  partner: cloudbeds
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/cloudbeds/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Como
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/como/
+  category: Customer-engagement, Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Compeat
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/compeat/
+  category: Accounting, Food costing, Inventory Management, Restaurant Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Connecteam
+  partner: connecteam
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/connecteam/
+  category: Payroll, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Cork Guru
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/cork-guru/
+  category: Digital menus
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Courserev
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/courserev/
+  category: AI, Booking
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: CoverManager
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/covermanager/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Craftable
+  partner: craftable
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/craftable/
+  category: Analytics, Inventory Management, Invoicing, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Crunchtime
+  partner: crunchtime
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/qsr-automations-inc/
+  category: Kitchen Display
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Dakis
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/dakis/
+  category: Features / Tools, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: DataQlick
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/dataqlick/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Datateer
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/datateer/
+  category: Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: DAVO Sales Tax
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/davo-sales-tax/
+  category: Accounting, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Deputy
+  partner: deputy
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/deputy/
+  category: Employee Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: DigiValet
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/digivalet/
+  category: Customer Service, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Dolce Software
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/dolce/
+  category: Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Dor
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/dor/
+  category: Analytics, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Drizly, Inc.
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/drizly-inc/
+  category: Analytics, Features / Tools, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: DYNE
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/dyne/
+  category: Analytics, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Eagle Eye Networks
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/eagle-eye-networks/
+  category: AI
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Easy Insight
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/easy-insight/
+  category: Inventory Management, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Econolease Financial Services
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/econolease-financial-services/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: eGolf Waiver
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/egolf-waiver/
+  category: Booking
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: ENDVR
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/endvr/
+  category: Customer-engagement, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: EventPro360
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/eventpro360/
+  category: Event Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: EzShop
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/ezshop/
+  category: eCommerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Faire
+  partner: faire
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/faire/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: FareHarbor
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/fareharbor/
+  category: Analytics, Appointment scheduling, Customer Service, Employee Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Finale Inventory
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/finale-inventory/
+  category: Analytics, eCommerce, ERP, Inventory Management, Reporting, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Flipdish
+  partner: flipdish
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/flipdish/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Formitable
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/formitable/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Freebees
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/freebees/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Fresh
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/fresh/
+  category: Kitchen Display
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Frontdesk Anywhere Hotel PMS
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/frontdesk-anywhere/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Gift Up!
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/gift-up/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Golf Canada
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/golf-canada/
+  category: Customer Service, Membership Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Golf EMS
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/golf-ems/
+  category: eCommerce, Payment Provider -Canada, Payment Provider -USA, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Golf Genius
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/golf-genius/
+  category: Membership Management, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: GolfBack
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/golfback/
+  category: Online Ordering, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: GolfNow
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/golfnow/
+  category: Marketing, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: GourmetMiles
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/gourmetmiles-2/
+  category: Analytics, Customer Service, Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Gratuity Solutions
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/gratuity-solutions/
+  category: Payroll
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Growzer
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/growzer/
+  category: Analytics, Inventory Management, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: GrubHub
+  partner: grubhub
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/grubhub/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Gusto
+  partner: gusto
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/gusto/
+  category: Payroll
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Homebase
+  partner: homebase
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/homebase/
+  category: Employee Scheduling, Features / Tools, Payroll, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Hostme
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/hostme/
+  category: Online Ordering, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: HotSchedules
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/hotschedules/
+  category: Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Hubtiger
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/hubtiger/
+  category: Rental, Reservation, Workorders
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Hyperspace
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/hyperspace/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Ikeono
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/ikeono/
+  category: Chat, Communication, Customer Service, Customer-engagement, Invoicing, Social Commerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Incentivio
+  partner: incentivio
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/incentivio/
+  category: Analytics, Customer-engagement, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Infi
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/infi/
+  category: Kiosk
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: inKind
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/inkind/
+  category: Loyalty, Payments
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: INSIGHT from Konnectryx
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/konnectryx-salesforce-connector/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Inventory Planner by Sage
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/inventory-planner-by-sage/
+  category: Inventory Management, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Kangaroo Rewards
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/kangaroo-rewards/
+  category: eCommerce, Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Kegtron
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/kegtron/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Kimoby
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/kimoby/
+  category: Communication, Customer Service
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Kitchen CUT
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/kitchen-cut/
+  category: Analytics, Inventory Management, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: KitchenSync
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/kitchen-sync/
+  category: Accounting, Inventory Management, Payroll, Purchasing, Reporting, Restaurant Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Klaviyo
+  partner: klaviyo
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/klaviyo/
+  category: Chat, Customer-engagement, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Kosmos eSync
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/kosmos-esync/
+  category: eCommerce, ERP
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Leat
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/leat/
+  category: Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Libro Reservations
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/lendio/
+  category: Customer-engagement, Features / Tools, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Lightspeed Delivery by Deliverect
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/deliverect/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: LINK!
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/link/
+  category: Data, Migration
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Linnworks
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/linnworks/
+  category: Inventory Management, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Local Inventory on Google
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/local-inventory-on-google-x-series/
+  category: Analytics, Features / Tools, Inventory Management, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Loyal2
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/loyal2/
+  category: Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: LoyalAction
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/loyalaction/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Loyale
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/loyale/
+  category: eCommerce, Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Lynked Loyalty
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/lynked-loyalty/
+  category: Analytics, Customer-engagement, Data, Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: M2E Cloud
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/m2e-cloud/
+  category: eCommerce, Inventory Management, Marketplace
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Mailchimp
+  partner: mailchimp
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/mailchimp/
+  category: Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: MarginEdge
+  partner: marginedge
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/marginedge/
+  category: Analytics, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: MarketMan
+  partner: marketman
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/marketman/
+  category: Inventory Management, Invoicing, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Marsello
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/marsello/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Masterlinq
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/masterlinq/
+  category: Customer-engagement, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Maurisource
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/maurisource/
+  category: eCommerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: MDware Invoicing for Retail
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/mdware-invoicing-retail/
+  category: Invoicing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Menufy
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/menufy/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Meta Offline Conversion
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/meta-conversions-api/
+  category: Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: MEWS
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/mews/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Mister eCommerce
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/mister-ecommerce/
+  category: Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Mobi2Go
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/mobi2go/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Mood Media
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/mood-media/
+  category: Customer-engagement
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: MyRegistry.com
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/myregistry-com/
+  category: Customer-engagement, Gift Card, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: nChannel
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/nchannel/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: NearSt
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/nearst/
+  category: Features / Tools, Inventory Management, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: NetSuite
+  partner: netsuite
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/netsuite/
+  category: ERP, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Nextme
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/nextme/
+  category: Waitlist
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: NexusApps
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/nexusapps/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Notify Customers
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/notify-customers/
+  category: Customer-engagement, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Octopus Bridge
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/octopus-bridge/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Omniboost
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/omniboost/
+  category: Accounting, Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Omnivore
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/omnivore/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: OpenDining Network
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/opendining-network/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: OpenTable
+  partner: opentable
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/opentable/
+  category: Inventory Management, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Opera Cloud via Omniboost
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/opera-cloud-via-omniboost/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Oracle Opera Cloud Hospitality
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/oracle-hospitality/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Orca Inventory
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/orca-inventory/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Orderlord
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/orderlord/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Otter
+  partner: otter
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/otter/
+  category: Online Ordering, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Panso
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/panso/
+  category: Event Management, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: PayPal Reader
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/paypal-reader/
+  category: Payment Provider - US
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Peachworks
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/peachworks/
+  category: Inventory Management, Restaurant Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Pepper
+  partner: pepper
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/pepper/
+  category: Loyalty, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Perkville
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/perkville/
+  category: Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: PETZ
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/petz/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Piecemeal
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/piecemeal/
+  category: Inventory Management, Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Pipe17
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/pipe17/
+  category: eCommerce, ERP, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: PITCHcrm
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/pitchcrm/
+  category: Customer Service, Marketing, Membership Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: PivoHub
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/pivohub/
+  category: Inventory Management, Procurement Management Services
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Planday
+  partner: planday
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/planday/
+  category: Employee Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Plate IQ
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/plate-iq/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Podium
+  partner: podium
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/podium/
+  category: Chat, Customer-engagement, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: POS Accounting
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/pos-accounting/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: POS Anywhere LLC
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/pos-anywhere-llc/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Protel Hotel Software
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/protel/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Push Operations
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/push-operations/
+  category: Scheduling, Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: QuickBooks
+  partner: quickbooks
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/quickbooks/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Quivers
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/quivers/
+  category: Fulfillment, Inventory Management, Marketplace
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: QuoteMachine
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/quotemachine/
+  category: eCommerce, Features / Tools, Invoicing, Social Commerce, Subscriptions
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: RapidStock
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/rapidstock/
+  category: Inventory Management, Restaurant Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Raydiant
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/raydiant/
+  category: Features / Tools, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Resengo
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/resengo/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: ResNexus
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/resnexus/
+  category: Hotel PMS, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Restaurant Accounting Services Inc
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/rasi/
+  category: Accounting, Food costing, Inventory Management, Payroll, Purchasing, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Restaurant365
+  partner: restaurant365
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/restaurant365/
+  category: Accounting, Inventory Management, Payroll
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: RESTOCK
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/restock/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Resy
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/resy/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Retail Smart Guys
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/retail-smart-guys/
+  category: Inventory Management, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Retail Toolkit
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/retail-toolkit/
+  category: Analytics, Employee Scheduling, Inventory Management, Loyalty, Marketing, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: RetailNext
+  partner: retailnext
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/retailnext/
+  category: Analytics, Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Rooam
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/rooam/
+  category: Contactless Payments
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Sage Intacct
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/sage-intacct/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Sculpture Hospitality
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/sculpture-hospitality/
+  category: Analytics, Inventory Management, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Senitron RFID Solutions
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/senitron-rfid-solutions/
+  category: Inventory Management, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Servmetric
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/servmetrics/
+  category: Analytics, Customer Service
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Seven Rooms
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/seven-rooms/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: ShiftBase
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/shiftbase/
+  category: Employee Scheduling
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Shipday
+  partner: shipday
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/shipday/
+  category: eCommerce, Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Shipstation
+  partner: shipstation
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/shipstation/
+  category: Delivery
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Shogo
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/shogo/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Shopify
+  partner: shopify
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/shopify/
+  category: eCommerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: ShopWired
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/shopwired/
+  category: eCommerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SinglePlatform
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/singleplatform/
+  category: Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: skuIQ
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/skuiq/
+  category: eCommerce, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SkuVault
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/skuvault/
+  category: Inventory Management, Warehouse Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SmartEtailing
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/smartetailing/
+  category: eCommerce, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Smartwaiver
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/smartwaiver/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SMS Storetraffic
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/sms-storetraffic/
+  category: Analytics, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Solink Restaurant
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/solink/
+  category: Analytics, Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Solink Retail
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/solink-retail/
+  category: Analytics, Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Spillover
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/spillover/
+  category: Analytics, Customer Service, Marketing, Online Ordering, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Springbig
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/springbig/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: StayNTouch
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/stayntouch/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Stockistly
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/stockistly/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: sunday
+  partner: sunday
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/sunday/
+  category: Payment Provider -USA
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Supreme Golf
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/supreme-golf/
+  category: Marketing, Reservation, Subscriptions
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Surebright Technologies
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/surebright-technologies/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SwiftCount
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/swiftcount/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SwipeIT
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/swipeit/
+  category: Gift Card
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Sync2Sell
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/sync2sell/
+  category: Inventory Management, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: SynergySuite
+  partner: synergysuite
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/synergysuite/
+  category: Food costing, Inventory Management, Purchasing, Reporting, Restaurant Management, Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Tablebooker
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tablebooke/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Tagr by SES-imagotag
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tagr-ses-imagotag/
+  category: Features / Tools
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: TapMango
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tap-mango/
+  category: Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: TeeOff
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/teeoff/
+  category: Marketing, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Tenzo
+  partner: tenzo
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tenzo/
+  category: Analytics, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: The Booking Factory
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/the-booking-factory/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: The Customer Connection
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/the-customer-connection/
+  category: Gift Card
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: TheNextInvoice
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/thenextinvoice/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: ThinkReservations
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/thinkreservations/
+  category: Hotel PMS
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Ticket-IT
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/ticket-it/
+  category: Customer-engagement, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Tiphaus
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tiphaus/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Tock
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tock/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Trustwave
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/trustwave/
+  category: Data Security, PCI Compliance
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: TSYS
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tsys/
+  category: Payment Provider -USA
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: TYRO
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/tyro/
+  category: Payment Provider -Australia
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Uber Direct
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/uberdirect/
+  category: Delivery
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Uber Eats
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/ubereats/
+  category: Delivery, Marketplace
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: UEAT
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/ueat/
+  category: eCommerce, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Unleashed
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/unleashed/
+  category: ERP, Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Upserve Gift Cards by Lightspeed
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/upserve-gift-cards/
+  category: Gift Card
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Upserve Inventory by Lightspeed
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/upserve-inventory/
+  category: Inventory Management, Purchasing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Upserve Loyalty by Lightspeed
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/upserve-loyalty/
+  category: Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Upserve Online Ordering by Lightspeed
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/upserve-online-ordering/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Upserve Workforce by Lightspeed
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/upserve-workforce/
+  category: Workforce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: US BeerSAVER Systems
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/us-beersaver-systems/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Vantiv
+  partner: vantiv
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/vantiv/
+  category: Payment Provider -USA
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Vemos
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/vemos/
+  category: Contactless Payments
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Venga
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/venga/
+  category: Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Voucher Connect
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/voucher-connect/
+  category: Gift Card, Loyalty
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: VoucherCart
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/vouchercart/
+  category: eCommerce, Gift Card
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Webgility
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/webgility/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: WebRezPro Property Management System
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/webrezpro/
+  category: Hotel PMS, Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Whistle Messaging
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/whistle-messaging/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Whoosh
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/whoosh/
+  category: Membership Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Wine Owners
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/wine-owners/
+  category: Inventory Management
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: WISK
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/wisk/
+  category: Analytics, Inventory Management, Invoicing, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Woby
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/woby/
+  category: Features / Tools, Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: WooCommerce
+  partner: woocommerce
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/woocommerce-2/
+  category: eCommerce
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: WorldPay
+  partner: worldpay
+  partner_match: domain
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/worldpay/
+  category: Invoicing, Payment Provider -Canada, Payment Provider -USA, Reporting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Wrapped Gift Cards
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/wrapped/
+  category: eCommerce, Gift Card, Payments
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Xero
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/xero/
+  category: Accounting
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Zenchef
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/zenchef/
+  category: Reservation
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Zenreach
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/zenreach/
+  category: Loyalty, Marketing
+  direction: unknown
+  marketplace: null
+  operations: []
+- partner_name: Zuppler
+  partner: null
+  partner_match: null
+  type: claimed
+  evidence: https://www.lightspeedhq.com/integrations/
+  partner_url: https://www.lightspeedhq.com/integrations/zuppler/
+  category: Online Ordering
+  direction: unknown
+  marketplace: null
+  operations: []
+templates: []
+skips:
+- label: Shopify
+  cause: catalog
+  why: all/shopify/openapi holds the Admin API split into hundreds of word-named fragments (shopify-about-api, shopify-another-api...),
+    none a coherent products resource to target

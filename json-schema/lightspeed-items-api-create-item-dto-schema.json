@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-items-api-create-item-dto-schema.json",
+  "title": "items-apiCreateItemDTO",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-items-api-openapi.yml#/components/schemas/items-apiCreateItemDTO",
+  "required": [
+    "name",
+    "accountingGroupId",
+    "defaultPrice",
+    "businessLocationId"
+  ],
+  "type": "object",
+  "properties": {
+    "name": {
+      "$ref": "#/$defs/items-apiName"
+    },
+    "businessLocationId": {
+      "$ref": "#/$defs/items-apiBusinessLocationId"
+    },
+    "docketName": {
+      "$ref": "#/$defs/items-apiDocketName"
+    },
+    "sku": {
+      "$ref": "#/$defs/items-apiSku"
+    },
+    "active": {
+      "$ref": "#/$defs/items-apiActive"
+    },
+    "barcode": {
+      "maxLength": 64,
+      "type": "string",
+      "description": "The item barcode."
+    },
+    "barcodes": {
+      "type": "array",
+      "description": "A list of barcodes associated with the item.",
+      "items": {
+        "type": "string",
+        "maxLength": 64,
+        "minLength": 1
+      }
+    },
+    "accountingGroupId": {
+      "description": "The unique identifier for the accounting group. Must be an existing `accountingGroupId`.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "costPrice": {
+      "$ref": "#/$defs/items-apiCostPrice"
+    },
+    "defaultPrice": {
+      "$ref": "#/$defs/items-apiDefaultPrice"
+    },
+    "priceMode": {
+      "$ref": "#/$defs/items-apiPriceMode"
+    }
+  },
+  "$defs": {
+    "items-apiActive": {
+      "type": "boolean",
+      "description": "Indicates whether or not the item is archived from the menu."
+    },
+    "items-apiBusinessLocationId": {
+      "description": "The unique identifier for the business location.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "items-apiCostPrice": {
+      "type": "number",
+      "description": "The cost price of the item."
+    },
+    "items-apiDefaultPrice": {
+      "type": "number",
+      "description": "The default price of the item."
+    },
+    "items-apiDocketName": {
+      "maxLength": 64,
+      "type": "string",
+      "description": "The name used in the docket for the item."
+    },
+    "items-apiName": {
+      "maxLength": 180,
+      "minLength": 1,
+      "description": "The name of the item.",
+      "type": "string"
+    },
+    "items-apiPriceMode": {
+      "description": "The type of price for the item.",
+      "enum": [
+        "AMOUNT",
+        "PERCENT",
+        "POSITIVE_OPEN_PRICE",
+        "NEGATIVE_OPEN_PRICE"
+      ],
+      "default": "AMOUNT",
+      "type": "string"
+    },
+    "items-apiSku": {
+      "maxLength": 32,
+      "minLength": 1,
+      "description": "A stock keeping unit.",
+      "type": "string"
+    }
+  }
+}

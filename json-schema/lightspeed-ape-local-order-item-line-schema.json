@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-ape-local-order-item-line-schema.json",
+  "title": "apeLocalOrderItemLine",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-k-series-openapi.yml#/components/schemas/apeLocalOrderItemLine",
+  "properties": {
+    "quantity": {
+      "description": "Quantity of item to be ordered.",
+      "type": "integer",
+      "format": "int32"
+    },
+    "sku": {
+      "maxLength": 25,
+      "description": "The SKU of the item to be ordered.",
+      "type": "string"
+    },
+    "customItemName": {
+      "description": "The custom name to be used, if overwriting is permitted for this item.",
+      "type": "string"
+    },
+    "customItemPrice": {
+      "description": "The custom price to be used, if custom pricing is permitted for this item.",
+      "type": "number"
+    },
+    "discountAmountOverride": {
+      "description": "The custom discount amount applied to this item. Only one of `discountAmountOverride` or `discountPercentOverride` can be set. Must be used in conjunction with a [discountCode](https://api-docs.lsk.lightspeed.app/operation/operation-apelocalorder#operation-apelocalorder-body-application-json-items-discountcode) and this discount must be configured as a \"manual discount\" in the POS. See [Understanding Discounts](https://k-series-support.lightspeedhq.com/hc/en-us/articles/1260804657089-Understanding-discounts).",
+      "type": "number"
+    },
+    "discountPercentOverride": {
+      "description": "The custom percentage discount applied to this item. Only one of `discountAmountOverride` or `discountPercentOverride` can be set. Must be used in conjunction with a [discountCode](https://api-docs.lsk.lightspeed.app/operation/operation-apelocalorder#operation-apelocalorder-body-application-json-items-discountcode) and this discount must be configured as a \"manual discount\" in the POS. See [Understanding Discounts](https://k-series-support.lightspeedhq.com/hc/en-us/articles/1260804657089-Understanding-discounts).",
+      "type": "number"
+    },
+    "modifiers": {
+      "description": "Collection of [modifiers](https://api-docs.lsk.lightspeed.app/operation/operation-apeloadallmodifiers) to be applied to this item.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/apeItemModifier"
+      }
+    },
+    "discountCode": {
+      "description": "The discount code being applied to this item, if applicable.",
+      "type": "string"
+    },
+    "course": {
+      "description": "The course number for this item, if applicable.",
+      "minimum": 0,
+      "type": "integer",
+      "format": "int32"
+    },
+    "subItems": {
+      "description": "The sub-items applied to this item.",
+      "items": {
+        "$ref": "#/$defs/apeSubItemOrderLine"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "required": [
+    "quantity",
+    "sku"
+  ],
+  "$defs": {
+    "apeItemModifier": {
+      "properties": {
+        "modifierId": {
+          "description": "Modifier ID to be applied to this item.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "apeSubItemOrderLine": {
+      "required": [
+        "quantity",
+        "sku"
+      ],
+      "properties": {
+        "quantity": {
+          "description": "Quantity of sub-item to be ordered.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "sku": {
+          "maxLength": 25,
+          "description": "The SKU of the sub-item to be ordered.",
+          "type": "string"
+        },
+        "customItemName": {
+          "description": "The custom name to be used if overwriting is supported for this sub-item.",
+          "type": "string"
+        },
+        "customItemPrice": {
+          "description": "The custom price to be used if overwriting is supported for this sub-item.",
+          "type": "number"
+        },
+        "modifiers": {
+          "description": "Collection of modifiers to be applied to this sub-item.",
+          "items": {
+            "$ref": "#/$defs/apeItemModifier"
+          },
+          "type": "array"
+        },
+        "subItems": {
+          "description": "Product modifiers applied to this item.",
+          "items": {
+            "$ref": "#/$defs/apeSubItemOrderLine"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

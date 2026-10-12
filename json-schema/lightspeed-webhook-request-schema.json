@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-webhook-request-schema.json",
+  "title": "WebhookRequest",
+  "description": "Webhook create/update request data.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-webhooks-api-openapi.yml#/components/schemas/WebhookRequest",
+  "properties": {
+    "active": {
+      "description": "Whether this webhook is enabled or not",
+      "type": "boolean"
+    },
+    "type": {
+      "$ref": "#/$defs/WebhookType"
+    },
+    "url": {
+      "description": "The URL to send webhooks to",
+      "minLength": 3,
+      "type": "string"
+    }
+  },
+  "required": [
+    "active",
+    "type",
+    "url"
+  ],
+  "type": "object",
+  "$defs": {
+    "WebhookType": {
+      "description": "The webhook type. These can be one of:\n- sale.update\n- product.update\n- customer.update\n- inventory.update\n- register_closure.create\n- consignment.send\n- consignment.receive\n",
+      "enum": [
+        "sale.update",
+        "product.update",
+        "customer.update",
+        "inventory.update",
+        "register_closure.create",
+        "consignment.send",
+        "consignment.receive"
+      ],
+      "title": "WebhookType",
+      "type": "string"
+    }
+  }
+}

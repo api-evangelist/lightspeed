@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-webhook-schema.json",
+  "title": "Webhook",
+  "description": "The configuration for a webhook.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-webhooks-api-openapi.yml#/components/schemas/Webhook",
+  "properties": {
+    "active": {
+      "description": "Whether this webhook is enabled or not",
+      "type": "boolean"
+    },
+    "id": {
+      "description": "The ID of this webhook",
+      "type": "string"
+    },
+    "retailer_id": {
+      "description": "The ID of the retailer this webhook belongs to",
+      "type": "string"
+    },
+    "type": {
+      "$ref": "#/$defs/WebhookType"
+    },
+    "url": {
+      "description": "The URL to send this webhook to",
+      "type": "string"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "WebhookType": {
+      "description": "The webhook type. These can be one of:\n- sale.update\n- product.update\n- customer.update\n- inventory.update\n- register_closure.create\n- consignment.send\n- consignment.receive\n",
+      "enum": [
+        "sale.update",
+        "product.update",
+        "customer.update",
+        "inventory.update",
+        "register_closure.create",
+        "consignment.send",
+        "consignment.receive"
+      ],
+      "title": "WebhookType",
+      "type": "string"
+    }
+  }
+}

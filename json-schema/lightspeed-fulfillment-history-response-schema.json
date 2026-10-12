@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-fulfillment-history-response-schema.json",
+  "title": "FulfillmentHistoryResponse",
+  "description": "Paginated response containing fulfillment history entries",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-fulfillments-api-openapi.yml#/components/schemas/FulfillmentHistoryResponse",
+  "properties": {
+    "data": {
+      "description": "List of history entries ordered oldest-first",
+      "items": {
+        "$ref": "#/$defs/FulfillmentHistoryEntry"
+      },
+      "type": "array"
+    },
+    "next_cursor": {
+      "description": "Opaque cursor for fetching the next page. Empty when no more pages exist.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "FulfillmentHistoryEntry": {
+      "description": "A single state-change event in the fulfillment history ledger",
+      "properties": {
+        "created_at": {
+          "description": "Timestamp when the event was recorded",
+          "format": "date-time",
+          "type": "string"
+        },
+        "event_type": {
+          "description": "The type of state-change event",
+          "enum": [
+            "CREATED",
+            "QUANTITY_UPDATED",
+            "REMOVED",
+            "PICKED",
+            "PACKED",
+            "FULFILLED",
+            "VOIDED",
+            "UNVOIDED",
+            "RETURNED",
+            "RETURN_VOIDED",
+            "SPLIT"
+          ],
+          "type": "string"
+        },
+        "fulfilled_delta": {
+          "description": "Change in fulfilled quantity for this line item",
+          "type": "string"
+        },
+        "packed_quantity_delta": {
+          "description": "Change in packed quantity for this line item",
+          "type": "string"
+        },
+        "picked_quantity_delta": {
+          "description": "Change in picked quantity for this line item",
+          "type": "string"
+        },
+        "product_id": {
+          "description": "The ID of the product associated with the line item",
+          "format": "uuid",
+          "type": "string"
+        },
+        "quantity_delta": {
+          "description": "Change in total quantity for this line item",
+          "type": "string"
+        },
+        "sale_line_item_id": {
+          "description": "The ID of the sale line item this event relates to",
+          "format": "uuid",
+          "type": "string"
+        },
+        "source_sale_id": {
+          "description": "The ID of the source sale (present for RETURNED and SPLIT events)",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sale_line_item_id",
+        "product_id",
+        "event_type",
+        "quantity_delta",
+        "picked_quantity_delta",
+        "packed_quantity_delta",
+        "fulfilled_delta",
+        "created_at"
+      ],
+      "type": "object"
+    }
+  }
+}

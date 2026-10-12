@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-serial-number-request-schema.json",
+  "title": "Request to create a sale",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-serial-numbers-api-openapi.yml#/components/schemas/SerialNumberRequest",
+  "properties": {
+    "code": {
+      "description": "The actual serial number value.",
+      "type": "string"
+    },
+    "outlet_id": {
+      "description": "The ID of the outlet where the serial number is located.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "product_id": {
+      "description": "The ID of the product associated with the serial number.",
+      "format": "uuid",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code",
+    "outlet_id",
+    "product_id"
+  ],
+  "type": "object"
+}

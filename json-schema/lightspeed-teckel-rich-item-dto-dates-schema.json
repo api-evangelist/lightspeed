@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-teckel-rich-item-dto-dates-schema.json",
+  "title": "teckelRichItemDtoDates",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-rich-item-api-openapi.yml#/components/schemas/teckelRichItemDtoDates",
+  "properties": {
+    "creationDate": {
+      "description": "The creation date of the item.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastUpdateDate": {
+      "description": "The last update date of the item.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "type": "object"
+}

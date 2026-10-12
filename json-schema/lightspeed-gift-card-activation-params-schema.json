@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-gift-card-activation-params-schema.json",
+  "title": "Gift Card Activation Parameters",
+  "description": "The parameters for creating and activating a new gift card.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-gift-cards-api-openapi.yml#/components/schemas/GiftCardActivationParams",
+  "properties": {
+    "amount": {
+      "description": "The initial balance to be loaded onto the gift card. Represented as a string for precision (e.g. \"100.00\").",
+      "type": "string"
+    },
+    "expires_at": {
+      "description": "The expiry date of the gift card in YYYY-MM-DD format. If omitted, the expiry will be calculated based on the validity period configured in the Lightspeed Retail UI, or will be null if expiry is not enabled.",
+      "type": "string"
+    },
+    "number": {
+      "description": "The unique number to assign to the gift card.",
+      "type": "string"
+    },
+    "time_zone": {
+      "description": "The timezone to use when interpreting the `expires_at` date (e.g. \"Pacific/Auckland\"). See the list of tz database time zones for valid values.",
+      "type": "string"
+    },
+    "user_id": {
+      "description": "The ID of the user creating the gift card. If omitted, the authenticated user will be used.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "amount",
+    "number"
+  ],
+  "type": "object"
+}

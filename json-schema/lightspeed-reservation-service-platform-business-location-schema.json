@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-reservation-service-platform-business-location-schema.json",
+  "title": "reservation-servicePlatformBusinessLocation",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-reservations-for-platforms-api-openapi.yml#/components/schemas/reservation-servicePlatformBusinessLocation",
+  "properties": {
+    "businessLocationId": {
+      "description": "The unique identifier of the business location.",
+      "type": "string"
+    },
+    "city": {
+      "description": "The business location's city.",
+      "type": "string"
+    },
+    "country": {
+      "description": "The business location's country.",
+      "type": "string"
+    },
+    "name": {
+      "description": "The business location's name.",
+      "type": "string"
+    },
+    "state": {
+      "description": "The business location's state.",
+      "type": "string"
+    },
+    "street1": {
+      "description": "The first line of the business location's street address.",
+      "type": "string"
+    },
+    "street2": {
+      "description": "The second line of the business location's street address.",
+      "type": "string"
+    },
+    "zip": {
+      "description": "The business location's postal code.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "businessLocationId"
+  ],
+  "type": "object"
+}

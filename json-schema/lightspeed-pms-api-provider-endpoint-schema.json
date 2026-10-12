@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-pms-api-provider-endpoint-schema.json",
+  "title": "pms-apiProviderEndpoint",
+  "description": "The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-pms-api-openapi.yml#/components/schemas/pms-apiProviderEndpoint",
+  "type": "string",
+  "minLength": 1,
+  "maxLength": 255
+}

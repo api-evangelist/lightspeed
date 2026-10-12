@@ -1,0 +1,80 @@
+arazzo: 1.0.1
+info:
+  title: Lightspeed 7shifts Sales Receipts
+  summary: Send Lightspeed POS sales to 7shifts as receipts for labor forecasting.
+  description: Lightspeed lists 7shifts on its integrations marketplace. 7shifts uses POS sales to forecast labor; this workflow
+    reads changed X-Series sales and records each as a 7shifts receipt.
+  version: 1.0.0
+sourceDescriptions:
+- name: lightspeedSales
+  url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/openapi/lightspeed-sales-api-openapi.yml
+  type: openapi
+- name: sevenShiftsSales
+  url: https://raw.githubusercontent.com/api-evangelist/7shifts/refs/heads/main/openapi/7shifts-sales-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lightspeed-7shifts-sales-receipts
+  summary: Send Lightspeed POS sales to 7shifts as receipts for labor forecasting.
+  inputs:
+    type: object
+    properties:
+      domain_prefix:
+        type: string
+      after:
+        type: integer
+        description: Lightspeed version cursor
+  steps:
+  - stepId: list-sales
+    description: Read changed Lightspeed X-Series sales since the version cursor.
+    operationId: $sourceDescriptions.lightspeedSales.ListSales
+    parameters:
+    - name: after
+      in: query
+      value: $inputs.after
+    - name: page_size
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      sales: $response.body#/data
+      sale_id: $response.body#/data/0/id
+      invoice_number: $response.body#/data/0/invoice_number
+      date: $response.body#/data/0/date
+      total: $response.body#/data/0/totals/total_price
+      max_version: $response.body#/version/max
+  - stepId: create-receipt
+    description: Record the sale as a 7shifts receipt.
+    operationId: $sourceDescriptions.sevenShiftsSales.createReceipt
+    parameters:
+    - name: company_id
+      in: path
+      value: $inputs.company_id
+    requestBody:
+      contentType: application/json
+      payload:
+        location_id: $inputs.location_id
+        receipt_id: $steps.list-sales.outputs.sale_id
+        receipt_date: $steps.list-sales.outputs.date
+        net_total: $steps.list-sales.outputs.total
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      receipt: $response.body#/data/id
+  outputs:
+    receipt: $steps.create-receipt.outputs.receipt
+    next_after: $steps.list-sales.outputs.max_version
+x-integration:
+  partner: 7shifts
+  edge_evidence: https://www.lightspeedhq.com/integrations/
+  edge_type: claimed
+  category: Employee Scheduling, Payroll, Reporting, Restaurant Management, Workforce
+  relationship: workflow
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (local-v5 enrichment)
+  guessed_steps:
+  - step: create-receipt
+    cause: partner-contract
+    why: Receipt field names (net_total, receipt_date) and cent-vs-decimal units are taken from the 7shifts Receipt schema
+      without a worked example

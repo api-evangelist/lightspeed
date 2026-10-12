@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-partner-subscription-token-response-schema.json",
+  "title": "PartnerSubscriptionTokenResponse",
+  "description": "PartnerSubscriptionTokenResponse contains the token and its expiration time",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-partner-billing-api-openapi.yml#/components/schemas/PartnerSubscriptionTokenResponse",
+  "properties": {
+    "expires_at": {
+      "description": "ExpiresAt is the exact time of token expiry in UTC timezone and displayed in RFC3339 format",
+      "type": "string"
+    },
+    "expires_in": {
+      "description": "ExpiresIn is the number of seconds till the token is expired",
+      "type": "string"
+    },
+    "token": {
+      "description": "Token is a randomly generated string that is a required parameter for consent page",
+      "maxLength": 32,
+      "minLength": 32,
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

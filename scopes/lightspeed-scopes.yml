@@ -9,8 +9,8 @@ schemes:
   - flow: authorizationCode
     authorizationUrl: /oauth/authorize
     tokenUrl: /oauth/token
-  description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization
-    code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+  description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code
+    grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
 
     See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview)
     for more details on how to authenticate.'
@@ -21,16 +21,15 @@ schemes:
   - flow: authorizationCode
     authorizationUrl: https://secure.retail.lightspeed.app/connect
     tokenUrl: https://{domain_prefix}.retail.lightspeed.app/api/1.0/token
-  note: The token response echoes the scopes actually GRANTED in a `scope` field; the access token can
-    only call endpoints whose required scopes are a subset of that list. Refresh responses echo them too
-    and they do not change unless the app re-authorizes.
+  note: The token response echoes the scopes actually GRANTED in a `scope` field; the access token can only call
+    endpoints whose required scopes are a subset of that list. Refresh responses echo them too and they do not change
+    unless the app re-authorizes.
 - name: R-Series OAuth 2.0
   product: R-Series
   source: https://developers.lightspeedhq.com/retail/authentication/scopes/
   flows:
   - flow: authorizationCode
-  note: Scopes mirror in-app employee permissions rather than API resources; employee:all is a full-access
-    grant.
+  note: Scopes mirror in-app employee permissions rather than API resources; employee:all is a full-access grant.
 scopes:
 - scope: audit:read
   description: Read audit and security events
@@ -189,8 +188,8 @@ scopes:
   sources:
   - https://x-series-api.lightspeedhq.com/docs/scopes
 - scope: products:write
-  description: Create and update products (excluding product costs), delete products, upload product images
-    and create product types.
+  description: Create and update products (excluding product costs), delete products, upload product images and
+    create product types.
   product: X-Series
   request_style: space-delimited scope parameter
   sources:
@@ -202,8 +201,8 @@ scopes:
   sources:
   - https://x-series-api.lightspeedhq.com/docs/scopes
 - scope: promotions:read
-  description: Read promotions, get products a specific promotion can be used on and find the best promotion
-    for a sale and determine the discount.
+  description: Read promotions, get products a specific promotion can be used on and find the best promotion for
+    a sale and determine the discount.
   product: X-Series
   request_style: space-delimited scope parameter
   sources:
@@ -311,8 +310,8 @@ scopes:
   sources:
   - https://x-series-api.lightspeedhq.com/docs/scopes
 - scope: taxes:read
-  description: 'If tax inclusive: Read tax rates and tax rules. If tax exclusive: Read tax rates, tax
-    rules and tax groups.'
+  description: 'If tax inclusive: Read tax rates and tax rules. If tax exclusive: Read tax rates, tax rules and
+    tax groups.'
   product: X-Series
   request_style: space-delimited scope parameter
   sources:
@@ -342,8 +341,8 @@ scopes:
   sources:
   - https://x-series-api.lightspeedhq.com/docs/scopes
 - scope: employee:all
-  description: Grants full read and write access to the account. This grant will automatically assume
-    all access rights that the authorizing user possesses
+  description: Grants full read and write access to the account. This grant will automatically assume all access
+    rights that the authorizing user possesses
   product: R-Series
   request_style: space-delimited scope parameter
   sources:
@@ -600,20 +599,21 @@ scopes:
   - openapi/lightspeed-k-series-openapi.json
   product: K-Series
   request_style: space-delimited scope parameter
-  description: 'Referenced in the security[] block of the Reservations for Platforms operations but NOT
-    declared in the OAuth2 authorizationCode scopes map. An undeclared scope: a client cannot request
-    it from the scope reference, only discover it by reading the operation.'
+  description: 'Referenced in the security[] block of the Reservations for Platforms operations but NOT declared
+    in the OAuth2 authorizationCode scopes map. An undeclared scope: a client cannot request it from the scope reference,
+    only discover it by reading the operation.'
   declared_in_flow: false
-docs:
-- https://x-series-api.lightspeedhq.com/docs/scopes
-- https://developers.lightspeedhq.com/retail/authentication/scopes/
-- https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview
-note: Three separate OAuth scope vocabularies, one per product line, with no shared naming. X-Series uses
-  resource:action (products:read) with sub-actions (consignments:write:stock_order); R-Series uses employee:permission
-  (employee:inventory); K-Series uses product-area names (orders-api, financial-api). A partner integrating
-  two Lightspeed products must learn two unrelated permission models.
+docs: https://x-series-api.lightspeedhq.com/docs/scopes
+note: Three separate OAuth scope vocabularies, one per product line, with no shared naming. X-Series uses resource:action
+  (products:read) with sub-actions (consignments:write:stock_order); R-Series uses employee:permission (employee:inventory);
+  K-Series uses product-area names (orders-api, financial-api). A partner integrating two Lightspeed products must
+  learn two unrelated permission models.
 counts:
   x_series: 50
   r_series: 30
   k_series: 9
   total: 90
+docs_all:
+- https://x-series-api.lightspeedhq.com/docs/scopes
+- https://developers.lightspeedhq.com/retail/authentication/scopes/
+- https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview

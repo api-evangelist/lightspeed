@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-business-rule-schema.json",
+  "title": "Business Rule",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-workflows-api-openapi.yml#/components/schemas/BusinessRule",
+  "properties": {
+    "created_at": {
+      "description": "The creation timestamp in UTC.",
+      "format": "date-time",
+      "readOnly": true,
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "sale.ready_for_payment",
+        "sale.line_items.added",
+        "sale.customer.changed",
+        "sale.created",
+        "sale.updated"
+      ],
+      "type": "string"
+    },
+    "id": {
+      "readOnly": true,
+      "type": "string"
+    },
+    "remote_rule_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "event_type",
+    "remote_rule_id"
+  ],
+  "type": "object"
+}

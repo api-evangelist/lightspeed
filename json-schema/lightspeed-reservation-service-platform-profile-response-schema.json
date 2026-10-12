@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-reservation-service-platform-profile-response-schema.json",
+  "title": "reservation-servicePlatformProfileResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-k-series-openapi.yml#/components/schemas/reservation-servicePlatformProfileResponse",
+  "properties": {
+    "baseUrl": {
+      "description": "The base URL of the external platform (optional).",
+      "format": "uri",
+      "type": "string"
+    },
+    "depositSupported": {
+      "$ref": "#/$defs/reservation-servicePlatformDepositSupported"
+    },
+    "displayName": {
+      "$ref": "#/$defs/reservation-servicePlatformDisplayName"
+    },
+    "errorsWebhookUrl": {
+      "description": "The URL where notifications for any issues will be sent. <br> Required for [`error` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Get Sample Error notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationErrorNotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "integrationWebhookUrl": {
+      "description": "The URL where notifications for activation or deactivation of the customer's integration will be sent. <br> Required for [`integration` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Integration notification](https://api-docs.lsk.lightspeed.app/operation/operation-reservationintegrationnotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "notificationTypes": {
+      "description": "The events that trigger a notification.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ORDER_OPENED",
+          "ORDER_UPDATED",
+          "ORDER_CLOSED",
+          "ONBOARDING_STARTED",
+          "INTEGRATION_ACTIVATED",
+          "INTEGRATION_DEACTIVATED",
+          "POS_RESERVATION_UPDATED",
+          "ERROR"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "onboardingWebhookUrl": {
+      "description": "The URL where notifications for the customer's integration onboarding will be sent. <br> Required for [`onboarding` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Onboarding notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationonboardingnotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "orderWebhookUrl": {
+      "description": "The URL where order notifications will be sent. <br> Required for [`order` notificationTypes](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservation-servicesetbyplatformcode#operation-reservation-servicesetbyplatformcode-body-application-json-notificationtypes).<br> See [Order Notification](https://api-docs.lsk.lightspeed.app/prod/operation/operation-reservationordernotification).\n",
+      "type": "string",
+      "format": "uri"
+    },
+    "posReservationUpdateWebhookUrl": {
+      "description": "The URL where notifications about reservation changes on POS will be sent.",
+      "type": "string",
+      "format": "uri"
+    },
+    "ownNotificationsOnly": {
+      "description": "When `true`, notifications will only be sent for orders linked to the reservation platform.",
+      "type": "boolean"
+    },
+    "webhookAuthType": {
+      "description": "The type of authentication used by the webhook.",
+      "enum": [
+        "BASIC_AUTH",
+        "BEARER_TOKEN",
+        "API_KEYS",
+        "OAUTH2",
+        "NONE"
+      ],
+      "type": "string"
+    },
+    "allowCourseNumberUpdates": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, table statuses can be customized using a number format."
+    },
+    "inServiceTableStatuses": {
+      "items": {
+        "$ref": "#/$defs/reservation-servicePlatformTableStatusDto"
+      },
+      "type": "array",
+      "description": "List of customizable table statuses that will be used to notify platforms about reservation progress with outbound API."
+    },
+    "allowedPosStatuses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reservation-servicePlatformReservationStatus"
+      },
+      "description": "Reservation statuses allowed for setting on a POS. PARTIALLY_ARRIVED should be included only with ARRIVED, and PARTIALLY_SEATED only with SEATED. Requires posReservationUpdateWebhookUrl to be set."
+    }
+  },
+  "required": [
+    "displayName",
+    "webhookAuthType"
+  ],
+  "type": "object",
+  "$defs": {
+    "reservation-servicePlatformDepositSupported": {
+      "description": "Whether or not the platform supports deposits.",
+      "type": "boolean"
+    },
+    "reservation-servicePlatformDisplayName": {
+      "description": "The official platform name that will be displayed.",
+      "type": "string"
+    },
+    "reservation-servicePlatformReservationStatus": {
+      "description": "External reservation statuses for platforms.",
+      "enum": [
+        "ON_HOLD",
+        "SCHEDULED",
+        "PARTIALLY_ARRIVED",
+        "ARRIVED",
+        "PARTIALLY_SEATED",
+        "SEATED",
+        "DEPARTED",
+        "CANCELLED",
+        "NO_SHOW",
+        "ERROR"
+      ],
+      "type": "string"
+    },
+    "reservation-servicePlatformTableStatusDto": {
+      "properties": {
+        "statusLabel": {
+          "type": "string",
+          "description": "The unique text which will be displayed in the back-office for users."
+        },
+        "statusValue": {
+          "type": "string",
+          "description": "The unique code which will be used for outbound communication within table status mapping."
+        },
+        "sequence": {
+          "format": "int32",
+          "type": "integer",
+          "description": "This number is used to resolve collisions between statuses in order of highest priority."
+        }
+      },
+      "type": "object",
+      "required": [
+        "statusLabel",
+        "statusValue",
+        "sequence"
+      ]
+    }
+  }
+}

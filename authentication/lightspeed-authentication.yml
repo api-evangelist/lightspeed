@@ -17,8 +17,8 @@ schemes:
     authorizationUrl: /oauth/authorize
     tokenUrl: /oauth/token
     scopes: 8
-  description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization
-    code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
+  description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code
+    grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
 
     See our [Authorization Quick Start Guide](https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview)
     for more details on how to authenticate.'
@@ -30,15 +30,10 @@ schemes:
   description: Bearer Token for API authentication.
   sources:
   - openapi/lightspeed-x-series-openapi.json
-docs:
-- https://x-series-api.lightspeedhq.com/docs/authorization
-- https://developers.lightspeedhq.com/retail/authentication/authentication-overview/
-- https://developers.lightspeedhq.com/ecom/introduction/authentication/
-- https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview
-note: 'Four product lines, three different authentication models. The specs alone understate this: the
-  X-Series spec declares only a generic http/bearer scheme, but the docs show that bearer token is issued
-  by a full OAuth 2.0 authorization-code flow (or, on the Plus plan, by a personal token). eCom C-Series
-  does not use OAuth at all.'
+docs: https://x-series-api.lightspeedhq.com/docs/authorization
+note: 'Four product lines, three different authentication models. The specs alone understate this: the X-Series
+  spec declares only a generic http/bearer scheme, but the docs show that bearer token is issued by a full OAuth
+  2.0 authorization-code flow (or, on the Plus plan, by a personal token). eCom C-Series does not use OAuth at all.'
 profiles:
 - product: Retail X-Series
   api: lightspeed:retail-x-series
@@ -64,10 +59,9 @@ profiles:
     - Tied to the creating user but survive that user resetting their password
     - Recommended only for testing/exploration on multi-store apps
     docs: https://x-series-support.lightspeedhq.com/hc/en-us/articles/204886420-Retail-POS-X-Series-Personal-Tokens
-  app_approval: New apps are "Not Approved" and capped at 30 connected stores until Lightspeed approves
-    them.
-  token_endpoint_rate_limit: Rate limited independently of the API; returns X-RateLimit-Limit / -Remaining
-    / -Reset and 429 on exhaustion.
+  app_approval: New apps are "Not Approved" and capped at 30 connected stores until Lightspeed approves them.
+  token_endpoint_rate_limit: Rate limited independently of the API; returns X-RateLimit-Limit / -Remaining / -Reset
+    and 429 on exhaustion.
   docs: https://x-series-api.lightspeedhq.com/docs/authorization
 - product: Retail R-Series
   api: lightspeed:retail-r-series
@@ -96,5 +90,10 @@ gaps:
 - No OpenID Connect on any product line; /.well-known/openid-configuration 404s everywhere.
 - No RFC 8414 authorization-server metadata; every endpoint above is prose-only.
 - No mTLS, no signed requests, no DPoP or sender-constrained tokens.
-- The X-Series OpenAPI declares only http/bearer, so a spec-only reader would never discover the OAuth
-  flow, the 24h TTL or the rotating refresh token.
+- The X-Series OpenAPI declares only http/bearer, so a spec-only reader would never discover the OAuth flow, the
+  24h TTL or the rotating refresh token.
+docs_all:
+- https://x-series-api.lightspeedhq.com/docs/authorization
+- https://developers.lightspeedhq.com/retail/authentication/authentication-overview/
+- https://developers.lightspeedhq.com/ecom/introduction/authentication/
+- https://api-portal.lsk.lightspeed.app/quick-start/authentication/authorization-overview

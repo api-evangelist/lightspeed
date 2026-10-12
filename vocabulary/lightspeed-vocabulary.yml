@@ -1,0 +1,424 @@
+generated: '2026-10-12'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/lightspeed-audit-api-openapi.yml
+- openapi/lightspeed-brands-api-openapi.yml
+- openapi/lightspeed-channel-request-log-api-openapi.yml
+- openapi/lightspeed-consignment-products-api-openapi.yml
+- openapi/lightspeed-consignments-api-openapi.yml
+vocabulary:
+  name: Lightspeed Commerce Domain Vocabulary
+  description: 'Terms declared by Lightspeed Commerce''s own API contract: its resource groups, objects and enumerations, with the contract''s
+    definitions. Derived, not authored.'
+  version: '2026-10-12'
+  terms:
+  - term: Audit
+    definition: Audit and security operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-audit-api-openapi.yml
+  - term: Brands
+    definition: Brand operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-brands-api-openapi.yml
+  - term: Channel Request Log
+    definition: A log of requests and responses between Lightspeed and an integration channel.
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-channel-request-log-api-openapi.yml
+  - term: Consignment Products
+    definition: Consignment Product operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-consignment-products-api-openapi.yml
+  - term: Consignments
+    definition: Stock control operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-consignments-api-openapi.yml
+  - term: Customer Addresses
+    definition: Customer Address operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-customer-addresses-api-openapi.yml
+  - term: Customer Groups
+    definition: Customer Group operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-customer-groups-api-openapi.yml
+  - term: Customers
+    definition: Customer operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-customers-api-openapi.yml
+  - term: Financial
+    definition: V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-financial-api-openapi.yml
+  - term: FinancialV2
+    definition: V2 endpoints (`/f/v2/...`) for retrieving sales and financial data.
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-financialv2-api-openapi.yml
+  - term: Fulfillments
+    definition: Fulfillment operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-fulfillments-api-openapi.yml
+  - term: Gift Cards
+    definition: Gift Card operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-gift-cards-api-openapi.yml
+  - term: Inventory
+    definition: Inventory operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-inventory-api-openapi.yml
+  - term: Staff
+    definition: Staff API. Authorisation Code grant type is required for this API with permission ROLE_CONFIG_USERS.
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-k-series-openapi.yml
+  - term: Outlet Product Taxes
+    definition: Outlet Product Tax operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-outlet-product-taxes-api-openapi.yml
+  - term: Outlets
+    definition: Outlet operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-outlets-api-openapi.yml
+  - term: Packing Slips
+    definition: Packing slip rendering operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-packing-slips-api-openapi.yml
+  - term: Partner Billing
+    definition: Partner Billing operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-partner-billing-api-openapi.yml
+  - term: Payment Types
+    definition: Payment Type operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-payment-types-api-openapi.yml
+  - term: Price Books
+    definition: Price Book operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-price-books-api-openapi.yml
+  - term: Product Categories
+    definition: Product Categories operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-product-categories-api-openapi.yml
+  - term: Product Images
+    definition: Product Image operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-product-images-api-openapi.yml
+  - term: Product Types
+    definition: Product Type operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-product-types-api-openapi.yml
+  - term: Products
+    definition: Product operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-products-api-openapi.yml
+  - term: Promotions
+    definition: Promotion operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-promotions-api-openapi.yml
+  - term: Purchase Orders
+    definition: Purchase order operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-purchase-orders-api-openapi.yml
+  - term: Quotes
+    definition: Quotes operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-quotes-api-openapi.yml
+  - term: Registers
+    definition: Register operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-registers-api-openapi.yml
+  - term: Retailers
+    definition: Retailer operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-retailers-api-openapi.yml
+  - term: Sales
+    definition: Sale operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-sales-api-openapi.yml
+  - term: Search
+    definition: Search related operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-search-api-openapi.yml
+  - term: Serial Numbers
+    definition: Serial number related operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-serial-numbers-api-openapi.yml
+  - term: Service Orders
+    definition: Service orders and Job management
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-service-orders-api-openapi.yml
+  - term: Store Credits
+    definition: Store Credit operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-store-credits-api-openapi.yml
+  - term: Suppliers
+    definition: Supplier operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-suppliers-api-openapi.yml
+  - term: Tags
+    definition: Tag operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-tags-api-openapi.yml
+  - term: Taxes
+    definition: Tax operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-taxes-api-openapi.yml
+  - term: Users
+    definition: User operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-users-api-openapi.yml
+  - term: Webhooks
+    definition: Webhook operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-webhooks-api-openapi.yml
+  - term: Workflows
+    definition: Workflow operations
+    tags:
+    - Resource Group
+    source: openapi/lightspeed-workflows-api-openapi.yml
+  - term: Audit Log Event
+    definition: The structure of the event and security event model
+    tags:
+    - Object
+    source: openapi/lightspeed-audit-api-openapi.yml#/components/schemas/AuditLogEvent
+  - term: Version
+    definition: An object containing the highest and lowest version numbers for all items of the returned collection.
+    tags:
+    - Object
+    source: openapi/lightspeed-brands-api-openapi.yml#/components/schemas/Version
+  - term: Brand
+    definition: 'Object declared by the contract with fields: deleted_at, description, id, name, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-brands-api-openapi.yml#/components/schemas/Brand
+  - term: Brand
+    definition: 'Object declared by the contract with fields: description, name.'
+    tags:
+    - Object
+    source: openapi/lightspeed-brands-api-openapi.yml#/components/schemas/BrandBase
+  - term: Brand Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-brands-api-openapi.yml#/components/schemas/BrandResponse
+  - term: Brand Collection
+    definition: 'Object declared by the contract with fields: data, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-brands-api-openapi.yml#/components/schemas/BrandCollection
+  - term: Channels response
+    definition: A collection of channel records wrapped in a top-level data object.
+    tags:
+    - Object
+    source: openapi/lightspeed-channel-request-log-api-openapi.yml#/components/schemas/ChannelCollectionResponse
+  - term: Channel
+    definition: An object representing a single channel.
+    tags:
+    - Object
+    source: openapi/lightspeed-channel-request-log-api-openapi.yml#/components/schemas/Channel
+  - term: Request Log response
+    definition: A single request log record wrapped in the top-level data object.
+    tags:
+    - Object
+    source: openapi/lightspeed-channel-request-log-api-openapi.yml#/components/schemas/RequestSingleResponse
+  - term: Request Logs response
+    definition: A collection of request log records wrapped in the top-level data object.
+    tags:
+    - Object
+    source: openapi/lightspeed-channel-request-log-api-openapi.yml#/components/schemas/RequestCollectionResponse
+  - term: Request Log
+    definition: An object representing a single request and response made to a channel.
+    tags:
+    - Object
+    source: openapi/lightspeed-channel-request-log-api-openapi.yml#/components/schemas/RequestLog
+  - term: Inventory Count Item
+    definition: 'Object declared by the contract with fields: cost, count, created_at, deleted_at, is_included, product_id, product_sku, received,
+      status, updated_at, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/InventoryCountItem
+  - term: Consignment Product Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/ConsignmentProductResponse
+  - term: Consignment Product Request
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/ConsignmentProductRequest
+  - term: Inventory Count Item Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/InventoryCountItemResponse
+  - term: Consignment Product
+    definition: 'Object declared by the contract with fields: cost, count, created_at, deleted_at, is_included, product_id, product_sku, received,
+      status, updated_at, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/ConsignmentProduct
+  - term: Consignment Product Collection
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignment-products-api-openapi.yml#/components/schemas/ConsignmentProductCollection
+  - term: Consignment Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignments-api-openapi.yml#/components/schemas/ConsignmentResponse
+  - term: Consignment Collection
+    definition: 'Object declared by the contract with fields: data, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignments-api-openapi.yml#/components/schemas/ConsignmentCollection
+  - term: ConsignmentTotalsResponse
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignments-api-openapi.yml#/components/schemas/ConsignmentTotalsResponse
+  - term: Consignment
+    definition: 'Object declared by the contract with fields: consignment_date, created_at, deleted_at, due_at, id, name, outlet_id, received_at,
+      reference, source_outlet_id, status, supplier_id. (8 more)'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignments-api-openapi.yml#/components/schemas/Consignment
+  - term: Consignment Request
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-consignments-api-openapi.yml#/components/schemas/ConsignmentRequest
+  - term: Customer Address Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-addresses-api-openapi.yml#/components/schemas/CustomerAddressResponse
+  - term: Customer Address
+    definition: 'Object declared by the contract with fields: address_line_1, address_line_2, city, country_code, country_name, created_at, customer_id,
+      id, postcode, state, state_code, suburb. (2 more)'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-addresses-api-openapi.yml#/components/schemas/CustomerAddress
+  - term: Customer Address Create Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-addresses-api-openapi.yml#/components/schemas/CustomerAddressCreateResponse
+  - term: Customer Address Base
+    definition: 'Object declared by the contract with fields: address_line_1, address_line_2, city, country_code, postcode, state, state_code,
+      suburb, type.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-addresses-api-openapi.yml#/components/schemas/CustomerAddressBase
+  - term: Customer Address Collection
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-addresses-api-openapi.yml#/components/schemas/CustomerAddressCollection
+  - term: Customer Group Collection
+    definition: 'Object declared by the contract with fields: data, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-groups-api-openapi.yml#/components/schemas/CustomerGroupCollection
+  - term: Customer Group
+    definition: 'Object declared by the contract with fields: created_at, deleted_at, group_id, id, name, retailer_id, updated_at, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-groups-api-openapi.yml#/components/schemas/CustomerGroup
+  - term: Customer Collection
+    definition: 'Object declared by the contract with fields: data, version.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-groups-api-openapi.yml#/components/schemas/CustomerCollection
+  - term: Customer
+    definition: 'Object declared by the contract with fields: balance, company_name, created_at, custom_field_1, custom_field_2, custom_field_3,
+      custom_field_4, customer_code, customer_group_id, date_of_birth, deleted_at, do_not_email. (34 more)'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-groups-api-openapi.yml#/components/schemas/Customer
+  - term: Customer Group Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customer-groups-api-openapi.yml#/components/schemas/CustomerGroupResponse
+  - term: Customer Base
+    definition: 'Object declared by the contract with fields: company_name, custom_field_1, custom_field_2, custom_field_3, custom_field_4, customer_code,
+      customer_group_id, date_of_birth, do_not_email, email, enable_loyalty, enable_promotional_sms. (25 more)'
+    tags:
+    - Object
+    source: openapi/lightspeed-customers-api-openapi.yml#/components/schemas/CustomerBase
+  - term: Customer Response
+    definition: 'Object declared by the contract with fields: data.'
+    tags:
+    - Object
+    source: openapi/lightspeed-customers-api-openapi.yml#/components/schemas/CustomerResponse
+  - term: financial-apiSaleDto
+    definition: 'Object declared by the contract with fields: accountReference, accountFiscId, receiptId, source, salesLines, payments, timeofOpening,
+      timeofCloseAndPaid, cancelled, externalFiscalNumber, tableNumber, tableName. (10 more)'
+    tags:
+    - Object
+    source: openapi/lightspeed-financial-api-openapi.yml#/components/schemas/financial-apiSaleDto
+  - term: financial-apiResourcesTaxRate
+    definition: 'Object declared by the contract with fields: _embedded, _links.'
+    tags:
+    - Object
+    source: openapi/lightspeed-financial-api-openapi.yml#/components/schemas/financial-apiResourcesTaxRate
+  - term: financial-apiFinancialDto
+    definition: 'Object declared by the contract with fields: businessName, nextStartOfDayAsIso8601, businessLocationId, sales, dataComplete,
+      _links.'
+    tags:
+    - Object
+    source: openapi/lightspeed-financial-api-openapi.yml#/components/schemas/financial-apiFinancialDto
+  - term: financial-apiTaxRate
+    definition: 'Object declared by the contract with fields: code, description, rate, taxIncluded, accountingReference.'
+    tags:
+    - Object
+    source: openapi/lightspeed-financial-api-openapi.yml#/components/schemas/financial-apiTaxRate
+  - term: financial-apiServiceChargeType
+    definition: The type of service charge applied to the sale line.
+    tags:
+    - Enumeration
+    source: openapi/lightspeed-financial-api-openapi.yml#/components/schemas/financial-apiServiceChargeType
+  - term: financial-apiLSPaymentsDto
+    definition: 'Object declared by the contract with fields: payments, pageSize, offset, nextOffset.'
+    tags:
+    - Object
+    source: openapi/lightspeed-financialv2-api-openapi.yml#/components/schemas/financial-apiLSPaymentsDto

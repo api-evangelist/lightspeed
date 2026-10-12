@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-inventory-levels-request-schema.json",
+  "title": "InventoryLevelsRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-inventory-api-openapi.yml#/components/schemas/InventoryLevelsRequest",
+  "properties": {
+    "group_variants": {
+      "default": false,
+      "description": "If filtering by `root_product_ids` and `group_variants` is true, one aggregated level will be returned\nfor each variant family at each outlet.",
+      "type": "boolean"
+    },
+    "include_composites": {
+      "default": false,
+      "description": "Include composite products in the response.",
+      "type": "boolean"
+    },
+    "include_inactive": {
+      "default": false,
+      "description": "Include inactive products in the response.",
+      "type": "boolean"
+    },
+    "location_ids": {
+      "description": "Optional outlet IDs to filter response by.",
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "maxItems": 1000,
+      "type": "array"
+    },
+    "offset": {
+      "default": 0,
+      "description": "How many inventory levels to skip.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "product_ids": {
+      "description": "Optional product IDs to filter response by. Mutually exclusive with `root_product_ids`. When omitted, returns inventory levels for all products.",
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "maxItems": 1000,
+      "type": "array"
+    },
+    "root_product_ids": {
+      "description": "Optional root product IDs to filter response by. Mutually exclusive with `product_ids`. When omitted, returns inventory levels for all products.",
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "maxItems": 1000,
+      "type": "array"
+    },
+    "size": {
+      "default": 100,
+      "description": "How many inventory levels to return.",
+      "format": "int64",
+      "maximum": 10000,
+      "type": "integer"
+    },
+    "sort_direction": {
+      "default": "desc",
+      "description": "Whether to sort the response ascending or descending.",
+      "enum": [
+        "asc",
+        "desc"
+      ],
+      "type": "string"
+    },
+    "sort_type": {
+      "default": "total_count",
+      "description": "Which response field to sort by.",
+      "enum": [
+        "total_count",
+        "total_cost",
+        "average_cost",
+        "reorder_point",
+        "reorder_amount",
+        "product_name",
+        "created_at"
+      ],
+      "type": "string"
+    },
+    "supplier_ids": {
+      "description": "Optional supplier IDs to filter response by.",
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "maxItems": 1000,
+      "type": "array"
+    },
+    "to_be_procured_only": {
+      "default": false,
+      "description": "Only include inventory with a positive quantity to procure.",
+      "type": "boolean"
+    }
+  }
+}

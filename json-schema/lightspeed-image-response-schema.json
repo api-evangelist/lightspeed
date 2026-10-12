@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-image-response-schema.json",
+  "title": "Image Response",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-product-images-api-openapi.yml#/components/schemas/ImageResponse",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/Image"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "Image": {
+      "properties": {
+        "id": {
+          "description": "Auto-generated object ID.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "position": {
+          "description": "Position of the image in collection of images associated with a product.",
+          "format": "double",
+          "type": "number"
+        },
+        "product_id": {
+          "description": "The ID of the product this image is associated with.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status if the image upload processing. Can be `processing`, `uploaded`, `error`.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Auto-incrementing object version number.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "title": "Image",
+      "type": "object"
+    }
+  }
+}

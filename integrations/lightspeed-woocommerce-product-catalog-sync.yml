@@ -1,0 +1,78 @@
+arazzo: 1.0.1
+info:
+  title: Lightspeed WooCommerce Product Catalog Sync
+  summary: Publish Lightspeed POS products to a WooCommerce store.
+  description: Lightspeed lists WooCommerce on its integrations marketplace under eCommerce. This workflow reads changed X-Series
+    products and creates them in WooCommerce so the web catalog matches the store.
+  version: 1.0.0
+sourceDescriptions:
+- name: lightspeedProducts
+  url: https://raw.githubusercontent.com/api-evangelist/lightspeed/refs/heads/main/openapi/lightspeed-products-api-openapi.yml
+  type: openapi
+- name: wooProducts
+  url: https://raw.githubusercontent.com/api-evangelist/woocommerce/refs/heads/main/openapi/woocommerce-products-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: lightspeed-woocommerce-product-catalog-sync
+  summary: Publish Lightspeed POS products to a WooCommerce store.
+  inputs:
+    type: object
+    properties:
+      domain_prefix:
+        type: string
+      after:
+        type: integer
+        description: Lightspeed version cursor
+  steps:
+  - stepId: list-products
+    description: Read changed Lightspeed X-Series products.
+    operationId: $sourceDescriptions.lightspeedProducts.ListProducts
+    parameters:
+    - name: after
+      in: query
+      value: $inputs.after
+    - name: page_size
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      name: $response.body#/data/0/name
+      sku: $response.body#/data/0/sku
+      price: $response.body#/data/0/price_excluding_tax
+      description: $response.body#/data/0/description
+      max_version: $response.body#/version/max
+  - stepId: create-product
+    description: Create the product in WooCommerce.
+    operationId: $sourceDescriptions.wooProducts.createProduct
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $steps.list-products.outputs.name
+        sku: $steps.list-products.outputs.sku
+        regular_price: $steps.list-products.outputs.price
+        description: $steps.list-products.outputs.description
+        type: simple
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      product_id: $response.body#/id
+  outputs:
+    product_id: $steps.create-product.outputs.product_id
+    next_after: $steps.list-products.outputs.max_version
+x-integration:
+  partner: woocommerce
+  edge_evidence: https://www.lightspeedhq.com/integrations/
+  edge_type: claimed
+  category: eCommerce
+  relationship: workflow
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (local-v5 enrichment)
+  guessed_steps:
+  - step: list-products
+    cause: provider-contract
+    why: collection response documented by example; version.max cursor path not in a schema
+  - step: create-product
+    cause: partner-contract
+    why: regular_price is a string in WooCommerce and Lightspeed returns a number; variants are not mapped

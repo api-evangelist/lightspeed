@@ -9,8 +9,8 @@ method: generated
 generated: '2026-06-13'
 name: Lightspeed Commerce FinOps
 description: Financial operations guidance for managing Lightspeed Commerce API costs, usage, and optimization
-created: 2026-06-13
-modified: 2026-06-13
+created: '2026-06-13'
+modified: '2026-06-13'
 
 cost_drivers:
   - name: Software Subscription

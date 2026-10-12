@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-service-status-details-schema.json",
+  "title": "ServiceStatusDetails",
+  "description": "Details of a custom service status assigned to a service order.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-service-orders-api-openapi.yml#/components/schemas/ServiceStatusDetails",
+  "properties": {
+    "created_at": {
+      "description": "The date and time the status was created.",
+      "format": "date-time",
+      "type": "string"
+    },
+    "display_name": {
+      "description": "Human-readable name of the status.",
+      "type": "string"
+    },
+    "display_order": {
+      "description": "The order in which this status appears in the UI. Null if not set.",
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "id": {
+      "description": "The unique ID of the status.",
+      "type": "string"
+    },
+    "retailer_id": {
+      "description": "The retailer this status belongs to.",
+      "type": "string"
+    },
+    "status_key": {
+      "description": "The underlying key mapping this status to a system status (e.g. NEW, IN_PROGRESS).",
+      "type": "string"
+    },
+    "system_default": {
+      "description": "Whether this is a system-managed default status.",
+      "type": "boolean"
+    },
+    "updated_at": {
+      "description": "The date and time the status was last updated.",
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "type": [
+    "object",
+    "null"
+  ]
+}

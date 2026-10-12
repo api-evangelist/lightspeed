@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-store-credit-bulk-response-schema.json",
+  "title": "Store Credit Bulk Response",
+  "description": "Store credit customer list with balance and transactions",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-store-credits-api-openapi.yml#/components/schemas/StoreCreditBulkResponse",
+  "properties": {
+    "data": {
+      "description": "An array of Store Credit Customers",
+      "items": {
+        "$ref": "#/$defs/StoreCreditCustomer"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "StoreCreditCustomer": {
+      "description": "The store credit information for a customer.",
+      "properties": {
+        "balance": {
+          "description": "The customers store credit balance.",
+          "format": "double",
+          "type": "number"
+        },
+        "created_at": {
+          "description": "Creation timestamp in UTC.",
+          "type": "string"
+        },
+        "customer_id": {
+          "description": "The customer id.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "id": {
+          "description": "Store Credit Customer's internal ID.",
+          "format": "string",
+          "type": "string"
+        },
+        "store_credit_transactions": {
+          "description": "The transactions associated with this customer.",
+          "items": {
+            "$ref": "#/$defs/StoreCreditTransaction"
+          },
+          "type": "array"
+        },
+        "total_credit_issued": {
+          "description": "Total amount of store credit issued to this customer.",
+          "format": "double",
+          "type": "number"
+        },
+        "total_credit_redeemed": {
+          "description": "Total amount of store credit spent by this customer.",
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "required": [
+        "customer_id",
+        "balance",
+        "total_credit_issued",
+        "total_credit_redeemed"
+      ],
+      "title": "Store Credit Customer",
+      "type": "object"
+    },
+    "StoreCreditTransaction": {
+      "description": "A store credit operation",
+      "properties": {
+        "amount": {
+          "description": "The amount of the transaction",
+          "format": "double",
+          "type": "number"
+        },
+        "client_id": {
+          "description": "An operation idempotency identifier.\nThe client must provide this and normally it should be the transaction id from the client system.\nAn operation and it's reverse operation must have the same client_id\n",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "The date time the transaction was created.",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+          "type": "string"
+        },
+        "id": {
+          "description": "transaction unique identifier (base64 encoded)",
+          "type": "string"
+        },
+        "notes": {
+          "description": "The notes associated with the transaction.",
+          "type": "string"
+        },
+        "sale_id": {
+          "description": "The sale id the transaction is associated with. This should be null for transactions initiated outside of Lightspeed Retail. If it is a sale id, it will be in UUID format.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of the transaction",
+          "enum": [
+            "ISSUE",
+            "REDEMPTION",
+            "REVERSE"
+          ],
+          "type": "string"
+        },
+        "user_id": {
+          "description": "The user id of the person who performed the transaction (during a sale or a manual issue)",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "title": "Store Credit Transaction for Customer",
+      "type": "object"
+    }
+  }
+}

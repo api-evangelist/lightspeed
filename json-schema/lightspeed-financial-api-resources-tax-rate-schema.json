@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-financial-api-resources-tax-rate-schema.json",
+  "title": "financial-apiResourcesTaxRate",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-financial-api-openapi.yml#/components/schemas/financial-apiResourcesTaxRate",
+  "type": "object",
+  "properties": {
+    "_embedded": {
+      "type": "object",
+      "properties": {
+        "taxRateList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/financial-apiTaxRate"
+          }
+        }
+      }
+    },
+    "_links": {
+      "type": "object",
+      "properties": {
+        "self": {
+          "type": "object",
+          "properties": {
+            "href": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "financial-apiTaxRate": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "System code for the tax rate."
+        },
+        "description": {
+          "type": "string",
+          "description": "Name of the tax rate."
+        },
+        "rate": {
+          "type": "number",
+          "description": "Multiplier for the tax rate."
+        },
+        "taxIncluded": {
+          "type": "boolean",
+          "description": "Whether or not the tax is included."
+        },
+        "accountingReference": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

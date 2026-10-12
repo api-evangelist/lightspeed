@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-ape-standalone-payment-schema.json",
+  "title": "apeStandalonePayment",
+  "description": "Payment to apply to an existing order.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-order-and-pay-api-openapi.yml#/components/schemas/apeStandalonePayment",
+  "type": "object",
+  "required": [
+    "businessLocationId",
+    "endpointId",
+    "paymentAmount",
+    "thirdPartyPaymentReference"
+  ],
+  "properties": {
+    "iKaccountId": {
+      "type": "integer",
+      "format": "int64",
+      "deprecated": true
+    },
+    "iKaccountIdentifier": {
+      "description": "The ID of the account to apply this payment to.",
+      "type": "string"
+    },
+    "thirdPartyPaymentReference": {
+      "description": "A unique external reference provided for this order. This value will be sent back in the webhook.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "endpointId": {
+      "description": "Endpoint ID for a unique webhook that has been created using [the webhook endpoint](https://api-docs.lsk.lightspeed.app/operation/operation-apecreatewebhookoo).",
+      "type": "string"
+    },
+    "businessLocationId": {
+      "$ref": "#/$defs/apeBusinessLocationId"
+    },
+    "taskTtlInMs": {
+      "description": "Maximum time to attempt delivery of this payment to the POS. In milliseconds. The minimum value is 60000ms (1 minute).",
+      "type": "integer",
+      "format": "int32"
+    },
+    "staffId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "The ID of the employee responsible for this payment."
+    },
+    "deviceId": {
+      "description": "POS device to specifically receive this payment. If left null then all POS devices may receive the payment but only one will process it.",
+      "type": "integer",
+      "format": "int64"
+    },
+    "paymentMethod": {
+      "description": "Payment method code as configured by the merchant.",
+      "type": "string"
+    },
+    "paymentAmount": {
+      "description": "The total amount of the payment without tips.",
+      "type": "number"
+    },
+    "tipAmount": {
+      "description": "The tip amount, if any.",
+      "type": "number"
+    },
+    "targetPrinterProfileId": {
+      "description": "The printer profile id to use for printing the receipt for this payment. If not provided, the default active printer profile for the business location will be used.",
+      "type": "integer",
+      "format": "int64"
+    }
+  },
+  "$defs": {
+    "apeBusinessLocationId": {
+      "description": "The unique identifier for the business location.",
+      "type": "integer",
+      "format": "int64"
+    }
+  }
+}

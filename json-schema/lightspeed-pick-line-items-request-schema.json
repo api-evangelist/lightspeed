@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-pick-line-items-request-schema.json",
+  "title": "PickLineItemsRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-fulfillments-api-openapi.yml#/components/schemas/PickLineItemsRequest",
+  "properties": {
+    "line_items": {
+      "description": "The line items to be picked",
+      "items": {
+        "$ref": "#/$defs/PickLineItemRequest"
+      },
+      "type": "array"
+    },
+    "version": {
+      "description": "The current version number of the fulfillment.",
+      "format": "int32",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "version",
+    "line_items"
+  ],
+  "type": "object",
+  "$defs": {
+    "PickLineItemRequest": {
+      "properties": {
+        "quantity": {
+          "description": "The quantity to be picked",
+          "format": "double",
+          "type": "number"
+        },
+        "sale_line_item_id": {
+          "description": "The unique identifier of the sale line item to be picked.",
+          "format": "uuid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sale_line_item_id",
+        "quantity"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-gift-card-transaction-singleton-schema.json",
+  "title": "Gift Card Transaction Response",
+  "description": "A single gift card transaction response.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-gift-cards-api-openapi.yml#/components/schemas/GiftCardTransactionSingleton",
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/GiftCardTransaction"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "type": "object",
+  "$defs": {
+    "GiftCardTransaction": {
+      "description": "A gift card transaction with the amount represented as a string for precision.",
+      "properties": {
+        "amount": {
+          "description": "The transaction amount, represented as a string for precision.",
+          "type": "string"
+        },
+        "client_id": {
+          "description": "The client id is a unique transaction identifier. The client must provide this and is normally the transaction id from the client system.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "description": "The creation timestamp in UTC.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Auto-generated object ID.",
+          "type": "string"
+        },
+        "source": {
+          "description": "The source of the transaction.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_id": {
+          "description": "The source id is a unique identifier for the transaction in the source system.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "description": "The type of transaction.",
+          "enum": [
+            "ACTIVATION",
+            "REDEEMING",
+            "IMPORTING",
+            "VOIDING",
+            "EXPIRING",
+            "REVERSING",
+            "RELOADING"
+          ],
+          "type": "string"
+        },
+        "user_id": {
+          "description": "The user id associated with the transaction.",
+          "type": "string"
+        }
+      },
+      "title": "Gift Card Transaction",
+      "type": "object"
+    }
+  }
+}

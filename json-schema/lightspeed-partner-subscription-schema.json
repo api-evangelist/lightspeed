@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lightspeed/main/json-schema/lightspeed-partner-subscription-schema.json",
+  "title": "PartnerSubscription",
+  "description": "PartnerSubscription contains all the subscription under one partner application",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/lightspeed-partner-billing-api-openapi.yml#/components/schemas/PartnerSubscription",
+  "properties": {
+    "application_id": {
+      "type": "string"
+    },
+    "application_name": {
+      "type": "string"
+    },
+    "partner_subscription_info": {
+      "items": {
+        "$ref": "#/$defs/PartnerSubscriptionInfo"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "PartnerSubscriptionInfo": {
+      "properties": {
+        "charge_interval": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "charge_interval_unit": {
+          "type": "string"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/ProductInfoComponent"
+          },
+          "type": "array"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "next_assessment_at": {
+          "type": "string"
+        },
+        "price_in_cents": {
+          "type": "string"
+        },
+        "product_family_name": {
+          "type": "string"
+        },
+        "product_name": {
+          "type": "string"
+        },
+        "product_price_point_name": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ProductInfoComponent": {
+      "properties": {
+        "charge_interval_unit": {
+          "type": "string"
+        },
+        "component_name": {
+          "type": "string"
+        },
+        "quantity": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "unit_price": {
+          "format": "double",
+          "type": "number"
+        }
+      },
+      "title": "ProductInfoComponent contain partner product component info.",
+      "type": "object"
+    }
+  }
+}

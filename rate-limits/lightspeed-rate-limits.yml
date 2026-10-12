@@ -3,30 +3,36 @@ specificationVersion: '0.1'
 provider: Lightspeed Commerce
 providerId: lightspeed
 name: Lightspeed Commerce API Rate Limits
-description: >-
-  Every Lightspeed product line rate-limits differently, and two of them scale the limit with how much
-  hardware the retailer runs. X-Series uses a 5-minute window sized at 300 x registers + 50; R-Series
-  uses a leaky bucket whose size and drip rate grow per register, with per-request costs that vary by
-  query parameter and nested relation. Both publish runtime headers, which is what an agent actually
-  needs.
+description: Every Lightspeed product line rate-limits differently, and two of them scale the limit with how much
+  hardware the retailer runs. X-Series uses a 5-minute window sized at 300 x registers + 50; R-Series uses a leaky
+  bucket whose size and drip rate grow per register, with per-request costs that vary by query parameter and nested
+  relation. Both publish runtime headers, which is what an agent actually needs.
 created: '2026-06-13'
 modified: '2026-08-27'
 generated: '2026-08-27'
 method: searched
-source: >-
-  https://x-series-api.lightspeedhq.com/docs/rate_limiting,
-  https://x-series-api.lightspeedhq.com/docs/authorization#rate-limiting,
-  https://developers.lightspeedhq.com/retail/introduction/ratelimits/,
-  https://developers.lightspeedhq.com/ecom/introduction/rate-limiting/
+source: https://x-series-api.lightspeedhq.com/docs/rate_limiting, https://x-series-api.lightspeedhq.com/docs/authorization#rate-limiting,
+  https://developers.lightspeedhq.com/retail/introduction/ratelimits/, https://developers.lightspeedhq.com/ecom/introduction/rate-limiting/
 sources:
 - https://x-series-api.lightspeedhq.com/docs/rate_limiting
 - https://x-series-api.lightspeedhq.com/docs/authorization
 - https://developers.lightspeedhq.com/retail/introduction/ratelimits/
 - https://developers.lightspeedhq.com/ecom/introduction/rate-limiting/
 headers:
-  x_series: [X-RateLimit-Limit, X-RateLimit-Remaining, Retry-After]
-  x_series_token_endpoint: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
-  r_series: [X-LS-Api-Bucket-Level, X-LS-Api-Burst-Level, X-LS-Api-Drip-Rate, X-LS-Api-Request-Cost, Retry-After]
+  x_series:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - Retry-After
+  x_series_token_endpoint:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  r_series:
+  - X-LS-Api-Bucket-Level
+  - X-LS-Api-Burst-Level
+  - X-LS-Api-Drip-Rate
+  - X-LS-Api-Request-Cost
+  - Retry-After
 responseCodes:
   throttled: 429
 limit_count: 6
@@ -36,38 +42,44 @@ limits:
   scope: per-application-per-retailer
   metric: requests
   limit: 350
-  window: 300
+  window: 5 minutes
   timeFrame: 5 minutes
   formula: 300 * <number of registers> + 50
-  note: >-
-    350 is the value for a single-register store, which is Lightspeed's own worked example. The limit
-    grows with register count, so a retailer's API headroom is a function of the hardware they bought.
+  note: 350 is the value for a single-register store, which is Lightspeed's own worked example. The limit grows
+    with register count, so a retailer's API headroom is a function of the hardware they bought.
   algorithm: fixed 5-minute window
+  window_seconds: 300
+  limit_text: 300 x <number of registers> + 50
+  source: https://x-series-api.lightspeedhq.com/docs/rate_limiting
 - name: X-Series API requests, per retailer for all users
   product: Retail X-Series
   scope: per-retailer-all-users
   metric: requests
   limit: 350
-  window: 300
+  window: 5 minutes
   timeFrame: 5 minutes
   formula: 300 * <number of registers> + 50
-  note: >-
-    A separate bucket from the application bucket, deliberately, so an integration cannot rate-limit
-    in-store staff mid-transaction and vice versa.
+  note: A separate bucket from the application bucket, deliberately, so an integration cannot rate-limit in-store
+    staff mid-transaction and vice versa.
+  window_seconds: 300
+  limit_text: 300 x <number of registers> + 50
+  source: https://x-series-api.lightspeedhq.com/docs/rate_limiting
 - name: X-Series token endpoint
   product: Retail X-Series
   scope: per-application
   metric: requests
   limit: null
-  window: null
   endpoint: https://{domain_prefix}.retail.lightspeed.app/api/1.0/token
-  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
-  note: >-
-    Rate limited independently of the rest of the API, and the limit is discoverable only at runtime:
-    Lightspeed's documentation shows example headers (limit 10) but states explicitly that "all of
-    these values are subject to change", so no numeric limit is recorded here. X-RateLimit-Reset is a
-    Unix epoch second. Lightspeed's guidance is to use an access token until it expires (86400s)
-    rather than re-minting it, which avoids this limit entirely.
+  headers:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  note: 'Rate limited independently of the rest of the API, and the limit is discoverable only at runtime: Lightspeed''s
+    documentation shows example headers (limit 10) but states explicitly that "all of these values are subject to
+    change", so no numeric limit is recorded here. X-RateLimit-Reset is a Unix epoch second. Lightspeed''s guidance
+    is to use an access token until it expires (86400s) rather than re-minting it, which avoids this limit entirely.'
+  limit_text: rate limited independently of [the rest of the API]
+  source: https://x-series-api.lightspeedhq.com/docs/authorization
 - name: R-Series leaky bucket, base
   product: Retail R-Series
   scope: per-account
@@ -78,6 +90,8 @@ limits:
   timeFrame: per second drip
   algorithm: leaky bucket
   note: 90-request bucket draining at 1 request per second.
+  limit_text: Each connection has a base bucket size of 90
+  source: https://developers.lightspeedhq.com/retail/introduction/ratelimits/
 - name: R-Series leaky bucket, per additional register
   product: Retail R-Series
   scope: per-account
@@ -86,22 +100,25 @@ limits:
   rate: 0.5
   timeFrame: per second drip
   algorithm: leaky bucket increment
-  note: >-
-    Each register beyond the first adds 10 to the bucket and 0.5 drips/second. Lightspeed's worked
-    example: 3 registers gives a 110-request bucket at 2 drips/second.
+  note: 'Each register beyond the first adds 10 to the bucket and 0.5 drips/second. Lightspeed''s worked example:
+    3 registers gives a 110-request bucket at 2 drips/second.'
+  limit_text: increased by 10 for each additional register beyond the first
+  source: https://developers.lightspeedhq.com/retail/introduction/ratelimits/
 - name: R-Series burst limiter
   product: Retail R-Series
   scope: per-account
   metric: requests
   limit: null
-  window: 1
+  window: 1 second
   timeFrame: 1 second
   algorithm: fixed 1-second window
-  note: >-
-    A secondary limiter on top of the leaky bucket. Lightspeed documents the window (1 second) but not
-    the threshold, so no number is recorded. Exceeding it returns 429 with the message "burst rate
-    limit exceeded"; wait at least one second before retrying. Current usage is readable at runtime via
-    X-LS-Api-Burst-Level.
+  note: A secondary limiter on top of the leaky bucket. Lightspeed documents the window (1 second) but not the threshold,
+    so no number is recorded. Exceeding it returns 429 with the message "burst rate limit exceeded"; wait at least
+    one second before retrying. Current usage is readable at runtime via X-LS-Api-Burst-Level.
+  window_seconds: 1
+  limit_text: Lightspeed enforces a secondary burst rate limit to prevent sudden traffic spikes
+  source: https://developers.lightspeedhq.com/retail/introduction/ratelimits/
+  kind: burst
 request_costs:
   r_series:
     base: 1 drip per request
@@ -118,14 +135,15 @@ error_bodies:
     retry_after_format: seconds
 undocumented:
 - product: eCom C-Series
-  note: >-
-    Limits are stated to apply per API key and a rate-limiting page exists
-    (https://developers.lightspeedhq.com/ecom/introduction/rate-limiting/), but no numeric limit,
-    window or header set was captured in this pass. An Account Rate limits endpoint exists in the eCom
-    endpoint list, which suggests the limit is readable at runtime rather than published.
+  note: Limits are stated to apply per API key and a rate-limiting page exists (https://developers.lightspeedhq.com/ecom/introduction/rate-limiting/),
+    but no numeric limit, window or header set was captured in this pass. An Account Rate limits endpoint exists
+    in the eCom endpoint list, which suggests the limit is readable at runtime rather than published.
 - product: Restaurant K-Series
   note: No rate limits are documented and none are declared in the published OpenAPI.
 best_practices:
 - Queue API calls and defer on 429 rather than sleeping between every request (Lightspeed's own guidance).
 - Read X-RateLimit-Remaining (X-Series) or X-LS-Api-Bucket-Level (R-Series) before deciding to send.
 - On R-Series, prefer one call with nested relations over several separate calls — it costs fewer drips.
+note: Limits span three Lightspeed docs pages; each row carries its own `source:` page and its limit_text was checked
+  verbatim against that page on 2026-10-12 (the X-Series quote is from the markdown twin rate_limiting.md). check-economics.py
+  reads only the file-level source, so rows on the other pages report as unverified there.
