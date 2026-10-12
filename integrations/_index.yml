@@ -60,13 +60,12 @@
   arazzo: null
 - slug: lightspeed-agechecker-net
   label: AgeChecker.Net
-  partner: agechecker-net
   partner_name: AgeChecker.Net
   category: Data Security
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: lightspeed-agendrix
   label: Agendrix
@@ -2007,13 +2006,12 @@
   arazzo: null
 - slug: lightspeed-tock
   label: Tock
-  partner: tock
   partner_name: Tock
   category: Reservation
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: lightspeed-trustwave
   label: Trustwave
@@ -2035,33 +2033,30 @@
   arazzo: null
 - slug: lightspeed-tyro
   label: TYRO
-  partner: tyro
   partner_name: TYRO
   category: Payment Provider -Australia
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: lightspeed-uber-direct
   label: Uber Direct
-  partner: uber-direct
   partner_name: Uber Direct
   category: Delivery
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: lightspeed-uber-eats
   label: Uber Eats
-  partner: uber-eats
   partner_name: Uber Eats
   category: Delivery, Marketplace
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-generation
+  status: pending-partner-spec
   arazzo: null
 - slug: lightspeed-ueat
   label: UEAT
@@ -2275,14 +2270,13 @@
   arazzo: null
 - slug: lightspeed-xero
   label: Xero
-  partner: xero
   partner_name: Xero
   category: Accounting
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  arazzo: lightspeed-xero-sales-to-invoices.yml
-  status: arazzo
+  status: pending-partner-spec
+  arazzo: null
 - slug: lightspeed-zenchef
   label: Zenchef
   partner_name: Zenchef
