@@ -2270,13 +2270,14 @@
   arazzo: null
 - slug: lightspeed-xero
   label: Xero
+  partner: xero
   partner_name: Xero
   category: Accounting
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-partner-spec
-  arazzo: null
+  arazzo: lightspeed-xero-sales-to-invoices.yml
+  status: arazzo
 - slug: lightspeed-zenchef
   label: Zenchef
   partner_name: Zenchef

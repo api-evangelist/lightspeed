@@ -2507,8 +2507,9 @@ edges:
   marketplace: null
   operations: []
 - partner_name: Xero
-  partner: null
-  partner_match: null
+  partner: xero
+  partner_match: domain
+  partner_note: "https://www.lightspeedhq.com/integrations/xero/ links https://www.xero.com/ -> registrable xero.com; domain_lookup: xero holds it as Website (verified 2026-10-13)."
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   partner_url: https://www.lightspeedhq.com/integrations/xero/
