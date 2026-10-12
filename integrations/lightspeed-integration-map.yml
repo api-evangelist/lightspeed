@@ -1,0 +1,220 @@
+# DERIVED by derive-integration-map.py (roadmap#949): each integration workflow, step by step,
+# resolved to spec file -> tag -> business capability (Turbo EA, CC BY 4.0) and the operation's
+# phrasing intent. Read from our own files; an unmapped link says why.
+slug: lightspeed
+workflows:
+- file: lightspeed-7shifts-sales-receipts.yml
+  title: Lightspeed 7shifts Sales Receipts
+  partner: 7shifts
+  template: null
+  repos:
+  - lightspeed
+  - 7shifts
+  steps:
+  - step: list-sales
+    repo: lightspeed
+    spec_file: lightspeed-sales-api-openapi.yml
+    operationId: ListSales
+    tag: Sales
+    capability_id: BC-2320.10
+    capability: Sales Transaction Management
+    capability_l1: BC-2320
+    intent: List sales
+    effect: read
+    unmapped: null
+  - step: create-receipt
+    repo: 7shifts
+    spec_file: 7shifts-sales-api-openapi.yml
+    operationId: createReceipt
+    tag: Sales
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: null
+    effect: null
+    unmapped: no capability edge for this spec file
+  connects:
+    lightspeed:
+      capabilities:
+      - BC-2320.10
+      tags:
+      - Sales
+    7shifts:
+      capabilities: []
+      tags:
+      - Sales
+  intents:
+  - List sales
+- file: lightspeed-klaviyo-customer-profile-sync.yml
+  title: Lightspeed Klaviyo Customer Profile Sync
+  partner: klaviyo
+  template: null
+  repos:
+  - lightspeed
+  - klaviyo
+  steps:
+  - step: list-customers
+    repo: lightspeed
+    spec_file: lightspeed-customers-api-openapi.yml
+    operationId: ListCustomers
+    tag: Customers
+    capability_id: BC-420.10
+    capability: Customer Data Management
+    capability_l1: BC-420
+    intent: List customers
+    effect: read
+    unmapped: null
+  - step: upsert-profile
+    repo: klaviyo
+    spec_file: klaviyo-profiles-api-openapi.yml
+    operationId: create_or_update_profile
+    tag: Profiles
+    capability_id: BC-420.10
+    capability: Customer Data Management
+    capability_l1: BC-420
+    intent: Upsert a profile by its attributes
+    effect: write
+    unmapped: null
+  connects:
+    lightspeed:
+      capabilities:
+      - BC-420.10
+      tags:
+      - Customers
+    klaviyo:
+      capabilities:
+      - BC-420.10
+      tags:
+      - Profiles
+  intents:
+  - List customers
+  - Upsert a profile by its attributes
+- file: lightspeed-mailchimp-customer-audience-sync.yml
+  title: Lightspeed Mailchimp Customer Audience Sync
+  partner: mailchimp
+  template: null
+  repos:
+  - lightspeed
+  - mailchimp
+  steps:
+  - step: list-customers
+    repo: lightspeed
+    spec_file: lightspeed-customers-api-openapi.yml
+    operationId: ListCustomers
+    tag: Customers
+    capability_id: BC-420.10
+    capability: Customer Data Management
+    capability_l1: BC-420
+    intent: List customers
+    effect: read
+    unmapped: null
+  - step: add-member
+    repo: mailchimp
+    spec_file: mailchimp-lists-api-openapi.yml
+    operationId: postListsIdMembers
+    tag: Lists
+    capability_id: null
+    capability: null
+    capability_l1: null
+    intent: Add a new subscriber to an audience
+    effect: write
+    unmapped: no capability edge for this spec file
+  connects:
+    lightspeed:
+      capabilities:
+      - BC-420.10
+      tags:
+      - Customers
+    mailchimp:
+      capabilities: []
+      tags:
+      - Lists
+  intents:
+  - List customers
+  - Add a new subscriber to an audience
+- file: lightspeed-woocommerce-product-catalog-sync.yml
+  title: Lightspeed WooCommerce Product Catalog Sync
+  partner: woocommerce
+  template: null
+  repos:
+  - lightspeed
+  - woocommerce
+  steps:
+  - step: list-products
+    repo: lightspeed
+    spec_file: lightspeed-products-api-openapi.yml
+    operationId: ListProducts
+    tag: Products
+    capability_id: BC-2370.10
+    capability: Item Master Data Management
+    capability_l1: BC-2370
+    intent: List products in the catalog
+    effect: read
+    unmapped: null
+  - step: create-product
+    repo: woocommerce
+    spec_file: woocommerce-products-api-openapi.yml
+    operationId: createProduct
+    tag: Products
+    capability_id: BC-820
+    capability: Product Lifecycle Management
+    capability_l1: BC-820
+    intent: null
+    effect: null
+    unmapped: null
+  connects:
+    lightspeed:
+      capabilities:
+      - BC-2370.10
+      tags:
+      - Products
+    woocommerce:
+      capabilities:
+      - BC-820
+      tags:
+      - Products
+  intents:
+  - List products in the catalog
+- file: lightspeed-xero-sales-to-invoices.yml
+  title: Lightspeed Xero Sales to Invoices
+  partner: xero
+  template: null
+  repos:
+  - lightspeed
+  - xero
+  steps:
+  - step: list-sales
+    repo: lightspeed
+    spec_file: lightspeed-sales-api-openapi.yml
+    operationId: ListSales
+    tag: Sales
+    capability_id: BC-2320.10
+    capability: Sales Transaction Management
+    capability_l1: BC-2320
+    intent: List sales
+    effect: read
+    unmapped: null
+  - step: create-invoice
+    repo: xero
+    spec_file: xero-accounting-api-openapi.yml
+    operationId: createInvoices
+    tag: Accounting
+    capability_id: BC-200
+    capability: Financial Management
+    capability_l1: BC-200
+    intent: null
+    effect: null
+    unmapped: null
+  connects:
+    lightspeed:
+      capabilities:
+      - BC-2320.10
+      tags:
+      - Sales
+    xero:
+      capabilities:
+      - BC-200
+      tags:
+      - Accounting
+  intents:
+  - List sales
