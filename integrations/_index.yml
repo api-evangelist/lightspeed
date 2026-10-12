@@ -2310,3 +2310,21 @@
   source: edge
   status: pending-partner-spec
   arazzo: null
+- slug: lightspeed-channable
+  label: channable
+  partner: channable
+  partner_name: channable
+  type: contract
+  channel: partner-built
+  evidence: https://github.com/api-evangelist/channable/blob/main/openapi/channable-orders-api-openapi.yml
+  source: edge
+  relationship: processor-connection
+  contract_reference:
+    repo: channable
+    spec_file: channable-orders-api-openapi.yml
+    value: lightspeed
+    property: components.schemas.PlatformName
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
+  status: not-a-workflow
+  arazzo: null

@@ -2546,6 +2546,21 @@ edges:
   direction: unknown
   marketplace: null
   operations: []
+- partner_name: channable
+  partner: channable
+  partner_match: domain
+  type: contract
+  channel: partner-built
+  relationship: processor-connection
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/channable/blob/main/openapi/channable-orders-api-openapi.yml
+  contract_reference:
+    repo: channable
+    spec_file: channable-orders-api-openapi.yml
+    value: lightspeed
+    property: components.schemas.PlatformName
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
 templates: []
 skips:
 - label: Shopify
