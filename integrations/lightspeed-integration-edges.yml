@@ -4,6 +4,7 @@ source:
 - https://zapier.com/apps/lightspeed/integrations
 - https://composio.dev/toolkits/lightspeed
 checked:
+- apaleo/integrations/apaleo-integration-edges.yml
 - https://composio.dev/toolkits/lightspeed
 - https://monid.ai/tools/lightspeed
 - https://n8n.io/integrations/lightspeed/
@@ -2573,6 +2574,23 @@ edges:
     property: components.schemas.PlatformName
     detected_by: detect-payment-method-edges.py
     detected: '2026-10-12'
+- partner_name: apaleo (own)
+  partner: apaleo
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://store.apaleo.com/apps/lightspeed-restaurant-k-series
+  mirror_of: apaleo/integrations/apaleo-integration-edges.yml
+  apps:
+  - Lightspeed Restaurant K-Series
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Point of sale systems
 - partner_name: Xero (own)
   partner: xero
   partner_match: mirror

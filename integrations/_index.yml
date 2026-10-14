@@ -2323,6 +2323,19 @@
     detected: '2026-10-12'
   status: not-a-workflow
   arazzo: null
+- slug: lightspeed-apaleo-own
+  label: apaleo (own)
+  partner: apaleo
+  partner_name: apaleo (own)
+  category: Point of sale systems
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://store.apaleo.com/apps/lightspeed-restaurant-k-series
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
 - slug: lightspeed-xero-own
   label: Xero (own)
   partner: xero
