@@ -464,7 +464,7 @@
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-partner-spec
+  status: pending-generation
   arazzo: null
 - slug: lightspeed-dakis
   label: Dakis
@@ -510,7 +510,7 @@
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   source: edge
-  status: pending-partner-spec
+  status: pending-generation
   arazzo: null
 - slug: lightspeed-digivalet
   label: DigiValet
@@ -2323,3 +2323,16 @@
     detected: '2026-10-12'
   status: not-a-workflow
   arazzo: null
+- slug: lightspeed-xero-own
+  label: Xero (own)
+  partner: xero
+  partner_name: Xero (own)
+  category: Point of sale
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://apps.xero.com/us/app/lightspeed-retail-pos-x-series
+  source: edge
+  relationship: platform-app
+  arazzo: lightspeed-xero-sales-to-invoices.yml
+  status: arazzo

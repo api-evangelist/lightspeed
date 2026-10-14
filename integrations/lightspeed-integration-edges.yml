@@ -10,6 +10,7 @@ checked:
 - https://www.lightspeedhq.com/integrations/
 - https://www.lightspeedhq.com/pos/retail/integrations/
 - https://zapier.com/apps/lightspeed/integrations
+- xero/integrations/xero-integration-edges.yml
 summary: 251 partners named on the Lightspeed integrations marketplace (lightspeedhq.com/integrations/, HTTP 200),
   across retail, restaurant, eCom and golf; Zapier app listed with no triggers/actions; Composio lists 7 read actions.
 marketplace_apps:
@@ -2509,7 +2510,8 @@ edges:
 - partner_name: Xero
   partner: xero
   partner_match: domain
-  partner_note: "https://www.lightspeedhq.com/integrations/xero/ links https://www.xero.com/ -> registrable xero.com; domain_lookup: xero holds it as Website (verified 2026-10-13)."
+  partner_note: 'https://www.lightspeedhq.com/integrations/xero/ links https://www.xero.com/ -> registrable xero.com;
+    domain_lookup: xero holds it as Website (verified 2026-10-13).'
   type: claimed
   evidence: https://www.lightspeedhq.com/integrations/
   partner_url: https://www.lightspeedhq.com/integrations/xero/
@@ -2562,6 +2564,23 @@ edges:
     property: components.schemas.PlatformName
     detected_by: detect-payment-method-edges.py
     detected: '2026-10-12'
+- partner_name: Xero (own)
+  partner: xero
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://apps.xero.com/us/app/lightspeed-retail-pos-x-series
+  mirror_of: xero/integrations/xero-integration-edges.yml
+  apps:
+  - Lightspeed Retail POS (X-Series)
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Point of sale
 templates: []
 skips:
 - label: Shopify
