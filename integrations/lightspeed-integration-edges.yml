@@ -8,6 +8,7 @@ checked:
 - https://monid.ai/tools/lightspeed
 - https://n8n.io/integrations/lightspeed/
 - https://www.lightspeedhq.com/integrations/
+- https://www.lightspeedhq.com/pos/restaurant/integrations/
 - https://www.lightspeedhq.com/pos/retail/integrations/
 - https://zapier.com/apps/lightspeed/integrations
 - xero/integrations/xero-integration-edges.yml
@@ -36,6 +37,14 @@ marketplace_apps:
   - key: LIGHTSPEED_LIST_PAYMENT_TYPES
   - key: LIGHTSPEED_LIST_PRODUCTS
   - key: LIGHTSPEED_LIST_SALES
+- marketplace: own
+  channel: partner-built
+  app: lightspeed
+  url: https://www.lightspeedhq.com/pos/restaurant/integrations/
+  app_count: null
+  adapter: sweep-restaurant-pos.py:unreadable
+  listed: 0
+  status: not-machine-readable (category page only; no per-partner links or builder signal)
 edges:
 - partner_name: 2ACCEPT
   partner: null
