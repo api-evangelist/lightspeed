@@ -2374,7 +2374,7 @@
     builder: unknown (not in the directory record)
     other_apps:
     - lightspeed
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: lightspeed-pipedream
   label: Pipedream
@@ -2400,5 +2400,5 @@
     actions: true
     sources: true
     builder: Pipedream repo (component)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
