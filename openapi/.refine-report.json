@@ -2,7 +2,8 @@
   "provider": "lightspeed",
   "sources": [
     "_original/lightspeed-k-series-openapi.json",
-    "_original/lightspeed-x-series-openapi.json"
+    "_original/lightspeed-x-series-openapi.json",
+    "lightspeed-k-series-openapi.yml"
   ],
   "outputs": [
     "lightspeed-financial-api-openapi.yml",
@@ -59,7 +60,9 @@
     "lightspeed-webhooks-api-openapi.yml",
     "lightspeed-workflows-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "archived openapi/lightspeed-k-series-openapi.yml"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -71,7 +74,21 @@
     "lightspeed-x-series-openapi.json: declared missing tag: Promo Code",
     "lightspeed-x-series-openapi.json: declared missing tag: Shifts",
     "lightspeed-x-series-openapi.json: declared missing tag: Variant Attributes",
-    "apis.yml register: already-registered"
+    "lightspeed-k-series-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "lightspeed-k-series-openapi.yml: declared missing tag: PMS Integration",
+    "tag 'Financial' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'FinancialV2' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'ID Cards' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Items' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Order and Pay' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Order and Pay: Webhook' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'PMS' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'PMS Integration' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Reservations for Platforms' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Rich Item' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Staff' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "tag 'Tax Breakdown' spans 2 source specs (lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+0 apis, 58 total)"
   ],
   "skipped": [
     "lightspeed-audit-api-openapi.yml: previously refined output, superseded by openapi/_original/",

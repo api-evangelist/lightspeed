@@ -1,15 +1,11 @@
 openapi: 3.2.0
 info:
+  title: 'Lightspeed Order and Pay: Webhook API'
   version: 1.0.0
-  title: 'Lightspeed Restaurant K Series Order and Pay: Webhook API'
-  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
-
-    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
-
-    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
+  description: 'Operations tagged Order and Pay: Webhook across 2 of this provider''s published API definitions: lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trial.lsk.lightspeed.app
   description: Demo URL
@@ -250,6 +246,13 @@ paths:
       security:
       - OAuth2:
         - orders-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /o/wh/1/webhook/{endpointId}:
     get:
       summary: Retrieve a Webhook
@@ -326,6 +329,13 @@ paths:
       security:
       - OAuth2:
         - orders-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /o/wh/1/webhook/{endpointId}/business-locations:
     get:
       summary: Get webhook business locations
@@ -354,6 +364,13 @@ paths:
       security:
       - OAuth2:
         - orders-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /o/wh/1/webhook/{endpointId}/business-locations/{businessLocationId}:
     parameters:
     - in: path
@@ -425,40 +442,15 @@ paths:
       security:
       - OAuth2:
         - orders-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
 components:
   schemas:
-    apeWebhookEndpointBusinessLocationDto:
-      type: object
-      properties:
-        businessLocationId:
-          type: integer
-          format: int64
-          description: The unique identifier for the business location.
-          example: 45454565682155
-        createdAt:
-          type: string
-          format: date-time
-          description: Timestamp when this association was created.
-          example: 2023-11-07T19:15:05.043+0000
-        updatedAt:
-          type: string
-          format: date-time
-          description: Timestamp when this association was last updated.
-          example: 2023-11-07T19:15:05.043+0000
-        warnings:
-          description: A list of warnings that occurred during the request, but which did not prevent a successful response.  For instance, if the Business Location does not have the required POS app version to support item availability.
-          type: array
-          items:
-            $ref: '#/components/schemas/apeCurrentWarning'
-      required:
-      - businessLocationId
-    apeCurrentWarning:
-      type: object
-      properties:
-        information:
-          type: string
-        type:
-          type: string
     apeWebhookEndpoint:
       required:
       - endpointId
@@ -505,6 +497,43 @@ components:
             $ref: '#/components/schemas/apeEventResource'
           type: array
       type: object
+    apeBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
+    apeWebhookEndpointBusinessLocationDto:
+      type: object
+      properties:
+        businessLocationId:
+          type: integer
+          format: int64
+          description: The unique identifier for the business location.
+          example: 45454565682155
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when this association was created.
+          example: 2023-11-07T19:15:05.043+0000
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when this association was last updated.
+          example: 2023-11-07T19:15:05.043+0000
+        warnings:
+          description: A list of warnings that occurred during the request, but which did not prevent a successful response.  For instance, if the Business Location does not have the required POS app version to support item availability.
+          type: array
+          items:
+            $ref: '#/components/schemas/apeCurrentWarning'
+      required:
+      - businessLocationId
+    apeCurrentWarning:
+      type: object
+      properties:
+        information:
+          type: string
+        type:
+          type: string
     apeEventResource:
       description: Event to listen to by resource
       example:
@@ -539,11 +568,6 @@ components:
           - order_api
           type: string
       type: object
-    apeBusinessLocationId:
-      description: The unique identifier for the business location.
-      type: integer
-      format: int64
-      example: 45454565682155
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
@@ -571,6 +595,9 @@ components:
               **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
 
               More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-refined-from:
+- lightspeed-k-series-openapi.json
+- lightspeed-k-series-openapi.yml
 x-tagGroups:
 - name: Rich Item API
   tags:

@@ -1,15 +1,11 @@
 openapi: 3.2.0
 info:
+  title: Lightspeed ID Cards API
   version: 1.0.0
-  title: Lightspeed Restaurant K Series ID Cards API
-  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
-
-    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
-
-    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
+  description: 'Operations tagged ID Cards across 2 of this provider''s published API definitions: lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trial.lsk.lightspeed.app
   description: Demo URL
@@ -46,6 +42,13 @@ paths:
                 $ref: '#/components/schemas/id-cards-apiIdCardBatch'
       tags:
       - ID Cards
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /id-cards/v1/business-locations/{businessLocationId}/batches/{batchId}/cards:
     post:
       summary: Create ID Cards
@@ -79,6 +82,13 @@ paths:
                 $ref: '#/components/schemas/id-cards-apiCreateIdCardsResponse'
       tags:
       - ID Cards
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
 components:
   schemas:
     id-cards-apiCreateIdCardsResponse:
@@ -93,6 +103,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/id-cards-apiCardReference'
+    id-cards-apiCreateIdCardsRequest:
+      type: object
+      properties:
+        cardCount:
+          type: integer
+          format: int32
+          description: The number of ID cards to create.
+          example: 1
+          minimum: 1
+          maximum: 100
+      required:
+      - cardCount
     id-cards-apiCardReference:
       type: object
       properties:
@@ -115,18 +137,6 @@ components:
           type: string
           description: The URL for the QR code associated with the ID card.
           example: https://example.com/id-cards/98765/qr-code
-    id-cards-apiCreateIdCardsRequest:
-      type: object
-      properties:
-        cardCount:
-          type: integer
-          format: int32
-          description: The number of ID cards to create.
-          example: 1
-          minimum: 1
-          maximum: 100
-      required:
-      - cardCount
     id-cards-apiCreateIdCardBatchRequest:
       type: object
       properties:
@@ -190,6 +200,9 @@ components:
               **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
 
               More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-refined-from:
+- lightspeed-k-series-openapi.json
+- lightspeed-k-series-openapi.yml
 x-tagGroups:
 - name: Rich Item API
   tags:

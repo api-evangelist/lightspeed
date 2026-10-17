@@ -179,6 +179,43 @@ paths:
       - Variant Attributes
 components:
   schemas:
+    VariantAttributeCreateUpdateBody:
+      properties:
+        name:
+          example: Size
+          type: string
+      required:
+      - name
+      title: VariantAttributeCreateUpdateBody
+      type: object
+    VariantAttributeDeleteResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+          type: object
+      title: VariantAttributeDeleteResponse
+      type: object
+    VariantAttributeUpdateResponse:
+      properties:
+        data:
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+          type: object
+      title: VariantAttributeUpdateResponse
+      type: object
+    VariantAttributesListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/VariantAttributeResponse'
+          type: array
+      title: VariantAttributesListResponse
+      type: object
     VariantAttributeCreateResponse:
       properties:
         data:
@@ -196,35 +233,6 @@ components:
           type: object
       title: VariantAttributeCreateResponse
       type: object
-    VariantAttributeDeleteResponse:
-      properties:
-        data:
-          properties:
-            id:
-              type: string
-          type: object
-      title: VariantAttributeDeleteResponse
-      type: object
-    VariantAttributeCreateUpdateBody:
-      properties:
-        name:
-          example: Size
-          type: string
-      required:
-      - name
-      title: VariantAttributeCreateUpdateBody
-      type: object
-    VariantAttributeUpdateResponse:
-      properties:
-        data:
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-          type: object
-      title: VariantAttributeUpdateResponse
-      type: object
     VariantAttributeResponse:
       properties:
         deleted_at:
@@ -241,14 +249,6 @@ components:
           example: Size
           type: string
       title: VariantAttributeResponse
-      type: object
-    VariantAttributesListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/VariantAttributeResponse'
-          type: array
-      title: VariantAttributesListResponse
       type: object
   securitySchemes:
     bearerAuth:

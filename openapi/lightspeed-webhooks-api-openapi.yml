@@ -208,6 +208,26 @@ components:
           active: true
           type: sale.update
           url: string
+    Webhook:
+      description: The configuration for a webhook.
+      properties:
+        active:
+          description: Whether this webhook is enabled or not
+          type: boolean
+        id:
+          description: The ID of this webhook
+          type: string
+        retailer_id:
+          description: The ID of the retailer this webhook belongs to
+          type: string
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          description: The URL to send this webhook to
+          type: string
+      title: Webhook
+      type: object
+      x-examples: {}
     WebhookType:
       description: 'The webhook type. These can be one of:
 
@@ -238,26 +258,6 @@ components:
       type: string
       x-examples:
         example-1: sale.update
-    Webhook:
-      description: The configuration for a webhook.
-      properties:
-        active:
-          description: Whether this webhook is enabled or not
-          type: boolean
-        id:
-          description: The ID of this webhook
-          type: string
-        retailer_id:
-          description: The ID of the retailer this webhook belongs to
-          type: string
-        type:
-          $ref: '#/components/schemas/WebhookType'
-        url:
-          description: The URL to send this webhook to
-          type: string
-      title: Webhook
-      type: object
-      x-examples: {}
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

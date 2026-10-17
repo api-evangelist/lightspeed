@@ -1,15 +1,11 @@
 openapi: 3.2.0
 info:
+  title: Lightspeed Financial API
   version: 1.0.0
-  title: Lightspeed Restaurant K Series Financial API
-  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
-
-    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
-
-    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
+  description: 'Operations tagged Financial across 2 of this provider''s published API definitions: lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trial.lsk.lightspeed.app
   description: Demo URL
@@ -106,6 +102,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/tax-rates:
     get:
       summary: Get Tax Rates
@@ -125,6 +128,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/paymentMethods:
     get:
       summary: Get Payment Methods
@@ -178,6 +188,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/accountingGroups:
     get:
       summary: Get Accounting Groups
@@ -234,6 +251,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/financials/{from}/{to}:
     get:
       summary: Get Financials
@@ -308,6 +332,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/dailyFinancials:
     get:
       summary: Get Daily Financials
@@ -336,6 +367,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/saleByExternalReference:
     get:
       summary: Get Receipt by External Reference
@@ -356,6 +394,13 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /f/finance/{businessLocationId}/aggregatedSales:
     get:
       summary: Get Aggregated Sales
@@ -518,68 +563,66 @@ paths:
       security:
       - OAuth2:
         - financial-api
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
 components:
-  parameters:
-    financial-apiBusinessLocationId:
-      in: path
-      name: businessLocationId
-      required: true
-      schema:
-        format: int64
-        type: integer
-        minimum: 1
-      example: 45454565682155
-      description: The unique identifier for the business location.
-    financial-apiDateParameter:
-      schema:
-        example: '2021-10-28'
-        type: string
-        format: date
-      name: date
-      description: The date in YYYY-MM-DD format.
-      in: query
-      required: false
-    financial-apiIncludeParameter:
-      schema:
-        type: string
-        default: ''
-      description: 'Objects to be included in the response.
-
-
-        The allowed values are: `staff`, `table`, `consumer`, `payments`, `revenue_center`, `account_profile`, `payment_authorization`.'
-      name: include
-      in: query
-      required: false
-    financial-apiFlattenedParameter:
-      schema:
-        example: true
-        default: false
-        type: boolean
-      name: flattened
-      in: query
-      required: false
-    financial-apiExternalReferenceId:
-      schema:
-        type: string
-        example: TASK:OO-{businessLocationId}-{unique-reference-code}
-      name: externalReferenceId
-      description: The external reference of the receipt. See [externalReferences](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences).
-      in: query
-      required: true
-    financial-apiGroupByParameter:
-      schema:
-        type: string
-        minLength: 3
-        maxLength: 2147483647
-      description: 'Comma-separated list of parameters to group the results by.
-
-        The allowed values are: `staff`, `device`, `deviceId`, `tag`, `accountingGroup`, and `statisticGroup`.
-
-        For example, `groupBy` can be set to `staff,device`.'
-      name: groupBy
-      in: query
-      required: true
   schemas:
+    financial-apiFinancialDto:
+      properties:
+        businessName:
+          type: string
+          description: Name of the business
+          example: My Business
+        nextStartOfDayAsIso8601:
+          type: string
+          description: Start of next business day, in the merchant's local time.
+          example: '2023-07-28T05:30:00-05:00'
+        businessLocationId:
+          type: number
+          description: The unique identifier for the business location.
+          example: 123456789
+        sales:
+          items:
+            $ref: '#/components/schemas/financial-apiSaleDto'
+          type: array
+        dataComplete:
+          type: boolean
+          example: false
+        _links:
+          properties:
+            self:
+              properties:
+                href:
+                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments
+                  type: string
+                templated:
+                  example: true
+                  type: boolean
+              type: object
+            nextPage:
+              properties:
+                href:
+                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments&nextPageToken=A65315.18
+                  description: The URL for the next set of results.
+                  type: string
+                templated:
+                  example: true
+                  type: boolean
+              type: object
+          type: object
+    financial-apiServiceChargeType:
+      type: string
+      description: The type of service charge applied to the sale line.
+      example: APPORTIONED
+      enum:
+      - UNTAXED
+      - APPORTIONED
+      - NO_SERVICE_CHARGE
     financial-apiSaleDto:
       properties:
         accountReference:
@@ -1088,49 +1131,6 @@ components:
                 href:
                   type: string
                   example: https://api.ikentoo.com/f/finance/141948669132802/tax-rates
-    financial-apiFinancialDto:
-      properties:
-        businessName:
-          type: string
-          description: Name of the business
-          example: My Business
-        nextStartOfDayAsIso8601:
-          type: string
-          description: Start of next business day, in the merchant's local time.
-          example: '2023-07-28T05:30:00-05:00'
-        businessLocationId:
-          type: number
-          description: The unique identifier for the business location.
-          example: 123456789
-        sales:
-          items:
-            $ref: '#/components/schemas/financial-apiSaleDto'
-          type: array
-        dataComplete:
-          type: boolean
-          example: false
-        _links:
-          properties:
-            self:
-              properties:
-                href:
-                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments
-                  type: string
-                templated:
-                  example: true
-                  type: boolean
-              type: object
-            nextPage:
-              properties:
-                href:
-                  example: https://api.ikentoo.com/f/finance/141948669132802/financials/2021-08-30T14:00:00Z/2023-09-03T15:30:00Z?pageSize=10&include=payments&nextPageToken=A65315.18
-                  description: The URL for the next set of results.
-                  type: string
-                templated:
-                  example: true
-                  type: boolean
-              type: object
-          type: object
     financial-apiTaxRate:
       type: object
       properties:
@@ -1151,14 +1151,66 @@ components:
           description: Whether or not the tax is included.
         accountingReference:
           type: string
-    financial-apiServiceChargeType:
-      type: string
-      description: The type of service charge applied to the sale line.
-      example: APPORTIONED
-      enum:
-      - UNTAXED
-      - APPORTIONED
-      - NO_SERVICE_CHARGE
+  parameters:
+    financial-apiBusinessLocationId:
+      in: path
+      name: businessLocationId
+      required: true
+      schema:
+        format: int64
+        type: integer
+        minimum: 1
+      example: 45454565682155
+      description: The unique identifier for the business location.
+    financial-apiGroupByParameter:
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 2147483647
+      description: 'Comma-separated list of parameters to group the results by.
+
+        The allowed values are: `staff`, `device`, `deviceId`, `tag`, `accountingGroup`, and `statisticGroup`.
+
+        For example, `groupBy` can be set to `staff,device`.'
+      name: groupBy
+      in: query
+      required: true
+    financial-apiIncludeParameter:
+      schema:
+        type: string
+        default: ''
+      description: 'Objects to be included in the response.
+
+
+        The allowed values are: `staff`, `table`, `consumer`, `payments`, `revenue_center`, `account_profile`, `payment_authorization`.'
+      name: include
+      in: query
+      required: false
+    financial-apiExternalReferenceId:
+      schema:
+        type: string
+        example: TASK:OO-{businessLocationId}-{unique-reference-code}
+      name: externalReferenceId
+      description: The external reference of the receipt. See [externalReferences](https://api-docs.lsk.lightspeed.app/operation/operation-financial-apigetfinancials#operation-financial-apigetfinancials-200-body-application-json-sales-externalreferences).
+      in: query
+      required: true
+    financial-apiFlattenedParameter:
+      schema:
+        example: true
+        default: false
+        type: boolean
+      name: flattened
+      in: query
+      required: false
+    financial-apiDateParameter:
+      schema:
+        example: '2021-10-28'
+        type: string
+        format: date
+      name: date
+      description: The date in YYYY-MM-DD format.
+      in: query
+      required: false
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
@@ -1186,6 +1238,9 @@ components:
               **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
 
               More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-refined-from:
+- lightspeed-k-series-openapi.json
+- lightspeed-k-series-openapi.yml
 x-tagGroups:
 - name: Rich Item API
   tags:

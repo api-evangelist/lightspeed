@@ -1,15 +1,11 @@
 openapi: 3.2.0
 info:
+  title: Lightspeed PMS API
   version: 1.0.0
-  title: Lightspeed Restaurant K Series PMS API
-  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
-
-    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
-
-    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
+  description: 'Operations tagged PMS across 2 of this provider''s published API definitions: lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trial.lsk.lightspeed.app
   description: Demo URL
@@ -62,6 +58,13 @@ paths:
       security:
       - OAuth2:
         - propertymanagement
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /pms/v1/providers/{id}:
     get:
       summary: Get a PMS provider by ID
@@ -192,6 +195,13 @@ paths:
       security:
       - OAuth2:
         - propertymanagement
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /pms/v1/providers:
     get:
       summary: Get PMS providers
@@ -268,17 +278,56 @@ paths:
       security:
       - OAuth2:
         - propertymanagement
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
 components:
   schemas:
-    pms-apiRevenueCenterName:
-      example: Bar
-      description: The name of the revenue center.
+    pms-apiProviderName:
+      description: The name of the PMS provider.
       type: string
+      minLength: 1
+      maxLength: 255
+      example: My PMS Provider
+    pms-apiProviderId:
+      description: The unique identifier for the provider.
+      type: integer
+      format: int64
+      example: 3012455645
     pms-apiRevenueCenterId:
       example: 343243933
       description: The unique identifier for the revenue center.
       type: integer
       format: int64
+    pms-apiProviderEndpoint:
+      description: The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.
+      type: string
+      minLength: 1
+      maxLength: 255
+      example: http://integration.com/pms/endpoint
+    pms-apiBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
+    pms-apiProviderFeature:
+      type: string
+      enum:
+      - SEARCH_BY_NAME
+      - MIRRORING
+      - PARTIAL_PAYMENTS
+      - MULTI_PAYMENTS
+      - SERVICE_CHARGE
+      - ENRICHED_PAYLOAD
+      example: MIRRORING
+    pms-apiRevenueCenterName:
+      example: Bar
+      description: The name of the revenue center.
+      type: string
     pms-apiErrorResponse:
       type: object
       properties:
@@ -300,34 +349,6 @@ components:
                 type: object
               message:
                 type: string
-    pms-apiProviderFeature:
-      type: string
-      enum:
-      - SEARCH_BY_NAME
-      - MIRRORING
-      - PARTIAL_PAYMENTS
-      - MULTI_PAYMENTS
-      - SERVICE_CHARGE
-      - ENRICHED_PAYLOAD
-      example: MIRRORING
-    pms-apiProviderFeatures:
-      type: array
-      uniqueItems: true
-      description: The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.
-      items:
-        $ref: '#/components/schemas/pms-apiProviderFeature'
-    pms-apiProviderEndpoint:
-      description: The endpoint of the PMS provider. This is where Lightspeed will send PMS requests.
-      type: string
-      minLength: 1
-      maxLength: 255
-      example: http://integration.com/pms/endpoint
-    pms-apiProviderName:
-      description: The name of the PMS provider.
-      type: string
-      minLength: 1
-      maxLength: 255
-      example: My PMS Provider
     pms-apiGetProvider:
       properties:
         id:
@@ -358,22 +379,18 @@ components:
           type: array
           uniqueItems: true
       type: object
-    pms-apiBusinessLocationId:
-      description: The unique identifier for the business location.
-      type: integer
-      format: int64
-      example: 45454565682155
     pms-apiProviderApiKey:
       description: The API key for the PMS provider.
       type: string
       minLength: 1
       maxLength: 255
       example: fake-secret
-    pms-apiProviderId:
-      description: The unique identifier for the provider.
-      type: integer
-      format: int64
-      example: 3012455645
+    pms-apiProviderFeatures:
+      type: array
+      uniqueItems: true
+      description: The optional features that the PMS provider supports. See the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/property-management-systems) for more details.
+      items:
+        $ref: '#/components/schemas/pms-apiProviderFeature'
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
@@ -401,6 +418,9 @@ components:
               **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
 
               More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-refined-from:
+- lightspeed-k-series-openapi.json
+- lightspeed-k-series-openapi.yml
 x-tagGroups:
 - name: Rich Item API
   tags:

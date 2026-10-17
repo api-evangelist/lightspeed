@@ -180,8 +180,9 @@ common:
 apis:
 - aid: lightspeed:retail-r-series
   name: Lightspeed Retail R-Series API
-  description: REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory, customers, products, and reporting
-    data for retail point-of-sale systems.
+  description: >-
+    REST API for Lightspeed Retail R-Series (formerly Vend) providing access to sales, inventory, customers,
+    products, and reporting data for retail point-of-sale systems.
   humanURL: https://developers.lightspeedhq.com/retail/
   baseURL: https://api.lightspeedapp.com
   tags:
@@ -207,8 +208,9 @@ apis:
     url: https://developers.lightspeedhq.com/retail/introduction/changelog/
 - aid: lightspeed:ecom-c-series
   name: Lightspeed eCom API
-  description: REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products, orders, customers, shipments, payments,
-    and inventory management. Requires Advanced or Professional subscription.
+  description: >-
+    REST API for Lightspeed eCom (C-Series) e-commerce platform providing endpoints for products, orders,
+    customers, shipments, payments, and inventory management. Requires Advanced or Professional subscription.
   humanURL: https://developers.lightspeedhq.com/ecom/
   baseURL: https://api.shoplightspeed.com
   tags:
@@ -231,14 +233,16 @@ apis:
   - type: Authentication
     url: https://developers.lightspeedhq.com/ecom/introduction/authentication/
   - type: Postman
-    url: https://developers.lightspeedhq.com/ecom/introduction/images/Lightspeed_eCom.postman_collection.json
+    url: >-
+      https://developers.lightspeedhq.com/ecom/introduction/images/Lightspeed_eCom.postman_collection.json
   - type: ChangeLog
     url: https://developers.lightspeedhq.com/ecom/introduction/releasenotes/
 - aid: lightspeed:ecom-e-series
   name: Lightspeed eCom E-Series (Ecwid) API
-  description: REST API for Lightspeed eCom E-Series, the Ecwid storefront platform Lightspeed acquired in 2021 and now sells as eCom E-Series.
-    Provides store profile, product catalog, categories, orders, customers, discount coupons, shipping and payment application endpoints for building
-    storefront apps and integrations.
+  description: >-
+    REST API for Lightspeed eCom E-Series, the Ecwid storefront platform Lightspeed acquired in 2021 and
+    now sells as eCom E-Series. Provides store profile, product catalog, categories, orders, customers,
+    discount coupons, shipping and payment application endpoints for building storefront apps and integrations.
   humanURL: https://api-docs.ecwid.com/
   baseURL: https://app.ecwid.com/api/v3
   tags:
@@ -258,37 +262,12 @@ apis:
     url: https://api-docs.ecwid.com/
   - type: APIReference
     url: https://api-docs.ecwid.com/reference/get-store-profile
-- aid: lightspeed:restaurant-k-series
-  name: Lightspeed Restaurant K-Series API
-  description: REST API for Lightspeed Restaurant K-Series (formerly iKentoo) covering businesses, menus, orders, financials, reservations and
-    staff for hospitality point-of-sale, published as OpenAPI on the K-Series API portal.
-  humanURL: https://api-portal.lsk.lightspeed.app/
-  baseURL: https://api.lsk.lightspeed.app
-  tags:
-  - Restaurant
-  - Point-of-Sale
-  - Hospitality
-  properties:
-  - type: OpenAPI
-    url: openapi/lightspeed-k-series-openapi.yml
-  - type: Documentation
-    url: https://api-portal.lsk.lightspeed.app/
-  - type: JSONSchema
-    url: json-schema/lightspeed-financial-api-sale-dto-schema.json
-  - type: JSONSchema
-    url: json-schema/lightspeed-reservation-service-platform-reservation-schema.json
-  - type: JSONSchema
-    url: json-schema/lightspeed-reservation-service-platform-profile-schema.json
-  - type: JSONSchema
-    url: json-schema/lightspeed-reservation-service-platform-profile-response-schema.json
-  - type: JSONSchema
-    url: json-schema/lightspeed-ape-local-order-item-line-schema.json
-  - type: JSONSchema
-    url: json-schema/lightspeed-items-api-item-dto-schema.json
 - aid: lightspeed:restaurant-o-series
   name: Lightspeed Restaurant O-Series (Kounta) API
-  description: REST API for Lightspeed Restaurant O-Series, the Kounta hospitality point-of-sale platform Lightspeed acquired in 2019 and sells
-    as O-Series. Exposes sites, registers, products, categories, orders, customers, staff and webhook endpoints for hospitality integrations.
+  description: >-
+    REST API for Lightspeed Restaurant O-Series, the Kounta hospitality point-of-sale platform Lightspeed
+    acquired in 2019 and sells as O-Series. Exposes sites, registers, products, categories, orders, customers,
+    staff and webhook endpoints for hospitality integrations.
   humanURL: https://apidoc.kounta.com/
   baseURL: https://api.kounta.com
   tags:
@@ -308,9 +287,10 @@ apis:
     url: https://apidoc.kounta.com/
 - aid: lightspeed:golf-g-series
   name: Lightspeed Golf (Chronogolf) Partner API
-  description: Partner REST API for Lightspeed Golf, the Chronogolf tee-sheet and golf course management platform Lightspeed acquired in 2019.
-    Covers organizations, courses, tee times, green fees, reservations and customers for golf booking partners, published as Postman-hosted partner
-    documentation.
+  description: >-
+    Partner REST API for Lightspeed Golf, the Chronogolf tee-sheet and golf course management platform
+    Lightspeed acquired in 2019. Covers organizations, courses, tee times, green fees, reservations and
+    customers for golf booking partners, published as Postman-hosted partner documentation.
   humanURL: https://partner-api.docs.chronogolf.com/
   baseURL: https://partner-api.chronogolf.com
   tags:
@@ -624,7 +604,8 @@ apis:
     url: json-schema/lightspeed-customer-response-schema.json
 - aid: lightspeed:lightspeed-financial-api
   name: Lightspeed Commerce Financial API
-  description: 'V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
+  description: >-
+    V1 endpoints (`/f/finance/...`) for retrieving sales and financial data.
 
 
     For the newer V2 versions of these endpoints see FinancialV2
@@ -639,12 +620,14 @@ apis:
 
     - **Pagination**: `pageSize` max of 1000. Uses HATEOAS `_links` with `self` and `nextPage` URLs
 
-    - **Daily endpoints** (`getDailyFinancials`): No pagination, no hard cap on results. May have slower response times for larger data sets
+    - **Daily endpoints** (`getDailyFinancials`): No pagination, no hard cap on results. May have slower
+    response times for larger data sets
 
-    - **Backoffice transactions**: Historical dating supported. Transactions will be dated to a past date if the action impacts past reports.
-    Can query transactions by original business date
+    - **Backoffice transactions**: Historical dating supported. Transactions will be dated to a past date
+    if the action impacts past reports. Can query transactions by original business date
 
-    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the original transaction date'
+    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the
+    original transaction date
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -682,7 +665,8 @@ apis:
     url: json-schema/lightspeed-financial-api-resources-tax-rate-schema.json
 - aid: lightspeed:lightspeed-financialv2-api
   name: Lightspeed Commerce Financial V2 API
-  description: 'V2 endpoints (`/f/v2/...`) for retrieving sales and financial data.
+  description: >-
+    V2 endpoints (`/f/v2/...`) for retrieving sales and financial data.
 
 
     ### Endpoint Mapping
@@ -692,9 +676,11 @@ apis:
 
     |-------------|-------------|
 
-    | `getFinancials` (`/f/finance/{id}/financials/{from}/{to}`) | `getSales` (`/f/v2/business-location/{id}/sales`) |
+    | `getFinancials` (`/f/finance/{id}/financials/{from}/{to}`) | `getSales` (`/f/v2/business-location/{id}/sales`)
+    |
 
-    | `getDailyFinancials` (`/f/finance/{id}/dailyFinancials`) | `getBusinessDaySales` (`/f/v2/business-location/{id}/sales-daily`) |
+    | `getDailyFinancials` (`/f/finance/{id}/dailyFinancials`) | `getBusinessDaySales` (`/f/v2/business-location/{id}/sales-daily`)
+    |
 
 
     Response DTOs are nearly identical to V1 with the exceptions noted below
@@ -705,22 +691,26 @@ apis:
 
     - **Sorting**: Explicitly sorted by `timeClosed`
 
-    - **Transitory Accounts /  Unsettled Sales**: Returns closed transactions and ensures no transitory (unclosed) transactions are included in
-    reporting
+    - **Transitory Accounts /  Unsettled Sales**: Returns closed transactions and ensures no transitory
+    (unclosed) transactions are included in reporting
 
-    - **Pagination**: `pageSize` max of 100. No HATEOAS `_links`; uses `nextPageToken` string for pagination instead
+    - **Pagination**: `pageSize` max of 100. No HATEOAS `_links`; uses `nextPageToken` string for pagination
+    instead
 
-    - **Daily endpoints** (`getBusinessDaySales`): No pagination, no hard cap on results. May have slower response times for larger data sets
+    - **Daily endpoints** (`getBusinessDaySales`): No pagination, no hard cap on results. May have slower
+    response times for larger data sets
 
-    - **Backoffice transactions**: Historical dating not currently supported — transactions appear as if created at current time. Transactions
-    can only be found by the date/time they were actually created. *Historical dating support is planned for a future release.*
+    - **Backoffice transactions**: Historical dating not currently supported — transactions appear as
+    if created at current time. Transactions can only be found by the date/time they were actually created.
+    *Historical dating support is planned for a future release.*
 
-    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the date the modification was performed, not
-    the original transaction date
+    - **Backoffice modifications** (payment method change and canceling): Modifications appear on the
+    date the modification was performed, not the original transaction date
 
 
-    If you need to query transactions by their original business date (e.g. for historical reporting or reconciliation); The V1 endpoints may
-    be more suitable until backwards compatibility is added to V2 for this aspect.'
+    If you need to query transactions by their original business date (e.g. for historical reporting or
+    reconciliation); The V1 endpoints may be more suitable until backwards compatibility is added to V2
+    for this aspect.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -960,7 +950,9 @@ apis:
     url: json-schema/lightspeed-items-api-create-item-dto-schema.json
 - aid: lightspeed:lightspeed-loyalty-adjustments-beta-api
   name: Lightspeed Commerce Loyalty Adjustments [BETA] API
-  description: The Loyalty Adjustments [BETA] API from Lightspeed Commerce — 1 operation(s) for loyalty adjustments [beta].
+  description: >-
+    The Loyalty Adjustments [BETA] API from Lightspeed Commerce — 1 operation(s) for loyalty adjustments
+    [beta].
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1038,7 +1030,8 @@ apis:
     url: json-schema/lightspeed-ape-menu-v2-schema.json
 - aid: lightspeed:lightspeed-order-and-pay-webhook-api
   name: 'Lightspeed Commerce Order and Pay: Webhook API'
-  description: 'The Order and Pay: Webhook API from Lightspeed Commerce — 4 operation(s) for order and pay: webhook.'
+  description: >-
+    The Order and Pay: Webhook API from Lightspeed Commerce — 4 operation(s) for order and pay: webhook.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1694,7 +1687,9 @@ apis:
     url: json-schema/lightspeed-register-payments-summary-response-schema.json
 - aid: lightspeed:lightspeed-reservations-for-platforms-api
   name: Lightspeed Commerce Reservations for Platforms API
-  description: The Reservations for Platforms API from Lightspeed Commerce — 11 operation(s) for reservations for platforms.
+  description: >-
+    The Reservations for Platforms API from Lightspeed Commerce — 11 operation(s) for reservations for
+    platforms.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -1990,7 +1985,8 @@ apis:
     url: json-schema/lightspeed-shift-collection-schema.json
 - aid: lightspeed:lightspeed-staff-api
   name: Lightspeed Commerce Staff API
-  description: Staff API. Authorisation Code grant type is required for this API with permission ROLE_CONFIG_USERS.
+  description: >-
+    Staff API. Authorisation Code grant type is required for this API with permission ROLE_CONFIG_USERS.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:
@@ -2254,7 +2250,8 @@ apis:
     url: json-schema/lightspeed-get-users-by-ids-request-schema.json
 - aid: lightspeed:lightspeed-variant-attributes-api
   name: Lightspeed Commerce Variant Attributes API
-  description: The Variant Attributes API from Lightspeed Commerce — 2 operation(s) for variant attributes.
+  description: >-
+    The Variant Attributes API from Lightspeed Commerce — 2 operation(s) for variant attributes.
   humanURL: https://x-series-api.lightspeedhq.com/
   baseURL: https://{domain_prefix}.retail.lightspeed.app
   tags:

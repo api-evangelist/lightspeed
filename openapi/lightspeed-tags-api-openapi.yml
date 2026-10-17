@@ -190,26 +190,6 @@ paths:
       - Tags
 components:
   schemas:
-    TagResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Tag'
-      title: Tag Response
-      type: object
-    TagCollection:
-      properties:
-        data:
-          description: An array of Tag objects.
-          items:
-            $ref: '#/components/schemas/Tag'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Tag Collection
-      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -228,6 +208,21 @@ components:
       required:
       - max
       - min
+      type: object
+    CreateTagRequest:
+      properties:
+        name:
+          description: The Tag name.
+          type: string
+      required:
+      - name
+      title: CreateTagRequest
+      type: object
+    TagResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Tag'
+      title: Tag Response
       type: object
     Tag:
       properties:
@@ -248,14 +243,19 @@ components:
           type: integer
       title: Tag
       type: object
-    CreateTagRequest:
+    TagCollection:
       properties:
-        name:
-          description: The Tag name.
-          type: string
+        data:
+          description: An array of Tag objects.
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
       required:
-      - name
-      title: CreateTagRequest
+      - data
+      - version
+      title: Tag Collection
       type: object
   securitySchemes:
     bearerAuth:

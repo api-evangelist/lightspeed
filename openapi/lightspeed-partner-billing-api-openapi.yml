@@ -156,6 +156,13 @@ paths:
       - Partner Billing
 components:
   schemas:
+    PartnerSubscriptions:
+      description: PartnerSubscriptions contains all the subscriptions of the retailer from all the partners
+      items:
+        $ref: '#/components/schemas/PartnerSubscription'
+      type:
+      - array
+      - 'null'
     PartnerUpdateSubscriptionTokenRequest:
       description: PartnerUpdateSubscriptionTokenRequest represents the request's body for updating a subscription via token API
       properties:
@@ -179,6 +186,80 @@ components:
       required:
       - return_url
       type: object
+    PartnerSubscriptionTokenResponse:
+      description: PartnerSubscriptionTokenResponse contains the token and its expiration time
+      properties:
+        expires_at:
+          description: ExpiresAt is the exact time of token expiry in UTC timezone and displayed in RFC3339 format
+          example: '2020-10-06T05:07:26Z'
+          type: string
+        expires_in:
+          description: ExpiresIn is the number of seconds till the token is expired
+          example: '86400'
+          type: string
+        token:
+          description: Token is a randomly generated string that is a required parameter for consent page
+          example: 0a7e36eb05a94bf1a4d3daeff0f561f9
+          maxLength: 32
+          minLength: 32
+          type: string
+      type: object
+    PartnerSubscriptionToken:
+      description: PartnerSubscriptionToken repreasent a partner subscription token
+      properties:
+        components:
+          example: '{components: [{"component_handle": "additional_registers", "component_price_point_handle": "basic", "quantity": 2}]}'
+          type: string
+        created_at:
+          example: '2020-10-06T05:07:26Z'
+          format: date-time
+          type: string
+        is_used:
+          example: true
+          type: boolean
+        product_handle:
+          example: lite
+          type: string
+        product_price_point_handle:
+          example: marshmallow-lite
+          type: string
+        retailer_id:
+          example: 0242ac12-001c-11eb-fa07-0f585c3d42ee
+          type: string
+        return_url:
+          example: https://example.com/redirect
+          type: string
+        subscription_id:
+          example: 1316881562803438000
+          format: int64
+          type: integer
+        token:
+          description: Token is a randomly generated string that is a required parameter for consent page
+          example: 0a7e36eb05a94bf1a4d3daeff0f561f9
+          maxLength: 32
+          minLength: 32
+          type: string
+        used_at:
+          example: '2020-10-06T07:00:38Z'
+          format: date-time
+          type: string
+        vend_application_id:
+          example: iYsePmZaddtZRNYQrr7g3Eg2ItSkTiFx
+          type: string
+      type: object
+    PartnerSubscription:
+      description: PartnerSubscription contains all the subscription under one partner application
+      properties:
+        application_id:
+          type: string
+        application_name:
+          example: Partner Application
+          type: string
+        partner_subscription_info:
+          items:
+            $ref: '#/components/schemas/PartnerSubscriptionInfo'
+          type: array
+      type: object
     PartnerSubscriptionTokenComponent:
       description: PartnerSubscriptionTokenComponent represents a component to be added to a subscription
       properties:
@@ -199,24 +280,6 @@ components:
       - component_handle
       - component_price_handle
       - quantity
-      type: object
-    PartnerSubscriptionTokenResponse:
-      description: PartnerSubscriptionTokenResponse contains the token and its expiration time
-      properties:
-        expires_at:
-          description: ExpiresAt is the exact time of token expiry in UTC timezone and displayed in RFC3339 format
-          example: '2020-10-06T05:07:26Z'
-          type: string
-        expires_in:
-          description: ExpiresIn is the number of seconds till the token is expired
-          example: '86400'
-          type: string
-        token:
-          description: Token is a randomly generated string that is a required parameter for consent page
-          example: 0a7e36eb05a94bf1a4d3daeff0f561f9
-          maxLength: 32
-          minLength: 32
-          type: string
       type: object
     PartnerSubscriptionTokenRequest:
       description: PartnerSubscriptionTokenRequest represents the request's body for subscription token API
@@ -303,49 +366,6 @@ components:
           example: canceled
           type: string
       type: object
-    PartnerSubscriptionToken:
-      description: PartnerSubscriptionToken repreasent a partner subscription token
-      properties:
-        components:
-          example: '{components: [{"component_handle": "additional_registers", "component_price_point_handle": "basic", "quantity": 2}]}'
-          type: string
-        created_at:
-          example: '2020-10-06T05:07:26Z'
-          format: date-time
-          type: string
-        is_used:
-          example: true
-          type: boolean
-        product_handle:
-          example: lite
-          type: string
-        product_price_point_handle:
-          example: marshmallow-lite
-          type: string
-        retailer_id:
-          example: 0242ac12-001c-11eb-fa07-0f585c3d42ee
-          type: string
-        return_url:
-          example: https://example.com/redirect
-          type: string
-        subscription_id:
-          example: 1316881562803438000
-          format: int64
-          type: integer
-        token:
-          description: Token is a randomly generated string that is a required parameter for consent page
-          example: 0a7e36eb05a94bf1a4d3daeff0f561f9
-          maxLength: 32
-          minLength: 32
-          type: string
-        used_at:
-          example: '2020-10-06T07:00:38Z'
-          format: date-time
-          type: string
-        vend_application_id:
-          example: iYsePmZaddtZRNYQrr7g3Eg2ItSkTiFx
-          type: string
-      type: object
     PartnerUpdateSubscriptionTokenComponent:
       description: PartnerUpdateSubscriptionTokenComponent represents a component to be added to an updated subscription
       properties:
@@ -366,26 +386,6 @@ components:
       - component_handle
       - quantity
       type: object
-    PartnerSubscription:
-      description: PartnerSubscription contains all the subscription under one partner application
-      properties:
-        application_id:
-          type: string
-        application_name:
-          example: Partner Application
-          type: string
-        partner_subscription_info:
-          items:
-            $ref: '#/components/schemas/PartnerSubscriptionInfo'
-          type: array
-      type: object
-    PartnerSubscriptions:
-      description: PartnerSubscriptions contains all the subscriptions of the retailer from all the partners
-      items:
-        $ref: '#/components/schemas/PartnerSubscription'
-      type:
-      - array
-      - 'null'
   securitySchemes:
     bearerAuth:
       description: Bearer Token for API authentication.

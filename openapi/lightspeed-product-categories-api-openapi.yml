@@ -218,6 +218,19 @@ paths:
       - Product Categories
 components:
   schemas:
+    ProductCategoryPath:
+      properties:
+        id:
+          description: Object id of the Product Type in the path.
+          type: string
+        name:
+          description: The Product Type name.
+          type: string
+      required:
+      - id
+      - name
+      title: Product Category Path
+      type: object
     ProductCategory:
       properties:
         category_path:
@@ -242,19 +255,6 @@ components:
           description: The category id of the root of the category tree. If category is a root, this will be itself.
           format: uuid
           type: string
-      type: object
-    ProductCategoryPath:
-      properties:
-        id:
-          description: Object id of the Product Type in the path.
-          type: string
-        name:
-          description: The Product Type name.
-          type: string
-      required:
-      - id
-      - name
-      title: Product Category Path
       type: object
   securitySchemes:
     bearerAuth:

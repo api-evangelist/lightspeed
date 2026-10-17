@@ -201,6 +201,12 @@ paths:
       - Brands
 components:
   schemas:
+    BrandResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/Brand'
+      title: Brand Response
+      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -219,6 +225,20 @@ components:
       required:
       - max
       - min
+      type: object
+    BrandCollection:
+      properties:
+        data:
+          description: An array of Brand objects wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/Brand'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      required:
+      - data
+      - version
+      title: Brand Collection
       type: object
     Brand:
       properties:
@@ -258,26 +278,6 @@ components:
       required:
       - name
       title: Brand
-      type: object
-    BrandResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/Brand'
-      title: Brand Response
-      type: object
-    BrandCollection:
-      properties:
-        data:
-          description: An array of Brand objects wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/Brand'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      required:
-      - data
-      - version
-      title: Brand Collection
       type: object
   securitySchemes:
     bearerAuth:

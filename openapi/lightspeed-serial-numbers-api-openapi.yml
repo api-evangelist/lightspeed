@@ -149,17 +149,6 @@ paths:
       - Serial Numbers
 components:
   schemas:
-    SerialNumberCollection:
-      properties:
-        data:
-          description: An array of Serial Numbers wrapped in top level `data` object.
-          items:
-            $ref: '#/components/schemas/SerialNumber'
-          type: array
-        version:
-          $ref: '#/components/schemas/Version'
-      title: Serial Number Collection
-      type: object
     SerialNumber:
       properties:
         code:
@@ -194,12 +183,6 @@ components:
           type: integer
       title: SerialNumber
       type: object
-    SerialNumberResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/SerialNumber'
-      title: Serial Number Response
-      type: object
     Version:
       description: An object containing the highest and lowest version numbers for all items of the returned collection.
       properties:
@@ -218,6 +201,23 @@ components:
       required:
       - max
       - min
+      type: object
+    SerialNumberResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/SerialNumber'
+      title: Serial Number Response
+      type: object
+    SerialNumberCollection:
+      properties:
+        data:
+          description: An array of Serial Numbers wrapped in top level `data` object.
+          items:
+            $ref: '#/components/schemas/SerialNumber'
+          type: array
+        version:
+          $ref: '#/components/schemas/Version'
+      title: Serial Number Collection
       type: object
     SerialNumberRequest:
       properties:

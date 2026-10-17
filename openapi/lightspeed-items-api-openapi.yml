@@ -1,15 +1,11 @@
 openapi: 3.2.0
 info:
+  title: Lightspeed Items API
   version: 1.0.0
-  title: Lightspeed Restaurant K Series Items API
-  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
-
-    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
-
-    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
+  description: 'Operations tagged Items across 2 of this provider''s published API definitions: lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trial.lsk.lightspeed.app
   description: Demo URL
@@ -130,6 +126,13 @@ paths:
       security:
       - OAuth2:
         - items
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
   /items/v1/items:
     get:
       summary: Get All Items
@@ -291,16 +294,15 @@ paths:
       security:
       - OAuth2:
         - items
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
 components:
   schemas:
-    items-apiOffset:
-      example: 10
-      default: 0
-      description: 'Offset allows you to retrieve a subset of records starting from a specified position in the dataset. Offset normally works with [`amount`](#operation-getitems-amount), which designates how many records to retrieve, starting from the offset position.
-
-        '
-      type: integer
-      format: int64
     items-apiPriceDTO:
       properties:
         amount:
@@ -312,6 +314,31 @@ components:
           example: Tuesday Special
           description: The name for this item price.
       type: object
+    items-apiDocketName:
+      example: The Burger
+      maxLength: 64
+      type: string
+      description: The name used in the docket for the item.
+    items-apiItemId:
+      description: The unique identifier for the item.
+      type: integer
+      format: int64
+      example: 141948669132862
+    items-apiName:
+      example: Burger
+      maxLength: 180
+      minLength: 1
+      description: The name of the item.
+      type: string
+    items-apiCostPrice:
+      type: number
+      description: The cost price of the item.
+      example: 5.0
+    items-apiBusinessLocationId:
+      description: The unique identifier for the business location.
+      type: integer
+      format: int64
+      example: 45454565682155
     items-apiAccountingGroupDTO:
       description: The accounting group associated with the item.
       properties:
@@ -325,41 +352,6 @@ components:
           description: The name of the accounting group.
           example: Alcoholic beverages
       type: object
-    items-apiPriceMode:
-      description: The type of price for the item.
-      example: PERCENT
-      enum:
-      - AMOUNT
-      - PERCENT
-      - POSITIVE_OPEN_PRICE
-      - NEGATIVE_OPEN_PRICE
-      default: AMOUNT
-      type: string
-    items-apiCostPrice:
-      type: number
-      description: The cost price of the item.
-      example: 5.0
-    items-apiSku:
-      example: UGG-BB-PUR-06
-      maxLength: 32
-      minLength: 1
-      description: A stock keeping unit.
-      type: string
-    items-apiName:
-      example: Burger
-      maxLength: 180
-      minLength: 1
-      description: The name of the item.
-      type: string
-    items-apiDocketName:
-      example: The Burger
-      maxLength: 64
-      type: string
-      description: The name used in the docket for the item.
-    items-apiActive:
-      type: boolean
-      description: Indicates whether or not the item is archived from the menu.
-      example: true
     items-apiStatisticGroupDTO:
       properties:
         category:
@@ -371,20 +363,12 @@ components:
           description: The statistic group value.
           example: Food
       type: object
-    items-apiAmount:
-      description: The number of results to return with each request.
-      example: 10
-      default: 100
-      maximum: 1000
-      type: integer
-      format: int64
-    items-apiUpdateItemDTO:
+    items-apiCreateItemDTO:
       required:
       - name
-      - businessLocationId
-      - sku
-      - defaultPrice
       - accountingGroupId
+      - defaultPrice
+      - businessLocationId
       type: object
       properties:
         name:
@@ -421,11 +405,10 @@ components:
           $ref: '#/components/schemas/items-apiDefaultPrice'
         priceMode:
           $ref: '#/components/schemas/items-apiPriceMode'
-    items-apiAccountingGroupId:
-      example: 44874545485
-      description: The unique identifier for the accounting group.
-      type: integer
-      format: int64
+    items-apiDefaultPrice:
+      example: 10
+      type: number
+      description: The default price of the item.
     items-apiItemDTO:
       type: object
       properties:
@@ -523,22 +506,28 @@ components:
           - SUB_ITEM
           description: Type of the item.
           example: ITEM
-    items-apiItemId:
-      description: The unique identifier for the item.
+    items-apiPriceMode:
+      description: The type of price for the item.
+      example: PERCENT
+      enum:
+      - AMOUNT
+      - PERCENT
+      - POSITIVE_OPEN_PRICE
+      - NEGATIVE_OPEN_PRICE
+      default: AMOUNT
+      type: string
+    items-apiAccountingGroupId:
+      example: 44874545485
+      description: The unique identifier for the accounting group.
       type: integer
       format: int64
-      example: 141948669132862
-    items-apiBusinessLocationId:
-      description: The unique identifier for the business location.
-      type: integer
-      format: int64
-      example: 45454565682155
-    items-apiCreateItemDTO:
+    items-apiUpdateItemDTO:
       required:
       - name
-      - accountingGroupId
-      - defaultPrice
       - businessLocationId
+      - sku
+      - defaultPrice
+      - accountingGroupId
       type: object
       properties:
         name:
@@ -575,10 +564,31 @@ components:
           $ref: '#/components/schemas/items-apiDefaultPrice'
         priceMode:
           $ref: '#/components/schemas/items-apiPriceMode'
-    items-apiDefaultPrice:
+    items-apiOffset:
       example: 10
-      type: number
-      description: The default price of the item.
+      default: 0
+      description: 'Offset allows you to retrieve a subset of records starting from a specified position in the dataset. Offset normally works with [`amount`](#operation-getitems-amount), which designates how many records to retrieve, starting from the offset position.
+
+        '
+      type: integer
+      format: int64
+    items-apiAmount:
+      description: The number of results to return with each request.
+      example: 10
+      default: 100
+      maximum: 1000
+      type: integer
+      format: int64
+    items-apiActive:
+      type: boolean
+      description: Indicates whether or not the item is archived from the menu.
+      example: true
+    items-apiSku:
+      example: UGG-BB-PUR-06
+      maxLength: 32
+      minLength: 1
+      description: A stock keeping unit.
+      type: string
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
@@ -606,6 +616,9 @@ components:
               **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
 
               More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-refined-from:
+- lightspeed-k-series-openapi.json
+- lightspeed-k-series-openapi.yml
 x-tagGroups:
 - name: Rich Item API
   tags:

@@ -1,15 +1,11 @@
 openapi: 3.2.0
 info:
+  title: Lightspeed PMS Integration API
   version: 1.0.0
-  title: Lightspeed Restaurant K Series PMS Integration API
-  description: '**Lightspeed Restaurant** offers a **REST API** in order to communicate with the data in the system. These APIs are built using the RESTful standards and adhere to the basic verb interactions as defined by the REST standard.
-
-    Detailed developer guides can be found in the Lightspeed Restaurant API Portal.
-
-    These services are in continuous development and subject to change. Please find our versioning policy here.'
   x-logo:
     altText: Lightspeed Commerce
     url: static/lightspeed@2x.png
+  description: 'Operations tagged PMS Integration across 2 of this provider''s published API definitions: lightspeed-k-series-openapi.json, lightspeed-k-series-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.trial.lsk.lightspeed.app
   description: Demo URL
@@ -102,8 +98,165 @@ webhooks:
                 $ref: '#/components/schemas/pms-integrationErrorWebhookDto'
       tags:
       - PMS Integration
+    servers:
+    - url: https://api.trial.lsk.lightspeed.app
+      description: Demo URL
+      x-bump-branch-name: demo
+    - url: https://api.lsk.lightspeed.app
+      description: Production URL
+      x-bump-branch-name: prod
 components:
   schemas:
+    pms-integrationPmsPaymentWebhookDto:
+      type: object
+      properties:
+        paymentDate:
+          type: string
+          format: date-time
+          description: The date and time when the payment was made in UTC
+          example: '2021-01-01T00:00:00Z'
+        staffId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who processed this payment
+          example: 6
+        staffName:
+          type: string
+          description: The name of the POS user (staff) who processed this payment
+          example: John Doe
+        gratuity:
+          type: number
+          description: The amount of the gratuity (tips).
+          example: 1.0
+        amount:
+          type: number
+          description: The total amount of the received payment.
+          example: 66.0
+        methodName:
+          type: string
+          description: The name of the payment method.
+          example: MEWS
+        methodCode:
+          type: string
+          description: The code of the payment method.
+          example: IKPMS
+        reservationId:
+          type: string
+          description: The reservation ID of the payment.
+          example: '001'
+    pms-integrationPmsTransactionWebhookDto:
+      type: object
+      properties:
+        unitAmount:
+          type: number
+          description: The price of single item.
+          example: 10.0
+        quantity:
+          type: number
+          description: 'The quantity of the items. Negative quantity indicates a refund/cancellation/void.
+
+            '
+          example: 2.0
+        amount:
+          type: number
+          description: The total pre-tax amount of this transaction sale line.
+          example: 20.0
+        description:
+          type: string
+          description: The item name
+          example: French Fries
+        staffId:
+          type: integer
+          format: int64
+          description: The ID of the POS user (staff) who processed this transaction line
+          example: 6
+        staffName:
+          type: string
+          description: The name of the POS user (staff) who processed this transaction line
+          example: John Doe
+        groupId:
+          type: integer
+          format: int64
+          description: Lightspeed accounting group id which the item belongs to.
+          example: 25769803810
+        groupName:
+          type: string
+          description: Lightspeed accounting group name which the item belongs to.
+          example: Food
+        taxId:
+          deprecated: true
+          type: integer
+          format: int64
+          description: Deprecated, refer to taxLines.
+          example: 12345
+        taxName:
+          deprecated: true
+          type: string
+          description: Deprecated, refer to taxLines.
+          example: VAT 10%
+        taxRate:
+          deprecated: true
+          type: number
+          description: The tax rate of the items.
+          example: 1.1
+        taxIncluded:
+          deprecated: true
+          type: boolean
+          description: Deprecated, refer to taxLines.
+          example: true
+        sku:
+          type: string
+          description: The SKU of the items.
+          example: F07
+        type:
+          type: string
+          enum:
+          - Sale
+          - LineDiscount
+          - AccountDiscount
+          - PercentItem
+          description: The type of the transaction line.
+        serviceChargeContribution:
+          type: number
+          description: The amount of the service charge contribution.
+          example: 4.5
+        taxLines:
+          type: array
+          items:
+            $ref: '#/components/schemas/pms-integrationPmsTaxLineWebhookDto'
+    pms-integrationPmsServiceChargeWebhookDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The amount of the service charge.
+          example: 1.0
+        type:
+          type: string
+          enum:
+          - UNTAXED
+          - APPORTIONED
+          description: The type of the service charge.
+          example: UNTAXED
+    pms-integrationErrorWebhookDto:
+      type: object
+      description: 'The error response body content should follow this schema.
+
+        If the response body content does not follow this schema, only the status code will be sent.
+
+        All other property beside customerErrorMessage will be ignored.
+
+        '
+      properties:
+        customerErrorMessage:
+          type: string
+          maxLength: 50
+          example: Network failure
+          description: 'The error message that will be sent and printed at the POS.
+
+            Length should not exceed 50 characters to avoid truncation.
+
+            '
     pms-integrationSalesWebhookDto:
       type: object
       properties:
@@ -196,119 +349,6 @@ components:
             $ref: '#/components/schemas/pms-integrationPmsPaymentWebhookDto'
         serviceCharge:
           $ref: '#/components/schemas/pms-integrationPmsServiceChargeWebhookDto'
-    pms-integrationErrorWebhookDto:
-      type: object
-      description: 'The error response body content should follow this schema.
-
-        If the response body content does not follow this schema, only the status code will be sent.
-
-        All other property beside customerErrorMessage will be ignored.
-
-        '
-      properties:
-        customerErrorMessage:
-          type: string
-          maxLength: 50
-          example: Network failure
-          description: 'The error message that will be sent and printed at the POS.
-
-            Length should not exceed 50 characters to avoid truncation.
-
-            '
-    pms-integrationPmsServiceChargeWebhookDto:
-      type: object
-      properties:
-        amount:
-          type: number
-          description: The amount of the service charge.
-          example: 1.0
-        type:
-          type: string
-          enum:
-          - UNTAXED
-          - APPORTIONED
-          description: The type of the service charge.
-          example: UNTAXED
-    pms-integrationPmsTransactionWebhookDto:
-      type: object
-      properties:
-        unitAmount:
-          type: number
-          description: The price of single item.
-          example: 10.0
-        quantity:
-          type: number
-          description: 'The quantity of the items. Negative quantity indicates a refund/cancellation/void.
-
-            '
-          example: 2.0
-        amount:
-          type: number
-          description: The total pre-tax amount of this transaction sale line.
-          example: 20.0
-        description:
-          type: string
-          description: The item name
-          example: French Fries
-        staffId:
-          type: integer
-          format: int64
-          description: The ID of the POS user (staff) who processed this transaction line
-          example: 6
-        staffName:
-          type: string
-          description: The name of the POS user (staff) who processed this transaction line
-          example: John Doe
-        groupId:
-          type: integer
-          format: int64
-          description: Lightspeed accounting group id which the item belongs to.
-          example: 25769803810
-        groupName:
-          type: string
-          description: Lightspeed accounting group name which the item belongs to.
-          example: Food
-        taxId:
-          deprecated: true
-          type: integer
-          format: int64
-          description: Deprecated, refer to taxLines.
-          example: 12345
-        taxName:
-          deprecated: true
-          type: string
-          description: Deprecated, refer to taxLines.
-          example: VAT 10%
-        taxRate:
-          deprecated: true
-          type: number
-          description: The tax rate of the items.
-          example: 1.1
-        taxIncluded:
-          deprecated: true
-          type: boolean
-          description: Deprecated, refer to taxLines.
-          example: true
-        sku:
-          type: string
-          description: The SKU of the items.
-          example: F07
-        type:
-          type: string
-          enum:
-          - Sale
-          - LineDiscount
-          - AccountDiscount
-          - PercentItem
-          description: The type of the transaction line.
-        serviceChargeContribution:
-          type: number
-          description: The amount of the service charge contribution.
-          example: 4.5
-        taxLines:
-          type: array
-          items:
-            $ref: '#/components/schemas/pms-integrationPmsTaxLineWebhookDto'
     pms-integrationPmsTaxLineWebhookDto:
       type: object
       properties:
@@ -332,43 +372,6 @@ components:
           type: boolean
           description: Whether the tax is included in the price (VAT).
           example: true
-    pms-integrationPmsPaymentWebhookDto:
-      type: object
-      properties:
-        paymentDate:
-          type: string
-          format: date-time
-          description: The date and time when the payment was made in UTC
-          example: '2021-01-01T00:00:00Z'
-        staffId:
-          type: integer
-          format: int64
-          description: The ID of the POS user (staff) who processed this payment
-          example: 6
-        staffName:
-          type: string
-          description: The name of the POS user (staff) who processed this payment
-          example: John Doe
-        gratuity:
-          type: number
-          description: The amount of the gratuity (tips).
-          example: 1.0
-        amount:
-          type: number
-          description: The total amount of the received payment.
-          example: 66.0
-        methodName:
-          type: string
-          description: The name of the payment method.
-          example: MEWS
-        methodCode:
-          type: string
-          description: The code of the payment method.
-          example: IKPMS
-        reservationId:
-          type: string
-          description: The reservation ID of the payment.
-          example: '001'
   securitySchemes:
     OAuth2:
       description: 'The Lightspeed Restaurant K-Series APIs support OAuth2 authentication using the [authorization code grant flow](https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/).
@@ -396,6 +399,9 @@ components:
               **Note:** This API will eventually be deprecated in favour of the new [Reservations for Platforms](https://api-docs.lsk.lightspeed.app/group/endpoint-reservations-for-platforms) API.
 
               More information on the new reservations workflows can be found in the [Integration Guide](https://api-portal.lsk.lightspeed.app/category/reservations).'
+x-refined-from:
+- lightspeed-k-series-openapi.json
+- lightspeed-k-series-openapi.yml
 x-tagGroups:
 - name: Rich Item API
   tags:
