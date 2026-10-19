@@ -1,0 +1,12 @@
+{
+ "url": "https://x-series-api.lightspeedhq.com/openapi/api-2026-07.yaml",
+ "requested_url": "https://x-series-api.lightspeedhq.com/openapi/api-2026-07.yaml",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 555868,
+ "sha256": "1bbe611cabace671251ae4042ad3a32bf3eb64d3b94bf891afbcedc0c0ae7080",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.952), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
