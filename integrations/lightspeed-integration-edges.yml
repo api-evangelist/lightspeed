@@ -1,8 +1,9 @@
-generated: '2026-10-12'
+generated: '2026-10-20'
 method: searched
 source:
 - https://zapier.com/apps/lightspeed/integrations
 - https://composio.dev/toolkits/lightspeed
+- https://www.lightspeedhq.com/pos/restaurant/integrations/
 checked:
 - apaleo/integrations/apaleo-integration-edges.yml
 - https://composio.dev/toolkits/lightspeed
