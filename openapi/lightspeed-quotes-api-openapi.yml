@@ -283,3 +283,9 @@ components:
 externalDocs:
   description: List of tz database time zones
   url: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+x-provenance:
+  method: harvested
+  publisher: Lightspeed Commerce
+  source: https://x-series-api.lightspeedhq.com/openapi/api-2026-07.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
